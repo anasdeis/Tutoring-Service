@@ -5,4 +5,4 @@ Here is an introduction of our team:
 
 Our viewpoint: Manager
 
-Scope of the project: implement a website and an Android application for a tutor service company(tutor4A) which opens from 9-9 and 7 days a week to provide basic daily functionality. 
+Scope of the project: implement a website and an Android application for a tutor service company(tutor4All) which opens from 9-9 and 7 days a week to provide basic daily functionality. 
