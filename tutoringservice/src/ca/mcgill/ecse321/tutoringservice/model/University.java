@@ -4,6 +4,22 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class University {
+/**
+    * <pre>
+    *           1..1     0..*
+    * University ------------------------> Subject
+    *           &gt;       subject
+    * </pre>
+    */
+   private Set<Subject> subject;
+   
+   public Set<Subject> getSubject() {
+      if (this.subject == null) {
+         this.subject = new HashSet<Subject>();
+      }
+      return this.subject;
+   }
+   
    /**
     * <pre>
     *           1..1     0..*

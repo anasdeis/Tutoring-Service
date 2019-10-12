@@ -42,17 +42,17 @@ public abstract class Person {
    /**
     * <pre>
     *           1..*     1..1
-    * Person ------------------------> DateOfBirth
+    * Person ------------------------> Date
     *           person        &gt;       dateOfBirth
     * </pre>
     */
-   private DateOfBirth dateOfBirth;
+   private Date dateOfBirth;
    
-   public void setDateOfBirth(DateOfBirth value) {
+   public void setDateOfBirth(Date value) {
       this.dateOfBirth = value;
    }
    
-   public DateOfBirth getDateOfBirth() {
+   public Date getDateOfBirth() {
       return this.dateOfBirth;
    }
    
