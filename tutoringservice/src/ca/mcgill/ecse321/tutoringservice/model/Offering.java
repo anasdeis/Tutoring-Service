@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.tutoringservice.model;
+import AvaliableSession;
 
 import java.util.Set;
 import java.util.HashSet;

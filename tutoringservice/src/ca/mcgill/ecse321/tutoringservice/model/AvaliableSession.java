@@ -1,4 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.model;
+import java.sql.Date;
+import java.sql.Time;
 
 import java.util.Set;
 import java.util.HashSet;

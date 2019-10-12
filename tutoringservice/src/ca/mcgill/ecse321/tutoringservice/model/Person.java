@@ -1,4 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.model;
+import java.sql.Date;
+import Login;
 
 import Interface_AnnotationDefinition;
 
@@ -60,13 +62,13 @@ public abstract class Person {
       return this.email;
    }
    
-   private Interface_AnnotationDefinition phoneNumber;
+   private Integer phoneNumber;
    
-   public void setPhoneNumber(Interface_AnnotationDefinition value) {
+   public void setPhoneNumber(Integer value) {
       this.phoneNumber = value;
    }
    
-   public Interface_AnnotationDefinition getPhoneNumber() {
+   public Integer getPhoneNumber() {
       return this.phoneNumber;
    }
    
