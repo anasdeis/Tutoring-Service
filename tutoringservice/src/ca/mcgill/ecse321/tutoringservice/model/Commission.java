@@ -28,7 +28,7 @@ public double getPercentage() {
    
    private Set<Offering> offering;
    
-   @OneToMany
+   @OneToMany(mappedBy="commission" )
    public Set<Offering> getOffering() {
       return this.offering;
    }

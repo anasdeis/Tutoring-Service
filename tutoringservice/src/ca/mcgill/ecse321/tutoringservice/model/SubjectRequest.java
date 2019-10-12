@@ -37,21 +37,61 @@ public class SubjectRequest {
       return this.manager;
    }
    
-   /**
-    * <pre>
-    *           1..1     1..1
-    * SubjectRequest ------------------------> Subject
-    *           subjectRequest        &gt;       subject
-    * </pre>
-    */
-   private Subject subject;
+   private Integer requestID;
    
-   public void setSubject(Subject value) {
-      this.subject = value;
+   public void setRequestID(Integer value) {
+      this.requestID = value;
    }
    
-   public Subject getSubject() {
-      return this.subject;
+   public Integer getRequestID() {
+      return this.requestID;
+   }
+   
+   private String name;
+   
+   public void setName(String value) {
+      this.name = value;
+   }
+   
+   public String getName() {
+      return this.name;
+   }
+   
+   private String description;
+   
+   public void setDescription(String value) {
+      this.description = value;
+   }
+   
+   public String getDescription() {
+      return this.description;
+   }
+   
+   private SubjectType subjectType;
+   
+   public void setSubjectType(SubjectType value) {
+      this.subjectType = value;
+   }
+   
+   public SubjectType getSubjectType() {
+      return this.subjectType;
+   }
+   
+   /**
+    * <pre>
+    *           0..*     1..1
+    * SubjectRequest ------------------------- TutoringSystem
+    *           subjectRequest        &lt;       tutoringSystem
+    * </pre>
+    */
+   private TutoringSystem tutoringSystem;
+   
+   public void setTutoringSystem(TutoringSystem value) {
+      this.tutoringSystem = value;
+   }
+   
+   public TutoringSystem getTutoringSystem() {
+      return this.tutoringSystem;
    }
    
    }

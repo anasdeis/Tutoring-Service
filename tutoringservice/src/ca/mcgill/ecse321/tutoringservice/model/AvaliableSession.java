@@ -36,9 +36,9 @@ public class AvaliableSession {
    
    /**
     * <pre>
-    *           1..1     1..*
-    * AvaliableSession ------------------------> Tutor
-    *           &lt;       tutor
+    *           0..*     1..*
+    * AvaliableSession ------------------------- Tutor
+    *           avaliableSession        &lt;       tutor
     * </pre>
     */
    private Set<Tutor> tutor;

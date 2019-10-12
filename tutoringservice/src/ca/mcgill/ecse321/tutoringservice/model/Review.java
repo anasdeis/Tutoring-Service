@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -24,7 +23,7 @@ public Boolean getIsApproved() {
 }
    private Offering offering;
    
-   @OneToOne(optional=false)
+   @ManyToOne(optional=false)
    public Offering getOffering() {
       return this.offering;
    }

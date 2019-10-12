@@ -1,27 +1,9 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import AvaliableSession;
 
 import java.util.Set;
 import java.util.HashSet;
 
 public class Offering {
-/**
-    * <pre>
-    *           1..2     1..1
-    * TutorRole ------------------------- Tutor
-    *           tutorRole        &lt;       tutor
-    * </pre>
-    */
-   private Tutor tutor;
-   
-   public void setTutor(Tutor value) {
-      this.tutor = value;
-   }
-   
-   public Tutor getTutor() {
-      return this.tutor;
-   }
-   
    private String offeringID;
    
    public void setOfferingID(String value) {
@@ -46,22 +28,6 @@ public class Offering {
          this.studentsEnrolled = new HashSet<Student>();
       }
       return this.studentsEnrolled;
-   }
-   
-   /**
-    * <pre>
-    *           0..*     0..*
-    * Offering ------------------------- RegisteredTutor
-    *           offeringsTaught        &lt;       offeringTutors
-    * </pre>
-    */
-   private Set<RegisteredTutor> offeringTutors;
-   
-   public Set<RegisteredTutor> getOfferingTutors() {
-      if (this.offeringTutors == null) {
-         this.offeringTutors = new HashSet<RegisteredTutor>();
-      }
-      return this.offeringTutors;
    }
    
    /**
@@ -91,14 +57,14 @@ public class Offering {
       return this.term;
    }
    
-   private double price;
+   private double pricePerHour;
    
-   public void setPrice(double value) {
-      this.price = value;
+   public void setPricePerHour(double value) {
+      this.pricePerHour = value;
    }
    
-   public double getPrice() {
-      return this.price;
+   public double getPricePerHour() {
+      return this.pricePerHour;
    }
    
    /**
@@ -120,19 +86,78 @@ public class Offering {
    
    /**
     * <pre>
-    *           0..*     1..1
+    *           0..*     0..*
     * Offering ------------------------> AvaliableSession
     *           offering        &gt;       classTime
     * </pre>
     */
-   private AvaliableSession classTime;
+   private Set<AvaliableSession> classTime;
    
-   public void setClassTime(AvaliableSession value) {
-      this.classTime = value;
+   public Set<AvaliableSession> getClassTime() {
+      if (this.classTime == null) {
+         this.classTime = new HashSet<AvaliableSession>();
+      }
+      return this.classTime;
    }
    
-   public AvaliableSession getClassTime() {
-      return this.classTime;
+   /**
+    * <pre>
+    *           1..1     0..*
+    * Offering ------------------------- Review
+    *           offering        &lt;       review
+    * </pre>
+    */
+   private Set<Review> review;
+   
+   public Set<Review> getReview() {
+      if (this.review == null) {
+         this.review = new HashSet<Review>();
+      }
+      return this.review;
+   }
+   
+   /**
+    * <pre>
+    *           0..*     1..1
+    * Offering ------------------------- Commission
+    *           offering        &lt;       commission
+    * </pre>
+    */
+   private Commission commission;
+   
+   public void setCommission(Commission value) {
+      this.commission = value;
+   }
+   
+   public Commission getCommission() {
+      return this.commission;
+   }
+   
+   /**
+    * <pre>
+    *           0..*     1..1
+    * Offering ------------------------- Tutor
+    *           offering        &lt;       tutor
+    * </pre>
+    */
+   private Tutor tutor;
+   
+   public void setTutor(Tutor value) {
+      this.tutor = value;
+   }
+   
+   public Tutor getTutor() {
+      return this.tutor;
+   }
+   
+   private TutoringSystem tutoringSystem;
+   
+   public void setTutoringSystem(TutoringSystem value) {
+      this.tutoringSystem = value;
+   }
+   
+   public TutoringSystem getTutoringSystem() {
+      return this.tutoringSystem;
    }
    
    }

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
+import Interface_AnnotationDefinition;
 
 public abstract class Person {
    private String firstName;
@@ -39,13 +40,6 @@ public abstract class Person {
       return this.loginInfo;
    }
    
-   /**
-    * <pre>
-    *           1..*     1..1
-    * Person ------------------------> Date
-    *           person        &gt;       dateOfBirth
-    * </pre>
-    */
    private Date dateOfBirth;
    
    public void setDateOfBirth(Date value) {
@@ -54,6 +48,43 @@ public abstract class Person {
    
    public Date getDateOfBirth() {
       return this.dateOfBirth;
+   }
+   
+   private String email;
+   
+   public void setEmail(String value) {
+      this.email = value;
+   }
+   
+   public String getEmail() {
+      return this.email;
+   }
+   
+   private Interface_AnnotationDefinition phoneNumber;
+   
+   public void setPhoneNumber(Interface_AnnotationDefinition value) {
+      this.phoneNumber = value;
+   }
+   
+   public Interface_AnnotationDefinition getPhoneNumber() {
+      return this.phoneNumber;
+   }
+   
+   /**
+    * <pre>
+    *           0..*     1..1
+    * Person ------------------------- TutoringSystem
+    *           person        &lt;       tutoringSystem
+    * </pre>
+    */
+   private TutoringSystem tutoringSystem;
+   
+   public void setTutoringSystem(TutoringSystem value) {
+      this.tutoringSystem = value;
+   }
+   
+   public TutoringSystem getTutoringSystem() {
+      return this.tutoringSystem;
    }
    
    }

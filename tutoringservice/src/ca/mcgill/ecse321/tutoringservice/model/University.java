@@ -4,11 +4,21 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class University {
-/**
+   private String name;
+   
+   public void setName(String value) {
+      this.name = value;
+   }
+   
+   public String getName() {
+      return this.name;
+   }
+   
+   /**
     * <pre>
-    *           1..1     0..*
-    * University ------------------------> Subject
-    *           &gt;       subject
+    *           0..1     0..*
+    * University ------------------------- Subject
+    *           university        &gt;       subject
     * </pre>
     */
    private Set<Subject> subject;
@@ -22,28 +32,19 @@ public class University {
    
    /**
     * <pre>
-    *           1..1     0..*
-    * University ------------------------- UniversityCourse
-    *           university        &gt;       universityCourse
+    *           0..*     1..1
+    * University ------------------------- TutoringSystem
+    *           university        &lt;       tutoringSystem
     * </pre>
     */
-   private Set<UniversityCourse> universityCourse;
+   private TutoringSystem tutoringSystem;
    
-   public Set<UniversityCourse> getUniversityCourse() {
-      if (this.universityCourse == null) {
-         this.universityCourse = new HashSet<UniversityCourse>();
-      }
-      return this.universityCourse;
+   public void setTutoringSystem(TutoringSystem value) {
+      this.tutoringSystem = value;
    }
    
-   private String name;
-   
-   public void setName(String value) {
-      this.name = value;
-   }
-   
-   public String getName() {
-      return this.name;
+   public TutoringSystem getTutoringSystem() {
+      return this.tutoringSystem;
    }
    
    }

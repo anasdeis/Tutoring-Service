@@ -46,4 +46,14 @@ public class Student extends Person {
       return this.subjectRequest;
    }
    
+   private Integer numCoursesEnrolled;
+   
+   public void setNumCoursesEnrolled(Integer value) {
+      this.numCoursesEnrolled = value;
+   }
+   
+   public Integer getNumCoursesEnrolled() {
+      return this.numCoursesEnrolled;
+   }
+   
    }

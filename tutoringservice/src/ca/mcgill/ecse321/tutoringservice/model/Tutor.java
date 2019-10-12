@@ -1,23 +1,59 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
+import javax.persistence.Entity;
 import java.util.Set;
-import java.util.HashSet;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
-public class Tutor extends Person {
-   /**
-    * <pre>
-    *           1..1     1..2
-    * Tutor ------------------------- TutorRole
-    *           tutor        &gt;       tutorRole
-    * </pre>
-    */
-   private Set<TutorRole> tutorRole;
+@Entity
+public class Tutor extends Person{
+   private Integer tutorID;
+
+public void setTutorID(Integer value) {
+    this.tutorID = value;
+}
+public Integer getTutorID() {
+    return this.tutorID;
+}
+private Set<TutorApplication> tutorApplication;
+
+@OneToMany(mappedBy="tutor" )
+public Set<TutorApplication> getTutorApplication() {
+   return this.tutorApplication;
+}
+
+public void setTutorApplication(Set<TutorApplication> tutorApplications) {
+   this.tutorApplication = tutorApplications;
+}
+
+private Boolean isRegistered;
+
+public void setIsRegistered(Boolean value) {
+    this.isRegistered = value;
+}
+public Boolean getIsRegistered() {
+    return this.isRegistered;
+}
+   private Set<Offering> offering;
    
-   public Set<TutorRole> getTutorRole() {
-      if (this.tutorRole == null) {
-         this.tutorRole = new HashSet<TutorRole>();
-      }
-      return this.tutorRole;
+   @OneToMany(mappedBy="tutor" )
+   public Set<Offering> getOffering() {
+      return this.offering;
+   }
+   
+   public void setOffering(Set<Offering> offerings) {
+      this.offering = offerings;
+   }
+   
+   private Set<AvaliableSession> avaliableSession;
+   
+   @ManyToMany(mappedBy="tutor" )
+   public Set<AvaliableSession> getAvaliableSession() {
+      return this.avaliableSession;
+   }
+   
+   public void setAvaliableSession(Set<AvaliableSession> avaliableSessions) {
+      this.avaliableSession = avaliableSessions;
    }
    
    }

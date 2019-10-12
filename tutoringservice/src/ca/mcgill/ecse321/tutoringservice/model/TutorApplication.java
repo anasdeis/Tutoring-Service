@@ -16,9 +16,9 @@ public class TutorApplication {
    
    /**
     * <pre>
-    *           1..1     0..*
-    * TutorApplication ------------------------> Subject
-    *           &gt;       subject
+    *           0..*     0..*
+    * TutorApplication ------------------------- Subject
+    *           tutorRole        &gt;       subject
     * </pre>
     */
    private Set<Subject> subject;
@@ -32,9 +32,9 @@ public class TutorApplication {
    
    /**
     * <pre>
-    *           1..1     1..1
-    * TutorApplication ------------------------> Tutor
-    *           &lt;       tutor
+    *           0..*     1..1
+    * TutorApplication ------------------------- Tutor
+    *           tutorApplication        &lt;       tutor
     * </pre>
     */
    private Tutor tutor;

@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 public class TutoringSystem{
    private Set<SubjectRequest> subjectRequest;
    
-   @OneToMany(cascade={CascadeType.ALL})
+   @OneToMany(mappedBy="tutoringSystem" , cascade={CascadeType.ALL})
    public Set<SubjectRequest> getSubjectRequest() {
       return this.subjectRequest;
    }
@@ -20,7 +20,7 @@ public class TutoringSystem{
    
    private Set<Subject> subject;
    
-   @OneToMany(cascade={CascadeType.ALL})
+   @OneToMany(mappedBy="tutoringSystem" , cascade={CascadeType.ALL})
    public Set<Subject> getSubject() {
       return this.subject;
    }
@@ -31,7 +31,7 @@ public class TutoringSystem{
    
    private Set<Person> person;
    
-   @OneToMany(cascade={CascadeType.ALL})
+   @OneToMany(mappedBy="tutoringSystem" , cascade={CascadeType.ALL})
    public Set<Person> getPerson() {
       return this.person;
    }
@@ -42,7 +42,7 @@ public class TutoringSystem{
    
    private Set<University> university;
    
-   @OneToMany(cascade={CascadeType.ALL})
+   @OneToMany(mappedBy="tutoringSystem" , cascade={CascadeType.ALL})
    public Set<University> getUniversity() {
       return this.university;
    }
