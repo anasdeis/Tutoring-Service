@@ -1,50 +1,42 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Set;
-import java.util.HashSet;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
-public class University {
+@Entity
+public class University{
    private String name;
-   
-   public void setName(String value) {
-      this.name = value;
-   }
-   
-   public String getName() {
-      return this.name;
-   }
-   
-   /**
-    * <pre>
-    *           0..1     0..*
-    * University ------------------------- Subject
-    *           university        &gt;       subject
-    * </pre>
-    */
+
+public void setName(String value) {
+    this.name = value;
+}
+@Id
+public String getName() {
+    return this.name;
+}
    private Set<Subject> subject;
    
+   @OneToMany(mappedBy="university" )
    public Set<Subject> getSubject() {
-      if (this.subject == null) {
-         this.subject = new HashSet<Subject>();
-      }
       return this.subject;
    }
    
-   /**
-    * <pre>
-    *           0..*     1..1
-    * University ------------------------- TutoringSystem
-    *           university        &lt;       tutoringSystem
-    * </pre>
-    */
-   private TutoringSystem tutoringSystem;
-   
-   public void setTutoringSystem(TutoringSystem value) {
-      this.tutoringSystem = value;
+   public void setSubject(Set<Subject> subjects) {
+      this.subject = subjects;
    }
    
+   private TutoringSystem tutoringSystem;
+   
+   @ManyToOne(optional=false)
    public TutoringSystem getTutoringSystem() {
       return this.tutoringSystem;
+   }
+   
+   public void setTutoringSystem(TutoringSystem tutoringSystem) {
+      this.tutoringSystem = tutoringSystem;
    }
    
    }

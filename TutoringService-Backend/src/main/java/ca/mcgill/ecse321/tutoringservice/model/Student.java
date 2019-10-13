@@ -1,59 +1,49 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Set;
-import java.util.HashSet;
+import javax.persistence.ManyToMany;
 
-public class Student extends Person {
+@Entity
+public class Student extends Person{
    private Integer studentID;
-   
-   public void setStudentID(Integer value) {
-      this.studentID = value;
-   }
-   
-   public Integer getStudentID() {
-      return this.studentID;
-   }
-   
-   /**
-    * <pre>
-    *           0..*     0..*
-    * Student ------------------------- Offering
-    *           studentsEnrolled        &gt;       coursesTaken
-    * </pre>
-    */
-   private Set<Offering> coursesTaken;
-   
-   public Set<Offering> getCoursesTaken() {
-      if (this.coursesTaken == null) {
-         this.coursesTaken = new HashSet<Offering>();
-      }
-      return this.coursesTaken;
-   }
-   
-   /**
-    * <pre>
-    *           0..*     0..*
-    * Student ------------------------- SubjectRequest
-    *           student        &lt;       subjectRequest
-    * </pre>
-    */
-   private Set<SubjectRequest> subjectRequest;
-   
-   public Set<SubjectRequest> getSubjectRequest() {
-      if (this.subjectRequest == null) {
-         this.subjectRequest = new HashSet<SubjectRequest>();
-      }
-      return this.subjectRequest;
-   }
-   
-   private Integer numCoursesEnrolled;
-   
-   public void setNumCoursesEnrolled(Integer value) {
-      this.numCoursesEnrolled = value;
-   }
-   
-   public Integer getNumCoursesEnrolled() {
-      return this.numCoursesEnrolled;
-   }
-   
-   }
+
+public void setStudentID(Integer value) {
+    this.studentID = value;
+}
+@Id
+public Integer getStudentID() {
+    return this.studentID;
+}
+private Set<Offering> coursesTaken;
+
+@ManyToMany(mappedBy="studentsEnrolled" )
+public Set<Offering> getCoursesTaken() {
+   return this.coursesTaken;
+}
+
+public void setCoursesTaken(Set<Offering> coursesTakens) {
+   this.coursesTaken = coursesTakens;
+}
+
+private Set<SubjectRequest> subjectRequest;
+
+@ManyToMany
+public Set<SubjectRequest> getSubjectRequest() {
+   return this.subjectRequest;
+}
+
+public void setSubjectRequest(Set<SubjectRequest> subjectRequests) {
+   this.subjectRequest = subjectRequests;
+}
+
+private Integer numCoursesEnrolled;
+
+public void setNumCoursesEnrolled(Integer value) {
+    this.numCoursesEnrolled = value;
+}
+public Integer getNumCoursesEnrolled() {
+    return this.numCoursesEnrolled;
+}
+}
