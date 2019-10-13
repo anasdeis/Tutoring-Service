@@ -1,3 +1,5 @@
 /tutoringservice/bin/*
 /tutoringservice/.classpath
 /tutoringservice/.project
+/.gradle/
+/build/
