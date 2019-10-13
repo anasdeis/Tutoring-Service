@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
+import javax.persistence.Id;
 
 @Entity
 public class TutoringSystem{
@@ -117,4 +118,13 @@ public class TutoringSystem{
       this.subjectType = subjectTypes;
    }
    
-   }
+   private Integer tutoringSystemID;
+
+public void setTutoringSystemID(Integer value) {
+    this.tutoringSystemID = value;
+}
+@Id
+public Integer getTutoringSystemID() {
+    return this.tutoringSystemID;
+}
+}

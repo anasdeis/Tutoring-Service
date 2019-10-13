@@ -6,13 +6,6 @@ import java.util.Set;
 import java.util.HashSet;
 
 public class AvaliableSession {
-   /**
-    * <pre>
-    *           1..1     1..1
-    * AvaliableSession ------------------------> Time
-    *           &lt;       startTime
-    * </pre>
-    */
    private Time startTime;
    
    public void setStartTime(Time value) {
@@ -23,13 +16,6 @@ public class AvaliableSession {
       return this.startTime;
    }
    
-   /**
-    * <pre>
-    *           1..1     1..1
-    * AvaliableSession ------------------------> Time
-    *           &lt;       endTime
-    * </pre>
-    */
    private Time endTime;
    
    public void setEndTime(Time value) {
@@ -40,13 +26,6 @@ public class AvaliableSession {
       return this.endTime;
    }
    
-   /**
-    * <pre>
-    *           1..1     1..1
-    * AvaliableSession ------------------------> Date
-    *           &lt;       day
-    * </pre>
-    */
    private Date day;
    
    public void setDay(Date value) {
@@ -88,6 +67,16 @@ public class AvaliableSession {
    
    public TutoringSystem getTutoringSystem() {
       return this.tutoringSystem;
+   }
+   
+   private Integer avaliableSessionID;
+   
+   public void setAvaliableSessionID(Integer value) {
+      this.avaliableSessionID = value;
+   }
+   
+   public Integer getAvaliableSessionID() {
+      return this.avaliableSessionID;
    }
    
    }

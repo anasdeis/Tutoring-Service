@@ -67,13 +67,6 @@ public class SubjectRequest {
       return this.description;
    }
    
-   /**
-    * <pre>
-    *           1..1     1..1
-    * SubjectRequest ------------------------> SubjectType
-    *           &lt;       subjectType
-    * </pre>
-    */
    private SubjectType subjectType;
    
    public void setSubjectType(SubjectType value) {
