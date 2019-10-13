@@ -1,3 +1,4 @@
-/tutoringservice/bin/*
-/tutoringservice/.classpath
-/tutoringservice/.project
+bin/*
+.classpath
+.project
+.gradle/
