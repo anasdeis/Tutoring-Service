@@ -15,4 +15,6 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'project-group-12'
+//rootProject.name = 'project-group-12'
+
+include ':TutoringService-Backend'

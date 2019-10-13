@@ -8,7 +8,7 @@
 
 
 // Apply the java plugin to add support for Java
-apply plugin: 'java'
+/*apply plugin: 'java'
 
 repositories {
     mavenCentral()
@@ -24,13 +24,13 @@ task compile(type: JavaCompile) {
   sourceSets.test.java.outputDir = file('build/bin')
   sourceSets.main.java.outputDir = file('build/bin')
 }
-
+*/
 /*
  * specifying sourceSets is not necessary in this case, since
  * we are applying the default folder structure assumed by Gradle
  */
 
-
+/*
 sourceSets {
   main {
     java { srcDir 'src/main/java' }
@@ -38,9 +38,10 @@ sourceSets {
   test {
     java { srcDir 'src/test/java'}
   }
-}
+}*/
 
 // In this section you declare the dependencies for your production and test code
+/*
 dependencies {
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.25'
@@ -51,5 +52,8 @@ dependencies {
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
     testCompile 'junit:junit:4.12'
-}
+}*/
 
+task stage () {
+    dependsOn ':TutoringService-Backend:assemble'
+}
