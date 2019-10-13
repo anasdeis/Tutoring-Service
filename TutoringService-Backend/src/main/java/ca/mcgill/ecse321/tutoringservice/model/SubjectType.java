@@ -5,30 +5,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public enum SubjectType{
-   private String highSchoolCourse;
-
-public void setHighSchoolCourse(String value) {
-    this.highSchoolCourse = value;
-}
-public String getHighSchoolCourse() {
-    return this.highSchoolCourse;
-}
-private String cegepCourse;
-
-public void setCegepCourse(String value) {
-    this.cegepCourse = value;
-}
-public String getCegepCourse() {
-    return this.cegepCourse;
-}
-private String universityCourse;
-
-public void setUniversityCourse(String value) {
-    this.universityCourse = value;
-}
-public String getUniversityCourse() {
-    return this.universityCourse;
-}
+	HIGH_SCHOOL_COURSE, UNIVERSITY_COURSE, CGEP_COURSE;
    private TutoringSystem tutoringSystem;
    
    @ManyToOne(optional=false)
