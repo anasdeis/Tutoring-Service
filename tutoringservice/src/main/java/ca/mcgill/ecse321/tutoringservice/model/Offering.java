@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import AvaliableSession;
 
 import java.util.Set;
 import java.util.HashSet;
+import AvaliableSession;
 
 public class Offering {
    private String offeringID;
@@ -151,6 +151,13 @@ public class Offering {
       return this.tutor;
    }
    
+   /**
+    * <pre>
+    *           1..1     1..1
+    * Offering ------------------------> TutoringSystem
+    *           &lt;       tutoringSystem
+    * </pre>
+    */
    private TutoringSystem tutoringSystem;
    
    public void setTutoringSystem(TutoringSystem value) {

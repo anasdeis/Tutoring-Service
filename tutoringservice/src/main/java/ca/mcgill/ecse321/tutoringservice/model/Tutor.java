@@ -8,32 +8,36 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Tutor extends Person{
    private Integer tutorID;
-
-public void setTutorID(Integer value) {
-    this.tutorID = value;
-}
-public Integer getTutorID() {
-    return this.tutorID;
-}
-private Set<TutorApplication> tutorApplication;
-
-@OneToMany(mappedBy="tutor" )
-public Set<TutorApplication> getTutorApplication() {
-   return this.tutorApplication;
-}
-
-public void setTutorApplication(Set<TutorApplication> tutorApplications) {
-   this.tutorApplication = tutorApplications;
-}
-
-private Boolean isRegistered;
-
-public void setIsRegistered(Boolean value) {
-    this.isRegistered = value;
-}
-public Boolean getIsRegistered() {
-    return this.isRegistered;
-}
+   
+   public void setTutorID(Integer value) {
+      this.tutorID = value;
+   }
+   
+   public Integer getTutorID() {
+      return this.tutorID;
+   }
+   
+   private Set<TutorApplication> tutorApplication;
+   
+   @OneToMany(mappedBy="tutor" )
+   public Set<TutorApplication> getTutorApplication() {
+      return this.tutorApplication;
+   }
+   
+   public void setTutorApplication(Set<TutorApplication> tutorApplications) {
+      this.tutorApplication = tutorApplications;
+   }
+   
+   private Boolean isRegistered;
+   
+   public void setIsRegistered(Boolean value) {
+      this.isRegistered = value;
+   }
+   
+   public Boolean getIsRegistered() {
+      return this.isRegistered;
+   }
+   
    private Set<Offering> offering;
    
    @OneToMany(mappedBy="tutor" )

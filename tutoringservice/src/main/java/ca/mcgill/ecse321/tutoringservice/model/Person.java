@@ -1,8 +1,7 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import java.sql.Date;
-import Login;
 
-import Interface_AnnotationDefinition;
+import Login;
+import java.sql.Date;
 
 public abstract class Person {
    private String firstName;
@@ -42,6 +41,13 @@ public abstract class Person {
       return this.loginInfo;
    }
    
+   /**
+    * <pre>
+    *           1..1     1..1
+    * Person ------------------------> Date
+    *           &lt;       dateOfBirth
+    * </pre>
+    */
    private Date dateOfBirth;
    
    public void setDateOfBirth(Date value) {
@@ -62,6 +68,13 @@ public abstract class Person {
       return this.email;
    }
    
+   /**
+    * <pre>
+    *           1..1     1..1
+    * Person ------------------------> Integer
+    *           &lt;       phoneNumber
+    * </pre>
+    */
    private Integer phoneNumber;
    
    public void setPhoneNumber(Integer value) {

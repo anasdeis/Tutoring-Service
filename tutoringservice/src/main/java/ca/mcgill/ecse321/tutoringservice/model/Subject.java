@@ -50,6 +50,13 @@ public class Subject {
       return this.description;
    }
    
+   /**
+    * <pre>
+    *           1..1     1..1
+    * Subject ------------------------> SubjectType
+    *           &lt;       subjectType
+    * </pre>
+    */
    private SubjectType subjectType;
    
    public void setSubjectType(SubjectType value) {

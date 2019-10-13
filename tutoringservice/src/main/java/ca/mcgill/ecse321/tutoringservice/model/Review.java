@@ -6,21 +6,25 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Review{
    private String comment;
-
-public void setComment(String value) {
-    this.comment = value;
-}
-public String getComment() {
-    return this.comment;
-}
-private Boolean isApproved;
-
-public void setIsApproved(Boolean value) {
-    this.isApproved = value;
-}
-public Boolean getIsApproved() {
-    return this.isApproved;
-}
+   
+   public void setComment(String value) {
+      this.comment = value;
+   }
+   
+   public String getComment() {
+      return this.comment;
+   }
+   
+   private Boolean isApproved;
+   
+   public void setIsApproved(Boolean value) {
+      this.isApproved = value;
+   }
+   
+   public Boolean getIsApproved() {
+      return this.isApproved;
+   }
+   
    private Offering offering;
    
    @ManyToOne(optional=false)

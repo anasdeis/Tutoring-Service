@@ -1,11 +1,18 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import java.sql.Date;
-import java.sql.Time;
 
+import java.sql.Time;
+import java.sql.Date;
 import java.util.Set;
 import java.util.HashSet;
 
 public class AvaliableSession {
+   /**
+    * <pre>
+    *           1..1     1..1
+    * AvaliableSession ------------------------> Time
+    *           &lt;       startTime
+    * </pre>
+    */
    private Time startTime;
    
    public void setStartTime(Time value) {
@@ -16,6 +23,13 @@ public class AvaliableSession {
       return this.startTime;
    }
    
+   /**
+    * <pre>
+    *           1..1     1..1
+    * AvaliableSession ------------------------> Time
+    *           &lt;       endTime
+    * </pre>
+    */
    private Time endTime;
    
    public void setEndTime(Time value) {
@@ -26,6 +40,13 @@ public class AvaliableSession {
       return this.endTime;
    }
    
+   /**
+    * <pre>
+    *           1..1     1..1
+    * AvaliableSession ------------------------> Date
+    *           &lt;       day
+    * </pre>
+    */
    private Date day;
    
    public void setDay(Date value) {

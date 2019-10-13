@@ -8,13 +8,15 @@ import javax.persistence.OneToMany;
 @Entity
 public class Commission{
    private double percentage;
-
-public void setPercentage(double value) {
-    this.percentage = value;
-}
-public double getPercentage() {
-    return this.percentage;
-}
+   
+   public void setPercentage(double value) {
+      this.percentage = value;
+   }
+   
+   public double getPercentage() {
+      return this.percentage;
+   }
+   
    private Manager manager;
    
    @ManyToOne(optional=false)
