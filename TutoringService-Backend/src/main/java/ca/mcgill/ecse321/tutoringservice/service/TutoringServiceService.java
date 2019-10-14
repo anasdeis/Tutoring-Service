@@ -59,7 +59,9 @@ public class TutoringServiceService {
 	@Autowired
 	private UniversityRepository universityRepository;
 
-	
+	/*
+	 * Login
+	 */
 	@Transactional
 	public Login createLogin(String userName, String password) {
 		String error = "";
@@ -92,6 +94,9 @@ public class TutoringServiceService {
 		loginRepository.deleteLoginByUserName(userName);
 	}
 	
+	/*
+	 * Commission
+	 */
 	@Transactional
 	public Commission createCommission(double percentage, int commissionID) {
 		String error = "";
@@ -124,6 +129,9 @@ public class TutoringServiceService {
 		commissionRepository.deleteCommissionBycommissionID(commissionID);
 	}
 
+	/*
+	 * Subject
+	 */
 	@Transactional
 	public Subject createSubject(String name, String courseID, String description, SubjectType subjectType)
 	{
@@ -165,7 +173,9 @@ public class TutoringServiceService {
 	}
 
 
-
+	/*
+	 * Subject Request
+	 */
 	@Transactional
 	public SubjectRequest createSubjectRequest(int requestID, String name, String description, SubjectType subjectType){
 		String error = "";
@@ -207,7 +217,7 @@ public class TutoringServiceService {
 	 * Manager
 	 */
 	@Transactional
-	public Manager createManager(String first, String last, Date dob, String email, int phone, int managerID) {
+	public Manager createManager(String first, String last, Date dob, String email, int phone, int managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 		Manager manager = new Manager();
 		manager.setFirstName(first);
 		manager.setLastName(last);
@@ -215,6 +225,8 @@ public class TutoringServiceService {
 		manager.setEmail(email);
 		manager.setPhoneNumber(phone);
 		manager.setPersonId(managerID);
+		manager.setLoginInfo(loginInfo);
+		manager.setTutoringSystem(tutoringSystem);
 		managerRepository.save(manager);
 		return manager;
 	}
@@ -230,14 +242,49 @@ public class TutoringServiceService {
 		return toList(managerRepository.findAll());
 	}
 	
-	/*
-	 * Offering
-	 */
 	@Transactional
 	public void deleteManager(int managerID) {
 		managerRepository.deleteManagerByPersonId(managerID);
 	}
 
+	/*
+	 * Student
+	 */
+	@Transactional
+	public Student createStudent(String first, String last, Date dob, String email, int phone, int studentID, int numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
+		Student student = new Student();
+		student.setFirstName(first);
+		student.setLastName(last);
+		student.setDateOfBirth(dob);
+		student.setEmail(email);
+		student.setPhoneNumber(phone);
+		student.setPersonId(studentID);
+		student.setLoginInfo(loginInfo);
+		student.setNumCoursesEnrolled(numCoursesEnrolled);
+		student.setTutoringSystem(tutoringSystem);
+		studentRepository.save(student);
+		return student;
+	}
+	
+	@Transactional
+	public Student getStudent(int studentID) {
+		Student student = studentRepository.findStudentByPersonId(studentID);
+		return student;
+	}
+	
+	@Transactional
+	public List<Student> getAllStudents() {
+		return toList(studentRepository.findAll());
+	}
+	
+	@Transactional
+	public void deleteStudent(int studentID) {
+		studentRepository.deleteStudentByPersonId(studentID);
+	}
+
+	/*
+	 * Offering
+	 */
 	@Transactional
 	public Offering createOffering(String offId, String term, double price, Subject subj){
 		String error = "";
@@ -326,7 +373,7 @@ public class TutoringServiceService {
 	 * Tutor
 	 */
 	@Transactional
-	public Tutor createTutor(String first, String last, Date dob, String email, int phone, int tutorID, Boolean isRegistered ) {
+	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
 		Tutor tutor = new Tutor();
 		tutor.setFirstName(first);
 		tutor.setLastName(last);
@@ -335,6 +382,8 @@ public class TutoringServiceService {
 		tutor.setPhoneNumber(phone);
 		tutor.setPersonId(tutorID);
 		tutor.setIsRegistered(isRegistered);
+		tutor.setLoginInfo(loginInfo);
+		tutor.setTutoringSystem(tutoringSystem);
 		tutorRepository.save(tutor);
 		return tutor;
 	}
@@ -360,25 +409,14 @@ public class TutoringServiceService {
 	 * Review
 	 */
 	@Transactional
-	public Review createReview(String comment, Boolean isApproved, Integer reviewID){
-	    String error = "";
-	    if (comment == null || comment.trim().length() == 0) {
-	        error = error + "Review comment cannot be empty! ";
-	    }
-	    if (isApproved == null) {
-	        error = error + "Review isApproved time cannot be empty! ";
-	    }
-	    if (reviewID == null) {
-	        error = error + "Review reviewID cannot be empty! ";
-	    }
-	    error = error.trim();
-	    if (error.length() > 0) {
-	        throw new IllegalArgumentException(error);
-	    }
+	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
 		Review review = new Review();
 		review.setComment(comment);
 		review.setIsApproved(isApproved);
 		review.setReviewID(reviewID);
+		review.setManager(manager);
+		review.setOffering(offering);
+		review.setTutoringSystem(tutoringSystem);
 		reviewRepository.save(review);
 		return review;
 	}
