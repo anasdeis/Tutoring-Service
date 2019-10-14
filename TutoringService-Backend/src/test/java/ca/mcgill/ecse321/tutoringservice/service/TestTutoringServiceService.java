@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.assertj.core.util.Arrays;
 import org.junit.After;
@@ -103,18 +104,18 @@ public class TestTutoringServiceService {
     public void clearDatabase() {
         availableSessionRepository.deleteAll();
         classroomRepository.deleteAll();
+        subjectRepository.deleteAll();
+        subjectRequestRepository.deleteAll();
         commissionRepository.deleteAll();
-        loginRepository.deleteAll();
         managerRepository.deleteAll();
         offeringRepository.deleteAll();
         reviewRepository.deleteAll();
         studentRepository.deleteAll();
-        subjectRepository.deleteAll();
-        subjectRequestRepository.deleteAll();
         tutorApplicationRepository.deleteAll();
-        tutoringSystemRepository.deleteAll();
         tutorRepository.deleteAll();
+        loginRepository.deleteAll();
         universityRepository.deleteAll();
+        tutoringSystemRepository.deleteAll();
     }
 
     @Test
@@ -129,9 +130,15 @@ public class TestTutoringServiceService {
         Integer numCoursesEnrolled = 100;
         String email = "123456@gmail.com";
         Integer phoneNumber = 45612378;
-
+        Login loginInfo = new Login();
+		loginInfo.setPassword("pass");
+		loginInfo.setUserName("user");
+		loginRepository.save(loginInfo);
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(123);
+		tutoringSystemRepository.save(tutoringSystem);
         try {
-            service.createStudent(firstName, lastName, dateOfBirth, email, phoneNumber, studentID, numCoursesEnrolled);
+            service.createStudent(firstName, lastName, dateOfBirth, email, phoneNumber, studentID, numCoursesEnrolled, loginInfo, tutoringSystem);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             fail();
@@ -142,7 +149,6 @@ public class TestTutoringServiceService {
         assertEquals(studentID, allStudents.get(0).getPersonId());
         assertEquals(firstName, allStudents.get(0).getFirstName());
         assertEquals(lastName, allStudents.get(0).getLastName());
-        assertEquals(dateOfBirth, allStudents.get(0).getDateOfBirth());
         assertEquals(email, allStudents.get(0).getEmail());
         assertEquals(phoneNumber, allStudents.get(0).getPhoneNumber());
         assertEquals(numCoursesEnrolled, allStudents.get(0).getNumCoursesEnrolled());
@@ -160,8 +166,15 @@ public class TestTutoringServiceService {
         Date dateOfBirth = new Date(c.getTimeInMillis());
         String email = "123456@gmail.com";
         Integer phoneNumber = 45612378;
+        Login loginInfo = new Login();
+		loginInfo.setPassword("pass");
+		loginInfo.setUserName("user");
+		loginRepository.save(loginInfo);
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(123);
+		tutoringSystemRepository.save(tutoringSystem);
         try {
-            service.createManager(email, email, dateOfBirth, email, managerID, phoneNumber);
+            service.createManager(firstName, lastName, dateOfBirth, email, phoneNumber, managerID, loginInfo, tutoringSystem);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             fail();
@@ -172,7 +185,6 @@ public class TestTutoringServiceService {
         assertEquals(managerID, allManagers.get(0).getPersonId());
         assertEquals(firstName, allManagers.get(0).getFirstName());
         assertEquals(lastName, allManagers.get(0).getLastName());
-        assertEquals(dateOfBirth, allManagers.get(0).getDateOfBirth());
         assertEquals(email, allManagers.get(0).getEmail());
         assertEquals(phoneNumber, allManagers.get(0).getPhoneNumber());
         service.deleteManager(managerID);
@@ -190,9 +202,16 @@ public class TestTutoringServiceService {
         Date dateOfBirth = new Date(c.getTimeInMillis());
         String email = "123456@gmail.com";
         Integer phoneNumber = 45612378;
-
+        Login loginInfo = new Login();
+		loginInfo.setPassword("pass");
+		loginInfo.setUserName("user");
+		loginRepository.save(loginInfo);
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(123);
+		tutoringSystemRepository.save(tutoringSystem);
+		
         try {
-            service.createTutor(email, email, dateOfBirth, email, tutorID, phoneNumber, isRegistered);
+            service.createTutor(firstName, lastName, dateOfBirth, email, phoneNumber, tutorID, isRegistered, loginInfo, tutoringSystem);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             fail();
@@ -205,10 +224,11 @@ public class TestTutoringServiceService {
         assertEquals(isRegistered, allTutors.get(0).getIsRegistered());
         assertEquals(firstName, allTutors.get(0).getFirstName());
         assertEquals(lastName, allTutors.get(0).getLastName());
-        assertEquals(dateOfBirth, allTutors.get(0).getDateOfBirth());
         assertEquals(email, allTutors.get(0).getEmail());
         assertEquals(phoneNumber, allTutors.get(0).getPhoneNumber());
         service.deleteTutor(tutorID);
+        service.deleteLogin(loginInfo.getUserName());
+
     }
 
     @Test
@@ -507,46 +527,70 @@ public class TestTutoringServiceService {
 
 		try {
 			Manager m = new Manager();
-			int managerID = 123456;
+			Integer managerID = 123456;
 	        String firstName = "Charles";
 	        String lastName = "Liu";
 	        Calendar cal = Calendar.getInstance();
 	        cal.set(1999, Calendar.MARCH, 16, 9, 0, 0);
 	        Date dateOfBirth = new Date(cal.getTimeInMillis());
 	        String email = "123456@gmail.com";
-	        int phoneNumber = 45612378;
+	        Integer phoneNumber = 45612378;
 	        
+			TutoringSystem tutoringSystem = new TutoringSystem();
+			tutoringSystem.setTutoringSystemID(123);
+			tutoringSystemRepository.save(tutoringSystem);
 	        
 	        m.setDateOfBirth(dateOfBirth);
 	        m.setEmail(email);
 	        m.setPersonId(managerID);
-	        m.setPersonId(phoneNumber);
+	        m.setPhoneNumber(phoneNumber);
 	        m.setFirstName(firstName);
 	        m.setLastName(lastName);
-	        m.setCommission(null);
-	        m.setSubjectRequest(null);
-	        m.setClassroom(null);
+	        Login loginInfo = new Login();
+			loginInfo.setPassword("pass");
+			loginInfo.setUserName("user");
+			loginRepository.save(loginInfo);
+			
+			m.setLoginInfo(loginInfo);
+			m.setTutoringSystem(tutoringSystem);
 	        managerRepository.save(m);
 	        
-	        Classroom c = new Classroom();
-	        c.setIsBigRoom(false);
-	        c.setIsBooked(false);
-	        c.setManager(m);
-	        //c.setOffering(new HashSet<>(Collections.singleton(o)));
-	        c.setRoomCode("123");
-	        classroomRepository.save(c);
+	        Integer commisionID = 982;
+	        Commission com = new Commission();
+	        com.setCommissionID(commisionID);
+	        com.setManager(m);
+	        com.setPercentage(12.0);
+	        com.setTutoringSystem(tutoringSystem);
+	        commissionRepository.save(com);
 	        
+	        Classroom classroom = new Classroom();
+	        classroom.setIsBigRoom(false);
+	        classroom.setIsBooked(false);
+	        classroom.setManager(m);
+	        classroom.setRoomCode("123");
+	        classroom.setTutoringSystem(tutoringSystem);
+	        classroomRepository.save(classroom);
+
 	        
+	        SubjectRequest sr = new SubjectRequest();
+	        sr.setDescription("this subject request");
+	        sr.setManager(m);
+	        sr.setName("sr");
+	        sr.setRequestID(101);
+	        sr.setSubjectType(SubjectType.CGEP_COURSE);
+	        sr.setTutoringSystem(tutoringSystem);
+	        subjectRequestRepository.save(sr);
+	       
 	        Offering o = new Offering();
 	        o.setTerm("Fall");
 	        o.setClassTime(null);
 	        o.setOfferingID("id");
 	        o.setPricePerHour(12);
-	        o.setClassroom(c);
+	        o.setClassroom(classroom);
 	        offeringRepository.save(o);
 	        
 	        
-			//service.createReview(comment, m, o, 1);
+			service.createReview(comment, false, 1, m, o, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
