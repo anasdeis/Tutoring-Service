@@ -1,10 +1,13 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
-import javax.persistence.Entity;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Id;
 
 @Entity
 public class SubjectRequest{
@@ -55,6 +58,7 @@ public void setDescription(String value) {
 public String getDescription() {
     return this.description;
 }
+@Enumerated(EnumType.STRING)
 private SubjectType subjectType;
 
 public void setSubjectType(SubjectType value) {

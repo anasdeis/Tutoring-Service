@@ -8,14 +8,14 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class TutorApplication{
-   private Integer applicationID;
+private Integer applicationId;
 
-public void setApplicationID(Integer value) {
-    this.applicationID = value;
+public void setApplicationId(Integer value) {
+this.applicationId = value;
 }
 @Id
-public Integer getApplicationID() {
-    return this.applicationID;
+public Integer getApplicationId() {
+return this.applicationId;
 }
 private Set<Subject> subject;
 

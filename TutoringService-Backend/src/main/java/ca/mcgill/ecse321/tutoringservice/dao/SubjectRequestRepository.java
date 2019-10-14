@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
 public interface SubjectRequestRepository extends CrudRepository<SubjectRequest, Integer> {
-    SubjectRequest findSubjectRequestById(Integer requestID);
+    SubjectRequest findSubjectRequestByRequestID(Integer requestID);
 
-    void deleteSubjectRequestById(Integer requestID);
+    void deleteSubjectRequestByRequestID(Integer requestID);
 }
