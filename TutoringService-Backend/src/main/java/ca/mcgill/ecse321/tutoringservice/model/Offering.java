@@ -111,13 +111,4 @@ public Tutor getTutor() {
 public void setTutor(Tutor tutor) {
    this.tutor = tutor;
 }
-
-private TutoringSystem tutoringSystem;
-
-public void setTutoringSystem(TutoringSystem value) {
-    this.tutoringSystem = value;
-}
-public TutoringSystem getTutoringSystem() {
-    return this.tutoringSystem;
-}
 }
