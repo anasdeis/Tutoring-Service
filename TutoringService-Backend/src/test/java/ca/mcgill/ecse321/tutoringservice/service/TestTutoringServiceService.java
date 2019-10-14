@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.tutoring_service.service;
+package ca.mcgill.ecse321.tutoringservice.service;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,8 +17,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 
-import ca.mcgill.ecse321.tutoring_service.dao.*;
-import ca.mcgill.ecse321.tutoring_service.model.*;
+import ca.mcgill.ecse321.tutoringservice.dao.*;
+import ca.mcgill.ecse321.tutoringservice.model.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
