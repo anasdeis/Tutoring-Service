@@ -22,7 +22,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TutoringServiceServiceTest {
+public class TestTutoringServiceService {
 
     @Autowired
     private TutoringServiceService service;
