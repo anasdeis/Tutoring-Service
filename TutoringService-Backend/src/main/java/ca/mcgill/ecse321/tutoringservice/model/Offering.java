@@ -1,5 +1,4 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

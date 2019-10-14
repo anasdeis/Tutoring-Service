@@ -107,17 +107,6 @@ public class TutoringSystem{
       this.commission = commissions;
    }
    
-   private Set<SubjectType> subjectType;
-   
-   @OneToMany(mappedBy="tutoringSystem" , cascade={CascadeType.ALL})
-   public Set<SubjectType> getSubjectType() {
-      return this.subjectType;
-   }
-   
-   public void setSubjectType(Set<SubjectType> subjectTypes) {
-      this.subjectType = subjectTypes;
-   }
-   
    private Integer tutoringSystemID;
 
 public void setTutoringSystemID(Integer value) {

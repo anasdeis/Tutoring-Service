@@ -46,14 +46,14 @@ public class TutoringServiceService {
 		manager.setDateOfBirth(dob);
 		manager.setEmail(email);
 		manager.setPhoneNumber(phone);
-		manager.setManagerID(managerID);
+		manager.setPersonId(managerID);
 		managerRepository.save(manager);
 		return manager;
 	}
 	
 	@Transactional
 	public Manager getManager(int managerID) {
-		Manager manager = managerRepository.findManagerById(managerID);
+		Manager manager = managerRepository.findManagerByPersonId(managerID);
 		return manager;
 	}
 	
@@ -78,7 +78,7 @@ public class TutoringServiceService {
 	
 	@Transactional
 	public Offering getOffering(String offID) {
-		Offering offering = offeringRepository.findOfferingById(offID);
+		Offering offering = offeringRepository.findOfferingByOfferingID(offID);
 		return offering;
 	}
 	
@@ -99,7 +99,7 @@ public class TutoringServiceService {
 		tutor.setDateOfBirth(dob);
 		tutor.setEmail(email);
 		tutor.setPhoneNumber(phone);
-		tutor.setTutorID(tutorID);
+		tutor.setPersonId(tutorID);
 		tutor.setIsRegistered(isRegistered);
 		tutorRepository.save(tutor);
 		return tutor;
@@ -107,7 +107,7 @@ public class TutoringServiceService {
 	
 	@Transactional
 	public Tutor getTutor(int tutorID) {
-		Tutor tutor = tutorRepository.findTutorById(tutorID);
+		Tutor tutor = tutorRepository.findTutorByPersonId(tutorID);
 		return tutor;
 	}
 	

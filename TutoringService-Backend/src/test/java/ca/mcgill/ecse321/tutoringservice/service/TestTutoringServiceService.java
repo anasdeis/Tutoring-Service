@@ -1,5 +1,15 @@
 package ca.mcgill.ecse321.tutoringservice.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
+import org.assertj.core.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,19 +18,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
+import ca.mcgill.ecse321.tutoringservice.dao.AvailableSessionRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.ClassroomRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.CommissionRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.LoginRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.ManagerRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.OfferingRepository;
 import ca.mcgill.ecse321.tutoringservice.dao.ReviewRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.StudentRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.SubjectRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.SubjectRequestRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.TutorApplicationRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.TutorRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.TutoringSystemRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.UniversityRepository;
+import ca.mcgill.ecse321.tutoringservice.model.Classroom;
+import ca.mcgill.ecse321.tutoringservice.model.Manager;
+import ca.mcgill.ecse321.tutoringservice.model.Offering;
 import ca.mcgill.ecse321.tutoringservice.model.Review;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.List;
-
-import ca.mcgill.ecse321.tutoringservice.dao.*;
-import ca.mcgill.ecse321.tutoringservice.model.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -420,7 +435,47 @@ public class TestTutoringServiceService {
 		String comment = "Default comment";
 
 		try {
-			service.createReview(comment, null, null, null);
+			Manager m = new Manager();
+			int managerID = 123456;
+	        String firstName = "Charles";
+	        String lastName = "Liu";
+	        Calendar cal = Calendar.getInstance();
+	        cal.set(1999, Calendar.MARCH, 16, 9, 0, 0);
+	        Date dateOfBirth = new Date(cal.getTimeInMillis());
+	        String email = "123456@gmail.com";
+	        int phoneNumber = 45612378;
+	        
+	        
+	        m.setDateOfBirth(dateOfBirth);
+	        m.setEmail(email);
+	        m.setPersonId(managerID);
+	        m.setPersonId(phoneNumber);
+	        m.setFirstName(firstName);
+	        m.setLastName(lastName);
+	        m.setCommission(null);
+	        m.setSubjectRequest(null);
+	        m.setClassroom(null);
+	        managerRepository.save(m);
+	        
+	        Classroom c = new Classroom();
+	        c.setIsBigRoom(false);
+	        c.setIsBooked(false);
+	        c.setManager(m);
+	        //c.setOffering(new HashSet<>(Collections.singleton(o)));
+	        c.setRoomCode("123");
+	        classroomRepository.save(c);
+	        
+	        
+	        Offering o = new Offering();
+	        o.setTerm("Fall");
+	        o.setClassTime(null);
+	        o.setOfferingID("id");
+	        o.setPricePerHour(12);
+	        o.setClassroom(c);
+	        offeringRepository.save(o);
+	        
+	        
+			service.createReview(comment, m, o, 1);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();

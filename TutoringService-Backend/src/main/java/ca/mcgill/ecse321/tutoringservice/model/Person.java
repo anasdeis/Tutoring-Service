@@ -1,24 +1,30 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import java.sql.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+
+import javax.persistence.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.OneToOne;
+import java.sql.Date;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance
 public abstract class Person{
+private Integer personId;
+
+public void setPersonId(Integer value) {
+this.personId = value;
+}
+@Id
+public Integer getPersonId() {
+return this.personId;
+}
    private String firstName;
 
 public void setFirstName(String value) {
     this.firstName = value;
 }
-
 public String getFirstName() {
     return this.firstName;
 }
@@ -32,7 +38,7 @@ public String getLastName() {
 }
 private Login loginInfo;
 
-@OneToOne(cascade={CascadeType.ALL}, optional=false)
+@OneToOne(optional=true)
 public Login getLoginInfo() {
    return this.loginInfo;
 }
