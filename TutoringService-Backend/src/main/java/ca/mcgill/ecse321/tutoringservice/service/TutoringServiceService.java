@@ -300,6 +300,71 @@ public class TutoringServiceService {
 	public void deleteTutor(int tutorID) {
 		tutorRepository.deleteTutorById(tutorID);
 	}
+	
+	@Transactional
+	public createReview(String comment, Boolean isApproved, Integer reviewID)
+	{
+		Review review = new Review();
+		review.setComment(comment);
+		review.setIsApproved(isApproved);
+		review.setReviewID(reviewID);
+		reviewRepository.save(review);
+		return review;
+	}
+
+	@Transactional
+	public Review getReview(Integer reviewID) {
+		Review review = reviewRepository.findReviewById(reviewID);
+		return review;
+	}
+
+	@Transactional
+	public List<Review> getAllReviews() {
+		return toList(reviewRepository.findAll());
+	}
+	
+	@Transactional
+	public AvailableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
+		AvailableSession availableSession = new AvailableSession();
+		availableSession.setAvailableSessionID(availableSessionID);
+		availableSession.setDay(day);
+		availableSession.setStartTime(startTime);
+		availableSession.setEndTime(endTime);
+		availableSessionRepository.save(availableSession);
+		return availableSession;
+	}
+
+	@Transactional
+	public AvailableSession getAvailableSession(Integer availableSessionID) {
+		AvailableSession availableSession = availableSessionRepository.findAvailableSessionByID(availableSessionID);
+		return availableSession;
+	}
+
+	@Transactional
+	public List<AvailableSession> getAllAvailableSessions() {
+		return toList(availableSessionRepository.findAll());
+	}
+
+	@Transactional
+	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom) {
+		Classroom classroom = new Classroom();
+		Classroom.setRoomCode(roomCode);
+		Classroom.setIsBooked(isBooked);
+		Classroom.setIsBigRoom(isBigRoom);
+		ClassroomRepository.save(classroom);
+		return Classroom;
+	}
+
+	@Transactional
+	public Classroom getClassroom(String roomCode) {
+		Classroom classroom = classroomRepository.findClassroomByID(roomCode);
+		return classroom;
+	}
+
+	@Transactional
+	public List<Classroom> getAllClassrooms() {
+		return toList(classroomRepository.findAll());
+	}
 
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
