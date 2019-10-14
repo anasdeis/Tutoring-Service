@@ -262,7 +262,7 @@ public class TestTutoringServiceService {
         LocalTime endTime = LocalTime.parse("10:30");
         Integer availableSessionID = 5;
         try {
-            service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), availableSessionID, day);
+            service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), day, availableSessionID);
         } catch (IllegalArgumentException e) {
             // Check that no error occurred
             fail();
@@ -274,21 +274,21 @@ public class TestTutoringServiceService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         assertEquals(startTime.format(formatter).toString(), service.getAllAvailableSessions().get(0).getStartTime().toString());
         assertEquals(endTime.format(formatter).toString(), service.getAllAvailableSessions().get(0).getEndTime().toString());
-        service.deleteAvailableSession(availableSessionID);
+        service.deleteAvailableSessionByAvaliableSessionID(availableSessionID);
     }
     
     @Test
    	public void testCreateAvailableSessionNull() {
     	assertEquals(0, service.getAllAvailableSessions().size());
 
-   		Integer availableSessionID = 10;
+   		Integer availableSessionID = null;
    		Date day = null;
    		Time startTime = null;
    		Time endTime = null;
 
    		String error = null;
    		try {
-   			service.createAvailableSession(startTime , endTime, availableSessionID, day);
+   			service.createAvailableSession(startTime , endTime, day, availableSessionID);
    		} catch (IllegalArgumentException e) {
    			error = e.getMessage();
    		}
@@ -305,7 +305,7 @@ public class TestTutoringServiceService {
    	public void testCreateAvailableSessionEmpty() {
    		assertEquals(0, service.getAllAvailableSessions().size());
 
-   		Integer availableSessionID = 10;
+   		Integer availableSessionID = null;
    		Calendar c = Calendar.getInstance();
    		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
    		Date day = new Date(c.getTimeInMillis());
@@ -314,7 +314,7 @@ public class TestTutoringServiceService {
    		LocalTime endTime = LocalTime.parse("11:30");
    		String error = null;
    		try {
-   			service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), availableSessionID, day);
+   			service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), day, availableSessionID);
    		} catch (IllegalArgumentException e) {
    			error = e.getMessage();
    		}
@@ -326,45 +326,20 @@ public class TestTutoringServiceService {
    	}
 
    	@Test
-   	public void testCreateAvailableSessionSpaces() {
-   		assertEquals(0, service.getAllAvailableSessions().size());
-
-   		Calendar c = Calendar.getInstance();
-   		c.set(2016, Calendar.OCTOBER, 16, 9, 00, 0);
-   		Date day = new Date(c.getTimeInMillis());
-   		LocalTime startTime = LocalTime.parse("09:00");
-   		c.set(2016, Calendar.OCTOBER, 16, 10, 30, 0);
-   		LocalTime endTime = LocalTime.parse("10:30");
-   		Integer availableSessionID = 1;
-
-   		String error = null;
-   		try {
-   			service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), availableSessionID, day);
-   		} catch (IllegalArgumentException e) {
-   			error = e.getMessage();
-   		}
-   		// check error
-   		assertEquals("AvailableSession availableSessionID cannot be empty!", error);
-   		// check model in memory
-   		assertEquals(0, service.getAllAvailableSessions().size());
-
-   	}
-
-   	@Test
    	public void testCreateAvailableSessionEndTimeBeforeStartTime() {
    		assertEquals(0, service.getAllAvailableSessions().size());
 
+   		Integer availableSessionID = 15;
    		Calendar c = Calendar.getInstance();
    		c.set(2016, Calendar.OCTOBER, 16, 9, 00, 0);
    		Date day = new Date(c.getTimeInMillis());
    		LocalTime startTime = LocalTime.parse("09:00");
    		c.set(2016, Calendar.OCTOBER, 16, 8, 59, 59);
    		LocalTime endTime = LocalTime.parse("08:59");
-   		Integer availableSessionID = 1;
 
    		String error = null;
    		try {
-   			service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), availableSessionID, day);
+   			service.createAvailableSession(Time.valueOf(startTime) , Time.valueOf(endTime), day, availableSessionID);
    		} catch (IllegalArgumentException e) {
    			error = e.getMessage();
    		}
@@ -477,14 +452,13 @@ public class TestTutoringServiceService {
         service.deleteSubject(courseID);
     }
 
-    @Test
     public void testCreateClassroom() {
         assertEquals(0, service.getAllClassrooms().size());
         String roomCode = "rm1";
-        boolean isBooked = false;
-        boolean isBigRoom = false;
+        Boolean isBooked = true;
+        Boolean isBigRoom = false;
         try {
-            service.createClassroom(roomCode, isBooked, isBigRoom);
+            service.createClasroom(roomCode, isBooked, isBigRoom);
         } catch (IllegalArgumentException e) {
             // check that no error occurred
             fail();
@@ -495,26 +469,98 @@ public class TestTutoringServiceService {
         assertEquals(roomCode, allClassrooms.get(0).getRoomCode());
         assertEquals(isBooked, allClassrooms.get(0).getIsBooked());
         assertEquals(isBigRoom, allClassrooms.get(0).getIsBigRoom());
-        service.deleteClassroom(roomCode);
+        service.deleteClassroomByRoomCode(roomCode);
     }
     
+    @Test
+	public void testCreateClassroomNull() {
+    	assertEquals(0, service.getAllClassrooms().size());
+		
+        String roomCode = null;
+        Boolean isBooked = null;
+        Boolean isBigRoom = null;
+		String error = null;
+
+		try {
+			service.createClasroom(roomCode, isBooked, isBigRoom);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Classroom roomCode cannot be empty! Classroom isBooked cannot be empty! Classroom isBigRoom cannot be empty!", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllClassrooms().size());
+
+	}
+
+	@Test
+	public void testCreateClassroomEmpty() {
+		assertEquals(0, service.getAllClassrooms().size());
+
+		String comment = "";
+		String reviewID = "";
+		Boolean isApproved = null;
+		String error = null;
+
+		try {
+			service.createClasroom(roomCode, isBooked, isBigRoom);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Classroom roomCode cannot be empty! Classroom isBooked cannot be empty! Classroom isBigRoom cannot be empty!", error);
+
+
+		// check no change in memory
+		assertEquals(0, service.getAllClassrooms().size());
+
+	}
+
+	@Test
+	public void testCreateClassroomSpaces() {
+		assertEquals(0, service.getAllClassrooms().size());
+
+		String comment = " ";
+		String reviewID = " ";
+		Boolean isApproved = null;
+		String error = null;
+	
+		try {
+			service.createClasroom(roomCode, isBooked, isBigRoom);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Classroom roomCode cannot be empty! Classroom isBooked cannot be empty! Classroom isBigRoom cannot be empty!", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllClassrooms().size());
+
+	}
+	
     @Test
 	public void testCreateReview() {
 		assertEquals(0, service.getAllReviews().size());
 
 
 		String comment = "Default comment";
+        Boolean isApproved = false;
+        Integer reviewID  = 10;
 
 		try {
 			Manager m = new Manager();
-			int managerID = 123456;
+			Integer managerID = 123456;
 	        String firstName = "Charles";
 	        String lastName = "Liu";
 	        Calendar cal = Calendar.getInstance();
 	        cal.set(1999, Calendar.MARCH, 16, 9, 0, 0);
 	        Date dateOfBirth = new Date(cal.getTimeInMillis());
 	        String email = "123456@gmail.com";
-	        int phoneNumber = 45612378;
+	        Integer phoneNumber = 45612378;
 	        
 	        
 	        m.setDateOfBirth(dateOfBirth);
@@ -546,7 +592,7 @@ public class TestTutoringServiceService {
 	        offeringRepository.save(o);
 	        
 	        
-			//service.createReview(comment, m, o, 1);
+			service.createReview(comment, isApproved, reviewID);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -555,7 +601,10 @@ public class TestTutoringServiceService {
 		List<Review> allReviews = service.getAllReviews();
 
 		assertEquals(1, allReviews.size());
-		assertEquals(comment, allReviews.get(0).getComment());
+        assertEquals(comment, allReviews.get(0).getComment());
+        assertEquals(isApproved, allReviews.get(0).getIsApproved());
+        assertEquals(reviewID, allReviews.get(0).getReviewID());
+        service.deleteReviewByReviewID(reviewID);
 	}
 	
     @Test
@@ -564,7 +613,7 @@ public class TestTutoringServiceService {
 		
 		String comment = null;
 		Integer reviewID = null;
-		boolean isApproved = false;
+		Boolean isApproved = null;
 		String error = null;
 
 		try {
@@ -587,7 +636,7 @@ public class TestTutoringServiceService {
 
 		String comment = "";
 		Integer reviewID = 1;
-		boolean isApproved = false;
+		Boolean isApproved = null;
 		String error = null;
 
 		try {
@@ -611,7 +660,7 @@ public class TestTutoringServiceService {
 
 		String comment = " ";
 		Integer reviewID = 1;
-		boolean isApproved = false;
+		Boolean isApproved = null;
 		String error = null;
 	
 		try {
