@@ -93,6 +93,11 @@ public class TutoringServiceService {
 	public List<Subject> getAllSubjects() {
 		return toList(subjectRepository.findAll());
 	}
+	
+	@Transactional
+	public void deleteSubject(String courseID) {
+		subjectRepository.deleteSeubjectById(courseID);
+	}
 
 
 
@@ -130,7 +135,10 @@ public class TutoringServiceService {
 		return toList(subjectrequestRepository.findAll());
 	}
 
-
+	@Transactional
+	public void deleteSubjectRequest(String requestID) {
+		subjectRequestRepository.deleteSeubjectRequestById(requestID);
+	}
 
 
 	private <T> List<T> toList(Iterable<T> iterable) {
