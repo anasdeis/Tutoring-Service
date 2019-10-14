@@ -217,7 +217,59 @@ public class TutoringServiceService {
 	 * Manager
 	 */
 	@Transactional
-	public Manager createManager(String first, String last, Date dob, String email, int phone, int managerID, Login loginInfo, TutoringSystem tutoringSystem) {
+	// change int to Integer
+	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
+		String error = "";
+		
+//		if (first == null || first.trim().length() == 0) {
+//			throw new IllegalArgumentException("Manager first name cannot be empty!");
+//		}
+//		if (last == null || last.trim().length() == 0) {
+//			throw new IllegalArgumentException("Manager last name cannot be empty!");
+//		}
+//		if (dob == null) {
+//			error = error + "Date of birth cannot be empty! ";
+//		}
+//		if (email == null || email.trim().length() == 0) {
+//			throw new IllegalArgumentException("Manager email cannot be empty!");
+//		}
+//		if (phone == null) {
+//			throw new IllegalArgumentException("Manager phone number cannot be empty!");
+//		}
+//		if (managerID == null) {
+//			throw new IllegalArgumentException("Manager ID cannot be empty!");
+//		}
+//	
+		
+		if (first == null || first.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (last == null || last.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (dob == null) {
+			error = error + "valid input needed";
+		}
+		if (email == null || email.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (phone == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (managerID == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		
+		/* this part need to be manually assigned
+		
+		if (loginInfo == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (tutoringSystem == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		*/
+		
 		Manager manager = new Manager();
 		manager.setFirstName(first);
 		manager.setLastName(last);
@@ -230,6 +282,57 @@ public class TutoringServiceService {
 		managerRepository.save(manager);
 		return manager;
 	}
+	
+	
+//	 if (availableSessionID == null) {
+//	        error = error + "AvailableSession availableSessionID cannot be empty! ";
+//	    }
+//	    if (startTime == null) {
+//	        error = error + "AvailableSession start time cannot be empty! ";
+//	    }
+//	    if (endTime == null) {
+//	        error = error + "AvailableSession end time cannot be empty! ";
+//	    }
+//	    if (endTime != null && startTime != null && endTime.before(startTime)) {
+//	        error = error + "AvailableSession end time cannot be before event start time!";
+//	    }
+//	    error = error.trim();
+//	    if (error.length() > 0) {
+//	        throw new IllegalArgumentException(error);
+//	    }
+//	@Transactional
+//	public Person createPerson(String name) {
+//		if (name == null || name.trim().length() == 0) {
+//			throw new IllegalArgumentException("Person name cannot be empty!");
+//		}
+//		Person person = new Person();
+//		person.setName(name);
+//		personRepository.save(person);
+//		return person;
+//	}
+//	
+//	@Transactional
+//	public Offering createOffering(String offId, String term, double price, Subject subj){
+//		String error = "";
+//		if (offId == null || offId.trim().length() == 0) {
+//			error = error + "Offering ID cannot be null! ";
+//		}
+//		if (term == null || term.trim().length() == 0) {
+//			error = error + "Term cannot be null! ";
+//		}
+//		if (price == 0.0)
+//			error = error + "Price cannot be empty! ";
+//		if (subj == null)
+//			error = error + "Subject cannot be empty! ";
+//		Offering offering = new Offering();
+//		offering.setOfferingID(offId);
+//		offering.setTerm(term);
+//		offering.setPricePerHour(price);
+//		offering.setSubject(subj);
+//		offeringRepository.save(offering);
+//		return offering;
+//	}
+	
 	
 	@Transactional
 	public Manager getManager(int managerID) {
@@ -251,7 +354,29 @@ public class TutoringServiceService {
 	 * Student
 	 */
 	@Transactional
-	public Student createStudent(String first, String last, Date dob, String email, int phone, int studentID, int numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
+	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
+		String error = ""; 
+		
+		if (first == null || first.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (last == null || last.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (dob == null) {
+			error = error + "valid input needed";
+		}
+		if (email == null || email.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (phone == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (studentID == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		// the student can have zero course enrolled with our system, thus the valid input check is not necessary
+		
 		Student student = new Student();
 		student.setFirstName(first);
 		student.setLastName(last);
@@ -374,6 +499,33 @@ public class TutoringServiceService {
 	 */
 	@Transactional
 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
+		String error = ""; 
+		
+		if (first == null || first.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (last == null || last.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (dob == null) {
+			error = error + "valid input needed";
+		}
+		if (email == null || email.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (phone == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (tutorID == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		
+//		a new tutor (not exist in the system) has the boolean false, but we can add this tutor into our system and then go back
+//		to change the boolean value
+//		if (isRegistered = false) {
+//			throw new IllegalArgumentException("valid input needed");
+//		}
+		
 		Tutor tutor = new Tutor();
 		tutor.setFirstName(first);
 		tutor.setLastName(last);
