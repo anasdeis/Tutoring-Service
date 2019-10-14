@@ -61,6 +61,13 @@ public class TutoringServiceService {
 	
 	@Transactional
 	public Login createLogin(String userName, String password) {
+		String error = "";
+		if (userName == null || userName.trim().length() == 0) {
+			error = error + "userName cannot be null! ";
+		}
+		if (password == null || password.trim().length() == 0) {
+			error = error + "password cannot be null! ";
+		}
 		Login login = new Login();
 		login.setUserName(userName);
 		login.setPassword(password);
@@ -78,9 +85,21 @@ public class TutoringServiceService {
 	public List<Login> getAllLogins() {
 		return toList(loginRepository.findAll());
 	}
+
+	@Transactional
+	public void deleteLogin(String userName) {
+		loginRepository.deleteLoginById(userName);
+	}
 	
 	@Transactional
-	public Commission createCommission(double percentage, Integer commissionID) {
+	public Commission createCommission(double percentage, int commissionID) {
+		String error = "";
+		if (percentage == null) {
+			error = error + "percentage cannot be null! ";
+		}
+		if (commissionID == null) {
+			error = error + "Commission ID cannot be null! ";
+		}
 		Commission commission = new Commission();
 		commission.setCommissionID(commissionID);
 		commission.setPercentage(percentage);
@@ -99,6 +118,10 @@ public class TutoringServiceService {
 		return toList(commissionRepository.findAll());
 	}
 
+	@Transactional
+	public void deleteCommisison(Integer commissionID) {
+		commissionRepository.deleteCommissionById(commissionID);
+	}
 
 	@Transactional
 	public Subject createSubject(String name, String courseID, String description, SubjectType subjectType)
@@ -205,7 +228,23 @@ public class TutoringServiceService {
 	}
 
 	@Transactional
+	public void deleteManager(int managerID) {
+		managerRepository.deleteManagerById(managerID);
+	}
+
+	@Transactional
 	public Offering createOffering(String offId, String term, double price, Subject subj){
+		String error = "";
+		if (offId == null || offId.trim().length() == 0) {
+			error = error + "Offering ID cannot be null! ";
+		}
+		if (term == null || term.trim().length() == 0) {
+			error = error + "Term cannot be null! ";
+		}
+		if (price == 0.0)
+			error = error + "Price cannot be empty! ";
+		if (subj == null)
+			error = error + "Subject cannot be empty! ";
 		Offering offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
@@ -224,6 +263,11 @@ public class TutoringServiceService {
 	@Transactional
 	public List<Offering> getAllOfferings() {
 		return toList(offeringRepository.findAll());
+	}
+
+	@Transactional
+	public void deleteOffering(String offID) {
+		offeringRepository.deleteOfferingById(offID);
 	}
 	
 	
@@ -250,6 +294,11 @@ public class TutoringServiceService {
 	@Transactional
 	public List<Tutor> getAllTutors() {
 		return toList(tutorRepository.findAll());
+	}
+
+	@Transactional
+	public void deleteTutor(int tutorID) {
+		tutorRepository.deleteTutorById(tutorID);
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable) {
