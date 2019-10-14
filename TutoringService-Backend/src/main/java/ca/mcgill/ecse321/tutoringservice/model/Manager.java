@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.tutoringservice.model;
 import javax.persistence.Entity;
 import java.util.Set;
 import javax.persistence.OneToMany;
-import javax.persistence.Id;
 
 @Entity
 public class Manager extends Person{
@@ -40,15 +39,6 @@ public class Manager extends Person{
       this.commission = commissions;
    }
    
-   private Integer managerID;
-
-public void setManagerID(Integer value) {
-    this.managerID = value;
-}
-@Id
-public Integer getManagerID() {
-    return this.managerID;
-}
    private Set<Classroom> classroom;
    
    @OneToMany(mappedBy="manager" )

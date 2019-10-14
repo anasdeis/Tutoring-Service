@@ -7,15 +7,6 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Student extends Person{
-   private Integer studentID;
-
-public void setStudentID(Integer value) {
-    this.studentID = value;
-}
-@Id
-public Integer getStudentID() {
-    return this.studentID;
-}
 private Set<Offering> coursesTaken;
 
 @ManyToMany(mappedBy="studentsEnrolled" )

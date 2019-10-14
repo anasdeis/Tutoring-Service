@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import ca.mcgill.ecse321.tutoringservice.model.Login;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
 
 import javax.persistence.Entity;
 import javax.persistence.CascadeType;
@@ -8,7 +9,17 @@ import java.sql.Date;
 import javax.persistence.ManyToOne;
 
 @Entity
+@Inheritance
 public abstract class Person{
+private Integer personId;
+
+public void setPersonId(Integer value) {
+this.personId = value;
+}
+@Id
+public Integer getPersonId() {
+return this.personId;
+}
    private String firstName;
 
 public void setFirstName(String value) {
@@ -27,7 +38,7 @@ public String getLastName() {
 }
 private Login loginInfo;
 
-@OneToOne(cascade={CascadeType.ALL}, optional=false)
+@OneToOne(optional=true)
 public Login getLoginInfo() {
    return this.loginInfo;
 }

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,7 @@ public class TutoringServiceService {
 
 	@Transactional
 	public Login getLogin(String userName) {
-		Login login = loginRepository.findLoginById(userName);
+		Login login = loginRepository.findLoginByUserName(userName);
 		return login;
 	}
 
@@ -88,17 +89,17 @@ public class TutoringServiceService {
 
 	@Transactional
 	public void deleteLogin(String userName) {
-		loginRepository.deleteLoginById(userName);
+		loginRepository.deleteLoginByUserName(userName);
 	}
 	
 	@Transactional
 	public Commission createCommission(double percentage, int commissionID) {
 		String error = "";
-		if (percentage == null) {
-			error = error + "percentage cannot be null! ";
+		if (percentage <= 0) {
+			error = error + "percentage cannot be <= 0";
 		}
-		if (commissionID == null) {
-			error = error + "Commission ID cannot be null! ";
+		if (commissionID <= 0) {
+			error = error + "Commission ID cannot be <= 0";
 		}
 		Commission commission = new Commission();
 		commission.setCommissionID(commissionID);
@@ -109,7 +110,7 @@ public class TutoringServiceService {
 
 	@Transactional
 	public Commission getCommission(Integer commissionID) {
-		Commission commission = commissionRepository.findCommissionById(commissionID);
+		Commission commission = commissionRepository.findCommissionBycommissionID(commissionID);
 		return commission;
 	}
 
@@ -120,7 +121,7 @@ public class TutoringServiceService {
 
 	@Transactional
 	public void deleteCommisison(Integer commissionID) {
-		commissionRepository.deleteCommissionById(commissionID);
+		commissionRepository.deleteCommissionBycommissionID(commissionID);
 	}
 
 	@Transactional
@@ -148,7 +149,7 @@ public class TutoringServiceService {
 
 	@Transactional
 	public Subject getSubject(String courseID) {
-		Subject subject = subjectRepository.findSubjectById(courseID);
+		Subject subject = subjectRepository.findSubjectByCourseID(courseID);
 		return subject;
 	}
 
@@ -160,14 +161,13 @@ public class TutoringServiceService {
 
 	@Transactional
 	public void deleteSubject(String courseID) {
-		subjectRepository.deleteSeubjectById(courseID);
+		subjectRepository.deleteSubjectByCourseID(courseID);
 	}
 
 
 
 	@Transactional
-	public Subject createSubjectRequest(int requestID, String name, String description, SubjectType subjectType)
-	{
+	public SubjectRequest createSubjectRequest(int requestID, String name, String description, SubjectType subjectType){
 		String error = "";
 		if (name == null || name.trim().length() == 0) {
 			error = error + "name cannot be null! ";
@@ -178,31 +178,34 @@ public class TutoringServiceService {
 		if (requestID == 0)
 			error = error + "requestID cannot be empty! ";
     
-    SubjectRequest subjectrequest = new SubjectRequest();
+		SubjectRequest subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
 		subjectrequest.setSubjectType(subjectType);
-		subjectrequestRepository.save(subjectrequest);
+		subjectRequestRepository.save(subjectrequest);
 		return subjectrequest;
 	}
 
 	@Transactional
-	public SubjectRequest getSubjectRequest(String reqeustID) {
-		SubjectRequest subjectrequest = subjectrequestRepository.findSubjectRequestById(requestID);
+	public SubjectRequest getSubjectRequest(Integer requestID) {
+		SubjectRequest subjectrequest = subjectRequestRepository.findSubjectRequestByRequestID(requestID);
 		return subjectrequest;
 	}
 
 	@Transactional
 	public List<SubjectRequest> getAllSubjectRequests() {
-		return toList(subjectrequestRepository.findAll());
+		return toList(subjectRequestRepository.findAll());
 	}
 
 	@Transactional
-	public void deleteSubjectRequest(String requestID) {
-		subjectRequestRepository.deleteSeubjectRequestById(requestID);
+	public void deleteSubjectRequest(Integer requestID) {
+		subjectRequestRepository.deleteSubjectRequestByRequestID(requestID);
 	}
 	
+	/*
+	 * Manager
+	 */
 	@Transactional
 	public Manager createManager(String first, String last, Date dob, String email, int phone, int managerID) {
 		Manager manager = new Manager();
@@ -211,14 +214,14 @@ public class TutoringServiceService {
 		manager.setDateOfBirth(dob);
 		manager.setEmail(email);
 		manager.setPhoneNumber(phone);
-		manager.setManagerID(managerID);
+		manager.setPersonId(managerID);
 		managerRepository.save(manager);
 		return manager;
 	}
 	
 	@Transactional
 	public Manager getManager(int managerID) {
-		Manager manager = managerRepository.findManagerById(managerID);
+		Manager manager = managerRepository.findManagerByPersonId(managerID);
 		return manager;
 	}
 	
@@ -226,10 +229,13 @@ public class TutoringServiceService {
 	public List<Manager> getAllManagers() {
 		return toList(managerRepository.findAll());
 	}
-
+	
+	/*
+	 * Offering
+	 */
 	@Transactional
 	public void deleteManager(int managerID) {
-		managerRepository.deleteManagerById(managerID);
+		managerRepository.deleteManagerByPersonId(managerID);
 	}
 
 	@Transactional
@@ -256,7 +262,7 @@ public class TutoringServiceService {
 	
 	@Transactional
 	public Offering getOffering(String offID) {
-		Offering offering = offeringRepository.findOfferingById(offID);
+		Offering offering = offeringRepository.findOfferingByOfferingID(offID);
 		return offering;
 	}
 	
@@ -267,10 +273,58 @@ public class TutoringServiceService {
 
 	@Transactional
 	public void deleteOffering(String offID) {
-		offeringRepository.deleteOfferingById(offID);
+		offeringRepository.deleteOfferingByOfferingID(offID);
 	}
 	
+	/*
+	 *  Review
+	 */
+	/*
+	@Transactional
+	public Review createReview(String comment, Manager manager, Offering offering, Integer reviewID) {
+		Review review = new Review();
+		
+		// Input validation
+		String error = "";
+		if (comment == null || comment.trim().length() == 0) {
+			error = error + "Comment cannot be empty! ";
+		}
+		review.setComment(comment);
+		review.setIsApproved(false);
+		review.setManager(manager);
+		review.setOffering(offering);
+		review.setReviewID(reviewID);
+		reviewRepository.save(review);
+		
+		if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+		return review;
+	}
+
+	@Transactional
+	public Optional<Review> getReview(Integer reviewID) {
+		Optional<Review> review =  reviewRepository.findById(reviewID);
+		return review;
+	}
 	
+	@Transactional
+	public List<Review> getAllReviews() {
+		return toList(reviewRepository.findAll());
+	}
+	
+	@Transactional
+	public List<Review> getReviewsByOffering(Offering offering) {
+		List<Review> reviewsForOffering = new ArrayList<>();
+		for (Review r : reviewRepository.findByOffering(offering)) {
+			reviewsForOffering.add(r);
+		}
+		return reviewsForOffering;
+*/
+	
+	/*
+	 * Tutor
+	 */
 	@Transactional
 	public Tutor createTutor(String first, String last, Date dob, String email, int phone, int tutorID, Boolean isRegistered ) {
 		Tutor tutor = new Tutor();
@@ -279,7 +333,7 @@ public class TutoringServiceService {
 		tutor.setDateOfBirth(dob);
 		tutor.setEmail(email);
 		tutor.setPhoneNumber(phone);
-		tutor.setTutorID(tutorID);
+		tutor.setPersonId(tutorID);
 		tutor.setIsRegistered(isRegistered);
 		tutorRepository.save(tutor);
 		return tutor;
@@ -287,7 +341,7 @@ public class TutoringServiceService {
 	
 	@Transactional
 	public Tutor getTutor(int tutorID) {
-		Tutor tutor = tutorRepository.findTutorById(tutorID);
+		Tutor tutor = tutorRepository.findTutorByPersonId(tutorID);
 		return tutor;
 	}
 	
@@ -295,15 +349,18 @@ public class TutoringServiceService {
 	public List<Tutor> getAllTutors() {
 		return toList(tutorRepository.findAll());
 	}
-
-	@Transactional
-	public void deleteTutor(int tutorID) {
-		tutorRepository.deleteTutorById(tutorID);
-	}
+	
 	
 	@Transactional
-	public createReview(String comment, Boolean isApproved, Integer reviewID)
-	{
+	public void deleteTutor(int tutorID) {
+		tutorRepository.deleteTutorByPersonId(tutorID);
+	}
+	
+	/*
+	 * Review
+	 */
+	@Transactional
+	public Review createReview(String comment, Boolean isApproved, Integer reviewID){
 		Review review = new Review();
 		review.setComment(comment);
 		review.setIsApproved(isApproved);
@@ -314,7 +371,7 @@ public class TutoringServiceService {
 
 	@Transactional
 	public Review getReview(Integer reviewID) {
-		Review review = reviewRepository.findReviewById(reviewID);
+		Review review = reviewRepository.findReviewByReviewID(reviewID);
 		return review;
 	}
 
@@ -323,10 +380,13 @@ public class TutoringServiceService {
 		return toList(reviewRepository.findAll());
 	}
 	
+	/*
+	 * Available Session
+	 */
 	@Transactional
-	public AvailableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
-		AvailableSession availableSession = new AvailableSession();
-		availableSession.setAvailableSessionID(availableSessionID);
+	public AvaliableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
+		AvaliableSession availableSession = new AvaliableSession();
+		availableSession.setAvaliableSessionID(availableSessionID);
 		availableSession.setDay(day);
 		availableSession.setStartTime(startTime);
 		availableSession.setEndTime(endTime);
@@ -335,29 +395,32 @@ public class TutoringServiceService {
 	}
 
 	@Transactional
-	public AvailableSession getAvailableSession(Integer availableSessionID) {
-		AvailableSession availableSession = availableSessionRepository.findAvailableSessionByID(availableSessionID);
+	public AvaliableSession getAvailableSession(Integer availableSessionID) {
+		AvaliableSession availableSession = availableSessionRepository.findAvailableSessionByAvaliableSessionID(availableSessionID);
 		return availableSession;
 	}
 
 	@Transactional
-	public List<AvailableSession> getAllAvailableSessions() {
+	public List<AvaliableSession> getAllAvailableSessions() {
 		return toList(availableSessionRepository.findAll());
 	}
 
+	/*
+	 * Classroom
+	 */
 	@Transactional
 	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom) {
 		Classroom classroom = new Classroom();
-		Classroom.setRoomCode(roomCode);
-		Classroom.setIsBooked(isBooked);
-		Classroom.setIsBigRoom(isBigRoom);
-		ClassroomRepository.save(classroom);
-		return Classroom;
+		classroom.setRoomCode(roomCode);
+		classroom.setIsBooked(isBooked);
+		classroom.setIsBigRoom(isBigRoom);
+		classroomRepository.save(classroom);
+		return classroom;
 	}
 
 	@Transactional
 	public Classroom getClassroom(String roomCode) {
-		Classroom classroom = classroomRepository.findClassroomByID(roomCode);
+		Classroom classroom = classroomRepository.findClassroomByRoomCode(roomCode);
 		return classroom;
 	}
 
@@ -373,5 +436,4 @@ public class TutoringServiceService {
 		}
 		return resultList;
 	}
-
 }
