@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
+import ca.mcgill.ecse321.tutoringservice.dao.ReviewRepository;
+import ca.mcgill.ecse321.tutoringservice.model.Review;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -22,7 +24,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TutoringServiceServiceTest {
+public class TestTutoringServiceService {
 
     @Autowired
     private TutoringServiceService service;
@@ -87,7 +89,7 @@ public class TutoringServiceServiceTest {
         tutorRepository.deleteAll();
         universityRepository.deleteAll();
     }
-
+/*
     @Test
     public void testCreateStudent() {
         assertEquals(0, service.getAllStudents().size());
@@ -409,7 +411,27 @@ public class TutoringServiceServiceTest {
         service.deleteClassroomById(roomCode);
     }
 
+*/
+	@Test
+	public void testCreateReview() {
+		assertEquals(0, service.getAllReviews().size());
 
 
+		String comment = "Default comment";
+
+		try {
+			service.createReview(comment, null, null, null);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<Review> allReviews = service.getAllReviews();
+
+		assertEquals(1, allReviews.size());
+		assertEquals(comment, allReviews.get(0).getComment());
+	}
+	
+	
 
 }

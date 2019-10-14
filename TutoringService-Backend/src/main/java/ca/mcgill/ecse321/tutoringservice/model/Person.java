@@ -1,19 +1,24 @@
 package ca.mcgill.ecse321.tutoringservice.model;
-import ca.mcgill.ecse321.tutoringservice.model.Login;
-
-import javax.persistence.Entity;
-import javax.persistence.CascadeType;
-import javax.persistence.OneToOne;
 import java.sql.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Person{
    private String firstName;
 
 public void setFirstName(String value) {
     this.firstName = value;
 }
+
 public String getFirstName() {
     return this.firstName;
 }
