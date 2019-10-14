@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.tutoringservice.dao.ManagerRepository;
 import ca.mcgill.ecse321.tutoringservice.dao.OfferingRepository;
 import ca.mcgill.ecse321.tutoringservice.dao.ReviewRepository;
+import ca.mcgill.ecse321.tutoringservice.dao.TutorRepository;
 import ca.mcgill.ecse321.tutoringservice.model.Manager;
 import ca.mcgill.ecse321.tutoringservice.model.Offering;
 import ca.mcgill.ecse321.tutoringservice.model.Review;
 import ca.mcgill.ecse321.tutoringservice.model.Subject;
+import ca.mcgill.ecse321.tutoringservice.model.Tutor;
 
 @Service
 public class TutoringServiceService {
@@ -87,6 +89,39 @@ public class TutoringServiceService {
 	public List<Offering> getAllOfferings() {
 		return toList(offeringRepository.findAll());
 	}
+	
+	@Autowired
+	TutorRepository tutorRepository;
+
+	
+	@Transactional
+	public Tutor createTutor(String first, String last, Date dob, String email, int phone, int tutorID, Boolean isRegistered ) {
+		Tutor tutor = new Tutor();
+		tutor.setFirstName(first);
+		tutor.setLastName(last);
+		tutor.setDateOfBirth(dob);
+		tutor.setEmail(email);
+		tutor.setPhoneNumber(phone);
+		tutor.setTutorID(tutorID);
+		tutor.setIsRegistered(isRegistered);
+		tutorRepository.save(tutor);
+		return tutor;
+	}
+	
+	@Transactional
+	public Tutor getTutor(int tutorID) {
+		Tutor tutor = tutorRepository.findTutorById(tutorID);
+		return tutor;
+	}
+	
+	@Transactional
+	public List<Tutor> getAllTutors() {
+		return toList(tutorRepository.findAll());
+	}
+	
+
+	
+	
 
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
