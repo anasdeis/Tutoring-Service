@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
 public interface CommissionRepository extends CrudRepository<Commission, Integer> {
-    Commission findCommissionBycommissionID(int commissionID);
+    Commission findCommissionBycommissionID(Integer commissionID);
 
-    void deleteCommissionBycommissionID(int commissionID);
+    void deleteCommissionBycommissionID(Integer commissionID);
 }

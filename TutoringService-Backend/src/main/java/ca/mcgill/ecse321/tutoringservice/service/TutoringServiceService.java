@@ -423,6 +423,9 @@ public class TutoringServiceService {
 
 	@Transactional
 	public Review getReview(Integer reviewID) {
+		if (reviewID == null) {
+	        throw new IllegalArgumentException("Review reviewID cannot be empty!");
+	    }
 		Review review = reviewRepository.findReviewByReviewID(reviewID);
 		return review;
 	}
@@ -432,11 +435,40 @@ public class TutoringServiceService {
 		return toList(reviewRepository.findAll());
 	}
 	
+	@Transactional
+	public void deleteReview(Integer reviewID) {
+		if (reviewID == null) {
+	        throw new IllegalArgumentException("Review reviewID cannot be empty!");
+	    }
+		reviewRepository.deleteReviewByReviewID(reviewID);
+	}
+	
 	/*
 	 * Available Session
 	 */
 	@Transactional
 	public AvaliableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
+	    // Input validation
+	    String error = "";
+	    if (availableSessionID == null) {
+	        error = error + "AvailableSession availableSessionID cannot be empty! ";
+	    }
+	    if (date == null) {
+	        error = error + "AvailableSession date cannot be empty! ";
+	    }
+	    if (startTime == null) {
+	        error = error + "AvailableSession start time cannot be empty! ";
+	    }
+	    if (endTime == null) {
+	        error = error + "AvailableSession end time cannot be empty! ";
+	    }
+	    if (endTime != null && startTime != null && endTime.before(startTime)) {
+	        error = error + "AvailableSession end time cannot be before event start time!";
+	    }
+	    error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
 		AvaliableSession availableSession = new AvaliableSession();
 		availableSession.setAvaliableSessionID(availableSessionID);
 		availableSession.setDay(day);
@@ -448,6 +480,9 @@ public class TutoringServiceService {
 
 	@Transactional
 	public AvaliableSession getAvailableSession(Integer availableSessionID) {
+	    if (availableSessionID == null) {
+	        throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+	    }
 		AvaliableSession availableSession = availableSessionRepository.findAvailableSessionByAvaliableSessionID(availableSessionID);
 		return availableSession;
 	}
@@ -456,12 +491,34 @@ public class TutoringServiceService {
 	public List<AvaliableSession> getAllAvailableSessions() {
 		return toList(availableSessionRepository.findAll());
 	}
+	
+	@Transactional
+	public void deleteAvailableSession(Integer availableSessionID) {
+	    if (availableSessionID == null) {
+	        throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+	    }
+		availableSessionRepository.deleteAvailableSessionByAvaliableSessionID(availableSessionID);
+	}
 
 	/*
 	 * Classroom
 	 */
 	@Transactional
 	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom) {
+	    String error = "";
+	    if (roomCode == null) {
+	        error = error + "Classroom roomCode cannot be empty! ";
+	    }
+	    if (isBooked == null) {
+	        error = error + "Classroom isBooked time cannot be empty! ";
+	    }
+	    if (isBigRoom == null) {
+	        error = error + "Classroom isBigRoom cannot be empty! ";
+	    }
+	    error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
 		Classroom classroom = new Classroom();
 		classroom.setRoomCode(roomCode);
 		classroom.setIsBooked(isBooked);
@@ -472,6 +529,9 @@ public class TutoringServiceService {
 
 	@Transactional
 	public Classroom getClassroom(String roomCode) {
+		if (roomCode == null || roomCode.trim().length() == 0){
+	        throw new IllegalArgumentException("Classroom roomCode cannot be empty!");
+	    }
 		Classroom classroom = classroomRepository.findClassroomByRoomCode(roomCode);
 		return classroom;
 	}
@@ -479,6 +539,14 @@ public class TutoringServiceService {
 	@Transactional
 	public List<Classroom> getAllClassrooms() {
 		return toList(classroomRepository.findAll());
+	}
+	
+	@Transactional
+	public void deleteClassroom(String roomCode) {
+		if (roomCode == null || roomCode.trim().length() == 0){
+	        throw new IllegalArgumentException("Classroom roomCode cannot be empty!");
+	    }
+		classroomRepository.deleteClassroomByRoomCode(roomCode);
 	}
 
 	private <T> List<T> toList(Iterable<T> iterable) {

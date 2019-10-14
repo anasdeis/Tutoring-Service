@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
 public interface TutorRepository extends CrudRepository<Tutor, Integer> {
-    Tutor findTutorByPersonId(int tutorID);
+    Tutor findTutorByPersonId(Integer tutorID);
 
-    void deleteTutorByPersonId(int tutorID);
+    void deleteTutorByPersonId(Integer tutorID);
 }
