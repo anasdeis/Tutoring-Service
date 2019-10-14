@@ -28,20 +28,20 @@ public void setOffering(Set<Offering> offerings) {
    this.offering = offerings;
 }
 
-private boolean isBooked;
+private Boolean isBooked;
 
-public void setIsBooked(boolean value) {
+public void setIsBooked(Boolean value) {
     this.isBooked = value;
 }
-public boolean isIsBooked() {
+public Boolean getIsBooked() {
     return this.isBooked;
 }
-private boolean isBigRoom;
+private Boolean isBigRoom;
 
-public void setIsBigRoom(boolean value) {
+public void setIsBigRoom(Boolean value) {
     this.isBigRoom = value;
 }
-public boolean isIsBigRoom() {
+public Boolean getIsBigRoom() {
     return this.isBigRoom;
 }
    private Manager manager;
