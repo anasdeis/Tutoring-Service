@@ -453,9 +453,6 @@ public class TutoringServiceService {
 	    if (availableSessionID == null) {
 	        error = error + "AvailableSession availableSessionID cannot be empty! ";
 	    }
-	    if (date == null) {
-	        error = error + "AvailableSession date cannot be empty! ";
-	    }
 	    if (startTime == null) {
 	        error = error + "AvailableSession start time cannot be empty! ";
 	    }
