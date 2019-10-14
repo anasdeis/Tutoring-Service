@@ -58,7 +58,46 @@ public class TutoringServiceService {
 	@Autowired
 	private UniversityRepository universityRepository;
 
+	
+	@Transactional
+	public Login createLogin(String userName, String password) {
+		Login login = new Login();
+		login.setUserName(userName);
+		login.setPassword(password);
+		loginRepository.save(login);
+		return login;
+	}
 
+	@Transactional
+	public Login getLogin(String userName) {
+		Login login = loginRepository.findLoginById(userName);
+		return login;
+	}
+
+	@Transactional
+	public List<Login> getAllLogins() {
+		return toList(loginRepository.findAll());
+	}
+	
+	@Transactional
+	public Commission createCommission(double percentage, Integer commissionID) {
+		Commission commission = new Commission();
+		commission.setCommissionID(commissionID);
+		commission.setPercentage(percentage);
+		commissionRepository.save(commission);
+		return commission;
+	}
+
+	@Transactional
+	public Commission getCommission(Integer commissionID) {
+		Commission commission = commissionRepository.findCommissionById(commissionID);
+		return commission;
+	}
+
+	@Transactional
+	public List<Commission> getAllCommissions() {
+		return toList(commissionRepository.findAll());
+	}
 
 
 	@Transactional
