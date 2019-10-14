@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.assertj.core.util.Arrays;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,7 +99,7 @@ public class TestTutoringServiceService {
 
     @Autowired
     private UniversityRepository universityRepository;
-
+    
     @Before
     @After
     public void clearDatabase() {
@@ -154,6 +155,137 @@ public class TestTutoringServiceService {
         assertEquals(numCoursesEnrolled, allStudents.get(0).getNumCoursesEnrolled());
         service.deleteStudent(studentID);
     }
+    
+   
+    // TODO  
+    @SuppressWarnings("null")
+	@Test
+    public void testCreateStudentNull() {
+    	assertEquals(0, service.getAllStudents().size());		
+    	String error = null;
+
+    	Integer studentID = null;
+    	String first = null;
+    	String last = null;
+    	Date dob = null; 
+    	Integer numCoursesEnrolled = 0;
+    	String email = null;
+    	Integer phone = null;
+    	Login loginInfo = new Login();
+    	loginInfo.setPassword("pass");
+    	loginInfo.setUserName("user");
+    	loginRepository.save(loginInfo);
+    	TutoringSystem tutoringSystem = new TutoringSystem();
+    	tutoringSystem.setTutoringSystemID(111);
+    	tutoringSystemRepository.save(tutoringSystem);
+
+
+    	try {
+    		service.createStudent(first, last, dob, email,phone, studentID, numCoursesEnrolled, loginInfo, tutoringSystem);
+    	} catch (IllegalArgumentException e) {
+    		error = e.getMessage();
+    	}
+
+    	// check error
+    	assertEquals("valid input needed", error);
+
+    	// check no change in memory
+    	assertEquals(0, service.getAllStudents().size());
+    	
+    }
+
+// TODO
+	@Test
+	public void testCreateStudentEmpty() {
+		// cannot check if an Integer is empty, instead, check if it has the default value 0
+		// can pass empty value for login but can not pass null
+		assertEquals(0, service.getAllStudents().size());
+
+		String name = "";
+		Integer studentID = 0;
+    	String first = "";
+    	String last = "";
+    	Calendar c = Calendar.getInstance();
+		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
+		Date dob = new Date(c.getTimeInMillis());
+    	Integer numCoursesEnrolled = 0;
+    	String email = "";
+    	Integer phone = 0;
+    	Login loginInfo = new Login();
+    	loginInfo.setPassword("");
+    	loginInfo.setUserName("");
+    	loginRepository.save(loginInfo);
+    	Integer tssID= 0;
+    	TutoringSystem tutoringSystem = new TutoringSystem();
+    	tutoringSystem.setTutoringSystemID(tssID);
+    	tutoringSystemRepository.save(tutoringSystem);
+
+		String error = null;
+
+		try {
+    		service.createStudent(first, last, dob, email,phone, studentID, numCoursesEnrolled, loginInfo, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+    	assertEquals("valid input needed", error);
+
+//		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
+//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+
+		// check no change in memory
+    	assertEquals(0, service.getAllStudents().size());
+
+	}
+
+ 	
+// TODO
+	@Test
+	public void testCreateStudentSpaces() {
+		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
+		// should be textfield to fill in, if it's textfield, then there exist ways to check
+
+		assertEquals(0, service.getAllStudents().size());
+		
+		String name = " ";
+		Integer studentID = 0;
+    	String first = " ";
+    	String last = " ";
+    	Calendar c = Calendar.getInstance();
+		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
+		Date dob = new Date(c.getTimeInMillis());
+    	Integer numCoursesEnrolled = 0;
+    	String email = " ";
+    	Integer phone = 0;
+    	Login loginInfo = new Login();
+    	loginInfo.setPassword(" ");
+    	loginInfo.setUserName(" ");
+    	loginRepository.save(loginInfo);
+    	Integer tssID= 0;
+    	TutoringSystem tutoringSystem = new TutoringSystem();
+    	tutoringSystem.setTutoringSystemID(tssID);
+    	tutoringSystemRepository.save(tutoringSystem);
+	
+		String error = null ;
+
+		try {
+    		service.createStudent(first, last, dob, email,phone, studentID, numCoursesEnrolled, loginInfo, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+//		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
+//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+    	assertEquals("valid input needed", error);
+
+		// check no change in memory
+    	assertEquals(0, service.getAllStudents().size());
+
+	}
+
+	
 
     @Test
     public void testCreateManager() {
@@ -190,6 +322,134 @@ public class TestTutoringServiceService {
         service.deleteManager(managerID);
     }
 
+ // TODO  
+    @SuppressWarnings("null")
+	@Test
+    public void testCreateManagerNull() {
+    	assertEquals(0, service.getAllManagers().size());		
+    	String error = null;
+
+    	Integer managerID = null;
+    	String first = null;
+    	String last = null;
+    	Date dob = null; 
+    	String email = null;
+    	Integer phone = null;
+    	Login loginInfo = new Login();
+    	loginInfo.setPassword("user");
+    	loginInfo.setUserName("pass");
+    	loginRepository.save(loginInfo);
+    	TutoringSystem tutoringSystem = new TutoringSystem();
+    	tutoringSystem.setTutoringSystemID(111);
+    	tutoringSystemRepository.save(tutoringSystem);
+
+
+    	try {
+    		service.createManager(first, last, dob, email, phone, managerID, loginInfo, tutoringSystem);
+    	} catch (IllegalArgumentException e) {
+    		error = e.getMessage();
+    	}
+
+    	// check error
+//    	assertEquals("Manager first name cannot be empty!Manager last name cannot be empty!Date of birth cannot be empty!Manager email cannot be empty!"
+//    			+ "Manager phone number cannot be empty!Manager ID cannot be empty!", error);
+    	
+    	assertEquals("valid input needed", error);
+
+    	// check no change in memory
+    	assertEquals(0, service.getAllManagers().size());
+    	
+    }
+    
+   // TODO 
+    @Test
+	public void testCreateManagerEmpty() {
+		assertEquals(0, service.getAllManagers().size());
+
+		String name = "";
+		Integer managerID = 0;
+    	String first = "";
+    	String last = "";
+    	Calendar c = Calendar.getInstance();
+		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
+		Date dob = new Date(c.getTimeInMillis());
+    	String email = "";
+    	Integer phone = 0;
+    	Login loginInfo = new Login();
+    	loginInfo.setPassword("");
+    	loginInfo.setUserName("");
+    	loginRepository.save(loginInfo);
+    	Integer tssID= 0;
+    	TutoringSystem tutoringSystem = new TutoringSystem();
+    	tutoringSystem.setTutoringSystemID(tssID);
+    	tutoringSystemRepository.save(tutoringSystem);
+
+		String error = null;
+
+		try {
+    		service.createManager(first, last, dob, email, phone, managerID, loginInfo, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+//		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
+//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+    	assertEquals("valid input needed", error);
+
+		// check no change in memory
+    	assertEquals(0, service.getAllManagers().size());
+
+	}
+
+    
+ // TODO
+ 	@Test
+ 	public void testCreateManagerSpaces() {
+ 		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
+ 		// should be textfield to fill in, if it's textfield, then there exist ways to check
+
+ 		assertEquals(0, service.getAllManagers().size());
+ 		
+ 		String name = " ";
+ 		Integer managerID = 0;
+     	String first = " ";
+     	String last = " ";
+     	Calendar c = Calendar.getInstance();
+ 		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
+ 		Date dob = new Date(c.getTimeInMillis());
+     	String email = " ";
+     	Integer phone = 0;
+     	Login loginInfo = new Login();
+     	loginInfo.setPassword(" ");
+     	loginInfo.setUserName(" ");
+     	loginRepository.save(loginInfo);
+     	Integer tssID= 0;
+     	TutoringSystem tutoringSystem = new TutoringSystem();
+     	tutoringSystem.setTutoringSystemID(tssID);
+     	tutoringSystemRepository.save(tutoringSystem);
+ 	
+ 		String error = null ;
+
+ 		try {
+     		service.createManager(first, last, dob, email, phone, managerID, loginInfo, tutoringSystem);
+ 		} catch (IllegalArgumentException e) {
+ 			error = e.getMessage();
+ 		}
+
+ 		// check error
+// 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
+//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+    	assertEquals("valid input needed", error);
+
+ 		// check no change in memory
+     	assertEquals(0, service.getAllManagers().size());
+
+ 	}
+
+ 	
+    
+    
     @Test
     public void testCreateTutor() {
         assertEquals(0, service.getAllTutors().size());
@@ -230,8 +490,137 @@ public class TestTutoringServiceService {
         service.deleteLogin(loginInfo.getUserName());
 
     }
+    
+    // TODO  
+    @SuppressWarnings("null")
+	@Test
+    public void testCreateTutorNull() {
+    	assertEquals(0, service.getAllTutors().size());		
+    	String error = null;
 
-    @Test
+    	Integer tutorId = null;
+    	String first = null;
+    	String last = null;
+    	Date dob = null; 
+    	String email = null;
+    	Integer phone = null;
+    	Boolean isRegistered = null;
+    	Login loginInfo = new Login();
+    	loginInfo.setPassword("pass");
+    	loginInfo.setUserName("user");
+    	loginRepository.save(loginInfo);
+    	TutoringSystem tutoringSystem = new TutoringSystem();
+    	tutoringSystem.setTutoringSystemID(111);
+    	tutoringSystemRepository.save(tutoringSystem);
+
+
+    	try {
+    		service.createTutor(first, last, dob, email, phone, tutorId, isRegistered, loginInfo, tutoringSystem);
+    	} catch (IllegalArgumentException e) {
+    		error = e.getMessage();
+    	}
+
+    	// check error
+    	assertEquals("valid input needed", error);
+
+    	// check no change in memory
+    	assertEquals(0, service.getAllTutors().size());
+    	
+    }
+    
+    
+ // TODO
+ 	@Test
+ 	public void testCreateTutorEmpty() {
+ 		// cannot check if an Integer is empty, instead, check if it has the default value 0
+ 		assertEquals(0, service.getAllTutors().size());
+
+ 		String name = "";
+ 		Integer tutorID = 0;
+     	String first = "";
+     	String last = "";
+     	Calendar c = Calendar.getInstance();
+ 		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
+ 		Date dob = new Date(c.getTimeInMillis());
+     	String email = "";
+     	Integer phone = 0;
+     	Boolean isRegistered = null;
+     	Login loginInfo = new Login();
+     	loginInfo.setPassword("");
+     	loginInfo.setUserName("");
+     	loginRepository.save(loginInfo);
+     	Integer tssID= 0;
+     	TutoringSystem tutoringSystem = new TutoringSystem();
+     	tutoringSystem.setTutoringSystemID(tssID);
+     	tutoringSystemRepository.save(tutoringSystem);
+
+ 		String error = null;
+
+ 		try {
+     		service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, tutoringSystem);
+ 		} catch (IllegalArgumentException e) {
+ 			error = e.getMessage();
+ 		}
+
+ 		// check error
+     	assertEquals("valid input needed", error);
+
+// 		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
+//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+
+ 		// check no change in memory
+     	assertEquals(0, service.getAllTutors().size());
+
+ 	}
+
+ // TODO
+ 	@Test
+ 	public void testCreateTutorSpaces() {
+ 		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
+ 		// should be textfield to fill in, if it's textfield, then there exist ways to check
+
+ 		assertEquals(0, service.getAllTutors().size());
+ 		
+ 		String name = " ";
+ 		Integer tutorID = 0;
+     	String first = " ";
+     	String last = " ";
+     	Calendar c = Calendar.getInstance();
+ 		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
+ 		Date dob = new Date(c.getTimeInMillis());
+     	String email = " ";
+     	Integer phone = 0;
+     	Boolean isRegistered = null; 
+     	Login loginInfo = new Login();
+     	loginInfo.setPassword(" ");
+     	loginInfo.setUserName(" ");
+     	loginRepository.save(loginInfo);
+     	Integer tssID= 0;
+     	TutoringSystem tutoringSystem = new TutoringSystem();
+     	tutoringSystem.setTutoringSystemID(tssID);
+     	tutoringSystemRepository.save(tutoringSystem);
+ 	
+ 		String error = null ;
+
+ 		try {
+     		service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, tutoringSystem);
+ 		} catch (IllegalArgumentException e) {
+ 			error = e.getMessage();
+ 		}
+
+ 		// check error
+// 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
+//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+     	assertEquals("valid input needed", error);
+
+ 		// check no change in memory
+     	assertEquals(0, service.getAllTutors().size());
+
+ 	}
+
+    
+
+ /*   @Test
     public void testCreateCommission() {
         assertEquals(0, service.getAllCommissions().size());
         Integer commissionID = 1234567;
@@ -372,6 +761,7 @@ public class TestTutoringServiceService {
 
    	}
 
+   	
     @Test
     public void testCreateTutoringSystem() {
         assertEquals(0, service.getAllTutoringSystem().size());
@@ -387,12 +777,10 @@ public class TestTutoringServiceService {
         assertEquals(tutoringSystemID, allTutoringSystems.get(0).getTutoringSystemID());
         service.deleteTutorSystem(tutoringSystemID);
     }
+*/
 
 
-
-
-
-    @Test
+/*    @Test
     public void testCreateOffering() {
         assertEquals(0, service.getAllOfferings().size());
         String offeringID = "FALL19";
@@ -720,5 +1108,5 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllReviews().size());
 
 	}
-
+*/
 }
