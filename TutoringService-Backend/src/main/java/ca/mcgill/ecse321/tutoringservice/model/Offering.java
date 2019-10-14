@@ -1,4 +1,5 @@
 package ca.mcgill.ecse321.tutoringservice.model;
+import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -109,14 +110,5 @@ public Tutor getTutor() {
 
 public void setTutor(Tutor tutor) {
    this.tutor = tutor;
-}
-
-private TutoringSystem tutoringSystem;
-
-public void setTutoringSystem(TutoringSystem value) {
-    this.tutoringSystem = value;
-}
-public TutoringSystem getTutoringSystem() {
-    return this.tutoringSystem;
 }
 }
