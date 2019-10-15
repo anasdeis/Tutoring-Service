@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 public class TutoringServiceService {
 
 	@Autowired
-	private AvailableSessionRepository availableSessionRepository;
+	private AvaliableSessionRepository AvaliableSessionRepository;
 
 	@Autowired
 	private ClassroomRepository classroomRepository;
@@ -178,7 +179,7 @@ public class TutoringServiceService {
 			throw new IllegalArgumentException("valid input needed");
 		if (description == null || description.trim().length() == 0)
 			throw new IllegalArgumentException("valid input needed");
-		if (courseID == null)
+		if (requestID == null)
 			throw new IllegalArgumentException("valid input needed");
 
 		SubjectRequest subjectrequest = new SubjectRequest();
@@ -277,17 +278,17 @@ public class TutoringServiceService {
 	}
 	
 	
-//	 if (availableSessionID == null) {
-//	        error = error + "AvailableSession availableSessionID cannot be empty! ";
+//	 if (AvaliableSessionID == null) {
+//	        error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
 //	    }
 //	    if (startTime == null) {
-//	        error = error + "AvailableSession start time cannot be empty! ";
+//	        error = error + "AvaliableSession start time cannot be empty! ";
 //	    }
 //	    if (endTime == null) {
-//	        error = error + "AvailableSession end time cannot be empty! ";
+//	        error = error + "AvaliableSession end time cannot be empty! ";
 //	    }
 //	    if (endTime != null && startTime != null && endTime.before(startTime)) {
-//	        error = error + "AvailableSession end time cannot be before event start time!";
+//	        error = error + "AvaliableSession end time cannot be before event start time!";
 //	    }
 //	    error = error.trim();
 //	    if (error.length() > 0) {
@@ -304,8 +305,10 @@ public class TutoringServiceService {
 //		return person;
 //	}
 //	
+	
+
 	@Transactional
-	public Offering createOffering(String offId, String term, double price, AvailableSession classTime, Subject subject, TutoringSystem tutoringSystem){
+	public Offering createOffering(String offId, String term, double price, AvaliableSession classTime, Subject subject, TutoringSystem tutoringSystem){
 		if (offId == null || offId.trim().length() == 0) {
 			throw new IllegalArgumentException("valid input needed");
 		}
@@ -315,20 +318,21 @@ public class TutoringServiceService {
 		if (classTime == null) {
 			throw new IllegalArgumentException("valid input needed");
 		}
-		if (price == 0.0) {
-			error = error + "valid input needed";
+		if (price == 0.0) 
+			throw new IllegalArgumentException("valid input needed");
 
 
 		Offering offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
 		offering.setPricePerHour(price);
-		offering.setAvailableSession(classTime)
+		offering.setClassTime((Set<AvaliableSession>) classTime);
 		offering.setSubject(subject);
-		offering.setTutoringSystem(tutoringSystem)
-		offeringRepository.save(offering);
 		return offering;
+		
 	}
+		
+		
 		@Transactional
 		public Offering getOffering(String offeringID) {
 			Offering offering = offeringRepository.findOfferingByOfferingID(offeringID);
@@ -421,43 +425,7 @@ public class TutoringServiceService {
 	/*
 	 * Offering
 	 */
-	@Transactional
-	public Offering createOffering(String offId, String term, double price, Subject subj){
-		String error = "";
-		if (offId == null || offId.trim().length() == 0) {
-			error = error + "Offering ID cannot be null! ";
-		}
-		if (term == null || term.trim().length() == 0) {
-			error = error + "Term cannot be null! ";
-		}
-		if (price == 0.0)
-			error = error + "Price cannot be empty! ";
-		if (subj == null)
-			error = error + "Subject cannot be empty! ";
-		Offering offering = new Offering();
-		offering.setOfferingID(offId);
-		offering.setTerm(term);
-		offering.setPricePerHour(price);
-		offering.setSubject(subj);
-		offeringRepository.save(offering);
-		return offering;
-	}
 	
-	@Transactional
-	public Offering getOffering(String offID) {
-		Offering offering = offeringRepository.findOfferingByOfferingID(offID);
-		return offering;
-	}
-	
-	@Transactional
-	public List<Offering> getAllOfferings() {
-		return toList(offeringRepository.findAll());
-	}
-
-	@Transactional
-	public void deleteOffering(String offID) {
-		offeringRepository.deleteOfferingByOfferingID(offID);
-	}
 	
 	/*
 	 *  Review
@@ -610,54 +578,54 @@ public class TutoringServiceService {
 	 * Available Session
 	 */
 	@Transactional
-	public AvaliableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
+	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day) {
 	    // Input validation
 	    String error = "";
-	    if (availableSessionID == null) {
-	        error = error + "AvailableSession availableSessionID cannot be empty! ";
+	    if (AvaliableSessionID == null) {
+	        error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
 	    }
 	    if (startTime == null) {
-	        error = error + "AvailableSession start time cannot be empty! ";
+	        error = error + "AvaliableSession start time cannot be empty! ";
 	    }
 	    if (endTime == null) {
-	        error = error + "AvailableSession end time cannot be empty! ";
+	        error = error + "AvaliableSession end time cannot be empty! ";
 	    }
 	    if (endTime != null && startTime != null && endTime.before(startTime)) {
-	        error = error + "AvailableSession end time cannot be before event start time!";
+	        error = error + "AvaliableSession end time cannot be before event start time!";
 	    }
 	    error = error.trim();
 	    if (error.length() > 0) {
 	        throw new IllegalArgumentException(error);
 	    }
-		AvaliableSession availableSession = new AvaliableSession();
-		availableSession.setAvaliableSessionID(availableSessionID);
-		availableSession.setDay(day);
-		availableSession.setStartTime(startTime);
-		availableSession.setEndTime(endTime);
-		availableSessionRepository.save(availableSession);
-		return availableSession;
+		AvaliableSession AvaliableSession = new AvaliableSession();
+		AvaliableSession.setAvaliableSessionID(AvaliableSessionID);
+		AvaliableSession.setDay(day);
+		AvaliableSession.setStartTime(startTime);
+		AvaliableSession.setEndTime(endTime);
+		AvaliableSessionRepository.save(AvaliableSession);
+		return AvaliableSession;
 	}
 
 	@Transactional
-	public AvaliableSession getAvailableSession(Integer availableSessionID) {
-	    if (availableSessionID == null) {
-	        throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+	public AvaliableSession getAvaliableSession(Integer AvaliableSessionID) {
+	    if (AvaliableSessionID == null) {
+	        throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 	    }
-		AvaliableSession availableSession = availableSessionRepository.findAvailableSessionByAvaliableSessionID(availableSessionID);
-		return availableSession;
+		AvaliableSession AvaliableSession = AvaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		return AvaliableSession;
 	}
 
 	@Transactional
-	public List<AvaliableSession> getAllAvailableSessions() {
-		return toList(availableSessionRepository.findAll());
+	public List<AvaliableSession> getAllAvaliableSessions() {
+		return toList(AvaliableSessionRepository.findAll());
 	}
 	
 	@Transactional
-	public void deleteAvailableSession(Integer availableSessionID) {
-	    if (availableSessionID == null) {
-	        throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+	public void deleteAvaliableSession(Integer AvaliableSessionID) {
+	    if (AvaliableSessionID == null) {
+	        throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 	    }
-		availableSessionRepository.deleteAvailableSessionByAvaliableSessionID(availableSessionID);
+		AvaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
 	}
 
 	/*
