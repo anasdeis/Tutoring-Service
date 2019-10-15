@@ -133,24 +133,19 @@ public class TutoringServiceService {
 	 * Subject
 	 */
 	@Transactional
-	public Subject createSubject(String name, String courseID, String description, SubjectType subjectType)
-	{
-		String error = "";
-		if (name == null || name.trim().length() == 0) {
-			error = error + "name cannot be null! ";
-		}
-		if (courseID == null || courseID.trim().length() == 0) {
-			error = error + "course ID cannot be null! ";
-		}
-		if (description == null || description.trim().length() == 0) {
-			error = error + "Description cannot be null! ";
-		}
+	public Subject createSubject(String name, String courseID, String description, TutoringSystem tutoringSystem) {
+		if (name == null || name.trim().length() == 0)
+			throw new IllegalArgumentException("valid input needed");
+		if (description == null || description.trim().length() == 0)
+			throw new IllegalArgumentException("valid input needed");
+		if (courseID == null || courseID.trim().length() == 0)
+			throw new IllegalArgumentException("valid input needed");
 
 		Subject subject = new Subject();
 		subject.setName(name);
 		subject.setCourseID(courseID);
 		subject.setDescription(description);
-		subject.setSubjectType(subjectType);
+		subject.setTutoringSystem(tutoringSystem);
 		subjectRepository.save(subject);
 		return subject;
 	}
@@ -177,22 +172,20 @@ public class TutoringServiceService {
 	 * Subject Request
 	 */
 	@Transactional
-	public SubjectRequest createSubjectRequest(int requestID, String name, String description, SubjectType subjectType){
+	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description, TutoringSystem tutoringSystem){
 		String error = "";
-		if (name == null || name.trim().length() == 0) {
-			error = error + "name cannot be null! ";
-		}
-		if (description == null || description.trim().length() == 0) {
-			error = error + "Description cannot be null! ";
-		}
-		if (requestID == 0)
-			error = error + "requestID cannot be empty! ";
-    
+		if (name == null || name.trim().length() == 0)
+			throw new IllegalArgumentException("valid input needed");
+		if (description == null || description.trim().length() == 0)
+			throw new IllegalArgumentException("valid input needed");
+		if (courseID == null)
+			throw new IllegalArgumentException("valid input needed");
+
 		SubjectRequest subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
-		subjectrequest.setSubjectType(subjectType);
+		subjectrequest.setTutoringSystem(tutoringSystem);
 		subjectRequestRepository.save(subjectrequest);
 		return subjectrequest;
 	}
