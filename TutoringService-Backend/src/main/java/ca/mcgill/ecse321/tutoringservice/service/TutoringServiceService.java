@@ -305,18 +305,20 @@ public class TutoringServiceService {
 //	}
 //	
 //	@Transactional
-//	public Offering createOffering(String offId, String term, double price, Subject subj){
-//		String error = "";
+//	public Offering createOffering(String offId, String term, double price, AvailableSession classTime, Subject subject, TutoringSystem tutoringSystem){
 //		if (offId == null || offId.trim().length() == 0) {
-//			error = error + "Offering ID cannot be null! ";
+//			throw new IllegalArgumentException("valid input needed");
 //		}
 //		if (term == null || term.trim().length() == 0) {
-//			error = error + "Term cannot be null! ";
+//			throw new IllegalArgumentException("valid input needed");
 //		}
-//		if (price == 0.0)
-//			error = error + "Price cannot be empty! ";
-//		if (subj == null)
-//			error = error + "Subject cannot be empty! ";
+//		if (term == null || term.trim().length() == 0) {
+//			throw new IllegalArgumentException("valid input needed");
+//		}
+//		if (price == 0.0) {
+//			error = error + "valid input needed";
+//
+//
 //		Offering offering = new Offering();
 //		offering.setOfferingID(offId);
 //		offering.setTerm(term);
