@@ -304,30 +304,46 @@ public class TutoringServiceService {
 //		return person;
 //	}
 //	
-//	@Transactional
-//	public Offering createOffering(String offId, String term, double price, AvailableSession classTime, Subject subject, TutoringSystem tutoringSystem){
-//		if (offId == null || offId.trim().length() == 0) {
-//			throw new IllegalArgumentException("valid input needed");
-//		}
-//		if (term == null || term.trim().length() == 0) {
-//			throw new IllegalArgumentException("valid input needed");
-//		}
-//		if (term == null || term.trim().length() == 0) {
-//			throw new IllegalArgumentException("valid input needed");
-//		}
-//		if (price == 0.0) {
-//			error = error + "valid input needed";
-//
-//
-//		Offering offering = new Offering();
-//		offering.setOfferingID(offId);
-//		offering.setTerm(term);
-//		offering.setPricePerHour(price);
-//		offering.setSubject(subj);
-//		offeringRepository.save(offering);
-//		return offering;
-//	}
-	
+	@Transactional
+	public Offering createOffering(String offId, String term, double price, AvailableSession classTime, Subject subject, TutoringSystem tutoringSystem){
+		if (offId == null || offId.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (term == null || term.trim().length() == 0) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (classTime == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (price == 0.0) {
+			error = error + "valid input needed";
+
+
+		Offering offering = new Offering();
+		offering.setOfferingID(offId);
+		offering.setTerm(term);
+		offering.setPricePerHour(price);
+		offering.setAvailableSession(classTime)
+		offering.setSubject(subject);
+		offering.setTutoringSystem(tutoringSystem)
+		offeringRepository.save(offering);
+		return offering;
+	}
+		@Transactional
+		public Offering getOffering(String offeringID) {
+			Offering offering = offeringRepository.findOfferingByOfferingID(offeringID);
+			return offering;
+		}
+
+		@Transactional
+		public List<Offering> getAllOfferings() {
+			return toList(offeringRepository.findAll());
+		}
+
+		@Transactional
+		public void deleteOffering(String offeringID) {
+			offeringRepository.deleteOfferingByOfferingID(offeringID);
+		}
 	
 	@Transactional
 	public Manager getManager(int managerID) {
