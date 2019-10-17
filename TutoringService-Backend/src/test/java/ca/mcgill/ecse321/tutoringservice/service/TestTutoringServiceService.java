@@ -189,7 +189,10 @@ public class TestTutoringServiceService {
     	}
 
     	// check error
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
     	// check no change in memory
     	assertEquals(0, service.getAllStudents().size());
@@ -231,10 +234,9 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-    	assertEquals("valid input needed", error);
-
-//		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
 		// check no change in memory
     	assertEquals(0, service.getAllStudents().size());
@@ -278,9 +280,9 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-//		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
 		// check no change in memory
     	assertEquals(0, service.getAllStudents().size());
@@ -329,7 +331,7 @@ public class TestTutoringServiceService {
 	@Test
     public void testCreateManagerNull() {
     	assertEquals(0, service.getAllManagers().size());		
-    	String error = null;
+    	String error = "";
 
     	Integer managerID = null;
     	String first = null;
@@ -352,12 +354,11 @@ public class TestTutoringServiceService {
     		error = e.getMessage();
     	}
 
-    	// check error
-//    	assertEquals("Manager first name cannot be empty!Manager last name cannot be empty!Date of birth cannot be empty!Manager email cannot be empty!"
-//    			+ "Manager phone number cannot be empty!Manager ID cannot be empty!", error);
-    	
-    	assertEquals("valid input needed", error);
+    	// check error    	
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Manager ID cannot be empty!", error);
 
+//    	assertEquals("ABCDEF", error);
     	// check no change in memory
     	assertEquals(0, service.getAllManagers().size());
     	
@@ -395,10 +396,9 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-//		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-    	assertEquals("valid input needed", error);
-
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Manager ID cannot be empty!", error);
 		// check no change in memory
     	assertEquals(0, service.getAllManagers().size());
 
@@ -410,6 +410,8 @@ public class TestTutoringServiceService {
  	public void testCreateManagerSpaces() {
  		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
  		// should be textfield to fill in, if it's textfield, then there exist ways to check
+ 		
+ 		// dob not checked 
 
  		assertEquals(0, service.getAllManagers().size());
  		
@@ -440,17 +442,14 @@ public class TestTutoringServiceService {
  		}
 
  		// check error
-// 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Manager ID cannot be empty!", error);
 
  		// check no change in memory
      	assertEquals(0, service.getAllManagers().size());
 
  	}
-
- 	
-    
     
     @Test
     public void testCreateTutor() {
@@ -523,7 +522,9 @@ public class TestTutoringServiceService {
     	}
 
     	// check error
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
 
     	// check no change in memory
     	assertEquals(0, service.getAllTutors().size());
@@ -535,6 +536,7 @@ public class TestTutoringServiceService {
  	@Test
  	public void testCreateTutorEmpty() {
  		// cannot check if an Integer is empty, instead, check if it has the default value 0
+
  		assertEquals(0, service.getAllTutors().size());
 
  		String name = "";
@@ -565,11 +567,10 @@ public class TestTutoringServiceService {
  		}
 
  		// check error
-     	assertEquals("valid input needed", error);
+//     	assertEquals("valid input needed", error);
 
-// 		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-
+     	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
  		// check no change in memory
      	assertEquals(0, service.getAllTutors().size());
 
@@ -611,10 +612,10 @@ public class TestTutoringServiceService {
  		}
 
  		// check error
-// 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-     	assertEquals("valid input needed", error);
-
+//     	assertEquals("valid input needed", error);
+     	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
+     	
  		// check no change in memory
      	assertEquals(0, service.getAllTutors().size());
 
@@ -764,6 +765,7 @@ public class TestTutoringServiceService {
    	}
 
 */
+ 	/*
    		@Test
 	public void testCreateSubjectRequest() {
 		assertEquals(0, service.getAllSubjectRequests().size());
@@ -869,7 +871,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 	}
-
+*/
 
 	@Test
 	public void testCreateSubject() {
@@ -881,7 +883,7 @@ public class TestTutoringServiceService {
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 		try {
-			service.createSubject(courseID, name, description, tutoringSystem);
+			service.createSubject(name, courseID, description, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -891,19 +893,18 @@ public class TestTutoringServiceService {
 		assertEquals(name, allSubjects.get(0).getName());
 		assertEquals(courseID, allSubjects.get(0).getCourseID());
 		assertEquals(description, allSubjects.get(0).getDescription());
-		service.deleteSubject(courseID);
 	}
 
 
 	@Test
 	public void testCreateSubjectNull() {
 		assertEquals(0, service.getAllSubjects().size());
-
-		String courseID = null;
+		
 		String name = null;
+		String courseID = null;
 		String description = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(665);
+		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
@@ -914,7 +915,7 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -927,16 +928,14 @@ public class TestTutoringServiceService {
 		// can pass empty value for login but can not pass null
 		assertEquals(0, service.getAllSubjects().size());
 
-		String courseID = "";
 		String name = "";
+		String courseID = "";
 		String description = "";
-		Integer tssID = 0;
 		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(tssID);
+		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
-
 		try {
 			service.createSubject(name, courseID, description, tutoringSystem);
 		} catch (IllegalArgumentException e) {
@@ -944,8 +943,9 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
 
+		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
 
 	}
@@ -953,26 +953,25 @@ public class TestTutoringServiceService {
 	@Test
 	public void testCreateSubjectSpaces() {
 		assertEquals(0, service.getAllSubjects().size());
-		String requestID = "  ";
-		String name = "  ";
-		String description = "  ";
-		Integer tssID= 0;
+		String name = " ";
+		String courseID = " ";
+		String description = " ";
 		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(tssID);
+		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
-
 		try {
-			service.createSubject(name, requestID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
 
-		assertEquals(0, service.getAllSubjectRequests().size());
+		// check no change in memory
+		assertEquals(0, service.getAllSubjects().size());
 
 	}
 
@@ -995,7 +994,7 @@ public class TestTutoringServiceService {
     }
 */
 
-
+/*
 	@Test
 	public void testCreateOffering() {
 		assertEquals(0, service.getAllOfferings().size());
@@ -1023,7 +1022,6 @@ public class TestTutoringServiceService {
 		assertEquals(1, allOfferings.size());
 		assertEquals(offeringID, allOfferings.get(0).getOfferingID());
 		assertEquals(term, allOfferings.get(0).getTerm());
-		assertEquals(pricePerHour, allOfferings.get(0).getPricePerHour());
 		assertEquals(classTime, allOfferings.get(0).getClassTime());
 
 		service.deleteOffering(offeringID);
@@ -1147,7 +1145,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllOfferings().size());
 
 	}
-
+*/
 /*
 
     @Test
