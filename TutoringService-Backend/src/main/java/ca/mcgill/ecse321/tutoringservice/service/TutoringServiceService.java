@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 public class TutoringServiceService {
 
 	@Autowired
-	private AvailableSessionRepository availableSessionRepository;
+	private AvaliableSessionRepository AvaliableSessionRepository;
 
 	@Autowired
 	private ClassroomRepository classroomRepository;
@@ -133,24 +134,24 @@ public class TutoringServiceService {
 	 * Subject
 	 */
 	@Transactional
-	public Subject createSubject(String name, String courseID, String description, SubjectType subjectType)
-	{
+	public Subject createSubject(String name, String courseID, String description, TutoringSystem tutoringSystem) {
 		String error = "";
-		if (name == null || name.trim().length() == 0) {
-			error = error + "name cannot be null! ";
+		if (name == null || name.trim().length() == 0)
+			error += "name cannot be empty or null!";
+		if (description == null || description.trim().length() == 0)
+			error += "description cannot be empty or null!";
+		if (courseID == null || courseID.trim().length() == 0)
+			error += "courseID cannot be empty or null!";
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
 		}
-		if (courseID == null || courseID.trim().length() == 0) {
-			error = error + "course ID cannot be null! ";
-		}
-		if (description == null || description.trim().length() == 0) {
-			error = error + "Description cannot be null! ";
-		}
-
 		Subject subject = new Subject();
 		subject.setName(name);
 		subject.setCourseID(courseID);
 		subject.setDescription(description);
-		subject.setSubjectType(subjectType);
+		subject.setTutoringSystem(tutoringSystem);
 		subjectRepository.save(subject);
 		return subject;
 	}
@@ -177,7 +178,7 @@ public class TutoringServiceService {
 	 * Subject Request
 	 */
 	@Transactional
-	public SubjectRequest createSubjectRequest(int requestID, String name, String description, SubjectType subjectType){
+	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description, TutoringSystem tutoringSystem){
 		String error = "";
 		if (name == null || name.trim().length() == 0) {
 			error = error + "name cannot be null! ";
@@ -192,7 +193,7 @@ public class TutoringServiceService {
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
-		subjectrequest.setSubjectType(subjectType);
+		subjectrequest.setTutoringSystem(tutoringSystem);
 		subjectRequestRepository.save(subjectrequest);
 		return subjectrequest;
 	}
@@ -238,7 +239,7 @@ public class TutoringServiceService {
 			//			throw new IllegalArgumentException(error+"C");
 			//			error = error + "C";
 		}
-		*/
+		 */
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
 			//			throw new IllegalArgumentException(error+"D");
@@ -284,6 +285,35 @@ public class TutoringServiceService {
 		return manager;
 	}
 
+
+	//	 if (AvaliableSessionID == null) {
+	//	        error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
+	//	    }
+	//	    if (startTime == null) {
+	//	        error = error + "AvaliableSession start time cannot be empty! ";
+	//	    }
+	//	    if (endTime == null) {
+	//	        error = error + "AvaliableSession end time cannot be empty! ";
+	//	    }
+	//	    if (endTime != null && startTime != null && endTime.before(startTime)) {
+	//	        error = error + "AvaliableSession end time cannot be before event start time!";
+	//	    }
+	//	    error = error.trim();
+	//	    if (error.length() > 0) {
+	//	        throw new IllegalArgumentException(error);
+	//	    }
+	//	@Transactional
+	//	public Person createPerson(String name) {
+	//		if (name == null || name.trim().length() == 0) {
+	//			throw new IllegalArgumentException("Person name cannot be empty!");
+	//		}
+	//		Person person = new Person();
+	//		person.setName(name);
+	//		personRepository.save(person);
+	//		return person;
+	//	}
+	//	
+
 	@Transactional
 	public Manager getManager(int managerID) {
 		Manager manager = managerRepository.findManagerByPersonId(managerID);
@@ -320,22 +350,22 @@ public class TutoringServiceService {
 			//			error = error + "valid input needed";
 			error = error + "DOB cannot be empty!";
 		}
-		*/
+		 */
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
 		}
 		if (phone == null || phone == 0) {
 			error = error + "Phone cannot be empty!";
-}
+		}
 		if (studentID == null || studentID == 0) {
 			error = error + "Student ID cannot be empty!";
-}
+		}
 		// the student can have zero course enrolled with our system, thus the valid input check is not necessary
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		
+
 		Student student = new Student();
 		student.setFirstName(first);
 		student.setLastName(last);
@@ -369,31 +399,35 @@ public class TutoringServiceService {
 	/*
 	 * Offering
 	 */
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public Offering createOffering(String offId, String term, double price, Subject subj){
-		String error = "";
+	public Offering createOffering(String offId, String term, double price, AvaliableSession classTime, Subject subject, TutoringSystem tutoringSystem){
 		if (offId == null || offId.trim().length() == 0) {
-			error = error + "Offering ID cannot be null! ";
+			throw new IllegalArgumentException("valid input needed");
 		}
 		if (term == null || term.trim().length() == 0) {
-			error = error + "Term cannot be null! ";
+			throw new IllegalArgumentException("valid input needed");
 		}
-		if (price == 0.0)
-			error = error + "Price cannot be empty! ";
-		if (subj == null)
-			error = error + "Subject cannot be empty! ";
+		if (classTime == null) {
+			throw new IllegalArgumentException("valid input needed");
+		}
+		if (price == 0.0) 
+			throw new IllegalArgumentException("valid input needed");
+
+
 		Offering offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
 		offering.setPricePerHour(price);
-		offering.setSubject(subj);
-		offeringRepository.save(offering);
+		offering.setClassTime((Set<AvaliableSession>) classTime);
+		offering.setSubject(subject);
 		return offering;
+
 	}
 
 	@Transactional
-	public Offering getOffering(String offID) {
-		Offering offering = offeringRepository.findOfferingByOfferingID(offID);
+	public Offering getOffering(String offeringID) {
+		Offering offering = offeringRepository.findOfferingByOfferingID(offeringID);
 		return offering;
 	}
 
@@ -403,55 +437,9 @@ public class TutoringServiceService {
 	}
 
 	@Transactional
-	public void deleteOffering(String offID) {
-		offeringRepository.deleteOfferingByOfferingID(offID);
+	public void deleteOffering(String offeringID) {
+		offeringRepository.deleteOfferingByOfferingID(offeringID);
 	}
-
-	/*
-	 *  Review
-	 */
-	/*
-	@Transactional
-	public Review createReview(String comment, Manager manager, Offering offering, Integer reviewID) {
-		Review review = new Review();
-
-		// Input validation
-		String error = "";
-		if (comment == null || comment.trim().length() == 0) {
-			error = error + "Comment cannot be empty! ";
-		}
-		review.setComment(comment);
-		review.setIsApproved(false);
-		review.setManager(manager);
-		review.setOffering(offering);
-		review.setReviewID(reviewID);
-		reviewRepository.save(review);
-
-		if (error.length() > 0) {
-	        throw new IllegalArgumentException(error);
-	    }
-		return review;
-	}
-
-	@Transactional
-	public Optional<Review> getReview(Integer reviewID) {
-		Optional<Review> review =  reviewRepository.findById(reviewID);
-		return review;
-	}
-
-	@Transactional
-	public List<Review> getAllReviews() {
-		return toList(reviewRepository.findAll());
-	}
-
-	@Transactional
-	public List<Review> getReviewsByOffering(Offering offering) {
-		List<Review> reviewsForOffering = new ArrayList<>();
-		for (Review r : reviewRepository.findByOffering(offering)) {
-			reviewsForOffering.add(r);
-		}
-		return reviewsForOffering;
-	 */
 
 	/*
 	 * Tutor
@@ -473,7 +461,7 @@ public class TutoringServiceService {
 			//			error = error + "valid input needed";
 			error = error + "DOB cannot be empty!";
 		}
-		*/
+		 */
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
 		}
@@ -482,19 +470,19 @@ public class TutoringServiceService {
 		}
 		if (tutorID == null || tutorID == 0) {
 			error = error + "Tutor ID cannot be empty!";
-}
+		}
 
 		//		a new tutor (not exist in the system) has the boolean false, but we can add this tutor into our system and then go back
 		//		to change the boolean value
 		//		if (isRegistered = false) {
 		//			throw new IllegalArgumentException("valid input needed");
 		//		}
-		
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		
+
 		Tutor tutor = new Tutor();
 		tutor.setFirstName(first);
 		tutor.setLastName(last);
@@ -567,55 +555,54 @@ public class TutoringServiceService {
 	/*
 	 * Available Session
 	 */
-	@Transactional
-	public AvaliableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
+	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day) {
 		// Input validation
 		String error = "";
-		if (availableSessionID == null) {
-			error = error + "AvailableSession availableSessionID cannot be empty! ";
+		if (AvaliableSessionID == null) {
+			error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
 		}
 		if (startTime == null) {
-			error = error + "AvailableSession start time cannot be empty! ";
+			error = error + "AvaliableSession start time cannot be empty! ";
 		}
 		if (endTime == null) {
-			error = error + "AvailableSession end time cannot be empty! ";
+			error = error + "AvaliableSession end time cannot be empty! ";
 		}
 		if (endTime != null && startTime != null && endTime.before(startTime)) {
-			error = error + "AvailableSession end time cannot be before event start time!";
+			error = error + "AvaliableSession end time cannot be before event start time!";
 		}
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		AvaliableSession availableSession = new AvaliableSession();
-		availableSession.setAvaliableSessionID(availableSessionID);
-		availableSession.setDay(day);
-		availableSession.setStartTime(startTime);
-		availableSession.setEndTime(endTime);
-		availableSessionRepository.save(availableSession);
-		return availableSession;
+		AvaliableSession AvaliableSession = new AvaliableSession();
+		AvaliableSession.setAvaliableSessionID(AvaliableSessionID);
+		AvaliableSession.setDay(day);
+		AvaliableSession.setStartTime(startTime);
+		AvaliableSession.setEndTime(endTime);
+		AvaliableSessionRepository.save(AvaliableSession);
+		return AvaliableSession;
 	}
 
 	@Transactional
-	public AvaliableSession getAvailableSession(Integer availableSessionID) {
-		if (availableSessionID == null) {
-			throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+	public AvaliableSession getAvaliableSession(Integer AvaliableSessionID) {
+		if (AvaliableSessionID == null) {
+			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 		}
-		AvaliableSession availableSession = availableSessionRepository.findAvailableSessionByAvaliableSessionID(availableSessionID);
-		return availableSession;
+		AvaliableSession AvaliableSession = AvaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		return AvaliableSession;
 	}
 
 	@Transactional
-	public List<AvaliableSession> getAllAvailableSessions() {
-		return toList(availableSessionRepository.findAll());
+	public List<AvaliableSession> getAllAvaliableSessions() {
+		return toList(AvaliableSessionRepository.findAll());
 	}
 
 	@Transactional
-	public void deleteAvailableSession(Integer availableSessionID) {
-		if (availableSessionID == null) {
-			throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+	public void deleteAvaliableSession(Integer AvaliableSessionID) {
+		if (AvaliableSessionID == null) {
+			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 		}
-		availableSessionRepository.deleteAvailableSessionByAvaliableSessionID(availableSessionID);
+		AvaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
 	}
 
 	/*
