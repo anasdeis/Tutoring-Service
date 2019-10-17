@@ -189,7 +189,7 @@ public class TestTutoringServiceService {
     	// check error
 //    	assertEquals("valid input needed", error);
     	
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
     	// check no change in memory
@@ -233,11 +233,8 @@ public class TestTutoringServiceService {
 
 		// check error
 //    	assertEquals("valid input needed", error);
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Student ID cannot be empty!", error);
-
-//		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
 
 		// check no change in memory
     	assertEquals(0, service.getAllStudents().size());
@@ -281,10 +278,8 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-//		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
 //    	assertEquals("valid input needed", error);
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
 		// check no change in memory
@@ -357,12 +352,8 @@ public class TestTutoringServiceService {
     		error = e.getMessage();
     	}
 
-    	// check error
-//    	assertEquals("Manager first name cannot be empty!Manager last name cannot be empty!Date of birth cannot be empty!Manager email cannot be empty!"
-//    			+ "Manager phone number cannot be empty!Manager ID cannot be empty!", error);
-    	
-//    	assertEquals("First name cannot be empty! valid input needed", error);
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	// check error    	
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Manager ID cannot be empty!", error);
 
 //    	assertEquals("ABCDEF", error);
@@ -403,10 +394,8 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-//		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
 //    	assertEquals("valid input needed", error);
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Manager ID cannot be empty!", error);
 		// check no change in memory
     	assertEquals(0, service.getAllManagers().size());
@@ -451,10 +440,8 @@ public class TestTutoringServiceService {
  		}
 
  		// check error
-// 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
 //    	assertEquals("valid input needed", error);
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Manager ID cannot be empty!", error);
 
  		// check no change in memory
@@ -534,7 +521,7 @@ public class TestTutoringServiceService {
 
     	// check error
 //    	assertEquals("valid input needed", error);
-    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
 
     	// check no change in memory
@@ -580,9 +567,7 @@ public class TestTutoringServiceService {
  		// check error
 //     	assertEquals("valid input needed", error);
 
-// 		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-     	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+     	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
  		// check no change in memory
      	assertEquals(0, service.getAllTutors().size());
@@ -625,10 +610,8 @@ public class TestTutoringServiceService {
  		}
 
  		// check error
-// 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
 //     	assertEquals("valid input needed", error);
-     	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+     	assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
     			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
      	
  		// check no change in memory
