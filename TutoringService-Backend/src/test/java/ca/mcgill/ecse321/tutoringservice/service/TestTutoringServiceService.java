@@ -187,7 +187,10 @@ public class TestTutoringServiceService {
     	}
 
     	// check error
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	
+    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
     	// check no change in memory
     	assertEquals(0, service.getAllStudents().size());
@@ -229,7 +232,9 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
 //		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
 //    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
@@ -278,7 +283,9 @@ public class TestTutoringServiceService {
 		// check error
 //		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
 //    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Student ID cannot be empty!", error);
 
 		// check no change in memory
     	assertEquals(0, service.getAllStudents().size());
@@ -413,7 +420,7 @@ public class TestTutoringServiceService {
  		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
  		// should be textfield to fill in, if it's textfield, then there exist ways to check
  		
- 		// dob, phone and id not checked 
+ 		// dob not checked 
 
  		assertEquals(0, service.getAllManagers().size());
  		
@@ -454,9 +461,6 @@ public class TestTutoringServiceService {
      	assertEquals(0, service.getAllManagers().size());
 
  	}
-
- 	
-    
     
     @Test
     public void testCreateTutor() {
@@ -529,7 +533,9 @@ public class TestTutoringServiceService {
     	}
 
     	// check error
-    	assertEquals("valid input needed", error);
+//    	assertEquals("valid input needed", error);
+    	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
 
     	// check no change in memory
     	assertEquals(0, service.getAllTutors().size());
@@ -572,11 +578,12 @@ public class TestTutoringServiceService {
  		}
 
  		// check error
-     	assertEquals("valid input needed", error);
+//     	assertEquals("valid input needed", error);
 
 // 		Assert.assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
 //     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-
+     	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
  		// check no change in memory
      	assertEquals(0, service.getAllTutors().size());
 
@@ -620,8 +627,10 @@ public class TestTutoringServiceService {
  		// check error
 // 		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
 //     			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-     	assertEquals("valid input needed", error);
-
+//     	assertEquals("valid input needed", error);
+     	assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+    			+ "Phone cannot be empty!Tutor ID cannot be empty!", error);
+     	
  		// check no change in memory
      	assertEquals(0, service.getAllTutors().size());
 

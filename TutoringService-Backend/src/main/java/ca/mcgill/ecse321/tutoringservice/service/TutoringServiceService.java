@@ -93,7 +93,7 @@ public class TutoringServiceService {
 	public void deleteLogin(String userName) {
 		loginRepository.deleteLoginByUserName(userName);
 	}
-	
+
 	/*
 	 * Commission
 	 */
@@ -165,7 +165,7 @@ public class TutoringServiceService {
 	public List<Subject> getAllSubjects() {
 		return toList(subjectRepository.findAll());
 	}
-	
+
 
 	@Transactional
 	public void deleteSubject(String courseID) {
@@ -187,7 +187,7 @@ public class TutoringServiceService {
 		}
 		if (requestID == 0)
 			error = error + "requestID cannot be empty! ";
-    
+
 		SubjectRequest subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
@@ -212,7 +212,7 @@ public class TutoringServiceService {
 	public void deleteSubjectRequest(Integer requestID) {
 		subjectRequestRepository.deleteSubjectRequestByRequestID(requestID);
 	}
-	
+
 	/*
 	 * Manager
 	 */
@@ -220,80 +220,80 @@ public class TutoringServiceService {
 	// change int to Integer
 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 		String error = "";
-		
-//		if (first == null || first.trim().length() == 0) {
-//			throw new IllegalArgumentException("Manager first name cannot be empty!");
-//		}
-//		if (last == null || last.trim().length() == 0) {
-//			throw new IllegalArgumentException("Manager last name cannot be empty!");
-//		}
-//		if (dob == null) {
-//			error = error + "Date of birth cannot be empty! ";
-//		}
-//		if (email == null || email.trim().length() == 0) {
-//			throw new IllegalArgumentException("Manager email cannot be empty!");
-//		}
-//		if (phone == null) {
-//			throw new IllegalArgumentException("Manager phone number cannot be empty!");
-//		}
-//		if (managerID == null) {
-//			throw new IllegalArgumentException("Manager ID cannot be empty!");
-//		}
-//	
-		
+
+		//		if (first == null || first.trim().length() == 0) {
+		//			throw new IllegalArgumentException("Manager first name cannot be empty!");
+		//		}
+		//		if (last == null || last.trim().length() == 0) {
+		//			throw new IllegalArgumentException("Manager last name cannot be empty!");
+		//		}
+		//		if (dob == null) {
+		//			error = error + "Date of birth cannot be empty! ";
+		//		}
+		//		if (email == null || email.trim().length() == 0) {
+		//			throw new IllegalArgumentException("Manager email cannot be empty!");
+		//		}
+		//		if (phone == null) {
+		//			throw new IllegalArgumentException("Manager phone number cannot be empty!");
+		//		}
+		//		if (managerID == null) {
+		//			throw new IllegalArgumentException("Manager ID cannot be empty!");
+		//		}
+		//	
+
 		if (first == null || first.trim().length() == 0) {
-//			throw new IllegalArgumentException(error+"First name cannot be empty!");
+			//			throw new IllegalArgumentException(error+"First name cannot be empty!");
 			error = error + "First name cannot be empty!";
-//			throw new IllegalArgumentException(error+"A");
-//			error = error + "A";
+			//			throw new IllegalArgumentException(error+"A");
+			//			error = error + "A";
 		}
 		if (last == null || last.trim().length() == 0) {
-//			throw new IllegalArgumentException(error+"Last name cannot be empty");
+			//			throw new IllegalArgumentException(error+"Last name cannot be empty");
 			error = error + "Last name cannot be empty!";
-//			throw new IllegalArgumentException(error+"B");
-//			error = error + "B";
+			//			throw new IllegalArgumentException(error+"B");
+			//			error = error + "B";
 		}
 		if (dob == null) {
 			error = error + "DOB cannot be empty!";
-//			throw new IllegalArgumentException(error+"DOB cannot be empty!");
-//			throw new IllegalArgumentException(error+"C");
-//			error = error + "C";
+			//			throw new IllegalArgumentException(error+"DOB cannot be empty!");
+			//			throw new IllegalArgumentException(error+"C");
+			//			error = error + "C";
 		}
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
-//			throw new IllegalArgumentException(error+"Email cannot be empty!");
-//			throw new IllegalArgumentException(error+"D");
-//			error = error +"D";
+			//			throw new IllegalArgumentException(error+"Email cannot be empty!");
+			//			throw new IllegalArgumentException(error+"D");
+			//			error = error +"D";
 		}
-		if (phone == null) {
+		if (phone == null || phone == 0) {
 			error = error + "Phone cannot be empty!";
-//			throw new IllegalArgumentException(error+"Phone cannot be empty!");
-//			throw new IllegalArgumentException(error+"E");
-//			error = error + "E";
+			//			throw new IllegalArgumentException(error+"Phone cannot be empty!");
+			//			throw new IllegalArgumentException(error+"E");
+			//			error = error + "E";
 		}
-		if (managerID == null) {
+		if (managerID == null || managerID == 0) {
 			error = error + "Manager ID cannot be empty!";
-//			throw new IllegalArgumentException(error+"Manager ID cannot be empty!");
-//			throw new IllegalArgumentException(error+"F");
-//			error = error +"F";
+			//			throw new IllegalArgumentException(error+"Manager ID cannot be empty!");
+			//			throw new IllegalArgumentException(error+"F");
+			//			error = error +"F";
 		}
-		
+
 		/* this part need to be manually assigned
-		
+
 		if (loginInfo == null) {
 			throw new IllegalArgumentException("valid input needed");
 		}
 		if (tutoringSystem == null) {
 			throw new IllegalArgumentException("valid input needed");
 		}
-		*/
-		
-		error = error.trim();
-	    if (error.length() > 0) {
-	        throw new IllegalArgumentException(error);
-	    }
+		 */
 
-		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+
+
 		Manager manager = new Manager();
 		manager.setFirstName(first);
 		manager.setLastName(last);
@@ -306,69 +306,69 @@ public class TutoringServiceService {
 		managerRepository.save(manager);
 		return manager;
 	}
-	
-	
-//	 if (availableSessionID == null) {
-//	        error = error + "AvailableSession availableSessionID cannot be empty! ";
-//	    }
-//	    if (startTime == null) {
-//	        error = error + "AvailableSession start time cannot be empty! ";
-//	    }
-//	    if (endTime == null) {
-//	        error = error + "AvailableSession end time cannot be empty! ";
-//	    }
-//	    if (endTime != null && startTime != null && endTime.before(startTime)) {
-//	        error = error + "AvailableSession end time cannot be before event start time!";
-//	    }
-//	    error = error.trim();
-//	    if (error.length() > 0) {
-//	        throw new IllegalArgumentException(error);
-//	    }
-//	@Transactional
-//	public Person createPerson(String name) {
-//		if (name == null || name.trim().length() == 0) {
-//			throw new IllegalArgumentException("Person name cannot be empty!");
-//		}
-//		Person person = new Person();
-//		person.setName(name);
-//		personRepository.save(person);
-//		return person;
-//	}
-//	
-//	@Transactional
-//	public Offering createOffering(String offId, String term, double price, Subject subj){
-//		String error = "";
-//		if (offId == null || offId.trim().length() == 0) {
-//			error = error + "Offering ID cannot be null! ";
-//		}
-//		if (term == null || term.trim().length() == 0) {
-//			error = error + "Term cannot be null! ";
-//		}
-//		if (price == 0.0)
-//			error = error + "Price cannot be empty! ";
-//		if (subj == null)
-//			error = error + "Subject cannot be empty! ";
-//		Offering offering = new Offering();
-//		offering.setOfferingID(offId);
-//		offering.setTerm(term);
-//		offering.setPricePerHour(price);
-//		offering.setSubject(subj);
-//		offeringRepository.save(offering);
-//		return offering;
-//	}
-	
-	
+
+
+	//	 if (availableSessionID == null) {
+	//	        error = error + "AvailableSession availableSessionID cannot be empty! ";
+	//	    }
+	//	    if (startTime == null) {
+	//	        error = error + "AvailableSession start time cannot be empty! ";
+	//	    }
+	//	    if (endTime == null) {
+	//	        error = error + "AvailableSession end time cannot be empty! ";
+	//	    }
+	//	    if (endTime != null && startTime != null && endTime.before(startTime)) {
+	//	        error = error + "AvailableSession end time cannot be before event start time!";
+	//	    }
+	//	    error = error.trim();
+	//	    if (error.length() > 0) {
+	//	        throw new IllegalArgumentException(error);
+	//	    }
+	//	@Transactional
+	//	public Person createPerson(String name) {
+	//		if (name == null || name.trim().length() == 0) {
+	//			throw new IllegalArgumentException("Person name cannot be empty!");
+	//		}
+	//		Person person = new Person();
+	//		person.setName(name);
+	//		personRepository.save(person);
+	//		return person;
+	//	}
+	//	
+	//	@Transactional
+	//	public Offering createOffering(String offId, String term, double price, Subject subj){
+	//		String error = "";
+	//		if (offId == null || offId.trim().length() == 0) {
+	//			error = error + "Offering ID cannot be null! ";
+	//		}
+	//		if (term == null || term.trim().length() == 0) {
+	//			error = error + "Term cannot be null! ";
+	//		}
+	//		if (price == 0.0)
+	//			error = error + "Price cannot be empty! ";
+	//		if (subj == null)
+	//			error = error + "Subject cannot be empty! ";
+	//		Offering offering = new Offering();
+	//		offering.setOfferingID(offId);
+	//		offering.setTerm(term);
+	//		offering.setPricePerHour(price);
+	//		offering.setSubject(subj);
+	//		offeringRepository.save(offering);
+	//		return offering;
+	//	}
+
+
 	@Transactional
 	public Manager getManager(int managerID) {
 		Manager manager = managerRepository.findManagerByPersonId(managerID);
 		return manager;
 	}
-	
+
 	@Transactional
 	public List<Manager> getAllManagers() {
 		return toList(managerRepository.findAll());
 	}
-	
+
 	@Transactional
 	public void deleteManager(int managerID) {
 		managerRepository.deleteManagerByPersonId(managerID);
@@ -380,26 +380,37 @@ public class TutoringServiceService {
 	@Transactional
 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
 		String error = ""; 
-		
+
 		if (first == null || first.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("valid input needed");
+			error = error + "First name cannot be empty!";
+
 		}
 		if (last == null || last.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//		throw new IllegalArgumentException("valid input needed");
+			error = error + "Last name cannot be empty!";
 		}
 		if (dob == null) {
-			error = error + "valid input needed";
+			//			error = error + "valid input needed";
+			error = error + "DOB cannot be empty!";
 		}
 		if (email == null || email.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("valid input needed");
+			error = error + "Email cannot be empty!";
 		}
-		if (phone == null) {
-			throw new IllegalArgumentException("valid input needed");
-		}
-		if (studentID == null) {
-			throw new IllegalArgumentException("valid input needed");
-		}
+		if (phone == null || phone == 0) {
+//			throw new IllegalArgumentException("valid input needed");
+			error = error + "Phone cannot be empty!";
+}
+		if (studentID == null || studentID == 0) {
+//			throw new IllegalArgumentException("valid input needed");
+			error = error + "Student ID cannot be empty!";
+}
 		// the student can have zero course enrolled with our system, thus the valid input check is not necessary
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 		
 		Student student = new Student();
 		student.setFirstName(first);
@@ -414,18 +425,18 @@ public class TutoringServiceService {
 		studentRepository.save(student);
 		return student;
 	}
-	
+
 	@Transactional
 	public Student getStudent(int studentID) {
 		Student student = studentRepository.findStudentByPersonId(studentID);
 		return student;
 	}
-	
+
 	@Transactional
 	public List<Student> getAllStudents() {
 		return toList(studentRepository.findAll());
 	}
-	
+
 	@Transactional
 	public void deleteStudent(int studentID) {
 		studentRepository.deleteStudentByPersonId(studentID);
@@ -455,13 +466,13 @@ public class TutoringServiceService {
 		offeringRepository.save(offering);
 		return offering;
 	}
-	
+
 	@Transactional
 	public Offering getOffering(String offID) {
 		Offering offering = offeringRepository.findOfferingByOfferingID(offID);
 		return offering;
 	}
-	
+
 	@Transactional
 	public List<Offering> getAllOfferings() {
 		return toList(offeringRepository.findAll());
@@ -471,7 +482,7 @@ public class TutoringServiceService {
 	public void deleteOffering(String offID) {
 		offeringRepository.deleteOfferingByOfferingID(offID);
 	}
-	
+
 	/*
 	 *  Review
 	 */
@@ -479,7 +490,7 @@ public class TutoringServiceService {
 	@Transactional
 	public Review createReview(String comment, Manager manager, Offering offering, Integer reviewID) {
 		Review review = new Review();
-		
+
 		// Input validation
 		String error = "";
 		if (comment == null || comment.trim().length() == 0) {
@@ -491,7 +502,7 @@ public class TutoringServiceService {
 		review.setOffering(offering);
 		review.setReviewID(reviewID);
 		reviewRepository.save(review);
-		
+
 		if (error.length() > 0) {
 	        throw new IllegalArgumentException(error);
 	    }
@@ -503,12 +514,12 @@ public class TutoringServiceService {
 		Optional<Review> review =  reviewRepository.findById(reviewID);
 		return review;
 	}
-	
+
 	@Transactional
 	public List<Review> getAllReviews() {
 		return toList(reviewRepository.findAll());
 	}
-	
+
 	@Transactional
 	public List<Review> getReviewsByOffering(Offering offering) {
 		List<Review> reviewsForOffering = new ArrayList<>();
@@ -516,39 +527,51 @@ public class TutoringServiceService {
 			reviewsForOffering.add(r);
 		}
 		return reviewsForOffering;
-*/
-	
+	 */
+
 	/*
 	 * Tutor
 	 */
 	@Transactional
 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
 		String error = ""; 
-		
+
 		if (first == null || first.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("valid input needed");
+			error = error + "First name cannot be empty!";
+
 		}
 		if (last == null || last.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("valid input needed");
+			error = error + "Last name cannot be empty!";
 		}
 		if (dob == null) {
-			error = error + "valid input needed";
+			//			error = error + "valid input needed";
+			error = error + "DOB cannot be empty!";
 		}
 		if (email == null || email.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("valid input needed");
+			error = error + "Email cannot be empty!";
 		}
-		if (phone == null) {
-			throw new IllegalArgumentException("valid input needed");
-		}
-		if (tutorID == null) {
-			throw new IllegalArgumentException("valid input needed");
-		}
-		
-//		a new tutor (not exist in the system) has the boolean false, but we can add this tutor into our system and then go back
-//		to change the boolean value
-//		if (isRegistered = false) {
+		if (phone == null || phone == 0) {
 //			throw new IllegalArgumentException("valid input needed");
-//		}
+			error = error + "Phone cannot be empty!";
+		}
+		if (tutorID == null || tutorID == 0) {
+//			throw new IllegalArgumentException("valid input needed");
+			error = error + "Tutor ID cannot be empty!";
+}
+
+		//		a new tutor (not exist in the system) has the boolean false, but we can add this tutor into our system and then go back
+		//		to change the boolean value
+		//		if (isRegistered = false) {
+		//			throw new IllegalArgumentException("valid input needed");
+		//		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 		
 		Tutor tutor = new Tutor();
 		tutor.setFirstName(first);
@@ -563,24 +586,24 @@ public class TutoringServiceService {
 		tutorRepository.save(tutor);
 		return tutor;
 	}
-	
+
 	@Transactional
 	public Tutor getTutor(int tutorID) {
 		Tutor tutor = tutorRepository.findTutorByPersonId(tutorID);
 		return tutor;
 	}
-	
+
 	@Transactional
 	public List<Tutor> getAllTutors() {
 		return toList(tutorRepository.findAll());
 	}
-	
-	
+
+
 	@Transactional
 	public void deleteTutor(int tutorID) {
 		tutorRepository.deleteTutorByPersonId(tutorID);
 	}
-	
+
 	/*
 	 * Review
 	 */
@@ -600,8 +623,8 @@ public class TutoringServiceService {
 	@Transactional
 	public Review getReview(Integer reviewID) {
 		if (reviewID == null) {
-	        throw new IllegalArgumentException("Review reviewID cannot be empty!");
-	    }
+			throw new IllegalArgumentException("Review reviewID cannot be empty!");
+		}
 		Review review = reviewRepository.findReviewByReviewID(reviewID);
 		return review;
 	}
@@ -610,38 +633,38 @@ public class TutoringServiceService {
 	public List<Review> getAllReviews() {
 		return toList(reviewRepository.findAll());
 	}
-	
+
 	@Transactional
 	public void deleteReview(Integer reviewID) {
 		if (reviewID == null) {
-	        throw new IllegalArgumentException("Review reviewID cannot be empty!");
-	    }
+			throw new IllegalArgumentException("Review reviewID cannot be empty!");
+		}
 		reviewRepository.deleteReviewByReviewID(reviewID);
 	}
-	
+
 	/*
 	 * Available Session
 	 */
 	@Transactional
 	public AvaliableSession createAvailableSession(Time startTime, Time endTime, Integer availableSessionID, Date day) {
-	    // Input validation
-	    String error = "";
-	    if (availableSessionID == null) {
-	        error = error + "AvailableSession availableSessionID cannot be empty! ";
-	    }
-	    if (startTime == null) {
-	        error = error + "AvailableSession start time cannot be empty! ";
-	    }
-	    if (endTime == null) {
-	        error = error + "AvailableSession end time cannot be empty! ";
-	    }
-	    if (endTime != null && startTime != null && endTime.before(startTime)) {
-	        error = error + "AvailableSession end time cannot be before event start time!";
-	    }
-	    error = error.trim();
-	    if (error.length() > 0) {
-	        throw new IllegalArgumentException(error);
-	    }
+		// Input validation
+		String error = "";
+		if (availableSessionID == null) {
+			error = error + "AvailableSession availableSessionID cannot be empty! ";
+		}
+		if (startTime == null) {
+			error = error + "AvailableSession start time cannot be empty! ";
+		}
+		if (endTime == null) {
+			error = error + "AvailableSession end time cannot be empty! ";
+		}
+		if (endTime != null && startTime != null && endTime.before(startTime)) {
+			error = error + "AvailableSession end time cannot be before event start time!";
+		}
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 		AvaliableSession availableSession = new AvaliableSession();
 		availableSession.setAvaliableSessionID(availableSessionID);
 		availableSession.setDay(day);
@@ -653,9 +676,9 @@ public class TutoringServiceService {
 
 	@Transactional
 	public AvaliableSession getAvailableSession(Integer availableSessionID) {
-	    if (availableSessionID == null) {
-	        throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
-	    }
+		if (availableSessionID == null) {
+			throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+		}
 		AvaliableSession availableSession = availableSessionRepository.findAvailableSessionByAvaliableSessionID(availableSessionID);
 		return availableSession;
 	}
@@ -664,12 +687,12 @@ public class TutoringServiceService {
 	public List<AvaliableSession> getAllAvailableSessions() {
 		return toList(availableSessionRepository.findAll());
 	}
-	
+
 	@Transactional
 	public void deleteAvailableSession(Integer availableSessionID) {
-	    if (availableSessionID == null) {
-	        throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
-	    }
+		if (availableSessionID == null) {
+			throw new IllegalArgumentException("AvailableSession availableSessionID cannot be empty!");
+		}
 		availableSessionRepository.deleteAvailableSessionByAvaliableSessionID(availableSessionID);
 	}
 
@@ -678,20 +701,20 @@ public class TutoringServiceService {
 	 */
 	@Transactional
 	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom) {
-	    String error = "";
-	    if (roomCode == null) {
-	        error = error + "Classroom roomCode cannot be empty! ";
-	    }
-	    if (isBooked == null) {
-	        error = error + "Classroom isBooked time cannot be empty! ";
-	    }
-	    if (isBigRoom == null) {
-	        error = error + "Classroom isBigRoom cannot be empty! ";
-	    }
-	    error = error.trim();
-	    if (error.length() > 0) {
-	        throw new IllegalArgumentException(error);
-	    }
+		String error = "";
+		if (roomCode == null) {
+			error = error + "Classroom roomCode cannot be empty! ";
+		}
+		if (isBooked == null) {
+			error = error + "Classroom isBooked time cannot be empty! ";
+		}
+		if (isBigRoom == null) {
+			error = error + "Classroom isBigRoom cannot be empty! ";
+		}
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 		Classroom classroom = new Classroom();
 		classroom.setRoomCode(roomCode);
 		classroom.setIsBooked(isBooked);
@@ -703,8 +726,8 @@ public class TutoringServiceService {
 	@Transactional
 	public Classroom getClassroom(String roomCode) {
 		if (roomCode == null || roomCode.trim().length() == 0){
-	        throw new IllegalArgumentException("Classroom roomCode cannot be empty!");
-	    }
+			throw new IllegalArgumentException("Classroom roomCode cannot be empty!");
+		}
 		Classroom classroom = classroomRepository.findClassroomByRoomCode(roomCode);
 		return classroom;
 	}
@@ -713,12 +736,12 @@ public class TutoringServiceService {
 	public List<Classroom> getAllClassrooms() {
 		return toList(classroomRepository.findAll());
 	}
-	
+
 	@Transactional
 	public void deleteClassroom(String roomCode) {
 		if (roomCode == null || roomCode.trim().length() == 0){
-	        throw new IllegalArgumentException("Classroom roomCode cannot be empty!");
-	    }
+			throw new IllegalArgumentException("Classroom roomCode cannot be empty!");
+		}
 		classroomRepository.deleteClassroomByRoomCode(roomCode);
 	}
 
