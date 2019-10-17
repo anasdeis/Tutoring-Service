@@ -242,22 +242,40 @@ public class TutoringServiceService {
 //	
 		
 		if (first == null || first.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+//			throw new IllegalArgumentException(error+"First name cannot be empty!");
+			error = error + "First name cannot be empty!";
+//			throw new IllegalArgumentException(error+"A");
+//			error = error + "A";
 		}
 		if (last == null || last.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+//			throw new IllegalArgumentException(error+"Last name cannot be empty");
+			error = error + "Last name cannot be empty!";
+//			throw new IllegalArgumentException(error+"B");
+//			error = error + "B";
 		}
 		if (dob == null) {
-			error = error + "valid input needed";
+			error = error + "DOB cannot be empty!";
+//			throw new IllegalArgumentException(error+"DOB cannot be empty!");
+//			throw new IllegalArgumentException(error+"C");
+//			error = error + "C";
 		}
 		if (email == null || email.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			error = error + "Email cannot be empty!";
+//			throw new IllegalArgumentException(error+"Email cannot be empty!");
+//			throw new IllegalArgumentException(error+"D");
+//			error = error +"D";
 		}
 		if (phone == null) {
-			throw new IllegalArgumentException("valid input needed");
+			error = error + "Phone cannot be empty!";
+//			throw new IllegalArgumentException(error+"Phone cannot be empty!");
+//			throw new IllegalArgumentException(error+"E");
+//			error = error + "E";
 		}
 		if (managerID == null) {
-			throw new IllegalArgumentException("valid input needed");
+			error = error + "Manager ID cannot be empty!";
+//			throw new IllegalArgumentException(error+"Manager ID cannot be empty!");
+//			throw new IllegalArgumentException(error+"F");
+//			error = error +"F";
 		}
 		
 		/* this part need to be manually assigned
@@ -269,6 +287,12 @@ public class TutoringServiceService {
 			throw new IllegalArgumentException("valid input needed");
 		}
 		*/
+		
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+
 		
 		Manager manager = new Manager();
 		manager.setFirstName(first);
