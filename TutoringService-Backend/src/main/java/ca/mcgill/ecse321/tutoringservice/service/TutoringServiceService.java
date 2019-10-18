@@ -67,11 +67,17 @@ public class TutoringServiceService {
 	public Login createLogin(String userName, String password) {
 		String error = "";
 		if (userName == null || userName.trim().length() == 0) {
-			error = error + "userName cannot be null! ";
+			error += "userName cannot be null or empty!";
 		}
 		if (password == null || password.trim().length() == 0) {
-			error = error + "password cannot be null! ";
+			error += "password cannot be null or empty!";
 		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+
 		Login login = new Login();
 		login.setUserName(userName);
 		login.setPassword(password);
@@ -99,17 +105,35 @@ public class TutoringServiceService {
 	 * Commission
 	 */
 	@Transactional
-	public Commission createCommission(double percentage, int commissionID) {
+	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
 		String error = "";
 		if (percentage <= 0) {
-			error = error + "percentage cannot be <= 0";
+			error += "percentage cannot be <= 0!";
 		}
 		if (commissionID <= 0) {
-			error = error + "Commission ID cannot be <= 0";
+			error += "commissionID cannot be <= 0!";
 		}
+		if (manager == null) {
+			error += "manager cannot be null!";
+		}
+		if (offerings == null) {
+			error += "offerings cannot be null!";
+		}
+		if (tutoringSystem == null) {
+			error += "tutoringSystem cannot be null!";
+		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+
 		Commission commission = new Commission();
 		commission.setCommissionID(commissionID);
 		commission.setPercentage(percentage);
+		commission.setManager(manager);
+		commission.setOffering(offerings);
+		commission.setTutoringSystem(tutoringSystem);
 		commissionRepository.save(commission);
 		return commission;
 	}
@@ -218,19 +242,14 @@ public class TutoringServiceService {
 	 * Manager
 	 */
 	@Transactional
-	// change int to Integer
 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 		String error = "";
 
 		if (first == null || first.trim().length() == 0) {
 			error = error + "First name cannot be empty!";
-			//			throw new IllegalArgumentException(error+"A");
-			//			error = error + "A";
 		}
 		if (last == null || last.trim().length() == 0) {
 			error = error + "Last name cannot be empty!";
-			//			throw new IllegalArgumentException(error+"B");
-			//			error = error + "B";
 		}
 		/*
 		 * dob will not be checked
@@ -242,35 +261,24 @@ public class TutoringServiceService {
 		 */
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
-			//			throw new IllegalArgumentException(error+"D");
-			//			error = error +"D";
 		}
 		if (phone == null || phone == 0) {
 			error = error + "Phone cannot be empty!";
-			//			throw new IllegalArgumentException(error+"E");
-			//			error = error + "E";
 		}
 		if (managerID == null || managerID == 0) {
 			error = error + "Manager ID cannot be empty!";
-			//			throw new IllegalArgumentException(error+"F");
-			//			error = error +"F";
 		}
-
-		/* this part need to be manually assigned
-
 		if (loginInfo == null) {
-			throw new IllegalArgumentException("valid input needed");
+			error = error + "Login Info cannot be empty!";
 		}
 		if (tutoringSystem == null) {
-			throw new IllegalArgumentException("valid input needed");
+			error = error + "Tutoring System cannot be empty!";
 		}
-		 */
 
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
 
 		Manager manager = new Manager();
 		manager.setFirstName(first);
@@ -284,35 +292,6 @@ public class TutoringServiceService {
 		managerRepository.save(manager);
 		return manager;
 	}
-
-
-	//	 if (AvaliableSessionID == null) {
-	//	        error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
-	//	    }
-	//	    if (startTime == null) {
-	//	        error = error + "AvaliableSession start time cannot be empty! ";
-	//	    }
-	//	    if (endTime == null) {
-	//	        error = error + "AvaliableSession end time cannot be empty! ";
-	//	    }
-	//	    if (endTime != null && startTime != null && endTime.before(startTime)) {
-	//	        error = error + "AvaliableSession end time cannot be before event start time!";
-	//	    }
-	//	    error = error.trim();
-	//	    if (error.length() > 0) {
-	//	        throw new IllegalArgumentException(error);
-	//	    }
-	//	@Transactional
-	//	public Person createPerson(String name) {
-	//		if (name == null || name.trim().length() == 0) {
-	//			throw new IllegalArgumentException("Person name cannot be empty!");
-	//		}
-	//		Person person = new Person();
-	//		person.setName(name);
-	//		personRepository.save(person);
-	//		return person;
-	//	}
-	//	
 
 	@Transactional
 	public Manager getManager(int managerID) {
@@ -360,7 +339,13 @@ public class TutoringServiceService {
 		if (studentID == null || studentID == 0) {
 			error = error + "Student ID cannot be empty!";
 		}
-		// the student can have zero course enrolled with our system, thus the valid input check is not necessary
+		if (loginInfo == null) {
+			error = error + "Login Info cannot be empty!";
+		}
+		if (tutoringSystem == null) {
+			error = error + "Tutoring System cannot be empty!";
+		}
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -399,12 +384,10 @@ public class TutoringServiceService {
 	/*
 	 * Offering
 	 */
-	//TODO 
-	@SuppressWarnings("unchecked")
+
 	@Transactional
-	public Offering createOffering(String offId, String term, Double price, AvaliableSession classTime, Subject subject, TutoringSystem tutoringSystem){
-		// TODO: need to change double to Double in the domain model --> Null check
-		String error = "";
+	public Offering createOffering(String offId, String term, Double price, Set<AvaliableSession> classTime, Subject subject, TutoringSystem tutoringSystem){
+		String error ="";
 		if (offId == null || offId.trim().length() == 0) {
 //			throw new IllegalArgumentException("Offering ID cannot be empty!");
 			error = error + "Offering ID cannot be empty!";			
@@ -487,6 +470,12 @@ public class TutoringServiceService {
 		}
 		if (tutorID == null || tutorID == 0) {
 			error = error + "Tutor ID cannot be empty!";
+		}
+		if (loginInfo == null) {
+			error = error + "Login Info cannot be empty!";
+		}
+		if (tutoringSystem == null) {
+			error = error + "Tutoring System cannot be empty!";
 		}
 
 		//		a new tutor (not exist in the system) has the boolean false, but we can add this tutor into our system and then go back
@@ -626,16 +615,16 @@ public class TutoringServiceService {
 	 * Classroom
 	 */
 	@Transactional
-	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom) {
+	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
 		String error = "";
-		if (roomCode == null) {
-			error = error + "Classroom roomCode cannot be empty! ";
+		if (roomCode == null || roomCode.trim().length() == 0) {
+			error = error + "roomCode cannot be empty!";
 		}
 		if (isBooked == null) {
-			error = error + "Classroom isBooked time cannot be empty! ";
+			error = error + "isBooked cannot be empty!";
 		}
 		if (isBigRoom == null) {
-			error = error + "Classroom isBigRoom cannot be empty! ";
+			error = error + "isBigRoom cannot be empty!";
 		}
 		error = error.trim();
 		if (error.length() > 0) {
@@ -645,6 +634,9 @@ public class TutoringServiceService {
 		classroom.setRoomCode(roomCode);
 		classroom.setIsBooked(isBooked);
 		classroom.setIsBigRoom(isBigRoom);
+		classroom.setManager(manager);
+		classroom.setOffering(offerings);
+		classroom.setTutoringSystem(tutoringSystem);
 		classroomRepository.save(classroom);
 		return classroom;
 	}
