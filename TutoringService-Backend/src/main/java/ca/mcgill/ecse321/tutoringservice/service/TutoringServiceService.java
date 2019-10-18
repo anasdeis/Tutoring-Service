@@ -293,35 +293,6 @@ public class TutoringServiceService {
 		return manager;
 	}
 
-
-	//	 if (AvaliableSessionID == null) {
-	//	        error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
-	//	    }
-	//	    if (startTime == null) {
-	//	        error = error + "AvaliableSession start time cannot be empty! ";
-	//	    }
-	//	    if (endTime == null) {
-	//	        error = error + "AvaliableSession end time cannot be empty! ";
-	//	    }
-	//	    if (endTime != null && startTime != null && endTime.before(startTime)) {
-	//	        error = error + "AvaliableSession end time cannot be before event start time!";
-	//	    }
-	//	    error = error.trim();
-	//	    if (error.length() > 0) {
-	//	        throw new IllegalArgumentException(error);
-	//	    }
-	//	@Transactional
-	//	public Person createPerson(String name) {
-	//		if (name == null || name.trim().length() == 0) {
-	//			throw new IllegalArgumentException("Person name cannot be empty!");
-	//		}
-	//		Person person = new Person();
-	//		person.setName(name);
-	//		personRepository.save(person);
-	//		return person;
-	//	}
-	//	
-
 	@Transactional
 	public Manager getManager(int managerID) {
 		Manager manager = managerRepository.findManagerByPersonId(managerID);
@@ -628,16 +599,16 @@ public class TutoringServiceService {
 	 * Classroom
 	 */
 	@Transactional
-	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom) {
+	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
 		String error = "";
-		if (roomCode == null) {
-			error = error + "Classroom roomCode cannot be empty! ";
+		if (roomCode == null || roomCode.trim().length() == 0) {
+			error = error + "roomCode cannot be empty!";
 		}
 		if (isBooked == null) {
-			error = error + "Classroom isBooked time cannot be empty! ";
+			error = error + "isBooked cannot be empty!";
 		}
 		if (isBigRoom == null) {
-			error = error + "Classroom isBigRoom cannot be empty! ";
+			error = error + "isBigRoom cannot be empty!";
 		}
 		error = error.trim();
 		if (error.length() > 0) {
@@ -647,6 +618,9 @@ public class TutoringServiceService {
 		classroom.setRoomCode(roomCode);
 		classroom.setIsBooked(isBooked);
 		classroom.setIsBigRoom(isBigRoom);
+		classroom.setManager(manager);
+		classroom.setOffering(offerings);
+		classroom.setTutoringSystem(tutoringSystem);
 		classroomRepository.save(classroom);
 		return classroom;
 	}
