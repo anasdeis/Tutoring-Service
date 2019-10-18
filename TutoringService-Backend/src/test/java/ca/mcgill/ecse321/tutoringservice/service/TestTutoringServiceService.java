@@ -158,9 +158,6 @@ public class TestTutoringServiceService {
     }
 
 
-
-	// TODO
-    @SuppressWarnings("null")
 	@Test
     public void testCreateStudentNull() {
     	assertEquals(0, service.getAllStudents().size());		
@@ -199,14 +196,12 @@ public class TestTutoringServiceService {
     	
     }
 
-// TODO
 	@Test
 	public void testCreateStudentEmpty() {
 		// cannot check if an Integer is empty, instead, check if it has the default value 0
 		// can pass empty value for login but can not pass null
 		assertEquals(0, service.getAllStudents().size());
 
-		String name = "";
 		Integer studentID = 0;
     	String first = "";
     	String last = "";
@@ -244,7 +239,6 @@ public class TestTutoringServiceService {
 	}
 
  	
-// TODO
 	@Test
 	public void testCreateStudentSpaces() {
 		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
@@ -252,7 +246,6 @@ public class TestTutoringServiceService {
 
 		assertEquals(0, service.getAllStudents().size());
 		
-		String name = " ";
 		Integer studentID = 0;
     	String first = " ";
     	String last = " ";
@@ -326,8 +319,6 @@ public class TestTutoringServiceService {
         service.deleteManager(managerID);
     }
 
- // TODO  
-    @SuppressWarnings("null")
 	@Test
     public void testCreateManagerNull() {
     	assertEquals(0, service.getAllManagers().size());		
@@ -364,12 +355,10 @@ public class TestTutoringServiceService {
     	
     }
     
-   // TODO 
     @Test
 	public void testCreateManagerEmpty() {
 		assertEquals(0, service.getAllManagers().size());
 
-		String name = "";
 		Integer managerID = 0;
     	String first = "";
     	String last = "";
@@ -405,7 +394,7 @@ public class TestTutoringServiceService {
 	}
 
     
- // TODO
+
  	@Test
  	public void testCreateManagerSpaces() {
  		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
@@ -415,7 +404,6 @@ public class TestTutoringServiceService {
 
  		assertEquals(0, service.getAllManagers().size());
  		
- 		String name = " ";
  		Integer managerID = 0;
      	String first = " ";
      	String last = " ";
@@ -492,9 +480,7 @@ public class TestTutoringServiceService {
 
     }
     
-    // TODO  
-    @SuppressWarnings("null")
-	@Test
+    @Test
     public void testCreateTutorNull() {
     	assertEquals(0, service.getAllTutors().size());		
     	String error = null;
@@ -532,14 +518,12 @@ public class TestTutoringServiceService {
     }
     
     
- // TODO
  	@Test
  	public void testCreateTutorEmpty() {
  		// cannot check if an Integer is empty, instead, check if it has the default value 0
 
  		assertEquals(0, service.getAllTutors().size());
 
- 		String name = "";
  		Integer tutorID = 0;
      	String first = "";
      	String last = "";
@@ -576,7 +560,6 @@ public class TestTutoringServiceService {
 
  	}
 
- // TODO
  	@Test
  	public void testCreateTutorSpaces() {
  		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
@@ -584,7 +567,6 @@ public class TestTutoringServiceService {
 
  		assertEquals(0, service.getAllTutors().size());
  		
- 		String name = " ";
  		Integer tutorID = 0;
      	String first = " ";
      	String last = " ";
@@ -994,7 +976,7 @@ public class TestTutoringServiceService {
     }
 */
 
-/*
+// TODO 
 	@Test
 	public void testCreateOffering() {
 		assertEquals(0, service.getAllOfferings().size());
@@ -1007,8 +989,7 @@ public class TestTutoringServiceService {
 		subject.setCourseID("12233");
 		subject.setName("12233");
 		subject.setDescription("None");
-		subjectRepository.save(subject);
-
+//		subjectRepository.save(subject);
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(123);
 		tutoringSystemRepository.save(tutoringSystem);
@@ -1034,13 +1015,14 @@ public class TestTutoringServiceService {
 
 		String offeringID = null;
 		String term = null;
+		// need change double to Double --> null test
 		double pricePerHour = 0.0;
 		AvaliableSession classTime = null;
 
 		Subject subject = new Subject();
-		subject.setCourseID("12233");
-		subject.setName("12233");
-		subject.setDescription("None");
+		subject.setCourseID("ECSE321");
+		subject.setName("Intro. to Software Engineering");
+		subject.setDescription("Tools and technologies");
 		subjectRepository.save(subject);
 
 		TutoringSystem tutoringSystem = new TutoringSystem();
@@ -1055,7 +1037,8 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+//		assertEquals("valid input needed", error);
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Houly rate cannot be empty!Class time cannot be empty!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
@@ -1065,13 +1048,11 @@ public class TestTutoringServiceService {
 
 	@Test
 	public void testCreateOfferingSpaces() {
-		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
-		// should be textfield to fill in, if it's textfield, then there exist ways to check
 
 		assertEquals(0, service.getAllStudents().size());
 
-		String offeringID = "   ";
-		String term = "   ";
+		String offeringID = " ";
+		String term = " ";
 		double pricePerHour = 0.0;
 		AvaliableSession classTime = new AvaliableSession();
 		classTime.setAvaliableSessionID(0);
@@ -1098,7 +1079,9 @@ public class TestTutoringServiceService {
 		// check error
 //		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
 //    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-		assertEquals("valid input needed", error);
+//		assertEquals("valid input needed", error);
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Houly rate cannot be empty!Class time cannot be empty!", error);
+
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
@@ -1139,13 +1122,14 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+//		assertEquals("valid input needed", error);
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Houly rate cannot be empty!Class time cannot be empty!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
 
 	}
-*/
+
 /*
 
     @Test

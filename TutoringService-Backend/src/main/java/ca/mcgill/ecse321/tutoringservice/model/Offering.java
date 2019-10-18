@@ -9,105 +9,110 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Offering{
-   private String offeringID;
+	private String offeringID;
 
-public void setOfferingID(String value) {
-    this.offeringID = value;
-}
-@Id
-public String getOfferingID() {
-    return this.offeringID;
-}
-private Set<Student> studentsEnrolled;
+	public void setOfferingID(String value) {
+		this.offeringID = value;
+	}
+	@Id
+	public String getOfferingID() {
+		return this.offeringID;
+	}
+	private Set<Student> studentsEnrolled;
 
-@ManyToMany
-public Set<Student> getStudentsEnrolled() {
-   return this.studentsEnrolled;
-}
+	@ManyToMany
+	public Set<Student> getStudentsEnrolled() {
+		return this.studentsEnrolled;
+	}
 
-public void setStudentsEnrolled(Set<Student> studentsEnrolleds) {
-   this.studentsEnrolled = studentsEnrolleds;
-}
+	public void setStudentsEnrolled(Set<Student> studentsEnrolleds) {
+		this.studentsEnrolled = studentsEnrolleds;
+	}
 
-private Subject subject;
+	private Subject subject;
 
-@ManyToOne(optional=false)
-public Subject getSubject() {
-   return this.subject;
-}
+	@ManyToOne(optional=false)
+	public Subject getSubject() {
+		return this.subject;
+	}
 
-public void setSubject(Subject subject) {
-   this.subject = subject;
-}
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
 
-private String term;
+	private String term;
 
-public void setTerm(String value) {
-    this.term = value;
-}
-public String getTerm() {
-    return this.term;
-}
-private double pricePerHour;
+	public void setTerm(String value) {
+		this.term = value;
+	}
+	public String getTerm() {
+		return this.term;
+	}
+	private double pricePerHour;
 
-public void setPricePerHour(double value) {
-    this.pricePerHour = value;
-}
-public double getPricePerHour() {
-    return this.pricePerHour;
-}
-private Classroom classroom;
+	public void setPricePerHour(double value) {
+		this.pricePerHour = value;
+	}
+	public double getPricePerHour() {
+		return this.pricePerHour;
+	}
+	private Classroom classroom;
 
-@ManyToOne(optional=false)
-public Classroom getClassroom() {
-   return this.classroom;
-}
+	@ManyToOne(optional=false)
+	public Classroom getClassroom() {
+		return this.classroom;
+	}
 
-public void setClassroom(Classroom classroom) {
-   this.classroom = classroom;
-}
+	public void setClassroom(Classroom classroom) {
+		this.classroom = classroom;
+	}
 
-private Set<AvaliableSession> classTime;
+	private Set<AvaliableSession> classTime;
 
-@ManyToMany
-public Set<AvaliableSession> getClassTime() {
-   return this.classTime;
-}
+	@ManyToMany
+	public Set<AvaliableSession> getClassTime() {
+		return this.classTime;
+	}
 
-public void setClassTime(Set<AvaliableSession> classTimes) {
-   this.classTime = classTimes;
-}
+	public void setClassTime(Set<AvaliableSession> classTimes) {
+		this.classTime = classTimes;
+	}
 
-private Set<Review> review;
+	private Set<Review> review;
 
-@OneToMany(mappedBy="offering" )
-public Set<Review> getReview() {
-   return this.review;
-}
+	@OneToMany(mappedBy="offering" )
+	public Set<Review> getReview() {
+		return this.review;
+	}
 
-public void setReview(Set<Review> reviews) {
-   this.review = reviews;
-}
+	public void setReview(Set<Review> reviews) {
+		this.review = reviews;
+	}
 
-private Commission commission;
+	private Commission commission;
 
-@ManyToOne(optional=false)
-public Commission getCommission() {
-   return this.commission;
-}
+	@ManyToOne(optional=false)
+	public Commission getCommission() {
+		return this.commission;
+	}
 
-public void setCommission(Commission commission) {
-   this.commission = commission;
-}
+	public void setCommission(Commission commission) {
+		this.commission = commission;
+	}
 
-private Tutor tutor;
+	private Tutor tutor;
+	private TutoringSystem tutoringSystem;
 
-@ManyToOne(optional=false)
-public Tutor getTutor() {
-   return this.tutor;
-}
+	@ManyToOne(optional=false)
+	public Tutor getTutor() {
+		return this.tutor;
+	}
 
-public void setTutor(Tutor tutor) {
-   this.tutor = tutor;
-}
+	public void setTutor(Tutor tutor) {
+		this.tutor = tutor;
+	}
+
+	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+		this.tutoringSystem = tutoringSystem;
+	}
 }

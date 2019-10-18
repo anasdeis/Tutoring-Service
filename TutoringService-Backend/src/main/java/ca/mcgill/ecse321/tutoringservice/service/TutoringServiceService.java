@@ -399,30 +399,47 @@ public class TutoringServiceService {
 	/*
 	 * Offering
 	 */
+	//TODO 
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public Offering createOffering(String offId, String term, double price, AvaliableSession classTime, Subject subject, TutoringSystem tutoringSystem){
+	public Offering createOffering(String offId, String term, Double price, AvaliableSession classTime, Subject subject, TutoringSystem tutoringSystem){
+		// TODO: need to change double to Double in the domain model --> Null check
+		String error = "";
 		if (offId == null || offId.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+//			throw new IllegalArgumentException("Offering ID cannot be empty!");
+			error = error + "Offering ID cannot be empty!";			
 		}
 		if (term == null || term.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+//			throw new IllegalArgumentException("Offering term cannot be empty!");
+			error = error + "Offering term cannot be empty";
+		}
+		if (price == null || price == 0.0) {
+//			throw new IllegalArgumentException("Hourly rate cannot be empty!");
+			error = error + "Hourly rate cannot be empty!";
 		}
 		if (classTime == null) {
-			throw new IllegalArgumentException("valid input needed");
+//			throw new IllegalArgumentException("Class time cannot be empty!");
+			error = error + "Class time cannot be empty!";
 		}
-		if (price == 0.0) 
-			throw new IllegalArgumentException("valid input needed");
-
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 
 		Offering offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
 		offering.setPricePerHour(price);
+		// class ca.mcgill.ecse321.tutoringservice.model.AvaliableSession cannot be cast to class java.util.Set (ca.mcgill.ecse321.tutoringservice.model.AvaliableSession
+		//is in unnamed module of loader 'app'; java.util.Set is in module java.base of loader 'bootstrap')
 		offering.setClassTime((Set<AvaliableSession>) classTime);
+		
+		
 		offering.setSubject(subject);
+		offering.setTutoringSystem(tutoringSystem);
+		
+//		offeringRepository.save(offering);
 		return offering;
-
 	}
 
 	@Transactional
