@@ -105,13 +105,22 @@ public class TutoringServiceService {
 	 * Commission
 	 */
 	@Transactional
-	public Commission createCommission(double percentage, int commissionID) {
+	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
 		String error = "";
 		if (percentage <= 0) {
-			error += "percentage cannot be <= 0";
+			error += "percentage cannot be <= 0!";
 		}
 		if (commissionID <= 0) {
-			error += "Commission ID cannot be <= 0";
+			error += "commissionID cannot be <= 0!";
+		}
+		if (manager == null) {
+			error += "manager cannot be null!";
+		}
+		if (offerings == null) {
+			error += "offerings cannot be null!";
+		}
+		if (tutoringSystem == null) {
+			error += "tutoringSystem cannot be null!";
 		}
 		
 		error = error.trim();
@@ -122,6 +131,9 @@ public class TutoringServiceService {
 		Commission commission = new Commission();
 		commission.setCommissionID(commissionID);
 		commission.setPercentage(percentage);
+		commission.setManager(manager);
+		commission.setOffering(offerings);
+		commission.setTutoringSystem(tutoringSystem);
 		commissionRepository.save(commission);
 		return commission;
 	}
