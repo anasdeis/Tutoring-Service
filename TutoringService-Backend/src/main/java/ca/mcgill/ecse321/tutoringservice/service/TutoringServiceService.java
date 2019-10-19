@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 public class TutoringServiceService {
 
 	@Autowired
-	private AvaliableSessionRepository AvaliableSessionRepository;
+	private AvaliableSessionRepository avaliableSessionRepository;
 
 	@Autowired
 	private ClassroomRepository classroomRepository;
@@ -59,6 +60,54 @@ public class TutoringServiceService {
 
 	@Autowired
 	private UniversityRepository universityRepository;
+	
+	/*
+	 * TutoringSystem
+	 */
+
+	@Transactional
+	public TutoringSystem createTutoringSystem(Integer tutoringSystemID) {
+	    String error = "";
+
+	    if (tutoringSystemID == null) {
+	        error = error + "TutoringSystem tutoringSystemID cannot be empty! ";
+	    }
+	    error = error.trim();
+
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(tutoringSystemID);
+		tutoringSystemRepository.save(tutoringSystem);
+		return tutoringSystem;
+	}
+
+	@Transactional
+
+	public TutoringSystem getTutoringSystem(Integer tutoringSystemID) {
+		if (tutoringSystemID == null){
+	        throw new IllegalArgumentException("TutoringSystem tutoringSystemID cannot be empty!");
+	    }
+
+		TutoringSystem tutoringSystem = tutoringSystemRepository.findTutoringSystemByTutoringSystemID(tutoringSystemID);
+		return tutoringSystem;
+	}
+
+	@Transactional
+	public List<TutoringSystem> getAllTutoringSystems() {
+		return toList(tutoringSystemRepository.findAll());
+	}
+
+
+	@Transactional
+	public void deleteTutoringSystem(Integer tutoringSystemID) {
+		if (tutoringSystemID == null){
+	        throw new IllegalArgumentException("TutoringSystem tutoringSystemID cannot be empty!");
+	    }
+		tutoringSystemRepository.deleteTutoringSystemByTutoringSystemID(tutoringSystemID);
+	}
 
 	/*
 	 * Login
@@ -561,31 +610,51 @@ public class TutoringServiceService {
 	/*
 	 * Available Session
 	 */
-	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day) {
+	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
 		// Input validation
 		String error = "";
 		if (AvaliableSessionID == null) {
-			error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
+			error = error + "AvaliableSession AvaliableSessionID cannot be empty!";
 		}
 		if (startTime == null) {
-			error = error + "AvaliableSession start time cannot be empty! ";
+			error = error + "AvaliableSession start time cannot be empty!";
 		}
 		if (endTime == null) {
-			error = error + "AvaliableSession end time cannot be empty! ";
+			error = error + "AvaliableSession end time cannot be empty!";
+		}
+		if (day == null) {
+			error = error + "AvaliableSession day cannot be empty!";
 		}
 		if (endTime != null && startTime != null && endTime.before(startTime)) {
 			error = error + "AvaliableSession end time cannot be before event start time!";
 		}
+		if (tutoringSystem == null) {
+	        error = error + "TutoringSystem needs to be selected for available session!";
+	    } else if (!tutoringSystemRepository.existsByTutoringSystemID(tutoringSystem.getTutoringSystemID())) {
+	        error = error + "TutoringSystem does not exist!";
+	    }
+		
+		for (Tutor tutor : tutors) {
+			if (tutor == null) {
+		        error = error + "Tutor needs to be selected for available session!";
+		    } else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
+		        error = error + "Tutor does not exist!";
+		    }
+		}
+		       
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		
 		AvaliableSession AvaliableSession = new AvaliableSession();
 		AvaliableSession.setAvaliableSessionID(AvaliableSessionID);
 		AvaliableSession.setDay(day);
 		AvaliableSession.setStartTime(startTime);
 		AvaliableSession.setEndTime(endTime);
-		AvaliableSessionRepository.save(AvaliableSession);
+		AvaliableSession.setTutoringSystem(tutoringSystem);
+		AvaliableSession.setTutor(tutors);
+		avaliableSessionRepository.save(AvaliableSession);
 		return AvaliableSession;
 	}
 
@@ -594,13 +663,13 @@ public class TutoringServiceService {
 		if (AvaliableSessionID == null) {
 			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 		}
-		AvaliableSession AvaliableSession = AvaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		AvaliableSession AvaliableSession = avaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
 		return AvaliableSession;
 	}
 
 	@Transactional
 	public List<AvaliableSession> getAllAvaliableSessions() {
-		return toList(AvaliableSessionRepository.findAll());
+		return toList(avaliableSessionRepository.findAll());
 	}
 
 	@Transactional
@@ -608,7 +677,7 @@ public class TutoringServiceService {
 		if (AvaliableSessionID == null) {
 			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 		}
-		AvaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		avaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
 	}
 
 	/*
