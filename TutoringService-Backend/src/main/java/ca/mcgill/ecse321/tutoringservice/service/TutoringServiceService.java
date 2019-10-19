@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 public class TutoringServiceService {
 
 	@Autowired
-	private AvaliableSessionRepository AvaliableSessionRepository;
+	private AvaliableSessionRepository avaliableSessionRepository;
 
 	@Autowired
 	private ClassroomRepository classroomRepository;
@@ -61,7 +62,55 @@ public class TutoringServiceService {
 	private UniversityRepository universityRepository;
 
 	/*
-	 * Login
+	 * TutoringSystem
+	 */
+
+	@Transactional
+	public TutoringSystem createTutoringSystem(Integer tutoringSystemID) {
+		String error = "";
+
+		if (tutoringSystemID == null) {
+			error = error + "TutoringSystem tutoringSystemID cannot be empty! ";
+		}
+		error = error.trim();
+
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(tutoringSystemID);
+		tutoringSystemRepository.save(tutoringSystem);
+		return tutoringSystem;
+	}
+
+	@Transactional
+
+	public TutoringSystem getTutoringSystem(Integer tutoringSystemID) {
+		if (tutoringSystemID == null){
+			throw new IllegalArgumentException("TutoringSystem tutoringSystemID cannot be empty!");
+		}
+
+		TutoringSystem tutoringSystem = tutoringSystemRepository.findTutoringSystemByTutoringSystemID(tutoringSystemID);
+		return tutoringSystem;
+	}
+
+	@Transactional
+	public List<TutoringSystem> getAllTutoringSystems() {
+		return toList(tutoringSystemRepository.findAll());
+	}
+
+
+	@Transactional
+	public void deleteTutoringSystem(Integer tutoringSystemID) {
+		if (tutoringSystemID == null){
+			throw new IllegalArgumentException("TutoringSystem tutoringSystemID cannot be empty!");
+		}
+		tutoringSystemRepository.deleteTutoringSystemByTutoringSystemID(tutoringSystemID);
+	}
+
+	/*
+	 * Login DONE
 	 */
 	@Transactional
 	public Login createLogin(String userName, String password) {
@@ -72,7 +121,7 @@ public class TutoringServiceService {
 		if (password == null || password.trim().length() == 0) {
 			error += "password cannot be null or empty!";
 		}
-		
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -102,7 +151,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Commission
+	 * Commission DONE
 	 */
 	@Transactional
 	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
@@ -122,7 +171,7 @@ public class TutoringServiceService {
 		if (tutoringSystem == null) {
 			error += "tutoringSystem cannot be null!";
 		}
-		
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -155,7 +204,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Subject
+	 * Subject DONE
 	 */
 	@Transactional
 	public Subject createSubject(String name, String courseID, String description, TutoringSystem tutoringSystem) {
@@ -166,7 +215,7 @@ public class TutoringServiceService {
 			error += "description cannot be empty or null!";
 		if (courseID == null || courseID.trim().length() == 0)
 			error += "courseID cannot be empty or null!";
-		
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -224,7 +273,7 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		
+
 		SubjectRequest subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
@@ -252,7 +301,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Manager
+	 * Manager   DONE
 	 */
 	@Transactional
 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -323,7 +372,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Student
+	 * Student    DONE
 	 */
 	@Transactional
 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -394,32 +443,48 @@ public class TutoringServiceService {
 		studentRepository.deleteStudentByPersonId(studentID);
 	}
 
-	/*
+	/* TODO
 	 * Offering
 	 */
+
 	@Transactional
 	public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, TutoringSystem tutoringSystem){
+		String error ="";
 		if (offId == null || offId.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("Offering ID cannot be empty!");
+			error = error + "Offering ID cannot be empty!";			
 		}
 		if (term == null || term.trim().length() == 0) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("Offering term cannot be empty!");
+			error = error + "Offering term cannot be empty!";
+		}
+		if (price == 0.0) {
+			//			throw new IllegalArgumentException("Hourly rate cannot be empty!");
+			error = error + "Hourly rate cannot be empty!";
 		}
 		if (classTime == null) {
-			throw new IllegalArgumentException("valid input needed");
+			//			throw new IllegalArgumentException("Class time cannot be empty!");
+			error = error + "Class time cannot be empty!";
 		}
-		if (price == 0.0) 
-			throw new IllegalArgumentException("valid input needed");
-
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
 
 		Offering offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
 		offering.setPricePerHour(price);
+		// class ca.mcgill.ecse321.tutoringservice.model.AvaliableSession cannot be cast to class java.util.Set (ca.mcgill.ecse321.tutoringservice.model.AvaliableSession
+		//is in unnamed module of loader 'app'; java.util.Set is in module java.base of loader 'bootstrap')
 		offering.setClassTime((Set<AvaliableSession>) classTime);
-		offering.setSubject(subject);
-		return offering;
 
+
+		offering.setSubject(subject);
+		offering.setTutoringSystem(tutoringSystem);
+
+		//		offeringRepository.save(offering);
+		return offering;
 	}
 
 	@Transactional
@@ -439,7 +504,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Tutor
+	 * Tutor  DONE
 	 */
 	@Transactional
 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -518,10 +583,37 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Review
+	 * Review		DONE
 	 */
 	@Transactional
 	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
+		String error = "";
+
+		if (reviewID == null || reviewID == 0) {
+			error += "reviewID cannot be empty!";
+		}
+
+		if (comment == null || comment.trim().length() == 0) {
+			error += "comment cannot be null!";
+		}
+		if (isApproved == null) {
+			error += "isApproved cannot be null!";
+		}
+		if (manager == null) {
+			error += "manager cannot be null!";
+		}
+		if (offering == null) {
+			error += "offering cannot be null!";
+		}
+		if (tutoringSystem == null) {
+			error += "tutoringSystem cannot be null!";
+		}
+
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+
 		Review review = new Review();
 		review.setComment(comment);
 		review.setIsApproved(isApproved);
@@ -555,34 +647,109 @@ public class TutoringServiceService {
 		reviewRepository.deleteReviewByReviewID(reviewID);
 	}
 
+
 	/*
-	 * Available Session
+	 * tutorApplication     YET TO FINISH
 	 */
-	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day) {
-		// Input validation
+	@Transactional
+	public TutorApplication createTutorApplication(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
 		String error = "";
-		if (AvaliableSessionID == null) {
-			error = error + "AvaliableSession AvaliableSessionID cannot be empty! ";
+		if (applicationId == null || applicationId == 0) {
+			error += "applicationId cannot be empty!";
 		}
-		if (startTime == null) {
-			error = error + "AvaliableSession start time cannot be empty! ";
+
+		if (isAccepted == null ) {
+			error += "isAccepted cannot be null!";
 		}
-		if (endTime == null) {
-			error = error + "AvaliableSession end time cannot be empty! ";
+		if (tutor == null) {
+			error += "tutor cannot be null!";
 		}
-		if (endTime != null && startTime != null && endTime.before(startTime)) {
-			error = error + "AvaliableSession end time cannot be before event start time!";
+
+		if (tutoringSystem == null) {
+			error += "tutoringSystem cannot be null!";
 		}
+
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+
+		TutorApplication tutorapplication = new TutorApplication();
+		tutorapplication.setApplicationId(applicationId);
+		tutorapplication.setTutor(tutor);
+		tutorapplication.setIsAccepted(isAccepted);
+		tutorapplication.setTutoringSystem(tutoringSystem);
+		tutorApplicationRepository.save(tutorapplication);
+		return tutorapplication;
+	}	
+	@Transactional
+	public TutorApplication getTutorApplication(Integer applicationId) {
+		if (applicationId == null) {
+			throw new IllegalArgumentException("TutorApplication applicationId cannot be empty!");
+		}
+		TutorApplication tutorApplication = tutorApplicationRepository.findTutorApplicationByApplicationId(applicationId);
+		return tutorApplication;
+
+	}
+	@Transactional
+	public List<TutorApplication> getAllTutorApplications() {
+		return toList(tutorApplicationRepository.findAll());
+	}
+	@Transactional
+	public void deleteTutorApplication(Integer applicationId) {
+		if (applicationId == null) {
+			throw new IllegalArgumentException("TutorApplication applicationId cannot be empty!");
+		}
+		tutorApplicationRepository.deleteTutorApplicationByApplicationId(applicationId);
+	}
+	/*
+	 * Available Session
+	 */
+	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
+		// Input validation
+		String error = "";
+		if (AvaliableSessionID == null) {
+			error = error + "AvaliableSession AvaliableSessionID cannot be empty!";
+		}
+		if (startTime == null) {
+			error = error + "AvaliableSession start time cannot be empty!";
+		}
+		if (endTime == null) {
+			error = error + "AvaliableSession end time cannot be empty!";
+		}
+		if (day == null) {
+			error = error + "AvaliableSession day cannot be empty!";
+		}
+		if (endTime != null && startTime != null && endTime.before(startTime)) {
+			error = error + "AvaliableSession end time cannot be before event start time!";
+		}
+		if (tutoringSystem == null) {
+			error = error + "TutoringSystem needs to be selected for available session!";
+		} else if (!tutoringSystemRepository.existsByTutoringSystemID(tutoringSystem.getTutoringSystemID())) {
+			error = error + "TutoringSystem does not exist!";
+		}
+
+		for (Tutor tutor : tutors) {
+			if (tutor == null) {
+				error = error + "Tutor needs to be selected for available session!";
+			} else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
+				error = error + "Tutor does not exist!";
+			}
+		}
+
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+
 		AvaliableSession AvaliableSession = new AvaliableSession();
 		AvaliableSession.setAvaliableSessionID(AvaliableSessionID);
 		AvaliableSession.setDay(day);
 		AvaliableSession.setStartTime(startTime);
 		AvaliableSession.setEndTime(endTime);
-		AvaliableSessionRepository.save(AvaliableSession);
+		AvaliableSession.setTutoringSystem(tutoringSystem);
+		AvaliableSession.setTutor(tutors);
+		avaliableSessionRepository.save(AvaliableSession);
 		return AvaliableSession;
 	}
 
@@ -591,13 +758,13 @@ public class TutoringServiceService {
 		if (AvaliableSessionID == null) {
 			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 		}
-		AvaliableSession AvaliableSession = AvaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		AvaliableSession AvaliableSession = avaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
 		return AvaliableSession;
 	}
 
 	@Transactional
 	public List<AvaliableSession> getAllAvaliableSessions() {
-		return toList(AvaliableSessionRepository.findAll());
+		return toList(avaliableSessionRepository.findAll());
 	}
 
 	@Transactional
@@ -605,11 +772,11 @@ public class TutoringServiceService {
 		if (AvaliableSessionID == null) {
 			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
 		}
-		AvaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		avaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
 	}
 
 	/*
-	 * Classroom
+	 * Classroom     DONE
 	 */
 	@Transactional
 	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
@@ -659,8 +826,8 @@ public class TutoringServiceService {
 		}
 		classroomRepository.deleteClassroomByRoomCode(roomCode);
 	}
-	
-	
+
+
 	/*
 	 * University
 	 */
@@ -680,16 +847,16 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		
+
 		University university = new University();
 		university.setName(name);
 		university.setSubject(subjects);
 		university.setTutoringSystem(tutoringSystem);
 		universityRepository.save(university);
-		
+
 		return university;
 	}
-	
+
 	@Transactional
 	public University getUniversity(String name) {
 		if (name == null || name.trim().length() == 0){
@@ -698,12 +865,12 @@ public class TutoringServiceService {
 		University university = universityRepository.findUniversityByName(name);
 		return university;
 	}
-	
+
 	@Transactional
 	public List<University> getAllUniversitys() {
 		return toList(universityRepository.findAll());
 	}
-	
+
 	@Transactional
 	public void deleteUniversity(String name) {
 		if (name == null || name.trim().length() == 0){
@@ -711,7 +878,7 @@ public class TutoringServiceService {
 		}
 		universityRepository.deleteUniversityByName(name);
 	}
-	
+
 
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
