@@ -61,7 +61,7 @@ public class TutoringServiceService {
 	private UniversityRepository universityRepository;
 
 	/*
-	 * Login
+	 * Login DONE
 	 */
 	@Transactional
 	public Login createLogin(String userName, String password) {
@@ -102,7 +102,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Commission
+	 * Commission DONE
 	 */
 	@Transactional
 	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
@@ -155,7 +155,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Subject
+	 * Subject DONE
 	 */
 	@Transactional
 	public Subject createSubject(String name, String courseID, String description, TutoringSystem tutoringSystem) {
@@ -239,7 +239,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Manager
+	 * Manager   DONE
 	 */
 	@Transactional
 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -310,7 +310,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Student
+	 * Student    DONE
 	 */
 	@Transactional
 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -426,7 +426,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Tutor
+	 * Tutor  DONE
 	 */
 	@Transactional
 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -505,10 +505,37 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Review
+	 * Review		DONE
 	 */
 	@Transactional
 	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
+		String error = "";
+		
+		if (reviewID == null || reviewID == 0) {
+			error += "reviewID cannot be empty!";
+		}
+
+		if (comment == null || comment.trim().length() == 0) {
+			error += "comment cannot be null!";
+		}
+		if (isApproved == null) {
+			error += "isApproved cannot be null!";
+		}
+		if (manager == null) {
+			error += "manager cannot be null!";
+		}
+		if (offering == null) {
+			error += "offering cannot be null!";
+		}
+		if (tutoringSystem == null) {
+			error += "tutoringSystem cannot be null!";
+		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
 		Review review = new Review();
 		review.setComment(comment);
 		review.setIsApproved(isApproved);
@@ -542,6 +569,61 @@ public class TutoringServiceService {
 		reviewRepository.deleteReviewByReviewID(reviewID);
 	}
 
+
+	/*
+	 * tutorApplication     YET TO FINISH
+	 */
+	@Transactional
+   public TutorApplication createTutorApplication(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
+	   String error = "";
+	   if (applicationId == null || applicationId == 0) {
+			error += "applicationId cannot be empty!";
+		}
+
+		if (isAccepted == null ) {
+			error += "isAccepted cannot be null!";
+		}
+		if (tutor == null) {
+			error += "tutor cannot be null!";
+		}
+
+		if (tutoringSystem == null) {
+			error += "tutoringSystem cannot be null!";
+		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		TutorApplication tutorapplication = new TutorApplication();
+		tutorapplication.setApplicationId(applicationId);
+		tutorapplication.setTutor(tutor);
+		tutorapplication.setIsAccepted(isAccepted);
+		tutorapplication.setTutoringSystem(tutoringSystem);
+		tutorApplicationRepository.save(tutorapplication);
+		return tutorapplication;
+   }	
+	@Transactional
+   public TutorApplication getTutorApplication(Integer applicationId) {
+		if (applicationId == null) {
+			throw new IllegalArgumentException("TutorApplication applicationId cannot be empty!");
+		}
+		TutorApplication tutorApplication = tutorApplicationRepository.findTutorApplicationByApplicationId(applicationId);
+		return tutorApplication;
+	   
+   }
+	@Transactional
+   public List<TutorApplication> getAllTutorApplications() {
+		return toList(tutorApplicationRepository.findAll());
+   }
+	@Transactional
+	public void deleteTutorApplication(Integer applicationId) {
+		if (applicationId == null) {
+			throw new IllegalArgumentException("TutorApplication applicationId cannot be empty!");
+		}
+		tutorApplicationRepository.deleteTutorApplicationByApplicationId(applicationId);
+	}
 	/*
 	 * Available Session
 	 */
@@ -596,7 +678,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Classroom
+	 * Classroom     DONE
 	 */
 	@Transactional
 	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {

@@ -49,6 +49,7 @@ import ca.mcgill.ecse321.tutoringservice.model.Subject;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectRequest;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectType;
 import ca.mcgill.ecse321.tutoringservice.model.Tutor;
+import ca.mcgill.ecse321.tutoringservice.model.TutorApplication;
 import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 import ca.mcgill.ecse321.tutoringservice.model.University;
 
@@ -120,6 +121,7 @@ public class TestTutoringServiceService {
 		tutoringSystemRepository.deleteAll();
 	}
 
+	//LOGIN TESTS
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
@@ -204,7 +206,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, allLogins.size());     
 	}
 
-
+	//STUDENT TESTS
 	@Test
 	public void testCreateStudent() {
 		assertEquals(0, service.getAllStudents().size());
@@ -346,7 +348,7 @@ public class TestTutoringServiceService {
 	}
 
 
-
+	//MANAGER TESTS
 	@Test
 	public void testCreateManager() {
 		assertEquals(0, service.getAllManagers().size());
@@ -475,7 +477,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllManagers().size());
 
 	}
-
+	//TUTOR TESTS
 	@Test
 	public void testCreateTutor() {
 		assertEquals(0, service.getAllTutors().size());
@@ -829,7 +831,7 @@ public class TestTutoringServiceService {
 
 	}
 	 */
-
+	//SUBJECT TESTS
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -931,7 +933,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjects().size());
 
 	}
-
+	//COMMISSION TESTS
 	@Test
 	public void testCreateCommission() {
 		assertEquals(0, service.getAllCommissions().size());
@@ -1290,7 +1292,7 @@ public class TestTutoringServiceService {
 		assertEquals("manager cannot be null!offerings cannot be null!tutoringSystem cannot be null!", error);
 		assertEquals(0, allCommissions.size());
 	}
-	
+	//CLASSROOM TESTS
 	@Test
 	public void testCreateClassroom() {
         assertEquals(0, service.getAllClassrooms().size());
@@ -1651,25 +1653,25 @@ public class TestTutoringServiceService {
 
 	}
 	 */
-	/*
+	
 
-    @Test
-    public void testCreateUniversity() {
-        assertEquals(0, service.getAllUniversitys().size());
-        String name = "Mcgill";
-        try {
-            service.createUniversity(name);
-        } catch (IllegalArgumentException e) {
-            // Check that no error occurred
-            fail();
-        }
-        List<University> allUniversitys = service.getAllUniversitys();
-        assertEquals(1, allUniversitys.size());
-        assertEquals(name, allUniversitys.get(0).getName());
-        service.deleteUniversity(name);
-    }
+//    @Test
+//    public void testCreateUniversity() {
+//        assertEquals(0, service.getAllUniversitys().size());
+//        String name = "Mcgill";
+//        try {
+//            service.createUniversity(name);
+//        } catch (IllegalArgumentException e) {
+//            // Check that no error occurred
+//            fail();
+//        }
+//        List<University> allUniversitys = service.getAllUniversitys();
+//        assertEquals(1, allUniversitys.size());
+//        assertEquals(name, allUniversitys.get(0).getName());
+//        service.deleteUniversity(name);
+//    }
 
-    
+//    
     @Test
 	public void testCreateReview() {
 		assertEquals(0, service.getAllReviews().size());
@@ -1678,73 +1680,99 @@ public class TestTutoringServiceService {
 		String comment = "Default comment";
         Boolean isApproved = false;
         Integer reviewID  = 10;
+        
 
-		try {
-			Manager m = new Manager();
-			Integer managerID = 123456;
-	        String firstName = "Charles";
-	        String lastName = "Liu";
-	        Calendar cal = Calendar.getInstance();
-	        cal.set(1999, Calendar.MARCH, 16, 9, 0, 0);
-	        Date dateOfBirth = new Date(cal.getTimeInMillis());
-	        String email = "123456@gmail.com";
-	        Integer phoneNumber = 45612378;
+		Integer managerID = 123456;
+		String firstName = "omar";
+		String lastName = "noor";
+		Calendar c = Calendar.getInstance();
+		c.set(1999, Calendar.MARCH, 16, 9, 0, 0);
+		Date dateOfBirth = new Date(c.getTimeInMillis());
+		String email = "123456@gmail.com";
+		Integer phoneNumber = 45612378;
 
-			TutoringSystem tutoringSystem = new TutoringSystem();
-			tutoringSystem.setTutoringSystemID(123);
-			tutoringSystemRepository.save(tutoringSystem);
+		Manager manager = new Manager();
+		manager.setFirstName(firstName);
+		manager.setLastName(lastName);
+		manager.setDateOfBirth(dateOfBirth);
+		manager.setEmail(email);
+		manager.setPhoneNumber(phoneNumber);
+		manager.setPersonId(managerID);		
+		Login loginInfo1 = new Login();
+		loginInfo1.setPassword("pass");
+		loginInfo1.setUserName("manager");
+		manager.setLoginInfo(loginInfo1);
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(123);
+		manager.setTutoringSystem(tutoringSystem);
 
-	        m.setDateOfBirth(dateOfBirth);
-	        m.setEmail(email);
-	        m.setPersonId(managerID);
-	        m.setPhoneNumber(phoneNumber);
-	        m.setFirstName(firstName);
-	        m.setLastName(lastName);
-	        Login loginInfo = new Login();
-			loginInfo.setPassword("pass");
-			loginInfo.setUserName("user");
-			loginRepository.save(loginInfo);
+		String offeringID = "FALL19";
+		String term = "fall";
+		AvaliableSession classTime = new AvaliableSession();
+		classTime.setDay(dateOfBirth);
+		classTime.setTutoringSystem(tutoringSystem);
+		classTime.setAvaliableSessionID(123456);
+		Subject subject = new Subject();
+		subject.setCourseID(offeringID);
+		subject.setName("12233");
+		subject.setDescription("None");
+		subject.setTutoringSystem(tutoringSystem);
 
-			m.setLoginInfo(loginInfo);
-			m.setTutoringSystem(tutoringSystem);
-	        managerRepository.save(m);
+		Tutor tutor = new Tutor();
+		Integer tutorID = 54321;
+		tutor.setFirstName(firstName);
+		tutor.setLastName(lastName);
+		tutor.setDateOfBirth(dateOfBirth);
+		tutor.setEmail(email);
+		tutor.setPhoneNumber(123);
+		tutor.setPersonId(tutorID);
+		tutor.setIsRegistered(false);
+		Login loginInfo2 = new Login();
+		loginInfo2.setPassword("pass");
+		loginInfo2.setUserName("tutor");
+		tutor.setLoginInfo(loginInfo2);
+		tutor.setTutoringSystem(tutoringSystem);
 
-	        Integer commisionID = 982;
-	        Commission com = new Commission();
-	        com.setCommissionID(commisionID);
-	        com.setManager(m);
-	        com.setPercentage(12.0);
-	        com.setTutoringSystem(tutoringSystem);
-	        commissionRepository.save(com);
+		Offering offering = new Offering();
+		Classroom room = new Classroom();
+		room.setIsBigRoom(false);
+		room.setIsBooked(false);
+		room.setManager(manager);
+		room.setRoomCode("123");
+		room.setTutoringSystem(tutoringSystem);
 
-	        Classroom classroom = new Classroom();
-	        classroom.setIsBigRoom(false);
-	        classroom.setIsBooked(false);
-	        classroom.setManager(m);
-	        classroom.setRoomCode("123");
-	        classroom.setTutoringSystem(tutoringSystem);
-	        classroomRepository.save(classroom);
+		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		time.add(classTime);
+		offering.setClassroom(room);
+		offering.setClassTime(time);
+		Commission com = new Commission();
+		com.setManager(manager);
+		com.setPercentage(12.0);
+		com.setTutoringSystem(tutoringSystem);
+		Integer testObjID = 98765;
+		com.setCommissionID(testObjID);
+		offering.setCommission(com);
+		offering.setOfferingID("test");
+		offering.setSubject(subject);
+		offering.setTerm(term);
+		offering.setTutor(tutor);
+		Set<Offering> offerings = new HashSet<Offering>();
+		com.setOffering(offerings);
+		room.setOffering(offerings);
 
+		tutoringSystemRepository.save(tutoringSystem);
+		loginRepository.save(loginInfo1);
+		loginRepository.save(loginInfo2);
+		managerRepository.save(manager);
+		tutorRepository.save(tutor);  //ok , through offering
+		classroomRepository.save(room); //ok , through offering
+		subjectRepository.save(subject); //ok , through offering
+		avaliableSessionRepository.save(classTime); // ok , IN offering
+		commissionRepository.save(com);
+		offeringRepository.save(offering);  
 
-	        SubjectRequest sr = new SubjectRequest();
-	        sr.setDescription("this subject request");
-	        sr.setManager(m);
-	        sr.setName("sr");
-	        sr.setRequestID(101);
-	        sr.setSubjectType(SubjectType.CGEP_COURSE);
-	        sr.setTutoringSystem(tutoringSystem);
-	        subjectRequestRepository.save(sr);
-
-	        Offering o = new Offering();
-	        o.setTerm("Fall");
-	        o.setClassTime(null);
-	        o.setOfferingID("id");
-	        o.setPricePerHour(12);
-	        o.setClassroom(classroom);
-	        offeringRepository.save(o);
-
-
-			service.createReview(comment, false, 1, m, o, tutoringSystem);
+	     try {   
+			service.createReview(comment, isApproved, reviewID, manager, offering, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -1760,22 +1788,29 @@ public class TestTutoringServiceService {
 	}
 
     @Test
+    // (comment, isApproved, reviewID, manager, offering, tutoringSystem);
 	public void testCreateReviewNull() {
 		assertEquals(0, service.getAllReviews().size());
 
+		String error = "";
 		String comment = null;
 		Integer reviewID = null;
 		Boolean isApproved = null;
-		String error = null;
+		
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
+		Offering offering = null;
+		
+		
 
 		try {
-			service.createReview(comment, isApproved, reviewID, null, null, null);
+			service.createReview(comment, isApproved, reviewID, manager, offering, tutoringSystem );
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("Review comment cannot be empty! Review reviewID cannot be empty! Review isApproved cannot be empty!", error);
+		assertEquals("reviewID cannot be empty!comment cannot be null!isApproved cannot be null!manager cannot be null!offering cannot be null!tutoringSystem cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllReviews().size());
@@ -1786,19 +1821,23 @@ public class TestTutoringServiceService {
 	public void testCreateReviewEmpty() {
 		assertEquals(0, service.getAllReviews().size());
 
+		String error = "";
 		String comment = "";
-		Integer reviewID = 1;
+		Integer reviewID = null;
 		Boolean isApproved = null;
-		String error = null;
+		
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
+		Offering offering = null;
 
 		try {
-			service.createReview(comment, isApproved, reviewID, null, null, null);
+			service.createReview(comment, isApproved, reviewID, manager, offering, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("Review comment cannot be empty! Review reviewID cannot be empty! Review isApproved cannot be empty!", error);
+		assertEquals("reviewID cannot be empty!comment cannot be null!isApproved cannot be null!manager cannot be null!offering cannot be null!tutoringSystem cannot be null!", error);
 
 
 		// check no change in memory
@@ -1810,23 +1849,141 @@ public class TestTutoringServiceService {
 	public void testCreateReviewSpaces() {
 		assertEquals(0, service.getAllReviews().size());
 
+		String error = "";
 		String comment = " ";
-		Integer reviewID = 1;
+		Integer reviewID = null;
 		Boolean isApproved = null;
-		String error = null;
+		
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
+		Offering offering = null;
 
 		try {
-			service.createReview(comment, isApproved, reviewID, null, null, null);
+			service.createReview(comment, isApproved, reviewID, manager, offering, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("Review comment cannot be empty! Review reviewID cannot be empty! Review isApproved cannot be empty!", error);
+		assertEquals("reviewID cannot be empty!comment cannot be null!isApproved cannot be null!manager cannot be null!offering cannot be null!tutoringSystem cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllReviews().size());
 
 	}
-	 */
+	@Test
+	public void testCreateTutorApplication() {
+	assertEquals(0, service.getAllTutorApplications().size());
+		
+	Integer applicationId = 123;
+	Boolean isAccepted = false;
+	
+	Integer tutorID = 54321;
+	String firstName = "omar";
+	String lastName = "noor";
+	Calendar c = Calendar.getInstance();
+	c.set(1999, Calendar.MARCH, 16, 9, 0, 0);
+	Date dateOfBirth = new Date(c.getTimeInMillis());
+	String email = "123456@gmail.com";
+	Integer phoneNumber = 45612378;
+	
+	Tutor tutor = new Tutor();
+	tutor.setFirstName(firstName);
+	tutor.setLastName(lastName);
+	tutor.setDateOfBirth(dateOfBirth);
+	tutor.setEmail(email);
+	tutor.setPhoneNumber(phoneNumber);
+	tutor.setPersonId(tutorID);
+	tutor.setIsRegistered(false);
+	Login loginInfo = new Login();
+	loginInfo.setPassword("pass");
+	loginInfo.setUserName("tutor");
+	tutor.setLoginInfo(loginInfo);
+	TutoringSystem tutoringSystem = new TutoringSystem();
+	tutoringSystem.setTutoringSystemID(123);
+	tutor.setTutoringSystem(tutoringSystem);
+	
+	tutoringSystemRepository.save(tutoringSystem);
+	loginRepository.save(loginInfo);
+	tutorRepository.save(tutor);
+	
+	try {
+		service.createTutorApplication(applicationId,isAccepted,tutor,tutoringSystem);
+	} catch (IllegalArgumentException e) {
+		fail();
+	}
+	List<TutorApplication> allTutorApplications = service.getAllTutorApplications();
+	assertEquals(1, allTutorApplications.size());
+	assertEquals(applicationId, allTutorApplications.get(0).getApplicationId());
+	assertEquals(isAccepted, allTutorApplications.get(0).getIsAccepted());
+	service.deleteTutorApplication(applicationId);
+	}
+	
+	@Test
+	public void testCreateTutorApplicationNull() {
+		assertEquals(0, service.getAllTutorApplications().size());
+		String error = "";
+		Integer applicationId = null;
+		Boolean isAccepted = null;		
+		Tutor tutor = null;
+		TutoringSystem tutoringSystem = null;
+		
+		try {
+			service.createTutorApplication(applicationId,isAccepted,tutor,tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+
+		// check error
+		assertEquals("applicationId cannot be empty!isAccepted cannot be null!tutor cannot be null!tutoringSystem cannot be null!", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllTutorApplications().size());
+	}
+	@Test
+	public void testCreateTutorApplicationEmpty() {
+		assertEquals(0, service.getAllTutorApplications().size());
+		String error = "";
+		Integer applicationId = null;
+		Boolean isAccepted = null;		
+		Tutor tutor = null;
+		TutoringSystem tutoringSystem = null;
+		
+		try {
+			service.createTutorApplication(applicationId,isAccepted,tutor,tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+
+		// check error
+		assertEquals("applicationId cannot be empty!isAccepted cannot be null!tutor cannot be null!tutoringSystem cannot be null!", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllTutorApplications().size());	
+	}
+	@Test
+	public void testCreateTutorApplicationSpaces() {
+		assertEquals(0, service.getAllTutorApplications().size());
+		String error = "";
+		Integer applicationId = null;
+		Boolean isAccepted = null;		
+		Tutor tutor = null;
+		TutoringSystem tutoringSystem = null;
+		
+		try {
+			service.createTutorApplication(applicationId,isAccepted,tutor,tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+
+		// check error
+		assertEquals("applicationId cannot be empty!isAccepted cannot be null!tutor cannot be null!tutoringSystem cannot be null!", error);
+
+		// check no change in memory
+		assertEquals(0, service.getAllTutorApplications().size());
+	}
+	
 }
