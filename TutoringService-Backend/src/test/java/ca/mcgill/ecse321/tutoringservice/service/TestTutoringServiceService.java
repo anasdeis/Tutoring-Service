@@ -23,34 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ca.mcgill.ecse321.tutoringservice.dao.AvaliableSessionRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.ClassroomRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.CommissionRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.LoginRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.ManagerRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.OfferingRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.ReviewRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.StudentRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.SubjectRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.SubjectRequestRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.TutorApplicationRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.TutorRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.TutoringSystemRepository;
-import ca.mcgill.ecse321.tutoringservice.dao.UniversityRepository;
-import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
-import ca.mcgill.ecse321.tutoringservice.model.Classroom;
-import ca.mcgill.ecse321.tutoringservice.model.Commission;
-import ca.mcgill.ecse321.tutoringservice.model.Login;
-import ca.mcgill.ecse321.tutoringservice.model.Manager;
-import ca.mcgill.ecse321.tutoringservice.model.Offering;
-import ca.mcgill.ecse321.tutoringservice.model.Review;
-import ca.mcgill.ecse321.tutoringservice.model.Student;
-import ca.mcgill.ecse321.tutoringservice.model.Subject;
-import ca.mcgill.ecse321.tutoringservice.model.SubjectRequest;
-import ca.mcgill.ecse321.tutoringservice.model.SubjectType;
-import ca.mcgill.ecse321.tutoringservice.model.Tutor;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
-import ca.mcgill.ecse321.tutoringservice.model.University;
+import ca.mcgill.ecse321.tutoringservice.dao.*;
+import ca.mcgill.ecse321.tutoringservice.model.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -119,6 +93,31 @@ public class TestTutoringServiceService {
 		universityRepository.deleteAll();
 		tutoringSystemRepository.deleteAll();
 	}
+	
+    //HELPER METHODS
+    private void setTutor(Tutor tutor, String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<AvaliableSession> availableSessions, Set<Offering> offerings,TutoringSystem tutoringSystem) {
+		tutor.setFirstName(first);
+		tutor.setLastName(last);
+		tutor.setDateOfBirth(dob);
+		tutor.setEmail(email);
+		tutor.setPhoneNumber(phone);
+		tutor.setPersonId(tutorID);
+		tutor.setIsRegistered(isRegistered);
+		tutor.setLoginInfo(loginInfo);
+		tutor.setAvaliableSession(availableSessions);
+		tutor.setTutorApplication(tutorApplications);
+		tutor.setOffering(offerings);
+		tutor.setTutoringSystem(tutoringSystem);
+    }
+    
+    private void setTutoringSystem(TutoringSystem tutoringSystem, Integer tutoringSystemID) {
+    	tutoringSystem.setTutoringSystemID(tutoringSystemID);
+     }
+    
+    private void setLogin(Login login, String userName, String password) {
+    	login.setUserName(userName);
+    	login.setPassword(password);
+     }
 
 	@Test
 	public void testCreateLogin() {
@@ -616,112 +615,257 @@ public class TestTutoringServiceService {
 
 	}
 
-
-
-	/*  
-
+ 
     @Test
     public void testCreateAvaliableSession() {
         assertEquals(0, service.getAllAvaliableSessions().size());
+        
         Calendar c = Calendar.getInstance();
-        c.set(2017, Calendar.MARCH, 16, 9, 0, 0);
-        Date day = new Date(c.getTimeInMillis());
-        LocalTime startTime = LocalTime.parse("09:00");
-        c.set(2017, Calendar.MARCH, 16, 10, 30, 0);
-        LocalTime endTime = LocalTime.parse("10:30");
-        Integer AvaliableSessionID = 5;
-        try {
-            service.createAvaliableSession(Time.valueOf(startTime) , Time.valueOf(endTime), AvaliableSessionID, day);
-        } catch (IllegalArgumentException e) {
-            // Check that no error occurred
-            fail();
-        }
-
-        assertEquals(1, service.getAllAvaliableSessions().size());
-        assertEquals(AvaliableSessionID, service.getAllAvaliableSessions().get(0).getAvaliableSessionID());
-        assertEquals(day.toString(), service.getAllAvaliableSessions().get(0).getDay().toString());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        assertEquals(startTime.format(formatter).toString(), service.getAllAvaliableSessions().get(0).getStartTime().toString());
-        assertEquals(endTime.format(formatter).toString(), service.getAllAvaliableSessions().get(0).getEndTime().toString());
-        service.deleteAvaliableSession(AvaliableSessionID);
+		    
+		//tutoringSystem
+		Integer tutoringSystemID = 5;
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		setTutoringSystem(tutoringSystem, tutoringSystemID);
+		
+		//login
+		String userName = "adeis";
+		String password = "locked";
+		Login login  = new Login();
+		setLogin(login, userName, password);
+		
+		//availableSession
+		c.set(2017, Calendar.MARCH, 16, 9, 0, 0);
+		Date day = new Date(c.getTimeInMillis());
+		LocalTime startTime = LocalTime.parse("09:00");
+		c.set(2017, Calendar.MARCH, 16, 10, 30, 0);
+		LocalTime endTime = LocalTime.parse("10:30");
+		Integer avaliableSessionID = 5;
+		
+		//tutors
+		String first = "Anas";
+		String last = "Deis";
+		Date dob = new Date(c.getTimeInMillis());
+		String email = "anas.deis@mail.mcgill.ca";
+		Integer phone = 514;
+		Integer tutorID = 1254;
+		Boolean isRegistered = false;
+		Tutor tutor = new Tutor();
+		setTutor(tutor, first, last, dob, email, phone, tutorID, isRegistered, login, null, null, null, tutoringSystem);
+		Set<Tutor> tutors = new HashSet<Tutor>();
+		tutors.add(tutor);
+		
+		//save
+		loginRepository.save(login);
+		tutoringSystemRepository.save(tutoringSystem);
+		tutorRepository.save(tutor);
+		
+	    try {
+	    	service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), avaliableSessionID, day, tutors, tutoringSystem);
+	    } catch (IllegalArgumentException e) {
+	    	// Check that no error occurred
+	    	fail();
+	    }
+	
+	    //Available Session
+	    assertEquals(1, service.getAllAvaliableSessions().size());
+	    assertEquals(avaliableSessionID, service.getAllAvaliableSessions().get(0).getAvaliableSessionID());
+	    assertEquals(day.toString(), service.getAllAvaliableSessions().get(0).getDay().toString());
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		assertEquals(startTime.format(formatter).toString(), service.getAllAvaliableSessions().get(0).getStartTime().toString());
+		assertEquals(endTime.format(formatter).toString(), service.getAllAvaliableSessions().get(0).getEndTime().toString());
+		
+		// Need to assert by ID using foreign key for TutoringSystem (in this case tutoringSystemsID @ManyToOne
+		//No foreign key for Tutor
+	    assertEquals(service.getAllTutoringSystems().get(0).getTutoringSystemID(), service.getAllAvaliableSessions().get(0).getTutoringSystem().getTutoringSystemID());
+		
+		//Tutor
+	    assertEquals(1, service.getAllTutors().size());
+	    assertEquals(first, service.getAllTutors().get(0).getFirstName());
+	    assertEquals(last, service.getAllTutors().get(0).getLastName());
+	    assertEquals(dob.toString(), service.getAllTutors().get(0).getDateOfBirth().toString());
+	    assertEquals(email, service.getAllTutors().get(0).getEmail());
+	    assertEquals(phone, service.getAllTutors().get(0).getPhoneNumber());
+	    assertEquals(tutorID, service.getAllTutors().get(0).getPersonId());
+	    assertEquals(isRegistered, service.getAllTutors().get(0).getIsRegistered());
+	    assertEquals(login.getPassword(), service.getAllTutors().get(0).getLoginInfo().getPassword());
+	    assertEquals(login.getUserName(), service.getAllTutors().get(0).getLoginInfo().getUserName());
+	    assertEquals(tutoringSystemID, service.getAllTutors().get(0).getTutoringSystem().getTutoringSystemID());
+	   
+	    //TutoringSystem
+	    assertEquals(1, service.getAllTutoringSystems().size());
+	    assertEquals(tutoringSystemID, service.getAllTutoringSystems().get(0).getTutoringSystemID());
     }
 
     @Test
    	public void testCreateAvaliableSessionNull() {
-    	assertEquals(0, service.getAllAvaliableSessions().size());
+        assertEquals(0, service.getAllAvaliableSessions().size());
+		 
+        //tutoringSystem
+		TutoringSystem tutoringSystem = null;
+		assertEquals(0, service.getAllTutoringSystems().size());
 
-   		Integer AvaliableSessionID = null;
-   		Date day = null;
-   		Time startTime = null;
-   		Time endTime = null;
+		//tutors
+		Tutor tutor = null;
+		assertEquals(0, service.getAllTutors().size());
+		
+		Set<Tutor> tutors = new HashSet<Tutor>();
+		tutors.add(tutor);
+		
+		//availableSession
+		Date day = null;
+		Time startTime = null;
+		Time endTime = null;
+		Integer avaliableSessionID = null;
+
 
    		String error = null;
    		try {
-   			service.createAvaliableSession(startTime , endTime, AvaliableSessionID, day);
+   			service.createAvaliableSession(startTime, endTime, avaliableSessionID, day, tutors, tutoringSystem); 
    		} catch (IllegalArgumentException e) {
    			error = e.getMessage();
    		}
 
    		// check error
    		assertEquals(
-   				"AvaliableSession AvaliableSessionID cannot be empty! AvaliableSession day cannot be empty! AvaliableSession start time cannot be empty! AvaliableSession end time cannot be empty!",
+   				"AvaliableSession AvaliableSessionID cannot be empty!AvaliableSession start time cannot be empty!AvaliableSession end time cannot be empty!AvaliableSession day cannot be empty!TutoringSystem needs to be selected for available session!Tutor needs to be selected for available session!",
    				error);
    		// check model in memory
    		assertEquals(0, service.getAllAvaliableSessions().size());
+   		assertEquals(0, service.getAllTutors().size());
+		assertEquals(0, service.getAllTutoringSystems().size());
    	}
 
-   	@Test
-   	public void testCreateAvaliableSessionEmpty() {
-   		assertEquals(0, service.getAllAvaliableSessions().size());
-
-   		Integer AvaliableSessionID = null;
-   		Calendar c = Calendar.getInstance();
-   		c.set(2017, Calendar.FEBRUARY, 16, 10, 00, 0);
-   		Date day = new Date(c.getTimeInMillis());
-   		LocalTime startTime = LocalTime.parse("10:00");
-   		c.set(2017, Calendar.FEBRUARY, 16, 11, 30, 0);
-   		LocalTime endTime = LocalTime.parse("11:30");
-   		String error = null;
-   		try {
-   			service.createAvaliableSession(Time.valueOf(startTime) , Time.valueOf(endTime), AvaliableSessionID, day);
-   		} catch (IllegalArgumentException e) {
-   			error = e.getMessage();
-   		}
-
-   		// check error
-   		assertEquals("AvaliableSessionID AvaliableSessionID cannot be empty!", error);
-   		// check model in memory
-   		assertEquals(0, service.getAllAvaliableSessions().size());
-   	}
 
    	@Test
    	public void testCreateAvaliableSessionEndTimeBeforeStartTime() {
    		assertEquals(0, service.getAllAvaliableSessions().size());
-
-   		Integer AvaliableSessionID = 15;
-   		Calendar c = Calendar.getInstance();
+     
+   	 	Calendar c = Calendar.getInstance();
+		    
+		//tutoringSystem
+		Integer tutoringSystemID = 5;
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		setTutoringSystem(tutoringSystem, tutoringSystemID);
+		
+		//login
+		String userName = "adeis";
+		String password = "locked";
+		Login login  = new Login();
+		setLogin(login, userName, password);
+		
+		//availableSession
+   		Integer avaliableSessionID = 15;
    		c.set(2016, Calendar.OCTOBER, 16, 9, 00, 0);
    		Date day = new Date(c.getTimeInMillis());
    		LocalTime startTime = LocalTime.parse("09:00");
    		c.set(2016, Calendar.OCTOBER, 16, 8, 59, 59);
    		LocalTime endTime = LocalTime.parse("08:59");
-
-   		String error = null;
-   		try {
-   			service.createAvaliableSession(Time.valueOf(startTime) , Time.valueOf(endTime), AvaliableSessionID, day);
-   		} catch (IllegalArgumentException e) {
-   			error = e.getMessage();
-   		}
+		
+		//tutors
+		String first = "Anas";
+		String last = "Deis";
+		Date dob = new Date(c.getTimeInMillis());
+		String email = "anas.deis@mail.mcgill.ca";
+		Integer phone = 514;
+		Integer tutorID = 1254;
+		Boolean isRegistered = false;
+		Tutor tutor = new Tutor();
+		setTutor(tutor, first, last, dob, email, phone, tutorID, isRegistered, login, null, null, null, tutoringSystem);
+		Set<Tutor> tutors = new HashSet<Tutor>();
+		tutors.add(tutor);
+		
+		//save
+		loginRepository.save(login);
+		tutoringSystemRepository.save(tutoringSystem);
+		tutorRepository.save(tutor);
+		
+		String error = null;
+	    try {
+	    	service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), avaliableSessionID, day, tutors, tutoringSystem);
+	    } catch (IllegalArgumentException e) {
+	    	error = e.getMessage();
+	    }
 
    		// check error
    		assertEquals("AvaliableSession end time cannot be before event start time!", error);
-
    		// check model in memory
    		assertEquals(0, service.getAllAvaliableSessions().size());
-
+   		
+		//Tutor
+	    assertEquals(1, service.getAllTutors().size());
+	    assertEquals(first, service.getAllTutors().get(0).getFirstName());
+	    assertEquals(last, service.getAllTutors().get(0).getLastName());
+	    assertEquals(dob.toString(), service.getAllTutors().get(0).getDateOfBirth().toString());
+	    assertEquals(email, service.getAllTutors().get(0).getEmail());
+	    assertEquals(phone, service.getAllTutors().get(0).getPhoneNumber());
+	    assertEquals(tutorID, service.getAllTutors().get(0).getPersonId());
+	    assertEquals(isRegistered, service.getAllTutors().get(0).getIsRegistered());
+	    assertEquals(login.getPassword(), service.getAllTutors().get(0).getLoginInfo().getPassword());
+	    assertEquals(login.getUserName(), service.getAllTutors().get(0).getLoginInfo().getUserName());
+	    assertEquals(tutoringSystemID, service.getAllTutors().get(0).getTutoringSystem().getTutoringSystemID());
+	   
+	    //TutoringSystem
+	    assertEquals(1, service.getAllTutoringSystems().size());
+	    assertEquals(tutoringSystemID, service.getAllTutoringSystems().get(0).getTutoringSystemID());
    	}
+   	
+	@Test
+	public void testAvaliableSessionTutorAndTutoringSystemDoNotExist() {
+		 assertEquals(0, service.getAllAvaliableSessions().size());
+	        
+        Calendar c = Calendar.getInstance();
+		    
+		//tutoringSystem
+		Integer tutoringSystemID = 5;
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		setTutoringSystem(tutoringSystem, tutoringSystemID);
+		assertEquals(0, service.getAllTutoringSystems().size());
+		
+		//availableSession
+		c.set(2017, Calendar.MARCH, 16, 9, 0, 0);
+		Date day = new Date(c.getTimeInMillis());
+		LocalTime startTime = LocalTime.parse("09:00");
+		c.set(2017, Calendar.MARCH, 16, 10, 30, 0);
+		LocalTime endTime = LocalTime.parse("10:30");
+		Integer avaliableSessionID = 5;
+		
+		//login
+		String userName = "adeis";
+		String password = "locked";
+		Login login  = new Login();
+		setLogin(login, userName, password);
+		
+		//tutors
+		String first = "Anas";
+		String last = "Deis";
+		Date dob = new Date(c.getTimeInMillis());
+		String email = "anas.deis@mail.mcgill.ca";
+		Integer phone = 514;
+		Integer tutorID = 1254;
+		Boolean isRegistered = false;
+		Tutor tutor = new Tutor();
+		setTutor(tutor, first, last, dob, email, phone, tutorID, isRegistered, login, null, null, null, tutoringSystem);
+		Set<Tutor> tutors = new HashSet<Tutor>();
+		tutors.add(tutor);
+		assertEquals(0, service.getAllTutors().size());
 
-	 */
+		String error = null;
+	    try {
+	    	service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), avaliableSessionID, day, tutors, tutoringSystem);
+	    } catch (IllegalArgumentException e) {
+	    	error = e.getMessage();
+	    }
+
+		// check error
+		assertEquals("TutoringSystem does not exist!Tutor does not exist!", error);
+
+		// check model in memory
+		assertEquals(0, service.getAllAvaliableSessions().size());
+		assertEquals(0, service.getAllTutors().size());
+		assertEquals(0, service.getAllTutoringSystems().size());
+	}
+
+	 
 	/*
    		@Test
 	public void testCreateSubjectRequest() {

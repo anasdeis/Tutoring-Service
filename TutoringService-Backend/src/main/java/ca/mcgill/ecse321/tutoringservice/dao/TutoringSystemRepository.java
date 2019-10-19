@@ -8,4 +8,6 @@ public interface TutoringSystemRepository extends CrudRepository<TutoringSystem,
     TutoringSystem findTutoringSystemByTutoringSystemID(Integer tutoringSystemID);
 
     void deleteTutoringSystemByTutoringSystemID(Integer tutoringSystemID);
+    
+    boolean existsByTutoringSystemID(Integer tutoringSystemID);
 }
