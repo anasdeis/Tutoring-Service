@@ -381,7 +381,7 @@ public class TutoringServiceService {
 		studentRepository.deleteStudentByPersonId(studentID);
 	}
 
-	/*
+	/* TODO
 	 * Offering
 	 */
 
@@ -394,7 +394,7 @@ public class TutoringServiceService {
 		}
 		if (term == null || term.trim().length() == 0) {
 //			throw new IllegalArgumentException("Offering term cannot be empty!");
-			error = error + "Offering term cannot be empty";
+			error = error + "Offering term cannot be empty!";
 		}
 		if (price == null || price == 0.0) {
 //			throw new IllegalArgumentException("Hourly rate cannot be empty!");
