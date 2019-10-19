@@ -210,8 +210,15 @@ public class TutoringServiceService {
 		if (description == null || description.trim().length() == 0) {
 			error = error + "Description cannot be null!";
 		}
-		if (requestID == null || requestID == 0)
+		if (requestID == null || requestID == 0) {
 			error = error + "requestID cannot be empty!";
+		}
+		if (manager == null) {
+			error = error + "manager cannot be empty!";
+		}
+		if (tutoringSystem == null) {
+			error = error + "Tutoring System cannot be empty!";
+		}
 
 		error = error.trim();
 		if (error.length() > 0) {
@@ -652,6 +659,59 @@ public class TutoringServiceService {
 		}
 		classroomRepository.deleteClassroomByRoomCode(roomCode);
 	}
+	
+	
+	/*
+	 * University
+	 */
+	@Transactional
+	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
+		String error = "";
+		if (name == null || name.trim().length() == 0) {
+			error = error + "name cannot be empty!";
+		}
+		if (subjects == null) {
+			error = error + "subjects cannot be empty!";
+		}
+		if (tutoringSystem == null) {
+			error = error + "Tutoring System cannot be empty!";
+		}
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		University university = new University();
+		university.setName(name);
+		university.setSubject(subjects);
+		university.setTutoringSystem(tutoringSystem);
+		universityRepository.save(university);
+		
+		return university;
+	}
+	
+	@Transactional
+	public University getUniversity(String name) {
+		if (name == null || name.trim().length() == 0){
+			throw new IllegalArgumentException("University name cannot be empty!");
+		}
+		University university = universityRepository.findUniversityByName(name);
+		return university;
+	}
+	
+	@Transactional
+	public List<University> getAllUniversitys() {
+		return toList(universityRepository.findAll());
+	}
+	
+	@Transactional
+	public void deleteUniversity(String name) {
+		if (name == null || name.trim().length() == 0){
+			throw new IllegalArgumentException("University name cannot be empty!");
+		}
+		universityRepository.deleteUniversityByName(name);
+	}
+	
 
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();

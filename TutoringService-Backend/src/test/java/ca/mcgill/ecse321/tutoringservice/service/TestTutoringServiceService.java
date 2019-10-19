@@ -795,7 +795,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 		// check error
-		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!manager cannot be empty!Tutoring System cannot be empty!", error);
 	}
 
 
@@ -824,7 +824,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 		// check error
-		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!manager cannot be empty!", error);
 	}
 
 
@@ -853,7 +853,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 		// check error
-		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!manager cannot be empty!", error);
 	}
 	
 	
@@ -1507,7 +1507,170 @@ public class TestTutoringServiceService {
         assertEquals(0, allClassrooms.size());
         assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
 	}
+    
+    
+    @Test
+    public void testCreateUniversity() {
+    	String error = "";
+        assertEquals(0, service.getAllUniversitys().size());
+        //First create a TutoringSystem object, every object created from now on show link to this object (except for Offering)
+        String universityName = "McGill";
+        TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(123);
+        
+		Subject subject = new Subject();
+		String subjectName = "Math240";
+		String courseID = "MATH240FALL";
+		String description = "Discrete structures";
+		subject.setCourseID(courseID);
+		subject.setDescription(description);
+		subject.setName(subjectName);
+		subject.setTutoringSystem(tutoringSystem);
+		Set<Subject> subjects = new HashSet<Subject>();
+		subjects.add(subject);
+		
+		tutoringSystemRepository.save(tutoringSystem);
+		subjectRepository.save(subject);
+		
+		//Apparently I don't have to create Offering object to pass the test. 
+		//I don't know why. I will leave this for future use. 
+		/*
+		//First create an University object
+        University university = new University();
+        university.setName(universityName);
+        university.setTutoringSystem(tutoringSystem);	//set TutoringSystem
+        //There are three associations in University class, we have covered two, 
+        //the last one is covered below.  
+		
+		// University 1--* Subject
+        // we need to create a set of Subjects
+        //There are 6 associations in Subject class, TutoringSystem (covered here), SubjectType & TutorApplication (Don't care for now), 
+        // university (covered below), model(don't care), offering (not covered)
+        Subject subject = new Subject();
+        String subjectName = "Math240";
+		String courseID = "MATH240FALL";
+		String description = "Discrete structures";
+		subject.setTutoringSystem(tutoringSystem);
+		Set<Subject> subjects = new HashSet<Subject>();
+		subjects.add(subject);
+		university.setSubject(subjects);
+		
+		
+		Integer managerID = 123456;
+		String firstName = "Charles";
+		String lastName = "Liu";
+		Calendar c = Calendar.getInstance();
+		c.set(1999, Calendar.MARCH, 16, 9, 0, 0);
+		Date dateOfBirth = new Date(c.getTimeInMillis());
+		String email = "123456@gmail.com";
+		Integer phoneNumber = 45612378;
+		Manager manager = new Manager();
+		manager.setFirstName(firstName);
+		manager.setLastName(lastName);
+		manager.setDateOfBirth(dateOfBirth);
+		manager.setEmail(email);
+		manager.setPhoneNumber(phoneNumber);
+		manager.setPersonId(managerID);		
+		Login loginInfo1 = new Login();
+		loginInfo1.setPassword("pass");
+		loginInfo1.setUserName("manager");
+		manager.setLoginInfo(loginInfo1);
+		manager.setTutoringSystem(tutoringSystem);	
+		
+		Classroom room = new Classroom();
+		room.setIsBigRoom(false);
+		room.setIsBooked(false);
+		room.setManager(manager);
+		room.setRoomCode("123");
+		room.setTutoringSystem(tutoringSystem);
+		
+		
+		Offering offering = new Offering();
+		offering.setClassroom(room);
+		offering.setClassTime(time);
+		offering.setSubject(subject);
+		*/
+		
 
+        try {
+            service.createUniversity(subjectName, subjects, tutoringSystem);
+        } catch (IllegalArgumentException e) {
+            // Check that no error occurred
+        	error = e.getMessage();
+        }
+        List<University> allUniversitys = service.getAllUniversitys();
+        assertEquals(1, allUniversitys.size());
+        assertEquals(subjectName, allUniversitys.get(0).getName());
+        service.deleteUniversity(subjectName);
+    }
+    
+    
+    @Test
+	public void testCreateUniversityNull() {
+        assertEquals(0, service.getAllUniversitys().size());
+        
+        String error = "";
+
+        String name = null;
+		TutoringSystem tutoringSystem = null;
+		Set<Subject> subjects = null;
+
+        try {
+            service.createUniversity(name, subjects, tutoringSystem);
+        } catch (IllegalArgumentException e) {
+            error = e.getMessage();
+        }
+
+        List<Classroom>allClassrooms = service.getAllClassrooms();
+        assertEquals(0, allClassrooms.size());
+        assertEquals(error, "name cannot be empty!subjects cannot be empty!Tutoring System cannot be empty!");
+	}
+    
+    
+    @Test
+	public void testCreateUniversityEmpty() {
+        assertEquals(0, service.getAllUniversitys().size());
+        
+        String error = "";
+
+        String name = "";
+		TutoringSystem tutoringSystem = null;
+		Set<Subject> subjects = null;
+
+        try {
+            service.createUniversity(name, subjects, tutoringSystem);
+        } catch (IllegalArgumentException e) {
+            error = e.getMessage();
+        }
+
+        List<Classroom>allClassrooms = service.getAllClassrooms();
+        assertEquals(0, allClassrooms.size());
+        assertEquals(error, "name cannot be empty!subjects cannot be empty!Tutoring System cannot be empty!");
+	}
+    
+
+    @Test
+	public void testCreateUniversitySpaces() {
+        assertEquals(0, service.getAllUniversitys().size());
+        
+        String error = "";
+
+        String name = "   ";
+		TutoringSystem tutoringSystem = null;
+		Set<Subject> subjects = null;
+
+        try {
+            service.createUniversity(name, subjects, tutoringSystem);
+        } catch (IllegalArgumentException e) {
+            error = e.getMessage();
+        }
+
+        List<Classroom>allClassrooms = service.getAllClassrooms();
+        assertEquals(0, allClassrooms.size());
+        assertEquals(error, "name cannot be empty!subjects cannot be empty!Tutoring System cannot be empty!");
+	}
+    
+    
 	/*
     @Test
     public void testCreateTutoringSystem() {
@@ -1679,23 +1842,6 @@ public class TestTutoringServiceService {
 	}
 	 */
 	/*
-
-    @Test
-    public void testCreateUniversity() {
-        assertEquals(0, service.getAllUniversitys().size());
-        String name = "Mcgill";
-        try {
-            service.createUniversity(name);
-        } catch (IllegalArgumentException e) {
-            // Check that no error occurred
-            fail();
-        }
-        List<University> allUniversitys = service.getAllUniversitys();
-        assertEquals(1, allUniversitys.size());
-        assertEquals(name, allUniversitys.get(0).getName());
-        service.deleteUniversity(name);
-    }
-
     
     @Test
 	public void testCreateReview() {
