@@ -722,19 +722,46 @@ public class TestTutoringServiceService {
    	}
 
 	 */
-	/*
-   		@Test
+	
+	
+	@Test
 	public void testCreateSubjectRequest() {
 		assertEquals(0, service.getAllSubjectRequests().size());
 		Integer requestID = 789456;
 		String name = "Math240";
 		String description = "Discrete structures";
+		
+	    Integer managerID = 100200;
+		String firstName = "Tom";
+		String lastName = "Jerry";
+		Calendar c = Calendar.getInstance();
+		c.set(1999, Calendar.MAY, 20, 9, 0, 0);
+		Date dateOfBirth = new Date(c.getTimeInMillis());
+		String email = "123456@gmail.com";
+		Integer phoneNumber = 1234567890;
+
+	    Manager manager = new Manager();
+		manager.setFirstName(firstName);
+		manager.setLastName(lastName);
+		manager.setDateOfBirth(dateOfBirth);
+		manager.setEmail(email);
+		manager.setPhoneNumber(phoneNumber);
+		manager.setPersonId(managerID);		
+		Login loginInfo = new Login();
+		loginInfo.setPassword("pass");
+		loginInfo.setUserName("manager");
+		manager.setLoginInfo(loginInfo);
 		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(667);
+		tutoringSystem.setTutoringSystemID(1234);
+		manager.setTutoringSystem(tutoringSystem);
+		
 		tutoringSystemRepository.save(tutoringSystem);
+		loginRepository.save(loginInfo);
+		managerRepository.save(manager);
+		
 
 		try {
-			service.createSubjectRequest(requestID, name, description, tutoringSystem);
+			service.createSubjectRequest(requestID, name, description, manager, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -746,8 +773,7 @@ public class TestTutoringServiceService {
 		assertEquals(description, allSubjectRequests.get(0).getDescription());
 		service.deleteSubjectRequest(requestID);
 	}
-
-
+	
 	@Test
 	public void testCreateSubjectRequestNull() {
 		assertEquals(0, service.getAllSubjectRequests().size());
@@ -755,22 +781,21 @@ public class TestTutoringServiceService {
 		Integer requestID = null;
 		String name = null;
 		String description = null;
-		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(111);
-		tutoringSystemRepository.save(tutoringSystem);
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
 
 		String error = null;
 		try {
-			service.createSubjectRequest(requestID, name, description, tutoringSystem);
+			service.createSubjectRequest(requestID, name, description, manager, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
-		// check error
-		assertEquals("valid input needed", error);
-
 		// check no change in memory
 		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
 	}
 
 
@@ -783,7 +808,8 @@ public class TestTutoringServiceService {
 		Integer requestID = 0;
 		String name = "";
 		String description = "";
-		Integer tssID = 0;
+		Manager manager = null;
+		Integer tssID= 123;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(tssID);
 		tutoringSystemRepository.save(tutoringSystem);
@@ -791,25 +817,28 @@ public class TestTutoringServiceService {
 		String error = null;
 
 		try {
-			service.createSubjectRequest(requestID, name, description, tutoringSystem);
+			service.createSubjectRequest(requestID, name, description, manager, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-
-		// check error
-		assertEquals("valid input needed", error);
-
 		assertEquals(0, service.getAllSubjectRequests().size());
 
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
 	}
+
 
 	@Test
 	public void testCreateSubjectRequestSpaces() {
+		// cannot check if an Integer is empty, instead, check if it has the default value 0
+		// can pass empty value for login but can not pass null
 		assertEquals(0, service.getAllSubjectRequests().size());
+
 		Integer requestID = 0;
-		String name = "  ";
+		String name = "   ";
 		String description = "   ";
-		Integer tssID= 0;
+		Manager manager = null;
+		Integer tssID= 456;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(tssID);
 		tutoringSystemRepository.save(tutoringSystem);
@@ -817,19 +846,17 @@ public class TestTutoringServiceService {
 		String error = null;
 
 		try {
-			service.createSubjectRequest(requestID, name, description, tutoringSystem);
+			service.createSubjectRequest(requestID, name, description, manager, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-
-		// check error
-		assertEquals("valid input needed", error);
-
 		assertEquals(0, service.getAllSubjectRequests().size());
 
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
 	}
-	 */
-
+	
+	
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());

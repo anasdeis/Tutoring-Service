@@ -202,21 +202,27 @@ public class TutoringServiceService {
 	 * Subject Request
 	 */
 	@Transactional
-	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description, TutoringSystem tutoringSystem){
+	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description, Manager manager, TutoringSystem tutoringSystem){
 		String error = "";
 		if (name == null || name.trim().length() == 0) {
-			error = error + "name cannot be null! ";
+			error = error + "name cannot be null!";
 		}
 		if (description == null || description.trim().length() == 0) {
-			error = error + "Description cannot be null! ";
+			error = error + "Description cannot be null!";
 		}
-		if (requestID == 0)
-			error = error + "requestID cannot be empty! ";
+		if (requestID == null || requestID == 0)
+			error = error + "requestID cannot be empty!";
 
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
 		SubjectRequest subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
+		subjectrequest.setManager(manager);
 		subjectrequest.setTutoringSystem(tutoringSystem);
 		subjectRequestRepository.save(subjectrequest);
 		return subjectrequest;
