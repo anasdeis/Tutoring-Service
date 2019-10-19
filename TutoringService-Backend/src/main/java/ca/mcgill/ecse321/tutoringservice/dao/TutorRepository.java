@@ -8,4 +8,6 @@ public interface TutorRepository extends CrudRepository<Tutor, Integer> {
     Tutor findTutorByPersonId(Integer tutorID);
 
     void deleteTutorByPersonId(Integer tutorID);
+    
+    boolean existsByPersonId(Integer tutorID);
 }
