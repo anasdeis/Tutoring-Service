@@ -1631,12 +1631,12 @@ public class TestTutoringServiceService {
 		String term = null;
 		Double price = null;
 		
-		Manager manager = null;
-		Tutor tutor = null;
-		Classroom room = null;
-		AvaliableSession classTime = null;
+//		Manager manager = null;
+//		Tutor tutor = null;
+//		Classroom room = null;
+//		AvaliableSession classTime = null;
 		Subject subject = null;
-		Commission com = null;
+//		Commission com = null;
 		Set<AvaliableSession> time = null;
 
 		TutoringSystem tutoringSystem = null;
@@ -1666,12 +1666,12 @@ public class TestTutoringServiceService {
 		String term = "";
 		Double price = 0.0;
 
-		Manager manager = null;
-		Tutor tutor = null;
-		Classroom room = null;
+//		Manager manager = null;
+//		Tutor tutor = null;
+//		Classroom room = null;
 //		AvaliableSession classTime = null;
 		Subject subject = null;
-		Commission com = null;
+//		Commission com = null;
 		Set<AvaliableSession> time = null;
 
 		TutoringSystem tutoringSystem = null;
@@ -1698,12 +1698,12 @@ public class TestTutoringServiceService {
 		String offeringID = " ";
 		String term = " ";
 		Double price = null;
-		Manager manager = null;
-		Tutor tutor = null;
-		Classroom room = null;
+//		Manager manager = null;
+//		Tutor tutor = null;
+//		Classroom room = null;
 //		AvaliableSession classTime = null;
 		Subject subject = null;
-		Commission com = null;
+//		Commission com = null;
 		Set<AvaliableSession> time = null;
 
 		TutoringSystem tutoringSystem = null;
@@ -1726,7 +1726,7 @@ public class TestTutoringServiceService {
     @Test
     public void testCreateUniversity() {
         assertEquals(0, service.getAllUniversitys().size());
-        String name = "Mcgill";
+        String name = "McGill";
         try {
             service.createUniversity(name);
         } catch (IllegalArgumentException e) {
