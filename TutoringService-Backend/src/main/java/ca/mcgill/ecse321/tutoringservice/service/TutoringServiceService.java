@@ -386,7 +386,7 @@ public class TutoringServiceService {
 	 */
 
 	@Transactional
-	public Offering createOffering(String offId, String term, Double price, Set<AvaliableSession> classTime, Subject subject, TutoringSystem tutoringSystem){
+	public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, TutoringSystem tutoringSystem){
 		String error ="";
 		if (offId == null || offId.trim().length() == 0) {
 //			throw new IllegalArgumentException("Offering ID cannot be empty!");
@@ -396,7 +396,7 @@ public class TutoringServiceService {
 //			throw new IllegalArgumentException("Offering term cannot be empty!");
 			error = error + "Offering term cannot be empty!";
 		}
-		if (price == null || price == 0.0) {
+		if (price == 0.0) {
 //			throw new IllegalArgumentException("Hourly rate cannot be empty!");
 			error = error + "Hourly rate cannot be empty!";
 		}

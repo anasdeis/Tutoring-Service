@@ -1629,7 +1629,7 @@ public class TestTutoringServiceService {
 		
 		String offeringID = null;
 		String term = null;
-		Double price = null;
+		double price = 0.0;
 		
 //		Manager manager = null;
 //		Tutor tutor = null;
@@ -1697,7 +1697,7 @@ public class TestTutoringServiceService {
 		
 		String offeringID = " ";
 		String term = " ";
-		Double price = null;
+		double price = 0.0;
 //		Manager manager = null;
 //		Tutor tutor = null;
 //		Classroom room = null;
