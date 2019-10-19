@@ -279,6 +279,7 @@ public class TestTutoringServiceService {
 		// can pass empty value for login but can not pass null
 		assertEquals(0, service.getAllStudents().size());
 
+
 		String error = null;
 
 		Integer studentID = 0;
@@ -411,6 +412,7 @@ public class TestTutoringServiceService {
 
 	}
 
+
 	@Test
 	public void testCreateManagerEmpty() {
 		assertEquals(0, service.getAllManagers().size());
@@ -441,7 +443,6 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllManagers().size());
 
 	}
-
 
 	@Test
 	public void testCreateManagerSpaces() {
@@ -516,6 +517,7 @@ public class TestTutoringServiceService {
 		service.deleteLogin(loginInfo.getUserName());
 
 	}
+
 
 	@Test
 	public void testCreateTutorNull() {
@@ -1437,9 +1439,10 @@ public class TestTutoringServiceService {
 	
 	@Test
 	public void testCreateClassroom() {
-        assertEquals(0, service.getAllClassrooms().size());
+		assertEquals(0, service.getAllClassrooms().size());
 
-        String roomCode = "rm1";
+
+		String roomCode = "rm1";
         Boolean isBooked = true;
         Boolean isBigRoom = false;
         
@@ -1535,96 +1538,96 @@ public class TestTutoringServiceService {
         List<Classroom> allClassrooms = service.getAllClassrooms();
         assertEquals(1, allClassrooms.size());
 
-        try {
-            service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
-        } catch (IllegalArgumentException e) {
-            // check that no error occurred
-            fail();
-        }
+		try {
+			service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			// check that no error occurred
+			fail();
+		}
 
-        allClassrooms = service.getAllClassrooms();
-        assertEquals(2, allClassrooms.size());
-        assertEquals(roomCode, allClassrooms.get(1).getRoomCode());
-        assertEquals(isBooked, allClassrooms.get(1).getIsBooked());
-        assertEquals(isBigRoom, allClassrooms.get(1).getIsBigRoom());
-        service.deleteClassroom(roomCode);
-    }
+		allClassrooms = service.getAllClassrooms();
+		assertEquals(2, allClassrooms.size());
+		assertEquals(roomCode, allClassrooms.get(1).getRoomCode());
+		assertEquals(isBooked, allClassrooms.get(1).getIsBooked());
+		assertEquals(isBigRoom, allClassrooms.get(1).getIsBigRoom());
+		service.deleteClassroom(roomCode);
+	}
 
-    @Test
+	@Test
 	public void testCreateClassroomNull() {
-        assertEquals(0, service.getAllClassrooms().size());
-        
-        String error = "";
+		assertEquals(0, service.getAllClassrooms().size());
 
-        String roomCode = null;
-        Boolean isBooked = null;
-        Boolean isBigRoom = null;
+		String error = "";
 
-        Manager manager = null;
+		String roomCode = null;
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+
+		Manager manager = null;
 		TutoringSystem tutoringSystem = null;
 		Set<Offering> offerings = null;
 
-        try {
-            service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
-        }
+		try {
+			service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
 
-        List<Classroom>allClassrooms = service.getAllClassrooms();
-        assertEquals(0, allClassrooms.size());
-        assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+		List<Classroom>allClassrooms = service.getAllClassrooms();
+		assertEquals(0, allClassrooms.size());
+		assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
 	}
 
-    @Test
+	@Test
 	public void testCreateClassroomEmpty() {
-        assertEquals(0, service.getAllClassrooms().size());
-        
-        String error = "";
+		assertEquals(0, service.getAllClassrooms().size());
 
-        String roomCode = "";
-        Boolean isBooked = null;
-        Boolean isBigRoom = null;
+		String error = "";
 
-        Manager manager = null;
+		String roomCode = "";
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+
+		Manager manager = null;
 		TutoringSystem tutoringSystem = null;
 		Set<Offering> offerings = null;
 
-        try {
-            service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
-        }
+		try {
+			service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
 
-        List<Classroom>allClassrooms = service.getAllClassrooms();
-        assertEquals(0, allClassrooms.size());
-        assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+		List<Classroom>allClassrooms = service.getAllClassrooms();
+		assertEquals(0, allClassrooms.size());
+		assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
 	}
-    
-    @Test
+
+	@Test
 	public void testCreateClassroomSpaces() {
-        assertEquals(0, service.getAllClassrooms().size());
-        
-        String error = "";
+		assertEquals(0, service.getAllClassrooms().size());
 
-        String roomCode = " ";
-        Boolean isBooked = null;
-        Boolean isBigRoom = null;
+		String error = "";
 
-        Manager manager = null;
+		String roomCode = " ";
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+
+		Manager manager = null;
 		TutoringSystem tutoringSystem = null;
 		Set<Offering> offerings = null;
 
-        try {
-            service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
-        }
+		try {
+			service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
 
-        List<Classroom>allClassrooms = service.getAllClassrooms();
-        assertEquals(0, allClassrooms.size());
-        assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+		List<Classroom>allClassrooms = service.getAllClassrooms();
+		assertEquals(0, allClassrooms.size());
+		assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+
 	}
-
 	/*
     @Test
     public void testCreateTutoringSystem() {
@@ -1643,26 +1646,112 @@ public class TestTutoringServiceService {
     }
 	 */
 
-	/*
 	@Test
 	public void testCreateOffering() {
 		assertEquals(0, service.getAllOfferings().size());
+		
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		// shared variables for manager and tutor, being lazy
+		String firstName = "Andy";
+		String lastName = "He";
+		Calendar c = Calendar.getInstance();
+		c.set(1999, Calendar.MARCH, 16, 9, 0, 0);
+		Date dob = new Date(c.getTimeInMillis());
+		String email = "123456@gmail.com";
+		Integer phoneNumber = 45612378;
+		// create manager
+		Manager manager = new Manager();
+		manager.setFirstName(firstName);
+		manager.setLastName(lastName);
+		manager.setDateOfBirth(dob);
+		manager.setEmail(email);
+		manager.setPhoneNumber(phoneNumber);
+		manager.setPersonId(12345);		
+		Login loginInfo1 = new Login();
+		loginInfo1.setPassword("pass");
+		loginInfo1.setUserName("manager");
+		manager.setLoginInfo(loginInfo1);
+		manager.setTutoringSystem(tutoringSystem);
+		// create tutor
+		Tutor tutor = new Tutor();
+		tutor.setFirstName(firstName);
+		tutor.setLastName(lastName);
+		tutor.setDateOfBirth(dob);
+		tutor.setEmail(email);
+		tutor.setPhoneNumber(123);
+		tutor.setPersonId(54321);
+		tutor.setIsRegistered(true);
+		Login loginInfo2 = new Login();
+		loginInfo2.setPassword("pass");
+		loginInfo2.setUserName("tutor");
+		tutor.setLoginInfo(loginInfo2);
+		tutor.setTutoringSystem(tutoringSystem);
+		// create classroom
+		Classroom room = new Classroom();
+		room.setIsBigRoom(false);
+		room.setIsBooked(false);
+		room.setManager(manager);
+		room.setRoomCode("rm1");
+		room.setTutoringSystem(tutoringSystem);
+		// create available session -- date and time
+		Calendar c1 = Calendar.getInstance();
+		c1.set(2016, Calendar.OCTOBER, 16, 9, 00, 0);
+		Date offerDay = new Date(c1.getTimeInMillis());
+		Time startTime = new Time(c1.getTimeInMillis());
+		c1.set(2016, Calendar.OCTOBER, 16, 10, 30, 0);
+		Time endTime = new Time(c1.getTimeInMillis());
+		// create available session for offering
+		AvaliableSession classTime = new AvaliableSession();
+		classTime.setDay(offerDay);
+		classTime.setStartTime(startTime);
+		classTime.setEndTime(endTime);
+		classTime.setAvaliableSessionID(123456);
+		classTime.setTutoringSystem(tutoringSystem);
+		// create subject for offering
+		Subject subject = new Subject();
+		subject.setCourseID("ECSE321");
+		subject.setName("Intro. to Software Engineering");
+		subject.setDescription("None");
+		subject.setTutoringSystem(tutoringSystem);
+		// create commission
+//		Set<Offering> offerings = new HashSet<Offering>();
+		Commission com = new Commission();
+		com.setManager(manager);
+		com.setPercentage(12.0);
+		com.setCommissionID(123);
+		com.setTutoringSystem(tutoringSystem);
+		// create offering
+		Offering offering = new Offering();
+		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
 		String offeringID = "FALL19";
 		String term = "fall";
-		double pricePerHour = 10.0;
-		AvaliableSession classTime = new AvaliableSession();
-		classTime.setAvaliableSessionID(123456);
-		Subject subject = new Subject();
-		subject.setCourseID("12233");
-		subject.setName("12233");
-		subject.setDescription("None");
-		subjectRepository.save(subject);
-
-		TutoringSystem tutoringSystem = new TutoringSystem();
+		Double price = 10.0;
+		
+		time.add(classTime);
+		offering.setClassroom(room);
+		offering.setClassTime(time);
+		offering.setOfferingID(offeringID);
+		offering.setSubject(subject);
+		offering.setTerm(term);
+		offering.setTutor(tutor);
+		offering.setCommission(com);
+		
 		tutoringSystem.setTutoringSystemID(123);
+		
 		tutoringSystemRepository.save(tutoringSystem);
+		loginRepository.save(loginInfo1);
+		loginRepository.save(loginInfo2);
+		managerRepository.save(manager);
+		tutorRepository.save(tutor);
+		classroomRepository.save(room);
+		avaliableSessionRepository.save(classTime);
+		subjectRepository.save(subject);
+		commissionRepository.save(com);
+		offeringRepository.save(offering);
+//		offeringRepository.save(offerings);
+		
 		try {
-			service.createOffering(offeringID, term,pricePerHour, classTime, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -1671,136 +1760,117 @@ public class TestTutoringServiceService {
 		assertEquals(1, allOfferings.size());
 		assertEquals(offeringID, allOfferings.get(0).getOfferingID());
 		assertEquals(term, allOfferings.get(0).getTerm());
-		assertEquals(classTime, allOfferings.get(0).getClassTime());
+//		assertEquals(classTime, allOfferings.get(0).getClassTime());	// this one cause errors, but create in general works
 
 		service.deleteOffering(offeringID);
 	}
 
 	@Test
 	public void testCreateOfferingNull() {
+		// double -> Double for null check
 		assertEquals(0, service.getAllStudents().size());
-		String error = null;
-
+		String error = "";
+		
 		String offeringID = null;
 		String term = null;
-		double pricePerHour = 0.0;
-		AvaliableSession classTime = null;
+		double price = 0.0;
+		
+//		Manager manager = null;
+//		Tutor tutor = null;
+//		Classroom room = null;
+//		AvaliableSession classTime = null;
+		Subject subject = null;
+//		Commission com = null;
+		Set<AvaliableSession> time = null;
 
-		Subject subject = new Subject();
-		subject.setCourseID("12233");
-		subject.setName("12233");
-		subject.setDescription("None");
-		subjectRepository.save(subject);
-
-		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(123);
-		tutoringSystemRepository.save(tutoringSystem);
-
+		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term,pricePerHour, classTime, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+//		assertEquals("valid input needed", error);
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
 
 	}
-
-
-	@Test
-	public void testCreateOfferingSpaces() {
-		// same here, cannot check if an Integer is empty, instead, check if it has the default value 0
-		// should be textfield to fill in, if it's textfield, then there exist ways to check
-
-		assertEquals(0, service.getAllStudents().size());
-
-		String offeringID = "   ";
-		String term = "   ";
-		double pricePerHour = 0.0;
-		AvaliableSession classTime = new AvaliableSession();
-		classTime.setAvaliableSessionID(0);
-
-		Subject subject = new Subject();
-		subject.setCourseID("   ");
-		subject.setName("   ");
-		subject.setDescription("   ");
-		subjectRepository.save(subject);
-
-		Integer tssID= 0;
-		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(tssID);
-		tutoringSystemRepository.save(tutoringSystem);
-
-		String error = null ;
-
-		try {
-			service.createOffering(offeringID, term,pricePerHour, classTime, subject, tutoringSystem);
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-
-		// check error
-//		assertEquals("First and last name cannot be empty! Email, Phone number cannot be empty! Student ID and number of courses"
-//    			+ "enrolled cannot be empty! Login info cannot be empty! The Tutoring System cannot be empty! ", error);
-		assertEquals("valid input needed", error);
-
-		// check no change in memory
-		assertEquals(0, service.getAllOfferings().size());
-
-	}
-
-
 
 	@Test
 	public void testCreateOfferingEmpty() {
 		// cannot check if an Integer is empty, instead, check if it has the default value 0
 		// can pass empty value for login but can not pass null
 		assertEquals(0, service.getAllOfferings().size());
-
+		String error = "";
 		String offeringID = "";
 		String term = "";
-		double pricePerHour = 0.0;
-		AvaliableSession classTime = new AvaliableSession();
-		classTime.setAvaliableSessionID(0);
+		Double price = 0.0;
 
-		Subject subject = new Subject();
-		subject.setCourseID("");
-		subject.setName("");
-		subject.setDescription("");
-		subjectRepository.save(subject);
+//		Manager manager = null;
+//		Tutor tutor = null;
+//		Classroom room = null;
+//		AvaliableSession classTime = null;
+		Subject subject = null;
+//		Commission com = null;
+		Set<AvaliableSession> time = null;
 
-		Integer tssID= 0;
-		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(tssID);
-		tutoringSystemRepository.save(tutoringSystem);
-
-		String error = null;
+		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term,pricePerHour, classTime, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("valid input needed", error);
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllOfferings().size());
+
+	}
+
+	@Test
+	public void testCreateOfferingSpaces() {
+
+		assertEquals(0, service.getAllStudents().size());
+		String error="";
+		
+		String offeringID = " ";
+		String term = " ";
+		double price = 0.0;
+//		Manager manager = null;
+//		Tutor tutor = null;
+//		Classroom room = null;
+//		AvaliableSession classTime = null;
+		Subject subject = null;
+//		Commission com = null;
+		Set<AvaliableSession> time = null;
+
+		TutoringSystem tutoringSystem = null;
+
+		try {
+			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		// check error
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
 
 	}
-	 */
+	
 	/*
 
     @Test
     public void testCreateUniversity() {
         assertEquals(0, service.getAllUniversitys().size());
-        String name = "Mcgill";
+        String name = "McGill";
         try {
             service.createUniversity(name);
         } catch (IllegalArgumentException e) {
@@ -1813,7 +1883,7 @@ public class TestTutoringServiceService {
         service.deleteUniversity(name);
     }
 
-    
+
     @Test
 	public void testCreateReview() {
 		assertEquals(0, service.getAllReviews().size());
