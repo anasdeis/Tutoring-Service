@@ -1,11 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Set;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
 import ca.mcgill.ecse321.tutoringservice.model.Classroom;
@@ -16,7 +11,6 @@ import ca.mcgill.ecse321.tutoringservice.model.Subject;
 import ca.mcgill.ecse321.tutoringservice.model.Tutor;
 import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
-@Entity
 public class OfferingDto{
 	private String offeringID;
 	private Set<Student> studentsEnrolled;
