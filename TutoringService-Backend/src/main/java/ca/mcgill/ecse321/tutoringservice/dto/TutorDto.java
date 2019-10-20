@@ -13,6 +13,10 @@ public class TutorDto extends Person{
 	private Set<Offering> offering;
 	private Set<AvaliableSession> avaliableSession;
 
+	public TutorDto() {
+		
+	}
+	
 	public Set<TutorApplication> getTutorApplication() {
 		return this.tutorApplication;
 	}

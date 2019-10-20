@@ -15,6 +15,10 @@ public abstract class PersonDto{
 	private Integer phoneNumber;
 	private TutoringSystem tutoringSystem;
 
+	public PersonDto() {
+
+	}
+	
 	public void setPersonId(Integer value) {
 		this.personId = value;
 	}

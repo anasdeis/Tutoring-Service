@@ -30,6 +30,10 @@ public class OfferingDto{
 	private Tutor tutor;
 	private TutoringSystem tutoringSystem;
 
+	public OfferingDto() {
+		
+	}
+	
 	public void setOfferingID(String value) {
 		this.offeringID = value;
 	}

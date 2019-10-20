@@ -16,6 +16,11 @@ public class SubjectRequestDto{
 	private SubjectType subjectType;
 	private TutoringSystem tutoringSystem;
 
+	public SubjectRequestDto() {
+		
+	}
+	
+	
 	public Set<Student> getStudent() {
 		return this.student;
 	}

@@ -16,6 +16,10 @@ public class AvaliableSessionDto{
 	private Date day;
 	private Set<Tutor> tutor;
 
+	public AvaliableSessionDto() {
+		
+	}
+	
 	public void setStartTime(Time value) {
 		this.startTime = value;
 	}

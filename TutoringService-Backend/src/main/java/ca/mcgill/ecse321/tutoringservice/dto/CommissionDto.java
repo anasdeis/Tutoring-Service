@@ -19,6 +19,10 @@ public class CommissionDto{
 	private TutoringSystem tutoringSystem;
 
 
+	public CommissionDto() {
+		
+	}
+	
 	public void setPercentage(double value) {
 		this.percentage = value;
 	}
