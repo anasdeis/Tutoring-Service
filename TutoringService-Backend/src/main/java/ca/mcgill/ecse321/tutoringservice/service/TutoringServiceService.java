@@ -69,8 +69,8 @@ public class TutoringServiceService {
 	public TutoringSystem createTutoringSystem(Integer tutoringSystemID) {
 		String error = "";
 
-		if (tutoringSystemID == null) {
-			error = error + "TutoringSystem tutoringSystemID cannot be empty! ";
+		if (tutoringSystemID == null || tutoringSystemID == 0) {
+			error = error + "Tutoring System ID cannot be empty!";
 		}
 		error = error.trim();
 

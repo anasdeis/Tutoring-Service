@@ -2358,5 +2358,79 @@ public class TestTutoringServiceService {
 		// check no change in memory
 		assertEquals(0, service.getAllTutorApplications().size());
 	}
+	
+	@Test
+	public void testCreateTutoringSystem() {
+		assertEquals(0, service.getAllLogins().size());
+	
+		Integer tsID = 123;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<TutoringSystem> allTutoringSystem = service.getAllTutoringSystems();
+		assertEquals(tsID, allTutoringSystem.get(0).getTutoringSystemID());
+		service.deleteTutoringSystem(tsID);
+	}
+	
+	@Test
+	public void testCreateTutoringSystemNull() {
+		assertEquals(0, service.getAllLogins().size());
+		String error = "";
+		Integer tsID = null;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllTutoringSystems().size());
+	}
+	
+	@Test
+	public void testCreateTutoringSystemEmpty() {
+		assertEquals(0, service.getAllLogins().size());
+		String error = "";
+		// cannnot check "" with Integer, instead, check input 0
+		Integer tsID = 0;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllTutoringSystems().size());
+	}
+	
+	@Test
+	public void testCreateTutoringSystemSpace() {
+		assertEquals(0, service.getAllLogins().size());
+		String error = "";
+		// cannnot check " " with Integer, instead, check input 0
+		Integer tsID = 0;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllTutoringSystems().size());
+	}
 
 }
