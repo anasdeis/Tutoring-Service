@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.tutoringservice.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+
 import java.sql.Time;
 import java.sql.Date;
 import java.util.Set;
@@ -58,11 +60,12 @@ public void setTutoringSystem(TutoringSystem tutoringSystem) {
 
 private Integer avaliableSessionID;
 
-public void setAvaliableSessionID(Integer value) {
-    this.avaliableSessionID = value;
-}
 @Id
 public Integer getAvaliableSessionID() {
     return this.avaliableSessionID;
+}
+
+public void setAvaliableSessionID(Integer value) {
+    this.avaliableSessionID = value;
 }
 }
