@@ -12,6 +12,10 @@ public class ReviewDto{
 	private TutoringSystem tutoringSystem;
 	private Integer reviewID;
 
+	public ReviewDto() {
+		
+	}
+	
 	public void setComment(String value) {
 		this.comment = value;
 	}

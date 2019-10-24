@@ -14,6 +14,10 @@ public class StudentDto extends Person{
 	private Set<SubjectRequest> subjectRequest;
 	private Integer numCoursesEnrolled;
 
+	public StudentDto() {
+		
+	}
+	
 	public Set<Offering> getCoursesTaken() {
 		return this.coursesTaken;
 	}

@@ -16,6 +16,10 @@ public class ClassroomDto{
 	private Manager manager;
 	private Boolean isBigRoom;
 
+	public ClassroomDto() {
+		
+	}
+	
 	public void setRoomCode(String value) {
 		this.roomCode = value;
 	}

@@ -1177,7 +1177,7 @@ public class TestTutoringServiceService {
 		room.setTutoringSystem(tutoringSystem);
 
 		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
-		time.add(classTime);
+//		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
 		Commission com = new Commission();
@@ -1194,6 +1194,7 @@ public class TestTutoringServiceService {
 		Set<Offering> offerings = new HashSet<Offering>();
 		com.setOffering(offerings);
 		room.setOffering(offerings);
+		offering.setTutoringSystem(tutoringSystem);
 
 		tutoringSystemRepository.save(tutoringSystem);
 		loginRepository.save(loginInfo1);
@@ -1257,7 +1258,7 @@ public class TestTutoringServiceService {
 		AvaliableSession classTime = new AvaliableSession();
 		classTime.setDay(dateOfBirth);
 		classTime.setTutoringSystem(tutoringSystem);
-		classTime.setAvaliableSessionID(123456);
+		classTime.setAvaliableSessionID(1234);
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
@@ -1284,11 +1285,11 @@ public class TestTutoringServiceService {
 		room.setIsBigRoom(false);
 		room.setIsBooked(false);
 		room.setManager(manager);
-		room.setRoomCode("123");
+		room.setRoomCode("rm123");
 		room.setTutoringSystem(tutoringSystem);
 
 		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
-		time.add(classTime);
+//		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
 		Commission com = new Commission();
@@ -1305,7 +1306,8 @@ public class TestTutoringServiceService {
 		Set<Offering> offerings = new HashSet<Offering>();
 		com.setOffering(offerings);
 		room.setOffering(offerings);
-
+		offering.setTutoringSystem(tutoringSystem);
+		
 		tutoringSystemRepository.save(tutoringSystem);
 		loginRepository.save(loginInfo1);
 		loginRepository.save(loginInfo2);
@@ -1400,7 +1402,7 @@ public class TestTutoringServiceService {
 		room.setTutoringSystem(tutoringSystem);
 
 		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
-		time.add(classTime);
+//		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
 		Commission com = new Commission();
@@ -1417,6 +1419,7 @@ public class TestTutoringServiceService {
 		Set<Offering> offerings = new HashSet<Offering>();
 		com.setOffering(offerings);
 		room.setOffering(offerings);
+		offering.setTutoringSystem(tutoringSystem);
 
 		tutoringSystemRepository.save(tutoringSystem);
 		loginRepository.save(loginInfo1);
@@ -1541,7 +1544,7 @@ public class TestTutoringServiceService {
 		room.setTutoringSystem(tutoringSystem);
 
 		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
-		time.add(classTime);
+//		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
 		Commission com = new Commission();
@@ -1558,6 +1561,7 @@ public class TestTutoringServiceService {
 		Set<Offering> offerings = new HashSet<Offering>();
 		com.setOffering(offerings);
 		room.setOffering(offerings);
+		offering.setTutoringSystem(tutoringSystem);
 
 		tutoringSystemRepository.save(tutoringSystem);
 		loginRepository.save(loginInfo1);
@@ -1852,6 +1856,8 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllOfferings().size());
 
 		TutoringSystem tutoringSystem = new TutoringSystem();
+//		tutoringSystem.setTutoringSystemID(123);
+
 
 		String firstName = "Andy";
 		String lastName = "He";
@@ -1920,13 +1926,14 @@ public class TestTutoringServiceService {
 		com.setPercentage(12.0);
 		com.setCommissionID(123);
 		com.setTutoringSystem(tutoringSystem);
+		
 		Offering offering = new Offering();
 		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
 		String offeringID = "FALL19";
 		String term = "fall";
 		Double price = 10.0;
 
-		time.add(classTime);
+//		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
 		offering.setOfferingID(offeringID);
@@ -1934,7 +1941,8 @@ public class TestTutoringServiceService {
 		offering.setTerm(term);
 		offering.setTutor(tutor);
 		offering.setCommission(com);
-
+		offering.setTutoringSystem(tutoringSystem);
+		
 		tutoringSystem.setTutoringSystemID(123);
 
 		tutoringSystemRepository.save(tutoringSystem);
@@ -2112,7 +2120,7 @@ public class TestTutoringServiceService {
 		room.setTutoringSystem(tutoringSystem);
 
 		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
-		time.add(classTime);
+//		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
 		Commission com = new Commission();
@@ -2129,6 +2137,7 @@ public class TestTutoringServiceService {
 		Set<Offering> offerings = new HashSet<Offering>();
 		com.setOffering(offerings);
 		room.setOffering(offerings);
+		offering.setTutoringSystem(tutoringSystem);
 
 		tutoringSystemRepository.save(tutoringSystem);
 		loginRepository.save(loginInfo1);
@@ -2357,6 +2366,80 @@ public class TestTutoringServiceService {
 
 		// check no change in memory
 		assertEquals(0, service.getAllTutorApplications().size());
+	}
+	
+	@Test
+	public void testCreateTutoringSystem() {
+		assertEquals(0, service.getAllLogins().size());
+	
+		Integer tsID = 123;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		List<TutoringSystem> allTutoringSystem = service.getAllTutoringSystems();
+		assertEquals(tsID, allTutoringSystem.get(0).getTutoringSystemID());
+		service.deleteTutoringSystem(tsID);
+	}
+	
+	@Test
+	public void testCreateTutoringSystemNull() {
+		assertEquals(0, service.getAllLogins().size());
+		String error = "";
+		Integer tsID = null;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllTutoringSystems().size());
+	}
+	
+	@Test
+	public void testCreateTutoringSystemEmpty() {
+		assertEquals(0, service.getAllLogins().size());
+		String error = "";
+		// cannnot check "" with Integer, instead, check input 0
+		Integer tsID = 0;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllTutoringSystems().size());
+	}
+	
+	@Test
+	public void testCreateTutoringSystemSpace() {
+		assertEquals(0, service.getAllLogins().size());
+		String error = "";
+		// cannnot check " " with Integer, instead, check input 0
+		Integer tsID = 0;
+		
+		try {
+			service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+		// check no change in memory
+		assertEquals(0, service.getAllTutoringSystems().size());
 	}
 
 }

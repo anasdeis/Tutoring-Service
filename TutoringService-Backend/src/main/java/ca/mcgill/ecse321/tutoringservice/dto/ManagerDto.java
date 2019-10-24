@@ -15,6 +15,10 @@ public class ManagerDto extends Person{
 	private Set<Commission> commission;
 	private Set<Classroom> classroom;
 
+	public ManagerDto() {
+		
+	}
+		
 	public Set<SubjectRequest> getSubjectRequest() {
 		return this.subjectRequest;
 	}

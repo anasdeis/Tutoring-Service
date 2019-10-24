@@ -19,6 +19,10 @@ public class SubjectDto{
 	private Set<TutorApplication> tutorRole;
 	private TutoringSystem tutoringSystem;
 
+	public SubjectDto() {
+		
+	}
+	
 	public void setName(String value) {
 		this.name = value;
 	}

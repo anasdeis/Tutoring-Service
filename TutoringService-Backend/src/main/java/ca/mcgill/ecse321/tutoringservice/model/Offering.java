@@ -111,6 +111,11 @@ public class Offering{
 	public void setTutor(Tutor tutor) {
 		this.tutor = tutor;
 	}
+	
+	@ManyToOne(optional=false)
+	public TutoringSystem getTutoringSystem() {
+	   return this.tutoringSystem;
+	}
 
 	public void setTutoringSystem(TutoringSystem tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;

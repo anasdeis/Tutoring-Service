@@ -10,7 +10,15 @@ public class UniversityDto{
 	private Set<Subject> subject;
 	private TutoringSystem tutoringSystem;
 
-	public void setName(String value) {
+	public UniversityDto() {
+		
+	}
+	
+	public UniversityDto(String uniName) {
+		this.name = uniName;
+	}
+
+		public void setName(String value) {
 		this.name = value;
 	}
 	public String getName() {

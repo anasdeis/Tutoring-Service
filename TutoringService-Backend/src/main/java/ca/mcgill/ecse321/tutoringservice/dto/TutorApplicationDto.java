@@ -13,6 +13,10 @@ public class TutorApplicationDto{
 	private Boolean isAccepted;
 	private TutoringSystem tutoringSystem;
 
+	public TutorApplicationDto() {
+		
+	}
+	
 	public void setApplicationId(Integer value) {
 		this.applicationId = value;
 	}
