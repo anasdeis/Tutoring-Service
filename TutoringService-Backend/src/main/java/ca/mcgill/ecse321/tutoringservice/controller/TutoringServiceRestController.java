@@ -36,6 +36,38 @@ public class TutoringServiceRestController {
 		return loginDto;
 		}
 	
+	@PostMapping(value = { "/student/create/{personId}", "/student/create/{personId}"})
+	public StudentDto createStudent(@PathVariable("personId") Integer personId, 
+	@RequestParam("firstName") String firstName, 
+	@RequestParam("lastName") String lastName, 
+	@RequestParam("loginInfo") LoginDto loginDto, 
+	@RequestParam("dateOfBirth") Date dob, 
+	@RequestParam("email") String email, 
+	@RequestParam("phoneNumber") Integer phone, 
+	@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto, 
+	@RequestParam("numCoursesEnrolled") Integer numCoursesEnrolled) throws IllegalArgumentException{
+		Login login = service.getLogin(loginDto.getUserName());
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Student student = service.createStudent(firstName, lastName, dob, email, phone, personId, numCoursesEnrolled, login, tutoringSystem);
+		return convertToDto(student);
+	}
+	
+	private StudentDto convertToDto(Student student) {
+		if (student == null) {
+			throw new IllegalArgumentException("There is no such student!");
+		}
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), student.getLoginInfo(), student.getTutoringSystem());
+		return studentDto; 
+	}
+	
+	@RequestMapping(value = {"/student/delete/{personId}", "/student/delete/{personId}/"}, method = RequestMethod.DELETE)
+	public StudentDto deleteStudent(@PathVariable("personId") Integer personId) throws IllegalArgumentException {
+		StudentDto studentDto = convertToDto(service.getStudent(personId));
+		service.deleteStudent(personId);
+		return studentDto;
+	}
+	
+	
 	/*
 	 * @return create tutor
 	 * @sample /tutor/create/5
