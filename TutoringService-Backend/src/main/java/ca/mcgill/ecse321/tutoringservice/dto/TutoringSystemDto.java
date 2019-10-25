@@ -29,6 +29,10 @@ public class TutoringSystemDto{
 		
 	}
 	
+	public TutoringSystemDto(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
+	}
+	
 	public Set<SubjectRequest> getSubjectRequest() {
 		return this.subjectRequest;
 	}
