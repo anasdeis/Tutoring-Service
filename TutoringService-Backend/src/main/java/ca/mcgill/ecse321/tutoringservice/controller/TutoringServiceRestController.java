@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +24,7 @@ import ca.mcgill.ecse321.tutoringservice.service.*;
 @RestController
 public class TutoringServiceRestController {
 	TutoringServiceService service;
-	
+	// TODO
 	@PostMapping(value = { "/userName/{userName}", "/password/{password}"})
 	public LoginDto createLogin(@PathVariable("userName") String username, @PathVariable("password") String password) throws IllegalArgumentException {
 		Login loginInfo = service.createLogin(username, password);
@@ -36,6 +39,52 @@ public class TutoringServiceRestController {
 		return loginDto;
 		}
 	
+	/*
+	 * @return a list of login info
+	 * @sample /tutor/list/username != null
+	 */
+	@GetMapping(value = { "/login/list/{username}", "/login/list/{password}"})
+//	public List<LoginDto> getAllLogins(@PathVariable("username") String username) {
+	public List<LoginDto> getAllLogins() {
+
+		List<LoginDto> loginDtos = new ArrayList<>();
+
+		for (Login login : service.getAllLogins()) {
+			if(login.getUserName() != null)
+				loginDtos.add(convertToDto(login));
+		}
+		return loginDtos;
+	}
+	// TODO
+	@SuppressWarnings("unused")
+	private ClassroomDto createClassroom(@PathVariable("roomcode") String roomcode, @PathVariable("isBooked") Boolean isBooked, @PathVariable("isBigRm") Boolean isBigRm,
+			 @RequestParam("managerID") Integer managerID,
+//			 @RequestParam("tutorID") Integer tutorID,
+			 @RequestParam("lgInfo") LoginDto loginDto,
+			 @RequestParam("offeringID") OfferingDto offeringDto,
+			 @RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto
+			) 
+	throws IllegalArgumentException {
+		Login login = service.getLogin(loginDto.getUserName());
+		TutoringSystem system = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Manager manager = service.getManager(managerID);
+//		need to get a offering lists, can't figure it out rn
+//		Set<Offering> offerings = (Set<Offering>) service.getAllOfferings(offeringDto.getOfferingID());
+		Set<Offering> offering = (Set<Offering>) service.getOffering(offeringDto.getOfferingID());
+//		Set<Offering> offerings = new HashSet<Offering>();
+		Classroom classroom = service.createClassroom(roomcode, isBooked, isBigRm, manager, offering, system);
+		
+		return convertToDto(classroom);
+	}
+	
+	private ClassroomDto convertToDto(Classroom classroom) {
+		if (classroom == null) {
+			throw new IllegalArgumentException("There is no such classroom!");
+		}
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), classroom.getManager(), 
+				classroom.getOffering(), classroom.getTutoringSystem());
+		return classroomDto;
+	}
 	/*
 	 * @return create tutor
 	 * @sample /tutor/create/5
@@ -113,4 +162,6 @@ public class TutoringServiceRestController {
 		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID());
 		return tutoringSystemDto;
 	}
+
+ 	
 }

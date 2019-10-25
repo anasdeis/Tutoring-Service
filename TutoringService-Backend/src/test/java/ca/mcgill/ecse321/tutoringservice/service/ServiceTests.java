@@ -13,7 +13,9 @@ import java.util.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import ca.mcgill.ecse321.tutoringservice.dao.*;
 import ca.mcgill.ecse321.tutoringservice.model.*;
@@ -71,6 +73,40 @@ public class ServiceTests {
 	public void testCreateLogin() {
 		assertEquals(0,service.getAllLogins().size());
 	}
+	private static final String PERSON_KEY = "TestPerson";
+	private static final String NONEXISTING_KEY = "NotAPerson";
+	private static final String LOGIN_KEY = "TestUsername";
+	private static final String LOGIN_KEY_PASS = "TestPassword";
+	private static final String NOTEXITING_LOGIN_KEY = "NotAUsername";
+	private static final String NOTEXISTING_LOGIN_KEY_PASS = "NotAPassword";
+	private Manager manager;
+	private Tutor tutor;
+	private Student student;
+	private Login lgInfo;
+	private TutoringSystem system;
+	
+	/*
+	@Before
+	public void setMockOutput() {
+		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(PERSON_KEY)) {
+				Login lgInfo = new Login();
+				lgInfo.setUserName(LOGIN_KEY);
+				lgInfo.setPassword(LOGIN_KEY_PASS);
+				return lgInfo;
+			} else {
+				return null;
+			}
+		});
+		// whenever anything is saved, just return the parameter object
+		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
+			return invocation.getArgument(0);
+		};
+		
+	}
+	
+	*/
+	
 }
 
 

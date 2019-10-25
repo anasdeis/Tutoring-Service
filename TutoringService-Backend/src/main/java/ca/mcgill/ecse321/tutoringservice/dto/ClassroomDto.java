@@ -20,12 +20,24 @@ public class ClassroomDto{
 		
 	}
 	
-	public void setRoomCode(String value) {
-		this.roomCode = value;
+	public ClassroomDto(String roomcode, Boolean isBooked, Boolean isBigRoom, Manager manager,
+			Set<Offering> offerings, TutoringSystem tutoringSystem) {
+		this.roomCode = roomcode;
+		this.isBooked = isBooked;
+		this.isBigRoom = isBigRoom;
+		this.manager = manager;
+		this.offering = offerings;
+		this.tutoringSystem = tutoringSystem;
 	}
+
 	public String getRoomCode() {
 		return this.roomCode;
 	}
+	
+	public void setRoomCode(String value) {
+		this.roomCode = value;
+	}
+	
 
 	public Set<Offering> getOffering() {
 		return this.offering;
@@ -34,21 +46,23 @@ public class ClassroomDto{
 	public void setOffering(Set<Offering> offerings) {
 		this.offering = offerings;
 	}
-
-	public void setIsBooked(Boolean value) {
-		this.isBooked = value;
-	}
+	
 	public Boolean getIsBooked() {
 		return this.isBooked;
 	}
-
-	public void setIsBigRoom(Boolean value) {
-		this.isBigRoom = value;
+	
+	public void setIsBooked(Boolean value) {
+		this.isBooked = value;
 	}
+
 	public Boolean getIsBigRoom() {
 		return this.isBigRoom;
 	}
-
+	
+	public void setIsBigRoom(Boolean value) {
+		this.isBigRoom = value;
+	}
+	
 	public Manager getManager() {
 		return this.manager;
 	}
