@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,10 +38,10 @@ public class TutoringServiceRestController {
 	
 	/*
 	 * @return create tutor
-	 * @sample /tutor/personId=5
+	 * @sample /tutor/create/5
 	 */
 	
-	@PostMapping(value = { "/tutor/{personId}", "/tutor/{personId}/" })
+	@PostMapping(value = { "/tutor/create/{personId}", "/tutor/create/{personId}/" })
 	public TutorDto createTutor(@PathVariable("personId") Integer personId, 
 			@RequestParam("firstName") String firstName, 
 			@RequestParam("lastName") String lastName, 
@@ -67,9 +69,9 @@ public class TutoringServiceRestController {
 	
 	/*
 	 * @return a list of Registered/Non-Registered Tutors
-	 * @sample /tutor/isRegistered=true
+	 * @sample /tutor/list/true
 	 */
-	@GetMapping(value = { "/tutor/{isRegistered}", "/tutor/{isRegistered}/" })
+	@GetMapping(value = { "/tutor/list/{isRegistered}", "/tutor/list/{isRegistered}/" })
 	public List<TutorDto> getAllRegisteredTutors(@PathVariable("isRegistered") Boolean isRegistered) {
 		List<TutorDto> tutorDtos = new ArrayList<>();
 		for (Tutor tutor : service.getAllTutors()) {
@@ -80,11 +82,23 @@ public class TutoringServiceRestController {
 	}
 	
 	/*
+	 * @return Fire tutor
+	 * @sample /tutor/delete/5
+	 * 
+	 */
+	@RequestMapping(value = {"/tutor/delete/{personId}", "/tutor/delete/{personId}/"}, method = RequestMethod.DELETE)
+    public TutorDto deleteTutor(@PathVariable("personId") Integer personId) throws IllegalArgumentException {
+		TutorDto tutorDto = convertToDto(service.getTutor(personId));
+		service.deleteTutor(personId);
+        return tutorDto;
+    }
+	
+	/*
 	 * @return create tutoring system
-	 * @sample /tutoringSystem/tutoringSystemId=3
+	 * @sample /tutoringSystem/create/10
 	 */
 	
-	@PostMapping(value = { "/tutoringSystem/{tutoringSystemId}", "/tutoringSystem/{tutoringSystemId}/" })
+	@PostMapping(value = { "/tutoringSystem/create/{tutoringSystemId}", "/tutoringSystem/create/{tutoringSystemId}/" })
 	public TutoringSystemDto createTutoringSystem(@PathVariable("tutoringSystemId") Integer tutoringSystemId) throws IllegalArgumentException {
 		// @formatter:on
 		TutoringSystem tutoringSystem = service.createTutoringSystem(tutoringSystemId);
