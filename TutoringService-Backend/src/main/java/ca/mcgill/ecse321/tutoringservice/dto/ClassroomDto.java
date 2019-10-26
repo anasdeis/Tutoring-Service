@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import ca.mcgill.ecse321.tutoringservice.model.Manager;
@@ -28,6 +29,11 @@ public class ClassroomDto{
 		this.manager = manager;
 		this.offering = offerings;
 		this.tutoringSystem = tutoringSystem;
+	}
+
+	// TODO
+	public ClassroomDto(Class<? extends List> class1) {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getRoomCode() {
