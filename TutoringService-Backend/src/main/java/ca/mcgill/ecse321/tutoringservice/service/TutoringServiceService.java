@@ -110,7 +110,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Login DONE
+	 * Login 
 	 */
 	@Transactional
 	public Login createLogin(String userName, String password) {
@@ -151,7 +151,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Commission DONE
+	 * Commission 
 	 */
 	@Transactional
 	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
@@ -204,7 +204,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Subject DONE
+	 * Subject 
 	 */
 	@Transactional
 	public Subject createSubject(String name, String courseID, String description, TutoringSystem tutoringSystem) {
@@ -301,7 +301,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Manager   DONE
+	 * Manager   
 	 */
 	@Transactional
 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -372,7 +372,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Student    DONE
+	 * Student   
 	 */
 	@Transactional
 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
@@ -443,7 +443,7 @@ public class TutoringServiceService {
 		studentRepository.deleteStudentByPersonId(studentID);
 	}
 
-	/* TODO
+	/*
 	 * Offering
 	 */
 
@@ -504,10 +504,10 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Tutor  DONE
+	 * Tutor 
 	 */
 	@Transactional
-	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
+	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> avaliableSessions, TutoringSystem tutoringSystem) {
 		String error = ""; 
 
 		if (first == null || first.trim().length() == 0) {
@@ -517,13 +517,11 @@ public class TutoringServiceService {
 		if (last == null || last.trim().length() == 0) {
 			error = error + "Last name cannot be empty!";
 		}
-		/*
-		 * dob will not be checked
+		
 		if (dob == null) {
-			//			error = error + "valid input needed";
 			error = error + "DOB cannot be empty!";
 		}
-		 */
+		 
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
 		}
@@ -546,6 +544,39 @@ public class TutoringServiceService {
 		//			throw new IllegalArgumentException("valid input needed");
 		//		}
 
+		if (!(tutorApplications == null || tutorApplications.isEmpty()))
+		{
+			for (TutorApplication tutorApplication : tutorApplications) {
+				if (tutorApplication == null) {
+					error = error + "TutorApplications needs to be selected for tutor!";
+				} else if (!tutorApplicationRepository.existsByApplicationId(tutorApplication.getApplicationId())) {
+					error = error + "TutorApplication does not exist!";
+				}
+			}
+		}
+		
+		if (!(offerings == null || offerings.isEmpty()))
+		{
+			for (Offering offering : offerings) {
+				if (offering == null) {
+					error = error + "Offering needs to be selected for tutor!";
+				} else if (!offeringRepository.existsByOfferingID(offering.getOfferingID())) {
+					error = error + "Offering does not exist!";
+				}
+			}
+		}
+		
+		if (!(avaliableSessions == null || avaliableSessions.isEmpty()))
+		{
+			for (AvaliableSession avaliableSession : avaliableSessions) {
+				if (avaliableSession == null) {
+					error = error + "AvaliableSession needs to be selected for tutor!";
+				} else if (!avaliableSessionRepository.existsByAvaliableSessionID(avaliableSession.getAvaliableSessionID())) {
+					error = error + "AvaliableSession does not exist!";
+				}
+			}
+		}
+		
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -564,9 +595,22 @@ public class TutoringServiceService {
 		tutorRepository.save(tutor);
 		return tutor;
 	}
+	
+	@Transactional
+	public Tutor setTutorIsRegistered (Tutor tutor, Boolean isRegistered) {
+		if (isRegistered == null) {
+			throw new IllegalArgumentException("Tutor isRegistered cannot be null!");
+		}
+		tutor.setIsRegistered(isRegistered);
+		
+		return tutorRepository.save(tutor);
+	}
 
 	@Transactional
-	public Tutor getTutor(int tutorID) {
+	public Tutor getTutor(Integer tutorID) {
+		if (tutorID == null) {
+			throw new IllegalArgumentException("Tutor tutorID cannot be null!");
+		}
 		Tutor tutor = tutorRepository.findTutorByPersonId(tutorID);
 		return tutor;
 	}
@@ -583,7 +627,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Review		DONE
+	 * Review		
 	 */
 	@Transactional
 	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
@@ -624,6 +668,16 @@ public class TutoringServiceService {
 		reviewRepository.save(review);
 		return review;
 	}
+	
+	@Transactional
+	public Review setReviewIsApproved (Review review, Boolean isApproved) {
+		if (isApproved == null) {
+			throw new IllegalArgumentException("Review isApproved cannot be null!");
+		}
+		review.setIsApproved(isApproved);
+		
+		return reviewRepository.save(review);
+	}
 
 	@Transactional
 	public Review getReview(Integer reviewID) {
@@ -649,7 +703,7 @@ public class TutoringServiceService {
 
 
 	/*
-	 * tutorApplication     YET TO FINISH
+	 * tutorApplication    
 	 */
 	@Transactional
 	public TutorApplication createTutorApplication(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
@@ -728,12 +782,15 @@ public class TutoringServiceService {
 		} else if (!tutoringSystemRepository.existsByTutoringSystemID(tutoringSystem.getTutoringSystemID())) {
 			error = error + "TutoringSystem does not exist!";
 		}
-
-		for (Tutor tutor : tutors) {
-			if (tutor == null) {
-				error = error + "Tutor needs to be selected for available session!";
-			} else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
-				error = error + "Tutor does not exist!";
+		
+		if (!(tutors == null || tutors.isEmpty()))
+		{
+			for (Tutor tutor : tutors) {
+				if (tutor == null) {
+					error = error + "Tutor needs to be selected for available session!";
+				} else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
+					error = error + "Tutor does not exist!";
+				}
 			}
 		}
 
@@ -776,7 +833,7 @@ public class TutoringServiceService {
 	}
 
 	/*
-	 * Classroom     DONE
+	 * Classroom     
 	 */
 	@Transactional
 	public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
