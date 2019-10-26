@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.sql.Time;
+import java.time.LocalTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,20 +25,21 @@ import ca.mcgill.ecse321.tutoringservice.service.*;
 @RestController
 public class TutoringServiceRestController {
 	TutoringServiceService service;
-	
+
 	@PostMapping(value = { "/userName/{userName}", "/password/{password}"})
 	public LoginDto createLogin(@PathVariable("userName") String username, @PathVariable("password") String password) throws IllegalArgumentException {
 		Login loginInfo = service.createLogin(username, password);
 		return convertToDto(loginInfo);
 	}
-	
+
 	private LoginDto convertToDto(Login lg) {
 		if (lg == null) {
 			throw new IllegalArgumentException("There is no such login information!");
 		}
 		LoginDto loginDto = new LoginDto(lg.getPassword(), lg.getPassword());
 		return loginDto;
-		}
+	}
+	
 	
 	/*
 	 * @return create tutor
@@ -113,4 +118,27 @@ public class TutoringServiceRestController {
 		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID());
 		return tutoringSystemDto;
 	}
+
+
+	@PostMapping(value = { "/events/{name}", "/events/{name}/" })
+	public SubjectDto createSubject(@PathVariable("name") String name, 
+			@RequestParam("courseID") String courseID, 
+			@RequestParam("description") String description, 
+			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto)
+					throws IllegalArgumentException {
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Subject subject = service.createSubject(name, courseID, description, tutoringSystem);
+		return convertToDto(subject);
+	}
+
+	private SubjectDto convertToDto(Subject sb) {
+		if (sb == null) {
+			throw new IllegalArgumentException("There is no such subject information!");
+		}
+
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), sb.getUniversity());
+
+		return subjectDto;
+	}
+
 }
