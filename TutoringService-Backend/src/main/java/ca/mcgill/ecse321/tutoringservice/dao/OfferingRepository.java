@@ -8,4 +8,6 @@ public interface OfferingRepository extends CrudRepository<Offering, String> {
     Offering findOfferingByOfferingID (String offeringID);
 
     void deleteOfferingByOfferingID (String offeringID);
+    
+    boolean existsByOfferingID (String offeringID);
 }
