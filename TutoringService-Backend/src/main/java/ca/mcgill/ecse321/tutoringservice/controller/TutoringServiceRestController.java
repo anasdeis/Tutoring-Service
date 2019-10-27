@@ -152,7 +152,7 @@ public class TutoringServiceRestController {
 	 * @sample /tutor/create/5?firstName=anas&lastName=deis&dob=1996-03-19&email=anas.deis@mail.mcgill.ca&phone=911&isRegistered=true&username=adeis&tutoringSystemId=1
 	 */
 	
-	@PostMapping(value = { "/tutor/create/{tuorId}", "/tutor/create/{tutorId}/" })
+	@PostMapping(value = { "/tutor/create/{tutorId}", "/tutor/create/{tutorId}/" })
 	public TutorDto createTutor(@PathVariable("tutorId") Integer tutorId, 
 			@RequestParam("firstName") String firstName, 
 			@RequestParam("lastName") String lastName, 
@@ -373,6 +373,29 @@ public class TutoringServiceRestController {
 	}
 	
 	/*
+	 * @param tutorApplicationId
+	 * @param isAccepted
+	 * @param tutorID
+	 * @param tutorSystemID
+	 * @return create Tutor Application
+	 * @sample /tutorApplication/create/{tutorApplicationId}?IsAccepted=<isAccepted>&&tutorID=<tutorID>&tutoringSystemID=<tutoringSystemID>
+	 */
+	
+	@PostMapping(value = { "/tutorApplication/create/{tutorApplicationId}","/tutorApplication/create/{tutorApplication}/" })
+	public TutorApplicationDto createTutorApplication(@PathVariable("tutorApplicationId") Integer tutorApplicationId, 
+			@RequestParam("isAccepted") Boolean isAccepted, 
+			@RequestParam("tutorID") Integer tutorID, 
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		
+		Tutor tutor = service.getTutor(tutorID);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+
+		TutorApplication tutorApplication = service.createTutorApplication(tutorApplicationId, isAccepted, tutor,  tutoringSystem);
+
+		return convertToDto(tutorApplication);
+
+	}
+	/*
 	 * list methods
 	 * 
 	 */
@@ -493,6 +516,21 @@ public class TutoringServiceRestController {
 				tutorDtos.add(convertToDto(tutor));
 		}
 		return tutorDtos;
+	}
+	
+	/*
+	 * @return a list of Tutor Applications
+	 * @sample /tutorApplication/list
+	 * 
+	 */
+	
+	@GetMapping(value = { "/tutorApplication/list", "/tutorApplication/list/" })
+	public List<TutorApplicationDto> getAllTutorApplications() {
+		List<TutorApplicationDto> tutorApplicationDtos = new ArrayList<>();
+		for (TutorApplication tutorApplication : service.getAllTutorApplications()) {
+			tutorApplicationDtos.add(convertToDto(tutorApplication));
+		}
+		return tutorApplicationDtos;
 	}
 	
 	/*
