@@ -1932,13 +1932,13 @@ public class TestTutoringServiceService {
 		Double price = 10.0;
 
 //		time.add(classTime);
-		offering.setClassroom(room);
+		//offering.setClassroom(room);
 		offering.setClassTime(time);
 		offering.setOfferingID(offeringID);
 		offering.setSubject(subject);
 		offering.setTerm(term);
-		offering.setTutor(tutor);
-		offering.setCommission(com);
+		//offering.setTutor(tutor);
+		//offering.setCommission(com);
 		offering.setTutoringSystem(tutoringSystem);
 		
 		tutoringSystem.setTutoringSystemID(123);
@@ -1952,10 +1952,9 @@ public class TestTutoringServiceService {
 		avaliableSessionRepository.save(classTime);
 		subjectRepository.save(subject);
 		commissionRepository.save(com);
-		offeringRepository.save(offering);
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -1978,11 +1977,14 @@ public class TestTutoringServiceService {
 		double price = 0.0;
 		Subject subject = null;
 		Set<AvaliableSession> time = null;
+		Tutor tutor = null;
+		Classroom room = null;
+		Commission com = null;
 
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject,tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -2004,11 +2006,14 @@ public class TestTutoringServiceService {
 		double price = 0.0;
 		Subject subject = null;
 		Set<AvaliableSession> time = null;
+		Tutor tutor = null;
+		Classroom room = null;
+		Commission com = null;
 
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -2031,11 +2036,14 @@ public class TestTutoringServiceService {
 		double price = 0.0;
 		Subject subject = null;
 		Set<AvaliableSession> time = null;
+		Tutor tutor = null;
+		Classroom room = null;
+		Commission com = null;
 
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}

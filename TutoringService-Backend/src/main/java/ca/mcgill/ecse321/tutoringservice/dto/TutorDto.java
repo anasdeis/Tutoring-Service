@@ -19,7 +19,7 @@ public class TutorDto extends Person{
 	public TutorDto() {
 	}
 	
-	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered, Login loginInfo, TutoringSystem tutoringSystem) {
+	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> availableSessions, TutoringSystem tutoringSystem) {
 		this.isRegistered = isRegistered;
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -28,6 +28,9 @@ public class TutorDto extends Person{
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(tutorID);
 		this.setLoginInfo(loginInfo);
+		this.tutorApplication = tutorApplications;
+		this.offering = offerings;
+		this.avaliableSession = availableSessions;
 		this.setTutoringSystem(tutoringSystem);
 	}
 	
