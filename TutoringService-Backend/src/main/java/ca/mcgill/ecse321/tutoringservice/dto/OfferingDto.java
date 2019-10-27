@@ -117,6 +117,9 @@ public class OfferingDto{
 		this.tutor = tutor;
 	}
 
+	public TutoringSystem getTutoringSystem() {
+		return this.tutoringSystem;
+	}
 	public void setTutoringSystem(TutoringSystem tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}

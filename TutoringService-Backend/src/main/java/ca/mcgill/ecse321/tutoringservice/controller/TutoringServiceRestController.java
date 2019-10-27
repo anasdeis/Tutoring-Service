@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +27,9 @@ import ca.mcgill.ecse321.tutoringservice.service.*;
 public class TutoringServiceRestController {
 	@Autowired
 	TutoringServiceService service;
-	
+
 	/*
 	 * helper methods for converting model to dto
-	 * 
 	 */
 	private TutorDto convertToDto(Tutor tutor) {
 		if (tutor == null) {
@@ -42,10 +43,9 @@ public class TutoringServiceRestController {
 		if (lg == null) {
 			throw new IllegalArgumentException("There is no such login information!");
 		}
-		LoginDto loginDto = new LoginDto(lg.getPassword(), lg.getPassword());
+		LoginDto loginDto = new LoginDto(lg.getUserName(), lg.getPassword());
 		return loginDto;
 	}
-	
 
 	private TutoringSystemDto convertToDto(TutoringSystem tutoringSystem) {
 		if (tutoringSystem == null) {
@@ -54,21 +54,29 @@ public class TutoringServiceRestController {
 		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID());
 		return tutoringSystemDto;
 	}
-	
+
 	private ManagerDto convertToDto(Manager manager) {
-		if (manager == null) {
+		if (manager == null) {				
 			throw new IllegalArgumentException("There is no such Manager!");
 		}
 		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), manager.getLoginInfo(), manager.getTutoringSystem());
 		return managerDto;
 	}
-	
+
 	private OfferingDto convertToDto(Offering offering) {
 		if (offering == null) {
 			throw new IllegalArgumentException("There is no such Offering!");
 		}
 		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), offering.getClassTime(), offering.getSubject(), offering.getTutor(), offering.getCommission(), offering.getClassroom(), offering.getTutoringSystem());
 		return offeringDto;
+	}
+
+	private StudentDto convertToDto(Student student) {
+		if (student == null) {
+			throw new IllegalArgumentException("There is no such student!");
+		}
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), student.getLoginInfo(), student.getTutoringSystem());
+		return studentDto; 
 	}
 	
 	private ReviewDto convertToDto(Review review) {
@@ -79,14 +87,23 @@ public class TutoringServiceRestController {
 		return reviewDto;
 	}
 	
+	private CommissionDto convertToDto(Commission commission) {
+		if (commission == null) {
+			throw new IllegalArgumentException("There is no such commission!");
+		}
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager(), commission.getOffering(), commission.getTutoringSystem());
+		return commissiondto;
+	}
 
 	private ClassroomDto convertToDto(Classroom classroom) {
 		if (classroom == null) {
 			throw new IllegalArgumentException("There is no such classroom!");
 		}
-		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), classroom.getManager(), classroom.getOffering(), classroom.getTutoringSystem());
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), classroom.getManager(), 
+				classroom.getOffering(), classroom.getTutoringSystem());
 		return classroomDto;
 	}
+	
 	private TutorApplicationDto convertToDto(TutorApplication tutorApplication) {
 		if (tutorApplication == null) {
 			throw new IllegalArgumentException("There is no such tutor Application!");
@@ -113,10 +130,8 @@ public class TutoringServiceRestController {
 		return subjectDto;
 	}
 	
-	
 	/*										
 	 * create methods
-	 * 
 	 */
 	
 	/**
@@ -128,8 +143,38 @@ public class TutoringServiceRestController {
 	public TutoringSystemDto createTutoringSystem(@PathVariable("tutoringSystemId") Integer tutoringSystemId) throws IllegalArgumentException {
 		// @formatter:on
 		TutoringSystem tutoringSystem = service.createTutoringSystem(tutoringSystemId);
-		
+
 		return convertToDto(tutoringSystem);
+	}
+
+	/**
+	 * @param commissionID
+	 * @param percentage
+	 * @param managerID
+	 * @param offeringID
+	 * @param tutoringSystem
+	 * @return create commission
+	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
+	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
+			@RequestParam("percentage") double percentage, 
+			@RequestParam("managerID") Integer managerID, 
+			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
+			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+		Set<Offering> offerings = null;
+		if(offeringIDs != null){
+			offerings = new HashSet<Offering>();
+			for (String offeringID : offeringIDs) {
+				Offering offering = service.getOffering(offeringID);
+				offerings.add(offering);
+			}
+		}
+		Manager manager = service.getManager(managerID);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Commission commission = service.createCommission(percentage, commissionID, manager, offerings, tutoringSystem);
+		
+		return convertToDto(commission);
 	}
 	
 	/**
@@ -161,7 +206,7 @@ public class TutoringServiceRestController {
 	 * @return create tutor
 	 * @sample /tutor/create/5?firstName=anas&lastName=deis&dob=1996-03-19&email=anas.deis@mail.mcgill.ca&phone=911&isRegistered=true&username=adeis&tutoringSystemId=1
 	 */
-	@PostMapping(value = { "/tutor/create/{tuorId}", "/tutor/create/{tutorId}/" })
+	@PostMapping(value = { "/tutor/create/{tutorId}", "/tutor/create/{tutorId}/" })
 	public TutorDto createTutor(@PathVariable("tutorId") Integer tutorId, 
 			@RequestParam("firstName") String firstName, 
 			@RequestParam("lastName") String lastName, 
@@ -175,10 +220,10 @@ public class TutoringServiceRestController {
 			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
 			@RequestParam(name = "avaliableSessionIDs", required = false) Set<Integer> avaliableSessionIDs) throws IllegalArgumentException {
 		// @formatter:on
-		
+
 		Login login = service.getLogin(username);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemId);
-		
+
 		Set<TutorApplication> tutorApplications = null;
 		if(applicationIds != null) {
 			tutorApplications = new HashSet<TutorApplication>();
@@ -187,7 +232,7 @@ public class TutoringServiceRestController {
 				tutorApplications.add(tutorApplication);
 			}
 		}
-		
+
 		Set<Offering> offerings = null;
 		if(offeringIDs != null){
 			offerings = new HashSet<Offering>();
@@ -196,7 +241,7 @@ public class TutoringServiceRestController {
 				offerings.add(offering);
 			}
 		}
-		
+
 		Set<AvaliableSession> avaliableSessions = null;
 		if(avaliableSessionIDs != null){
 			avaliableSessions = new HashSet<AvaliableSession>();
@@ -205,12 +250,12 @@ public class TutoringServiceRestController {
 				avaliableSessions.add(avaliableSession);
 			}
 		}
-		
+
 		Tutor tutor = service.createTutor(firstName, lastName, dob, email, phone, tutorId, isRegistered, login, tutorApplications, offerings, avaliableSessions, tutoringSystem);
 
 		return convertToDto(tutor);
 	}
-	
+
 
 	/**
 	 * @param offeringID
@@ -235,7 +280,7 @@ public class TutoringServiceRestController {
 			@RequestParam("roomCode") String roomCode,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 		// @formatter:on
-		
+
 		Set<AvaliableSession> avaliableSessions = null;
 		if(classTimes != null){
 			avaliableSessions = new HashSet<AvaliableSession>();
@@ -250,10 +295,10 @@ public class TutoringServiceRestController {
 		Classroom classroom = service.getClassroom(roomCode);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		Offering offering = service.createOffering(offeringID, term, price, avaliableSessions, subject, tutor, commission, classroom, tutoringSystem);
-		
+
 		return convertToDto(offering);
 	}
-	
+
 	/**
 	 * @param managerId
 	 * @param first
@@ -276,8 +321,8 @@ public class TutoringServiceRestController {
 			@RequestParam("phone") Integer phone,
 			@RequestParam("username") String username, 
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
-		
-		
+
+
 		Login login = service.getLogin(username);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 
@@ -309,10 +354,10 @@ public class TutoringServiceRestController {
 		Offering offering = service.getOffering(offeringID);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		Review review = service.createReview(comment, isApproved, reviewID, manager, offering, tutoringSystem);
-		
+
 		return convertToDto(review);
 	}
-	
+
 
 	/** 
 	 * @return create classroom
@@ -332,7 +377,7 @@ public class TutoringServiceRestController {
 			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 		// @formatter:on
-		
+
 		Set<Offering> offerings = null;
 		if(offeringIDs != null){
 			offerings = new HashSet<Offering>();
@@ -341,11 +386,11 @@ public class TutoringServiceRestController {
 				offerings.add(offering);
 			}
 		}
-		
+
 		Manager manager = service.getManager(managerID);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		Classroom classroom = service.createClassroom(roomCode, isBooked, isBigRm, manager, offerings, tutoringSystem);
-		
+
 		return convertToDto(classroom);
 	}
 	
@@ -376,190 +421,63 @@ public class TutoringServiceRestController {
 		
 		return convertToDto(university);
 	}
-	
-	/*
-	 * list methods
-	 * 
-	 */
-	
+
 	/**
-	 * @return list all university
-	 * @sample /university/list
+	 * @param tutorApplicationId
+	 * @param isAccepted
+	 * @param tutorID
+	 * @param tutorSystemID
+	 * @return create Tutor Application
+	 * @sample /tutorApplication/create/{tutorApplicationId}?IsAccepted=<isAccepted>&&tutorID=<tutorID>&tutoringSystemID=<tutoringSystemID>
 	 */
-	
-	@GetMapping(value = { "/university/list", "/university/list/" })
-	public List<UniversityDto> getAllUniversitys() {
-		List<UniversityDto> universityDtos = new ArrayList<>();
-		for (University university : service.getAllUniversitys()) {
-				universityDtos.add(convertToDto(university));
-		}
-		return universityDtos;
-	}
-	
-	/**
-	 * @return list all managers
-	 * @sample /manager/list
-	 */
-	
-	@GetMapping(value = { "/manager/list", "/manager/list/" })
-	public List<ManagerDto> getAllManagers() {
-		List<ManagerDto> managerDtos = new ArrayList<>();
-		for (Manager manager : service.getAllManagers()) {
-				managerDtos.add(convertToDto(manager));
-		}
-		return managerDtos;
-	}
-	
-	/**
-	 * @return list all reviews
-	 * @sample /review/list
-	 */
-	
-	@GetMapping(value = { "/review/list", "/review/list/" })
-	public List<ReviewDto> getAllReviews() {
-		List<ReviewDto> reviewDtos = new ArrayList<>();
-		for (Review review : service.getAllReviews()) {
-				reviewDtos.add(convertToDto(review));
-		}
-		return reviewDtos;
-	}
-	
-	/**
-	 * @return list all tutoringSystems
-	 * @sample /tutoringSystem/list
-	 */
-	
-	@GetMapping(value = { "/tutoringSystem/list", "/tutoringSystem/list/" })
-	public List<TutoringSystemDto> getAllTutoringSystems() {
-		List<TutoringSystemDto> tutoringSystemsDtos = new ArrayList<>();
-		for (TutoringSystem tutoringSystem : service.getAllTutoringSystems()) {
-			tutoringSystemsDtos.add(convertToDto(tutoringSystem));
-		}
-		return tutoringSystemsDtos;
-	}
-	
-	/**
-	 * @return list all logins
-	 * @sample /login/list
-	 */
-	
-	@GetMapping(value = { "/login/list", "/login/list/" })
-	public List<LoginDto> getAllLoginSystems() {
-		List<LoginDto> loginsDtos = new ArrayList<>();
-		for (Login login : service.getAllLogins()) {
-			loginsDtos.add(convertToDto(login));
-		}
-		return loginsDtos;
-	}
-	
-	/**
-	 * @return a list of all Tutors
-	 * @sample /tutor/list/
-	 */
-	@GetMapping(value = { "/tutor/list", "/tutor/list/" })
-	public List<TutorDto> getAllTutors() {
-		List<TutorDto> tutorDtos = new ArrayList<>();
-		for (Tutor tutor : service.getAllTutors()) {
-				tutorDtos.add(convertToDto(tutor));
-		}
-		return tutorDtos;
+	@PostMapping(value = { "/tutorApplication/create/{tutorApplicationId}","/tutorApplication/create/{tutorApplication}/" })
+	public TutorApplicationDto createTutorApplication(@PathVariable("tutorApplicationId") Integer tutorApplicationId, 
+			@RequestParam("isAccepted") Boolean isAccepted, 
+			@RequestParam("tutorID") Integer tutorID, 
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		
+		Tutor tutor = service.getTutor(tutorID);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+
+		TutorApplication tutorApplication = service.createTutorApplication(tutorApplicationId, isAccepted, tutor,  tutoringSystem);
+
+		return convertToDto(tutorApplication);
+
 	}
 
 	/**
-	 * @return list offering
-	 * @sample /offering/list
+	 * Student: create student with parameters
+	 * @param first
+	 * @param last
+	 * @param dob
+	 * @param email
+	 * @param phone
+	 * @param studentID
+	 * @param login
+	 * @param tutoringSystem
+ 	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dateOfBirth=<dateOfBirth>&email=<email>&phoneNumber=<phoneNumber>&tutoringSystem=<tutoringSystem>&numCoursesEnrolled=<numCoursesEnrolled>
 	 */
-	
-	@GetMapping(value = { "/offering/list", "/offering/list/" })
-	public List<OfferingDto> getAllOfferings() {
-		List<OfferingDto> offeringDtos = new ArrayList<>();
-		for (Offering offering : service.getAllOfferings()) {
-				offeringDtos.add(convertToDto(offering));
-		}
-		return offeringDtos;
-	}
-	
-	/*
-	 * 	Use Cases
-	 * 
-	 */
-	
-	/**
-	 * @return a list of Registered/Non-Registered Tutors
-	 * @sample /tutor/list/<isRegistered>
-	 * 
-	 */
-	
-	@GetMapping(value = { "/tutor/list/{isRegistered}", "/tutor/list/{isRegistered}/" })
-	public List<TutorDto> getAllRegisteredTutors(@PathVariable("isRegistered") Boolean isRegistered) {
-		List<TutorDto> tutorDtos = new ArrayList<>();
-		for (Tutor tutor : service.getAllTutors()) {
-			if(tutor.getIsRegistered().booleanValue() == isRegistered)
-				tutorDtos.add(convertToDto(tutor));
-		}
-		return tutorDtos;
-	}
-	
-	/**
-	 * @return Fire tutor
-	 * @sample /tutor/delete/<personId>
-	 * 
-	 */
-	
-	@DeleteMapping(value = {"/tutor/delete/{personId}", "/tutor/delete/{personId}/"})
-    public TutorDto deleteTutor(@PathVariable("personId") Integer personId) {
-		TutorDto tutorDto = convertToDto(service.getTutor(personId));
-		service.deleteTutor(personId);
-        return tutorDto;
-    }
-	
-	/**
-	 * @return update tutor as isRegistered
-	 * @sample /tutor/list/<isRegistered>
-	 * 
-	 */
-	
-	@PatchMapping(value = { "/tutor/update/registered/{personId}", "/tutor/update/registered/{personId}/" })
-	public TutorDto updateTutorIsRegistered(@PathVariable("personId") Integer personId, @RequestParam("isRegistered") Boolean isRegistered) {
-		Tutor tutor = (service.setTutorIsRegistered(service.getTutor(personId), isRegistered));
-		TutorDto tutorDto = convertToDto(tutor);
-		
-		return tutorDto;
-	}
-	
-	/**
-	 * @return get a list of approved/non-approved reviews
-	 * @sample /review/list/<isApproved>
-	 * 
-	 */
-	
-	@GetMapping(value = { "/review/list/{isApproved}", "/review/list/{isApproved}/" })
-	public List<ReviewDto> getAllReviews(@PathVariable("isApproved") Boolean isApproved) {
-		List<ReviewDto> reviewDtos = new ArrayList<>();
-		for (Review review : service.getAllReviews()) {
-			if(review.getIsApproved().booleanValue() == isApproved)
-				reviewDtos.add(convertToDto(review));
-		}
-		return reviewDtos;
-	}
-	
-	
-	/**
-	 * @return monitor reviews and set approved or non-approved
-	 * @sample /review/update/approved/<reviewID>?isApproved=<isApproved>
-	 * 
-	 */
-	
-	@PatchMapping(value = { "/review/update/approved/{reviewID}", "/review/update/approved/{reviewID}/" })
-	public ReviewDto updateReviewIsApproved(@PathVariable("reviewID") Integer reviewID, @RequestParam("isApproved") Boolean isApproved){
-		Review review = (service.setReviewIsApproved(service.getReview(reviewID), isApproved));
-		ReviewDto reviewDto = convertToDto(review);
-		
-		return reviewDto;
-	}
+	@PostMapping(value = {"/student/create/{studnetID}", "/student/create/{studnetID}/"})
+	public StudentDto createStudent(@PathVariable("studentID") Integer studentID,
+			@RequestParam("first") String first,
+			@RequestParam("last") String last,
+			@RequestParam("dob") Date dob,
+			@RequestParam("email") String email,
+			@RequestParam("phone") Integer phone,
+			@RequestParam("numCoursesEnrolled") Integer numCoursesEnrolled,
+			@RequestParam("username") String username,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 
+		Login login = service.getLogin(username);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+		
+		Student student = service.createStudent(first, last, dob, email, phone, studentID, numCoursesEnrolled, login, tutoringSystem);
+
+		return convertToDto(student);
+
+	}
+	
 	/** Add Subject
-	 * 
 	 * @param name
 	 * @param courseID
 	 * @param description
@@ -568,7 +486,7 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystemID
 	 * @return subject added
 	 * @throws IllegalArgumentException
-	 * @sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemI=<tutoringSystemId>
+	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemI=<tutoringSystemId>
 	 */
 	@PostMapping(value = { "/subject/create/{name}", "/subject/create/{name}/" })
 	public SubjectDto createSubject(@PathVariable("name") String name, 
@@ -590,6 +508,242 @@ public class TutoringServiceRestController {
 		University uni = service.getUniversity(university);
 		Subject subject = service.createSubject(name, courseID, description, sbType, uni, tutoringSystem);
 		return convertToDto(subject);
+	}	
+	
+	
+	
+	/**
+	/*
+	 * list methods
+	 */
+
+	/**
+	 * @return list all university
+	 * @sample /university/list
+	 */
+	@GetMapping(value = { "/university/list", "/university/list/" })
+	public List<UniversityDto> getAllUniversitys() {
+		List<UniversityDto> universityDtos = new ArrayList<>();
+		for (University university : service.getAllUniversitys()) {
+				universityDtos.add(convertToDto(university));
+		}
+		return universityDtos;
+	}
+	
+	/**
+	 * @return list all students
+	 * @sample /student/list
+	 */
+	@GetMapping(value = { "/student/list", "/student/list/" })
+	public List<StudentDto> getAllStudents() {
+		List<StudentDto> studentDtos = new ArrayList<>();
+		for (Student student: service.getAllStudents()) {
+			studentDtos.add(convertToDto(student));
+		}
+		return studentDtos;
+	}
+	
+	/**s
+	 * @return list all commissions
+	 * @sample /commission/list
+	 */
+	@GetMapping(value = { "/commission/list", "/commission/list/" })
+	public List<CommissionDto> getAllCommissions() {
+		List<CommissionDto> commissionDtos = new ArrayList<>();
+		for (Commission commission: service.getAllCommissions()) {
+			commissionDtos.add(convertToDto(commission));
+		}
+		return commissionDtos;
+	}
+	
+	/**
+	 * @return list all managers
+	 * @sample /manager/list
+	 */
+	@GetMapping(value = { "/manager/list", "/manager/list/" })
+	public List<ManagerDto> getAllManagers() {
+		List<ManagerDto> managerDtos = new ArrayList<>();
+		for (Manager manager : service.getAllManagers()) {
+			managerDtos.add(convertToDto(manager));
+		}
+		return managerDtos;
+	}
+	
+	/**
+	 * @return list all reviews
+	 * @sample /review/list
+	 */
+	@GetMapping(value = { "/review/list", "/review/list/" })
+	public List<ReviewDto> getAllReviews() {
+		List<ReviewDto> reviewDtos = new ArrayList<>();
+		for (Review review : service.getAllReviews()) {
+			reviewDtos.add(convertToDto(review));
+		}
+		return reviewDtos;
+	}
+	
+	/**
+	 * @return list all tutoringSystems
+	 * @sample /tutoringSystem/list
+	 */
+	@GetMapping(value = { "/tutoringSystem/list", "/tutoringSystem/list/" })
+	public List<TutoringSystemDto> getAllTutoringSystems() {
+		List<TutoringSystemDto> tutoringSystemsDtos = new ArrayList<>();
+		for (TutoringSystem tutoringSystem : service.getAllTutoringSystems()) {
+			tutoringSystemsDtos.add(convertToDto(tutoringSystem));
+		}
+		return tutoringSystemsDtos;
+	}
+	
+	/**
+	 * @return list all logins
+	 * @sample /login/list
+	 */
+
+	@GetMapping(value = { "/login/list", "/login/list/" })
+	public List<LoginDto> getAllLoginSystems() {
+		List<LoginDto> loginsDtos = new ArrayList<>();
+		for (Login login : service.getAllLogins()) {
+			loginsDtos.add(convertToDto(login));
+		}
+		return loginsDtos;
+	}
+	
+	/**
+	 * @return a list of all Tutors
+	 * @sample /tutor/list/
+	 */
+	@GetMapping(value = { "/tutor/list", "/tutor/list/" })
+	public List<TutorDto> getAllTutors() {
+		List<TutorDto> tutorDtos = new ArrayList<>();
+		for (Tutor tutor : service.getAllTutors()) {
+			tutorDtos.add(convertToDto(tutor));
+		}
+		return tutorDtos;
+	}
+
+	/**
+	 * @return list offering
+	 * @sample /offering/list
+	 */
+
+	@GetMapping(value = { "/offering/list", "/offering/list/" })
+	public List<OfferingDto> getAllOfferings() {
+		List<OfferingDto> offeringDtos = new ArrayList<>();
+		for (Offering offering : service.getAllOfferings()) {
+			offeringDtos.add(convertToDto(offering));
+		}
+		return offeringDtos;
+	}
+	
+	/**
+	 * @return a list of classrooms
+	 * @sample /classroom/list
+	 * not makes senses here
+	 */
+	@GetMapping(value = {"/classroom/list", "/classroom/list/"}) 
+	public List<ClassroomDto> getAllRoomSchedules() {
+		List<ClassroomDto> classroomDtos = new ArrayList<>();
+		for (Classroom classroom : service.getAllClassrooms()) {
+			classroomDtos.add(convertToDto(classroom));
+		}
+		return classroomDtos;
+	}
+
+	
+	/**
+	/*
+	 * 	Use Cases
+	 */
+
+	/**
+	 * @return a list of Registered/Non-Registered Tutors
+	 * @sample /tutor/list/<isRegistered>
+	 */
+
+	@GetMapping(value = { "/tutor/list/{isRegistered}", "/tutor/list/{isRegistered}/" })
+	public List<TutorDto> getAllRegisteredTutors(@PathVariable("isRegistered") Boolean isRegistered) {
+		List<TutorDto> tutorDtos = new ArrayList<>();
+		for (Tutor tutor : service.getAllTutors()) {
+			if(tutor.getIsRegistered().booleanValue() == isRegistered)
+				tutorDtos.add(convertToDto(tutor));
+		}
+		return tutorDtos;
+	}
+	
+	/**
+	 * @return a list of Tutor Applications
+	 * @sample /tutorApplication/list
+	 * 
+	 */
+	@GetMapping(value = { "/tutorApplication/list", "/tutorApplication/list/" })
+	public List<TutorApplicationDto> getAllTutorApplications() {
+		List<TutorApplicationDto> tutorApplicationDtos = new ArrayList<>();
+		for (TutorApplication tutorApplication : service.getAllTutorApplications()) {
+			tutorApplicationDtos.add(convertToDto(tutorApplication));
+		}
+		return tutorApplicationDtos;
+	}
+	
+	/**
+	 * @return Fire tutor
+	 * @sample /tutor/delete/<personId>
+	 */
+	@DeleteMapping(value = {"/tutor/delete/{tutorID}", "/tutor/delete/{tutorID}/"})
+	public TutorDto deleteTutor(@PathVariable("tutorID") Integer tutorID) {
+		TutorDto tutorDto = convertToDto(service.getTutor(tutorID));
+		service.deleteTutor(tutorID);
+		return tutorDto;
+	}
+
+	/**
+	 * @return update tutor as isRegistered
+	 * @sample /tutor/list/<isRegistered>
+	 */
+	@PatchMapping(value = { "/tutor/update/registered/{tutorID}", "/tutor/update/registered/{tutorID}/" })
+	public TutorDto updateTutorIsRegistered(@PathVariable("tutorID") Integer tutorID, @RequestParam("isRegistered") Boolean isRegistered) {
+		Tutor tutor = (service.setTutorIsRegistered(service.getTutor(tutorID), isRegistered));
+		TutorDto tutorDto = convertToDto(tutor);
+
+		return tutorDto;
+	}
+	
+	/**
+	 * @return get a list of approved/non-approved reviews
+	 * @sample /review/list/<isApproved>
+	 */
+	@GetMapping(value = { "/review/list/{isApproved}", "/review/list/{isApproved}/" })
+	public List<ReviewDto> getAllReviews(@PathVariable("isApproved") Boolean isApproved) {
+		List<ReviewDto> reviewDtos = new ArrayList<>();
+		for (Review review : service.getAllReviews()) {
+			if(review.getIsApproved().booleanValue() == isApproved)
+				reviewDtos.add(convertToDto(review));
+		}
+		return reviewDtos;
+	}
+	
+	
+	/**
+	 * @return monitor reviews and set approved or non-approved
+	 * @sample /review/update/approved/<reviewID>?isApproved=<isApproved>
+	 */
+	@PatchMapping(value = { "/review/update/approved/{reviewID}", "/review/update/approved/{reviewID}/" })
+	public ReviewDto updateReviewIsApproved(@PathVariable("reviewID") Integer reviewID, @RequestParam("isApproved") Boolean isApproved){
+		Review review = (service.setReviewIsApproved(service.getReview(reviewID), isApproved));
+		ReviewDto reviewDto = convertToDto(review);
+
+		return reviewDto;
+	}
+
+	/**
+	 * Remove a student
+	 * @sample /student/delete/<personID>
+	 */
+	@RequestMapping(value = {"/student/delete/{studentID}", "/student/delete/{studentID}/"}, method = RequestMethod.DELETE)
+	public StudentDto deleteStudent(@PathVariable("studentID") Integer studentID) throws IllegalArgumentException {
+		StudentDto studentDto = convertToDto(service.getStudent(studentID));
+		service.deleteStudent(studentID);
+		return studentDto;
 	}
 	
 	/** Create Review Session
@@ -639,5 +793,19 @@ public class TutoringServiceRestController {
 	}
 
 
+	/**
+	 * @return booked classroom
+	 * @sample /classroom/smallRoom/booked/<roomcode>?isBooked=<isBooked>
+	 */
+	@GetMapping(value = { "/classroom/smallRoom/booked/{roomcode}", "/classroom/smallRoom/booked/{roomcode}/" })
+	public List<ClassroomDto> getBookedRooms(@PathVariable("roomcode") String roomcode, @RequestParam("isBooked") Boolean isBooked){
+		List<ClassroomDto> classroomDtos = new ArrayList<>();
+		for (Classroom classroom : service.getAllClassrooms()) {
+			if(classroom.getIsBooked().booleanValue() == isBooked) {
+				classroomDtos.add(convertToDto(classroom));
+			}
+		}
+		return classroomDtos;
+	}
 }
 
