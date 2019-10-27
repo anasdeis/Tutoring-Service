@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -121,12 +120,12 @@ public class TutoringServiceRestController {
 		return universityDto;
 	}
 	
-	private SubjectDto convertToDto(Subject subj) {
-		if (subj == null) {
+	private SubjectDto convertToDto(Subject sb) {
+		if (sb == null) {
 			throw new IllegalArgumentException("There is no such subject information!");
 		}
 
-		SubjectDto subjectDto = new SubjectDto(subj.getName(), subj.getCourseID(), subj.getDescription(), subj.getSubjectType(), subj.getUniversity());
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), sb.getUniversity());
 
 		return subjectDto;
 	}
@@ -134,13 +133,12 @@ public class TutoringServiceRestController {
 	/*										
 	 * create methods
 	 */
-
-	/*
+	
+	/**
 	 * @param tutoringSystemId
 	 * @return create tutoring system
 	 * @sample /tutoringSystem/create/{tutoringSystemId}
 	 */
-
 	@PostMapping(value = { "/tutoringSystem/create/{tutoringSystemId}", "/tutoringSystem/create/{tutoringSystemId}/" })
 	public TutoringSystemDto createTutoringSystem(@PathVariable("tutoringSystemId") Integer tutoringSystemId) throws IllegalArgumentException {
 		// @formatter:on
@@ -149,7 +147,7 @@ public class TutoringServiceRestController {
 		return convertToDto(tutoringSystem);
 	}
 
-	/*
+	/**
 	 * @param commissionID
 	 * @param percentage
 	 * @param managerID
@@ -179,7 +177,7 @@ public class TutoringServiceRestController {
 		return convertToDto(commission);
 	}
 	
-	/*
+	/**
 	 * @param userName
 	 * @param password
 	 * @return create login
@@ -191,8 +189,8 @@ public class TutoringServiceRestController {
 		Login loginInfo = service.createLogin(userName, password);
 		return convertToDto(loginInfo);
 	}
-
-	/*
+	
+	/**
 	 * @param tutorId
 	 * @param first
 	 * @param last
@@ -259,7 +257,7 @@ public class TutoringServiceRestController {
 	}
 
 
-	/*
+	/**
 	 * @param offeringID
 	 * @param term
 	 * @param price
@@ -271,7 +269,6 @@ public class TutoringServiceRestController {
 	 * @return create offering
 	 * @sample /offering/create/{offeringID}?term=<term>&price=<price>&classTime=<classTime1,classTime2,..>&courseID=<courseID>&tutorID=<tutorID>&commissionID=<commissionID>&roomCode=<roomCode>&tutoringSystemId=<tutoringSystemId>
 	 */
-
 	@PostMapping(value = { "/offering/create/{offeringID}", "/offering/create/{offeringID}/" })
 	public OfferingDto createOffering(@PathVariable("offeringID") String offeringID,
 			@RequestParam("term") String term,
@@ -302,7 +299,7 @@ public class TutoringServiceRestController {
 		return convertToDto(offering);
 	}
 
-	/*
+	/**
 	 * @param managerId
 	 * @param first
 	 * @param last
@@ -315,7 +312,6 @@ public class TutoringServiceRestController {
 	 * @sample /manager/create/{managerId}?first=<first>&last=<last>&dob=<dob>&email=<email>&phone=<phone>&username=<username>&tutoringSystemId=<tutoringSystemID>
 	 * 
 	 */
-
 	@PostMapping(value = { "/manager/create/{managerId}","/manager/create/{managerId}/" })
 	public ManagerDto createManager(@PathVariable("managerId") Integer managerId, 
 			@RequestParam("first") String first, 
@@ -335,8 +331,8 @@ public class TutoringServiceRestController {
 		return convertToDto(manager);
 
 	}
-
-	/*
+	
+	/**
 	 * @param reviewID
 	 * @param comment
 	 * @param isApproved
@@ -346,7 +342,6 @@ public class TutoringServiceRestController {
 	 * @return create review
 	 * @sample /tutor/create/{reviewID}?comment=<comment>&isApproved=<isApproved>&managerID=<managerID>&offering=<offering>&tutoringSystemId=<tutoringSystemId>
 	 */
-
 	@PostMapping(value = { "/review/create/{reviewID}", "/review/create/{reviewID}/" })
 	public ReviewDto createReview(@PathVariable("reviewID") Integer reviewID,
 			@RequestParam("comment") String comment,
@@ -364,7 +359,7 @@ public class TutoringServiceRestController {
 	}
 
 
-	/* 
+	/** 
 	 * @return create classroom
 	 * @param roomcode
 	 * @param isBooked
@@ -374,7 +369,6 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystem
 	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRm=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
-
 	@PostMapping(value = { "/classroom/create/{roomCode}", "/classroom/create/{roomCode}/" })
 	public ClassroomDto createClassroom(@PathVariable("roomCode") String roomCode,
 			@RequestParam("isBooked") Boolean isBooked,
@@ -400,7 +394,7 @@ public class TutoringServiceRestController {
 		return convertToDto(classroom);
 	}
 	
-	/* 
+	/** 
 	 * @return create university
 	 * @param name
 	 * @param subjects (optional)
@@ -428,7 +422,7 @@ public class TutoringServiceRestController {
 		return convertToDto(university);
 	}
 
-	/*
+	/**
 	 * @param tutorApplicationId
 	 * @param isAccepted
 	 * @param tutorID
@@ -436,7 +430,6 @@ public class TutoringServiceRestController {
 	 * @return create Tutor Application
 	 * @sample /tutorApplication/create/{tutorApplicationId}?IsAccepted=<isAccepted>&&tutorID=<tutorID>&tutoringSystemID=<tutoringSystemID>
 	 */
-	
 	@PostMapping(value = { "/tutorApplication/create/{tutorApplicationId}","/tutorApplication/create/{tutorApplication}/" })
 	public TutorApplicationDto createTutorApplication(@PathVariable("tutorApplicationId") Integer tutorApplicationId, 
 			@RequestParam("isAccepted") Boolean isAccepted, 
@@ -452,7 +445,7 @@ public class TutoringServiceRestController {
 
 	}
 
-	/*
+	/**
 	 * Student: create student with parameters
 	 * @param first
 	 * @param last
@@ -484,7 +477,7 @@ public class TutoringServiceRestController {
 
 	}
 	
-	/* Add Subject
+	/** Add Subject
 	 * @param name
 	 * @param courseID
 	 * @param description
@@ -517,15 +510,17 @@ public class TutoringServiceRestController {
 		return convertToDto(subject);
 	}	
 	
+	
+	
+	/**
 	/*
 	 * list methods
 	 */
 
-	/*
+	/**
 	 * @return list all university
 	 * @sample /university/list
 	 */
-	
 	@GetMapping(value = { "/university/list", "/university/list/" })
 	public List<UniversityDto> getAllUniversitys() {
 		List<UniversityDto> universityDtos = new ArrayList<>();
@@ -535,7 +530,7 @@ public class TutoringServiceRestController {
 		return universityDtos;
 	}
 	
-	/*
+	/**
 	 * @return list all students
 	 * @sample /student/list
 	 */
@@ -548,7 +543,7 @@ public class TutoringServiceRestController {
 		return studentDtos;
 	}
 	
-	/*
+	/**s
 	 * @return list all commissions
 	 * @sample /commission/list
 	 */
@@ -561,11 +556,10 @@ public class TutoringServiceRestController {
 		return commissionDtos;
 	}
 	
-	/*
+	/**
 	 * @return list all managers
 	 * @sample /manager/list
 	 */
-
 	@GetMapping(value = { "/manager/list", "/manager/list/" })
 	public List<ManagerDto> getAllManagers() {
 		List<ManagerDto> managerDtos = new ArrayList<>();
@@ -575,12 +569,10 @@ public class TutoringServiceRestController {
 		return managerDtos;
 	}
 	
-	
-	/*
+	/**
 	 * @return list all reviews
 	 * @sample /review/list
 	 */
-
 	@GetMapping(value = { "/review/list", "/review/list/" })
 	public List<ReviewDto> getAllReviews() {
 		List<ReviewDto> reviewDtos = new ArrayList<>();
@@ -589,12 +581,11 @@ public class TutoringServiceRestController {
 		}
 		return reviewDtos;
 	}
-
-	/*
+	
+	/**
 	 * @return list all tutoringSystems
 	 * @sample /tutoringSystem/list
 	 */
-
 	@GetMapping(value = { "/tutoringSystem/list", "/tutoringSystem/list/" })
 	public List<TutoringSystemDto> getAllTutoringSystems() {
 		List<TutoringSystemDto> tutoringSystemsDtos = new ArrayList<>();
@@ -603,8 +594,8 @@ public class TutoringServiceRestController {
 		}
 		return tutoringSystemsDtos;
 	}
-
-	/*
+	
+	/**
 	 * @return list all logins
 	 * @sample /login/list
 	 */
@@ -617,8 +608,8 @@ public class TutoringServiceRestController {
 		}
 		return loginsDtos;
 	}
-
-	/*
+	
+	/**
 	 * @return a list of all Tutors
 	 * @sample /tutor/list/
 	 */
@@ -631,7 +622,7 @@ public class TutoringServiceRestController {
 		return tutorDtos;
 	}
 
-	/*
+	/**
 	 * @return list offering
 	 * @sample /offering/list
 	 */
@@ -645,12 +636,11 @@ public class TutoringServiceRestController {
 		return offeringDtos;
 	}
 	
-	/*
+	/**
 	 * @return a list of classrooms
 	 * @sample /classroom/list
 	 * not makes senses here
 	 */
-	/*
 	@GetMapping(value = {"/classroom/list", "/classroom/list/"}) 
 	public List<ClassroomDto> getAllRoomSchedules() {
 		List<ClassroomDto> classroomDtos = new ArrayList<>();
@@ -659,13 +649,14 @@ public class TutoringServiceRestController {
 		}
 		return classroomDtos;
 	}
-	*/
+
 	
+	/**
 	/*
 	 * 	Use Cases
 	 */
 
-	/*
+	/**
 	 * @return a list of Registered/Non-Registered Tutors
 	 * @sample /tutor/list/<isRegistered>
 	 */
@@ -679,13 +670,12 @@ public class TutoringServiceRestController {
 		}
 		return tutorDtos;
 	}
-
-	/*
+	
+	/**
 	 * @return a list of Tutor Applications
 	 * @sample /tutorApplication/list
 	 * 
 	 */
-	
 	@GetMapping(value = { "/tutorApplication/list", "/tutorApplication/list/" })
 	public List<TutorApplicationDto> getAllTutorApplications() {
 		List<TutorApplicationDto> tutorApplicationDtos = new ArrayList<>();
@@ -695,11 +685,10 @@ public class TutoringServiceRestController {
 		return tutorApplicationDtos;
 	}
 	
-	/*
+	/**
 	 * @return Fire tutor
 	 * @sample /tutor/delete/<personId>
 	 */
-
 	@DeleteMapping(value = {"/tutor/delete/{tutorID}", "/tutor/delete/{tutorID}/"})
 	public TutorDto deleteTutor(@PathVariable("tutorID") Integer tutorID) {
 		TutorDto tutorDto = convertToDto(service.getTutor(tutorID));
@@ -707,11 +696,10 @@ public class TutoringServiceRestController {
 		return tutorDto;
 	}
 
-	/*
+	/**
 	 * @return update tutor as isRegistered
 	 * @sample /tutor/list/<isRegistered>
 	 */
-
 	@PatchMapping(value = { "/tutor/update/registered/{tutorID}", "/tutor/update/registered/{tutorID}/" })
 	public TutorDto updateTutorIsRegistered(@PathVariable("tutorID") Integer tutorID, @RequestParam("isRegistered") Boolean isRegistered) {
 		Tutor tutor = (service.setTutorIsRegistered(service.getTutor(tutorID), isRegistered));
@@ -720,12 +708,10 @@ public class TutoringServiceRestController {
 		return tutorDto;
 	}
 	
-
-	/*
+	/**
 	 * @return get a list of approved/non-approved reviews
 	 * @sample /review/list/<isApproved>
 	 */
-
 	@GetMapping(value = { "/review/list/{isApproved}", "/review/list/{isApproved}/" })
 	public List<ReviewDto> getAllReviews(@PathVariable("isApproved") Boolean isApproved) {
 		List<ReviewDto> reviewDtos = new ArrayList<>();
@@ -736,11 +722,11 @@ public class TutoringServiceRestController {
 		return reviewDtos;
 	}
 	
-	/*
+	
+	/**
 	 * @return monitor reviews and set approved or non-approved
 	 * @sample /review/update/approved/<reviewID>?isApproved=<isApproved>
 	 */
-
 	@PatchMapping(value = { "/review/update/approved/{reviewID}", "/review/update/approved/{reviewID}/" })
 	public ReviewDto updateReviewIsApproved(@PathVariable("reviewID") Integer reviewID, @RequestParam("isApproved") Boolean isApproved){
 		Review review = (service.setReviewIsApproved(service.getReview(reviewID), isApproved));
@@ -749,7 +735,7 @@ public class TutoringServiceRestController {
 		return reviewDto;
 	}
 
-	/*
+	/**
 	 * Remove a student
 	 * @sample /student/delete/<personID>
 	 */
@@ -760,11 +746,57 @@ public class TutoringServiceRestController {
 		return studentDto;
 	}
 	
-	/*
+	/** Create Review Session
+	 * 
+	 * @param roomCode
+	 * @param managerID
+	 * @param offeringID
+	 * @param tutoringSystemID
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	@PostMapping(value = { "/classroom/review/create/{offeringID}", "/subject/review/create/{offeringID}/" })
+	public ClassroomDto createReviewSession(@PathVariable("offeringID") String offeringID,
+			@RequestParam("managerID") Integer managerID,
+			@RequestParam("roomCode") String roomCode,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+
+		Offering offering = service.getOffering(offeringID);
+
+		Boolean isBooked = true;
+		Boolean isBigRoom = true;
+		
+		List<Classroom> classrooms = new ArrayList<Classroom>();
+		classrooms = service.getAllClassrooms();
+		String thisClassID = null;
+		for(Classroom c : classrooms) {
+			if(c.getIsBigRoom()) {
+				Set <Offering> currOfferings = new HashSet<Offering>();
+				currOfferings.add(offering);
+				c.setOffering(currOfferings);
+				c.setIsBooked(isBooked);
+				thisClassID = c.getRoomCode();
+				break;
+			}
+		}
+		
+		Classroom thisClass = service.getClassroom(thisClassID);
+		if (thisClass == null) {
+			Manager manager = service.getManager(managerID);
+			TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+			Set<Offering> thisOffering = new HashSet<Offering>();
+			thisOffering.add(offering);
+			thisClass = service.createClassroom(roomCode, isBooked, isBigRoom, manager, thisOffering, tutoringSystem);
+		}
+		
+		return convertToDto(thisClass);
+	}
+
+
+	/**
 	 * @return booked classroom
 	 * @sample /classroom/smallRoom/booked/<roomcode>?isBooked=<isBooked>
 	 */
-	/*
 	@GetMapping(value = { "/classroom/smallRoom/booked/{roomcode}", "/classroom/smallRoom/booked/{roomcode}/" })
 	public List<ClassroomDto> getBookedRooms(@PathVariable("roomcode") String roomcode, @RequestParam("isBooked") Boolean isBooked){
 		List<ClassroomDto> classroomDtos = new ArrayList<>();
@@ -775,6 +807,5 @@ public class TutoringServiceRestController {
 		}
 		return classroomDtos;
 	}
-	*/
 }
 
