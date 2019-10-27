@@ -14,6 +14,12 @@ public class UniversityDto{
 		
 	}
 	
+	public UniversityDto(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
+		this.name = name;
+		this.subject = subjects;
+		this.tutoringSystem = tutoringSystem;
+	}
+	
 	public UniversityDto(String uniName) {
 		this.name = uniName;
 	}
