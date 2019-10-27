@@ -88,6 +88,13 @@ public class TutoringServiceRestController {
 		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), classroom.getManager(), classroom.getOffering(), classroom.getTutoringSystem());
 		return classroomDto;
 	}
+	private TutorApplicationDto convertToDto(TutorApplication tutorApplication) {
+		if (tutorApplication == null) {
+			throw new IllegalArgumentException("There is no such tutor Application!");
+		}
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), tutorApplication.getTutor(), tutorApplication.getTutoringSystem());
+		return tutorApplicationDto;
+	}
 	
 	/*										
 	 * create methods
