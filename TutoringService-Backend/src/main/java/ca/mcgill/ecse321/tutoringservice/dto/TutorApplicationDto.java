@@ -7,15 +7,18 @@ import ca.mcgill.ecse321.tutoringservice.model.Tutor;
 import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 public class TutorApplicationDto{
-	private Integer applicationId;
-	private Set<Subject> subject;
-	private Tutor tutor;
-	private Boolean isAccepted;
-	private TutoringSystem tutoringSystem;
+private Integer applicationId;
+private Set<Subject> subject;
+private Tutor tutor;
+private Boolean isAccepted;
+private TutoringSystem tutoringSystem;
 
-	public TutorApplicationDto() {
-		
-	}
+public TutorApplicationDto(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
+	this.applicationId = applicationId;
+	this.isAccepted = isAccepted;
+	this.tutor = tutor;
+	this.tutoringSystem = tutoringSystem;
+}
 	
 	public void setApplicationId(Integer value) {
 		this.applicationId = value;
