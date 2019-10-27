@@ -103,17 +103,27 @@ public class TutoringServiceRestController {
 		return universityDto;
 	}
 	
+	private SubjectDto convertToDto(Subject sb) {
+		if (sb == null) {
+			throw new IllegalArgumentException("There is no such subject information!");
+		}
+
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), sb.getUniversity());
+
+		return subjectDto;
+	}
+	
+	
 	/*										
 	 * create methods
 	 * 
 	 */
 	
-	/*
+	/**
 	 * @param tutoringSystemId
 	 * @return create tutoring system
 	 * @sample /tutoringSystem/create/{tutoringSystemId}
 	 */
-	
 	@PostMapping(value = { "/tutoringSystem/create/{tutoringSystemId}", "/tutoringSystem/create/{tutoringSystemId}/" })
 	public TutoringSystemDto createTutoringSystem(@PathVariable("tutoringSystemId") Integer tutoringSystemId) throws IllegalArgumentException {
 		// @formatter:on
@@ -122,7 +132,7 @@ public class TutoringServiceRestController {
 		return convertToDto(tutoringSystem);
 	}
 	
-	/*
+	/**
 	 * @param userName
 	 * @param password
 	 * @return create login
@@ -135,7 +145,7 @@ public class TutoringServiceRestController {
 		return convertToDto(loginInfo);
 	}
 	
-	/*
+	/**
 	 * @param tutorId
 	 * @param first
 	 * @param last
@@ -151,7 +161,6 @@ public class TutoringServiceRestController {
 	 * @return create tutor
 	 * @sample /tutor/create/5?firstName=anas&lastName=deis&dob=1996-03-19&email=anas.deis@mail.mcgill.ca&phone=911&isRegistered=true&username=adeis&tutoringSystemId=1
 	 */
-	
 	@PostMapping(value = { "/tutor/create/{tuorId}", "/tutor/create/{tutorId}/" })
 	public TutorDto createTutor(@PathVariable("tutorId") Integer tutorId, 
 			@RequestParam("firstName") String firstName, 
@@ -203,7 +212,7 @@ public class TutoringServiceRestController {
 	}
 	
 
-	/*
+	/**
 	 * @param offeringID
 	 * @param term
 	 * @param price
@@ -215,7 +224,6 @@ public class TutoringServiceRestController {
 	 * @return create offering
 	 * @sample /offering/create/{offeringID}?term=<term>&price=<price>&classTime=<classTime1,classTime2,..>&courseID=<courseID>&tutorID=<tutorID>&commissionID=<commissionID>&roomCode=<roomCode>&tutoringSystemId=<tutoringSystemId>
 	 */
-	
 	@PostMapping(value = { "/offering/create/{offeringID}", "/offering/create/{offeringID}/" })
 	public OfferingDto createOffering(@PathVariable("offeringID") String offeringID,
 			@RequestParam("term") String term,
@@ -246,7 +254,7 @@ public class TutoringServiceRestController {
 		return convertToDto(offering);
 	}
 	
-	/*
+	/**
 	 * @param managerId
 	 * @param first
 	 * @param last
@@ -259,7 +267,6 @@ public class TutoringServiceRestController {
 	 * @sample /manager/create/{managerId}?first=<first>&last=<last>&dob=<dob>&email=<email>&phone=<phone>&username=<username>&tutoringSystemId=<tutoringSystemID>
 	 * 
 	 */
-	
 	@PostMapping(value = { "/manager/create/{managerId}","/manager/create/{managerId}/" })
 	public ManagerDto createManager(@PathVariable("managerId") Integer managerId, 
 			@RequestParam("first") String first, 
@@ -280,7 +287,7 @@ public class TutoringServiceRestController {
 
 	}
 	
-	/*
+	/**
 	 * @param reviewID
 	 * @param comment
 	 * @param isApproved
@@ -290,7 +297,6 @@ public class TutoringServiceRestController {
 	 * @return create review
 	 * @sample /tutor/create/{reviewID}?comment=<comment>&isApproved=<isApproved>&managerID=<managerID>&offering=<offering>&tutoringSystemId=<tutoringSystemId>
 	 */
-
 	@PostMapping(value = { "/review/create/{reviewID}", "/review/create/{reviewID}/" })
 	public ReviewDto createReview(@PathVariable("reviewID") Integer reviewID,
 			@RequestParam("comment") String comment,
@@ -308,7 +314,7 @@ public class TutoringServiceRestController {
 	}
 	
 
-	/* 
+	/** 
 	 * @return create classroom
 	 * @param roomcode
 	 * @param isBooked
@@ -318,7 +324,6 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystem
 	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRm=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
-
 	@PostMapping(value = { "/classroom/create/{roomCode}", "/classroom/create/{roomCode}/" })
 	public ClassroomDto createClassroom(@PathVariable("roomCode") String roomCode,
 			@RequestParam("isBooked") Boolean isBooked,
@@ -344,7 +349,7 @@ public class TutoringServiceRestController {
 		return convertToDto(classroom);
 	}
 	
-	/* 
+	/** 
 	 * @return create university
 	 * @param name
 	 * @param subjects (optional)
@@ -377,7 +382,7 @@ public class TutoringServiceRestController {
 	 * 
 	 */
 	
-	/*
+	/**
 	 * @return list all university
 	 * @sample /university/list
 	 */
@@ -391,7 +396,7 @@ public class TutoringServiceRestController {
 		return universityDtos;
 	}
 	
-	/*
+	/**
 	 * @return list all managers
 	 * @sample /manager/list
 	 */
@@ -405,7 +410,7 @@ public class TutoringServiceRestController {
 		return managerDtos;
 	}
 	
-	/*
+	/**
 	 * @return list all reviews
 	 * @sample /review/list
 	 */
@@ -419,7 +424,7 @@ public class TutoringServiceRestController {
 		return reviewDtos;
 	}
 	
-	/*
+	/**
 	 * @return list all tutoringSystems
 	 * @sample /tutoringSystem/list
 	 */
@@ -433,7 +438,7 @@ public class TutoringServiceRestController {
 		return tutoringSystemsDtos;
 	}
 	
-	/*
+	/**
 	 * @return list all logins
 	 * @sample /login/list
 	 */
@@ -447,7 +452,7 @@ public class TutoringServiceRestController {
 		return loginsDtos;
 	}
 	
-	/*
+	/**
 	 * @return a list of all Tutors
 	 * @sample /tutor/list/
 	 */
@@ -460,7 +465,7 @@ public class TutoringServiceRestController {
 		return tutorDtos;
 	}
 
-	/*
+	/**
 	 * @return list offering
 	 * @sample /offering/list
 	 */
@@ -479,7 +484,7 @@ public class TutoringServiceRestController {
 	 * 
 	 */
 	
-	/*
+	/**
 	 * @return a list of Registered/Non-Registered Tutors
 	 * @sample /tutor/list/<isRegistered>
 	 * 
@@ -495,7 +500,7 @@ public class TutoringServiceRestController {
 		return tutorDtos;
 	}
 	
-	/*
+	/**
 	 * @return Fire tutor
 	 * @sample /tutor/delete/<personId>
 	 * 
@@ -508,7 +513,7 @@ public class TutoringServiceRestController {
         return tutorDto;
     }
 	
-	/*
+	/**
 	 * @return update tutor as isRegistered
 	 * @sample /tutor/list/<isRegistered>
 	 * 
@@ -522,7 +527,7 @@ public class TutoringServiceRestController {
 		return tutorDto;
 	}
 	
-	/*
+	/**
 	 * @return get a list of approved/non-approved reviews
 	 * @sample /review/list/<isApproved>
 	 * 
@@ -539,7 +544,7 @@ public class TutoringServiceRestController {
 	}
 	
 	
-	/*
+	/**
 	 * @return monitor reviews and set approved or non-approved
 	 * @sample /review/update/approved/<reviewID>?isApproved=<isApproved>
 	 * 
@@ -563,8 +568,7 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystemID
 	 * @return subject added
 	 * @throws IllegalArgumentException
-	 * 
-	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemI=<tutoringSystemId>
+	 * @sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemI=<tutoringSystemId>
 	 */
 	@PostMapping(value = { "/subject/create/{name}", "/subject/create/{name}/" })
 	public SubjectDto createSubject(@PathVariable("name") String name, 
@@ -587,16 +591,53 @@ public class TutoringServiceRestController {
 		Subject subject = service.createSubject(name, courseID, description, sbType, uni, tutoringSystem);
 		return convertToDto(subject);
 	}
+	
+	/** Create Review Session
+	 * 
+	 * @param roomCode
+	 * @param managerID
+	 * @param offeringID
+	 * @param tutoringSystemID
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	@PostMapping(value = { "/classroom/review/create/{offeringID}", "/subject/review/create/{offeringID}/" })
+	public ClassroomDto createReviewSession(@PathVariable("offeringID") String offeringID,
+			@RequestParam("managerID") Integer managerID,
+			@RequestParam("roomCode") String roomCode,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 
-	private SubjectDto convertToDto(Subject sb) {
-		if (sb == null) {
-			throw new IllegalArgumentException("There is no such subject information!");
+		Offering offering = service.getOffering(offeringID);
+
+		Boolean isBooked = true;
+		Boolean isBigRoom = true;
+		
+		List<Classroom> classrooms = new ArrayList<Classroom>();
+		classrooms = service.getAllClassrooms();
+		String thisClassID = null;
+		for(Classroom c : classrooms) {
+			if(c.getIsBigRoom()) {
+				Set <Offering> currOfferings = new HashSet<Offering>();
+				currOfferings.add(offering);
+				c.setOffering(currOfferings);
+				c.setIsBooked(isBooked);
+				thisClassID = c.getRoomCode();
+				break;
+			}
 		}
-
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), sb.getUniversity());
-
-		return subjectDto;
+		
+		Classroom thisClass = service.getClassroom(thisClassID);
+		if (thisClass == null) {
+			Manager manager = service.getManager(managerID);
+			TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+			Set<Offering> thisOffering = new HashSet<Offering>();
+			thisOffering.add(offering);
+			thisClass = service.createClassroom(roomCode, isBooked, isBigRoom, manager, thisOffering, tutoringSystem);
+		}
+		
+		return convertToDto(thisClass);
 	}
+
 
 }
 
