@@ -1011,11 +1011,16 @@ public class TestTutoringServiceService {
 		String name = "Math240";
 		String courseID = "MATH240FALL";
 		String description = "Discrete structures";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
+		University university = new University();
+		university.setName("McGill");
+		university.setTutoringSystem(tutoringSystem);
 		tutoringSystemRepository.save(tutoringSystem);
+		universityRepository.save(university);
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -1035,19 +1040,21 @@ public class TestTutoringServiceService {
 		String name = null;
 		String courseID = null;
 		String description = null;
+		SubjectType subjectType = null;
+		University university = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1061,19 +1068,21 @@ public class TestTutoringServiceService {
 		String name = "";
 		String courseID = "";
 		String description = "";
+		SubjectType subjectType = null;
+		University university = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1086,19 +1095,21 @@ public class TestTutoringServiceService {
 		String name = " ";
 		String courseID = " ";
 		String description = " ";
+		SubjectType subjectType = null;
+		University university = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1261,6 +1272,7 @@ public class TestTutoringServiceService {
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
 		subject.setDescription("None");
+		subject.setSubjectType(SubjectType.HIGH_SCHOOL_COURSE);
 		subject.setTutoringSystem(tutoringSystem);
 
 		Tutor tutor = new Tutor();
@@ -1516,6 +1528,7 @@ public class TestTutoringServiceService {
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
 		subject.setDescription("None");
+		subject.setSubjectType(SubjectType.HIGH_SCHOOL_COURSE);
 		subject.setTutoringSystem(tutoringSystem);
 
 		Tutor tutor = new Tutor();
@@ -2091,6 +2104,7 @@ public class TestTutoringServiceService {
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
+		subject.setSubjectType(SubjectType.HIGH_SCHOOL_COURSE);
 		subject.setDescription("None");
 		subject.setTutoringSystem(tutoringSystem);
 

@@ -17,12 +17,11 @@ public class SubjectDto{
 	}
 	
 	public SubjectDto(String name, String courseID, String description, SubjectType subjectType, University university) {
-		SubjectDto sb = new SubjectDto();
-		sb.setName(name);
-		sb.setCourseID(courseID);
-		sb.setDescription(description);
-		sb.setSubjectType(subjectType);
-		sb.setUniversity(university);
+		this.setName(name);
+		this.setCourseID(courseID);
+		this.setDescription(description);
+		this.setSubjectType(subjectType);
+		this.setUniversity(university);
 	}
 	
 	public void setName(String value) {
