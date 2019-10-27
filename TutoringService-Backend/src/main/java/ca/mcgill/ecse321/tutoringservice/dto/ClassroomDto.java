@@ -24,7 +24,7 @@ public class ClassroomDto{
 	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem){
 		this.roomCode = roomCode;
 		this.isBooked = isBooked;
-		this.isBooked = isBigRoom;
+		this.isBigRoom = isBigRoom;
 		this.manager = manager;
 		this.offering = offerings;
 		this.tutoringSystem = tutoringSystem;
