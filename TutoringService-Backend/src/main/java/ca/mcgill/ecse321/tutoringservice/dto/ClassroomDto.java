@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import ca.mcgill.ecse321.tutoringservice.model.Manager;
@@ -19,11 +20,11 @@ public class ClassroomDto{
 	public ClassroomDto() {
 		
 	}
-	
+
 	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem){
 		this.roomCode = roomCode;
 		this.isBooked = isBooked;
-		this.isBooked = isBigRoom;
+		this.isBigRoom = isBigRoom;
 		this.manager = manager;
 		this.offering = offerings;
 		this.tutoringSystem = tutoringSystem;
@@ -32,6 +33,7 @@ public class ClassroomDto{
 	public void setRoomCode(String value) {
 		this.roomCode = value;
 	}
+
 	public String getRoomCode() {
 		return this.roomCode;
 	}
@@ -43,21 +45,23 @@ public class ClassroomDto{
 	public void setOffering(Set<Offering> offerings) {
 		this.offering = offerings;
 	}
-
-	public void setIsBooked(Boolean value) {
-		this.isBooked = value;
-	}
+	
 	public Boolean getIsBooked() {
 		return this.isBooked;
 	}
-
-	public void setIsBigRoom(Boolean value) {
-		this.isBigRoom = value;
+	
+	public void setIsBooked(Boolean value) {
+		this.isBooked = value;
 	}
+
 	public Boolean getIsBigRoom() {
 		return this.isBigRoom;
 	}
-
+	
+	public void setIsBigRoom(Boolean value) {
+		this.isBigRoom = value;
+	}
+	
 	public Manager getManager() {
 		return this.manager;
 	}

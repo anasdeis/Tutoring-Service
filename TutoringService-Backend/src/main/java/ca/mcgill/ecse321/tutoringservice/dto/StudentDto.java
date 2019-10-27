@@ -21,19 +21,21 @@ public class StudentDto extends Person{
 	public StudentDto() {
 		
 	}
-	
-	public StudentDto(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
-		this.numCoursesEnrolled = numCoursesEnrolled;
-		this.setFirstName(first);
-		this.setLastName(last);
-		this.setDateOfBirth(dob);
+
+	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber,
+			Integer studentId, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setDateOfBirth(dateOfBirth);
 		this.setEmail(email);
-		this.setPhoneNumber(phone);
-		this.setPersonId(studentID);
+		this.setPhoneNumber(phoneNumber);
+		this.setPersonId(studentId);
+		this.setNumCoursesEnrolled(numCoursesEnrolled);
 		this.setLoginInfo(loginInfo);
 		this.setTutoringSystem(tutoringSystem);
 	}
-	
+
+
 	public Set<Offering> getCoursesTaken() {
 		return this.coursesTaken;
 	}
