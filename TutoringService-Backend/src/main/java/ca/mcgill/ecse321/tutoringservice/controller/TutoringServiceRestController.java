@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +37,7 @@ public class TutoringServiceRestController {
 		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), tutor.getLoginInfo(), tutor.getTutorApplication(), tutor.getOffering(),tutor.getAvaliableSession(), tutor.getTutoringSystem());
 		return tutorDto;
 	}
-	
+
 	private LoginDto convertToDto(Login lg) {
 		if (lg == null) {
 			throw new IllegalArgumentException("There is no such login information!");
@@ -48,6 +46,7 @@ public class TutoringServiceRestController {
 		return loginDto;
 	}
 	
+
 	private TutoringSystemDto convertToDto(TutoringSystem tutoringSystem) {
 		if (tutoringSystem == null) {
 			throw new IllegalArgumentException("There is no such TutoringSystem!");
@@ -553,5 +552,51 @@ public class TutoringServiceRestController {
 		
 		return reviewDto;
 	}
+
+	/** Add Subject
+	 * 
+	 * @param name
+	 * @param courseID
+	 * @param description
+	 * @param subjectType: University/HighSchool/CGEP
+	 * @param university
+	 * @param tutoringSystemID
+	 * @return subject added
+	 * @throws IllegalArgumentException
+	 * 
+	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemI=<tutoringSystemId>
+	 */
+	@PostMapping(value = { "/subject/create/{name}", "/subject/create/{name}/" })
+	public SubjectDto createSubject(@PathVariable("name") String name, 
+			@RequestParam("courseID") String courseID, 
+			@RequestParam("description") String description, 
+			@RequestParam("subjectType") String subjectType,
+			@RequestParam("university") String university,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+		SubjectType sbType = null;
+		if (subjectType.equals("University")) {
+			sbType = SubjectType.UNIVERSITY_COURSE;
+		}else if(subjectType.equals("HighSchool")) {
+			sbType = SubjectType.HIGH_SCHOOL_COURSE;
+		} else if(subjectType.equals("CPEG")) {
+			sbType = SubjectType.CGEP_COURSE;
+		}
+		
+		University uni = service.getUniversity(university);
+		Subject subject = service.createSubject(name, courseID, description, sbType, uni, tutoringSystem);
+		return convertToDto(subject);
+	}
+
+	private SubjectDto convertToDto(Subject sb) {
+		if (sb == null) {
+			throw new IllegalArgumentException("There is no such subject information!");
+		}
+
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), sb.getUniversity());
+
+		return subjectDto;
+	}
+
 }
 
