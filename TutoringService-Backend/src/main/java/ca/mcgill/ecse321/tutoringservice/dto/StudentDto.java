@@ -21,7 +21,7 @@ public class StudentDto extends Person{
 	public StudentDto() {
 		
 	}
-	
+
 	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber,
 			Integer studentId, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
 		this.setFirstName(firstName);
@@ -34,6 +34,7 @@ public class StudentDto extends Person{
 		this.setLoginInfo(loginInfo);
 		this.setTutoringSystem(tutoringSystem);
 	}
+
 
 	public Set<Offering> getCoursesTaken() {
 		return this.coursesTaken;

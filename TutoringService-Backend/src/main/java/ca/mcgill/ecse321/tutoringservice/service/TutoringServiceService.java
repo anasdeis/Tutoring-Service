@@ -207,7 +207,7 @@ public class TutoringServiceService {
 	 * Subject 
 	 */
 	@Transactional
-	public Subject createSubject(String name, String courseID, String description, TutoringSystem tutoringSystem) {
+	public Subject createSubject(String name, String courseID, String description, SubjectType subjType, University university,TutoringSystem tutoringSystem) {
 		String error = "";
 		if (name == null || name.trim().length() == 0)
 			error += "name cannot be empty or null!";
@@ -215,6 +215,9 @@ public class TutoringServiceService {
 			error += "description cannot be empty or null!";
 		if (courseID == null || courseID.trim().length() == 0)
 			error += "courseID cannot be empty or null!";
+		if(subjType == null) {
+			error += "subjectType cannot be null!";
+		}
 
 		error = error.trim();
 		if (error.length() > 0) {
@@ -222,8 +225,10 @@ public class TutoringServiceService {
 		}
 		Subject subject = new Subject();
 		subject.setName(name);
+		subject.setSubjectType(subjType);
 		subject.setCourseID(courseID);
 		subject.setDescription(description);
+		subject.setUniversity(university);
 		subject.setTutoringSystem(tutoringSystem);
 		subjectRepository.save(subject);
 		return subject;
