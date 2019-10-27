@@ -36,7 +36,7 @@ public class TutoringServiceRestController {
 		if (tutor == null) {
 			throw new IllegalArgumentException("There is no such Tutor!");
 		}
-		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), tutor.getLoginInfo(), tutor.getTutoringSystem());
+		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), tutor.getLoginInfo(), tutor.getTutorApplication(), tutor.getOffering(),tutor.getAvaliableSession(), tutor.getTutoringSystem());
 		return tutorDto;
 	}
 	
@@ -68,7 +68,7 @@ public class TutoringServiceRestController {
 		if (offering == null) {
 			throw new IllegalArgumentException("There is no such Offering!");
 		}
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), offering.getClassTime(), offering.getSubject(), offering.getTutoringSystem());
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), offering.getClassTime(), offering.getSubject(), offering.getTutor(), offering.getCommission(), offering.getClassroom(), offering.getTutoringSystem());
 		return offeringDto;
 	}
 	
@@ -97,7 +97,7 @@ public class TutoringServiceRestController {
 		
 		return convertToDto(tutoringSystem);
 	}
-
+	
 	/*
 	 * @return create login
 	 * @sample /login/<username>?password=<password>
@@ -164,11 +164,47 @@ public class TutoringServiceRestController {
 		return convertToDto(tutor);
 	}
 	
+
 	/*
-	 * @return create review
-	 * @sample /tutor/create/<reviewID>?comment=<comment>&isApproved=<isApproved>&managerID=<managerID>&offering=<offering>=tutoringSystemId=<tutoringSystemId>
+	 * @return create offering
+	 * @sample /offering/create/{offeringID}?term=<term>&price=<price>&classTime=<classTime1,classTime2,..>&courseID=<courseID>&tutorID=<tutorID>&commissionID=<commissionID>&roomCode=<roomCode>&tutoringSystemId=<tutoringSystemId>
 	 */
 	
+	@PostMapping(value = { "/offering/create/{offeringID}", "/offering/create/{offeringID}/" })
+	public OfferingDto createOffering(@PathVariable("offeringID") String offeringID,
+			@RequestParam("term") String term,
+			@RequestParam("price") double price,
+			@RequestParam("classTime") Set<Integer> classTimes,
+			@RequestParam("courseID") String courseID,
+			@RequestParam("tutorID") Integer tutorID,
+			@RequestParam("commissionID") Integer commissionID,
+			@RequestParam("roomCode") String roomCode,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		// @formatter:on
+		
+		Set<AvaliableSession> avaliableSessions = null;
+		if(classTimes != null){
+			avaliableSessions = new HashSet<AvaliableSession>();
+			for (Integer avaliableSessionID : classTimes) {
+				AvaliableSession avaliableSession = service.getAvaliableSession(avaliableSessionID);
+				avaliableSessions.add(avaliableSession);
+			}
+		}
+		Subject subject = service.getSubject(courseID);
+		Tutor tutor = service.getTutor(tutorID);
+		Commission commission = service.getCommission(commissionID);
+		Classroom classroom = service.getClassroom(roomCode);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+		Offering offering = service.createOffering(offeringID, term, price, avaliableSessions, subject, tutor, commission, classroom, tutoringSystem);
+		
+		return convertToDto(offering);
+	}
+	
+	/*
+	 * @return create review
+	 * @sample /tutor/create/<reviewID>?comment=<comment>&isApproved=<isApproved>&managerID=<managerID>&offering=<offering>&tutoringSystemId=<tutoringSystemId>
+	 */
+
 	@PostMapping(value = { "/review/create/{reviewID}", "/review/create/{reviewID}/" })
 	public ReviewDto createReview(@PathVariable("reviewID") Integer reviewID,
 			@RequestParam("comment") String comment,
@@ -245,6 +281,19 @@ public class TutoringServiceRestController {
 		return tutorDtos;
 	}
 
+	/*
+	 * @return list offering
+	 * @sample /offering/list
+	 */
+	
+	@GetMapping(value = { "/offering/list", "/offering/list/" })
+	public List<OfferingDto> getAllOfferings() {
+		List<OfferingDto> offeringDtos = new ArrayList<>();
+		for (Offering offering : service.getAllOfferings()) {
+				offeringDtos.add(convertToDto(offering));
+		}
+		return offeringDtos;
+	}
 	
 	/*
 	 * 	Use Cases

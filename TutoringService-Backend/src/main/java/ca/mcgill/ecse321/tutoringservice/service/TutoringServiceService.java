@@ -446,26 +446,43 @@ public class TutoringServiceService {
 	/*
 	 * Offering
 	 */
-
 	@Transactional
-	public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, TutoringSystem tutoringSystem){
+	public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
 		String error ="";
 		if (offId == null || offId.trim().length() == 0) {
-			//			throw new IllegalArgumentException("Offering ID cannot be empty!");
 			error = error + "Offering ID cannot be empty!";			
 		}
 		if (term == null || term.trim().length() == 0) {
-			//			throw new IllegalArgumentException("Offering term cannot be empty!");
 			error = error + "Offering term cannot be empty!";
 		}
 		if (price == 0.0) {
-			//			throw new IllegalArgumentException("Hourly rate cannot be empty!");
 			error = error + "Hourly rate cannot be empty!";
 		}
 		if (classTime == null) {
-			//			throw new IllegalArgumentException("Class time cannot be empty!");
 			error = error + "Class time cannot be empty!";
 		}
+/*		if (tutor == null) {
+			error = error + "Tutor cannot be empty!";
+		} else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
+			error = error + "Tutor does not exist!";
+		}
+		if (commission == null) {
+			error = error + "Commission cannot be empty!";
+		}// else if (!commissionRepository.existsByCommissionID(commission.getCommissionID())) {
+		//	error = error + "Commission does not exist!";
+		//}
+		if (classroom == null) {
+			error = error + "Classroom cannot be empty!";
+		} //else if (!classroomRepository.existsByRoomCode(classroom.getRoomCode())) {
+		//	error = error + "Classroom does not exist!";
+		//}
+		if (tutoringSystem == null) {
+			error = error + "TutoringSystem cannot be empty!";
+		}// else if (!tutoringSystemRepository.existsByTutoringSystemID(tutoringSystem.getTutoringSystemID())) {
+		//	error = error + "TutoringSystem does not exist!";
+		//}
+		
+ */
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
@@ -478,12 +495,13 @@ public class TutoringServiceService {
 		// class ca.mcgill.ecse321.tutoringservice.model.AvaliableSession cannot be cast to class java.util.Set (ca.mcgill.ecse321.tutoringservice.model.AvaliableSession
 		//is in unnamed module of loader 'app'; java.util.Set is in module java.base of loader 'bootstrap')
 		offering.setClassTime((Set<AvaliableSession>) classTime);
-
-
 		offering.setSubject(subject);
+		offering.setTutor(tutor);;
+		offering.setCommission(commission);
+		offering.setClassroom(classroom);
 		offering.setTutoringSystem(tutoringSystem);
-
-		//		offeringRepository.save(offering);
+		offeringRepository.save(offering);
+		
 		return offering;
 	}
 
@@ -591,6 +609,9 @@ public class TutoringServiceService {
 		tutor.setPersonId(tutorID);
 		tutor.setIsRegistered(isRegistered);
 		tutor.setLoginInfo(loginInfo);
+	    tutor.setTutorApplication(tutorApplications);
+	    tutor.setAvaliableSession(avaliableSessions);
+	    tutor.setOffering(offerings);
 		tutor.setTutoringSystem(tutoringSystem);
 		tutorRepository.save(tutor);
 		return tutor;

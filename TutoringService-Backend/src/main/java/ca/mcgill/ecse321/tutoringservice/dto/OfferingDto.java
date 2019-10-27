@@ -28,12 +28,15 @@ public class OfferingDto{
 		
 	}
 	
-	public OfferingDto(String offeringId, String term, double price, Set<AvaliableSession> classTime, Subject subject, TutoringSystem tutoringSystem){
-		this.offeringID = offeringId;
+	public OfferingDto(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
+		this.offeringID = offId;
 		this.term = term;
 		this.pricePerHour = price;
 		this.classTime = classTime;
 		this.subject = subject;
+		this.tutor = tutor;
+		this.commission = commission;
+		this.classroom = classroom;
 		this.tutoringSystem = tutoringSystem;
 	}
 	
