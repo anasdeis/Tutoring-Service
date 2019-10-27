@@ -36,6 +36,9 @@ public class TutoringServiceRestController {
 		return loginDto;
 		}
 	
+	/*
+	 * @return create studentmanag
+	 */
 	@PostMapping(value = { "/student/create/{personId}", "/student/create/{personId}"})
 	public StudentDto createStudent(@PathVariable("personId") Integer personId, 
 	@RequestParam("firstName") String firstName, 
@@ -65,6 +68,18 @@ public class TutoringServiceRestController {
 		StudentDto studentDto = convertToDto(service.getStudent(personId));
 		service.deleteStudent(personId);
 		return studentDto;
+	}
+	
+	/*
+	 * @return create commission
+	 */
+	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
+	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
+			@RequestParam("percentage") Double percentage, 
+			@RequestParam("manager") ManagerDto managerDto, 
+			@RequestParam("offering") Offering offering, 
+			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+		return null;
 	}
 	
 	
