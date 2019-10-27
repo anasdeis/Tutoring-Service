@@ -23,8 +23,8 @@ import ca.mcgill.ecse321.tutoringservice.controller.TutoringServiceRestControlle
 import ca.mcgill.ecse321.tutoringservice.dao.*;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
-@RunWith(MockitoJUnitRunner.class)
-//@RunWith(MockitoJUnitRunner.Silent.class)
+//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ServiceTests {
 	@Mock
 	private AvaliableSessionRepository avaliableSessionDao;
@@ -357,6 +357,7 @@ public class ServiceTests {
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
    	}
 	*/
+
 	
 	@Test
 	public void testMockLoginCreation() {

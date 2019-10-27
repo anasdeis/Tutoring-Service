@@ -105,7 +105,15 @@ public class TutoringServiceRestController {
 	}
 	
 	/*
-	 * Manager
+	 * Manager: create manager with specified parameters
+	 * @param first
+	 * @param last
+	 * @param dob
+	 * @param email
+	 * @param phone
+	 * @param managerId
+	 * @param login
+	 * @param tutoringSystem
 	 */
 	@PostMapping(value = { "/manager/create/{managerId}" })
 	public ManagerDto createManager(@PathVariable("managerId") Integer managerId, 
@@ -129,6 +137,56 @@ public class TutoringServiceRestController {
 		}
 		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), manager.getLoginInfo(), manager.getTutoringSystem());
 		return managerDto;
+	}
+	
+	/*
+	 * Student: create student with parameters
+	 @param first
+	 * @param last
+	 * @param dob
+	 * @param email
+	 * @param phone
+	 * @param studentID
+	 * @param login
+	 * @param tutoringSystem
+	 */
+	@PostMapping("/student/create/{studnetID")
+	public StudentDto createStudent(@PathVariable("studentID") Integer studentID,
+			@RequestParam("first") String first,
+			@RequestParam("last") String last,
+			@RequestParam Date dob,
+			@RequestParam("email") String email,
+			@RequestParam("phone") Integer phone,
+			@RequestParam("numCoursesEnrolled") Integer numCoursesEnrolled,
+			@RequestParam("loginInfo") LoginDto loginDto,
+			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+		
+		Login login = service.getLogin(loginDto.getUserName());
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Student student = service.createStudent(first, last, dob, email, phone, studentID, numCoursesEnrolled, login, tutoringSystem);
+		
+		return convertToDto(student);
+		
+	}
+
+	private StudentDto convertToDto(Student student) {
+		if (student == null) {
+			throw new IllegalArgumentException("");
+		} 
+		StudentDto studentDto = new StudentDto(student.getFirstName(),student.getLastName(),student.getDateOfBirth(),student.getEmail(),student.getPhoneNumber(),student.getPersonId(), student.getNumCoursesEnrolled(),student.getLoginInfo(),student.getTutoringSystem());
+		return studentDto;
+	}
+	
+	/*
+	 * @return a list of students
+	 */
+	@GetMapping(value = { "/student/list/{studentID}", "/student/list/{studentID}/" })
+	public List<StudentDto> getAllStudent(@PathVariable("studentID") Integer studentID) {
+		List<StudentDto> studentDtos = new ArrayList<>();
+		for (Student student : service.getAllStudents()) {	
+				studentDtos.add(convertToDto(student));
+		}
+		return studentDtos;
 	}
 
 	/*
