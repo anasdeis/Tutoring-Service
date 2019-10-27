@@ -1,12 +1,15 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
+import java.sql.Date;
 import java.util.Set;
 
 import ca.mcgill.ecse321.tutoringservice.model.Classroom;
 import ca.mcgill.ecse321.tutoringservice.model.Commission;
+import ca.mcgill.ecse321.tutoringservice.model.Login;
 import ca.mcgill.ecse321.tutoringservice.model.Person;
 import ca.mcgill.ecse321.tutoringservice.model.Review;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectRequest;
+import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 
 public class ManagerDto extends Person{
@@ -19,6 +22,17 @@ public class ManagerDto extends Person{
 		
 	}
 		
+	public ManagerDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setDateOfBirth(dateOfBirth);
+		this.setEmail(email);
+		this.setPhoneNumber(phoneNumber);
+		this.setPersonId(managerID);
+		this.setLoginInfo(loginInfo);
+		this.setTutoringSystem(tutoringSystem);
+	}
+	
 	public Set<SubjectRequest> getSubjectRequest() {
 		return this.subjectRequest;
 	}

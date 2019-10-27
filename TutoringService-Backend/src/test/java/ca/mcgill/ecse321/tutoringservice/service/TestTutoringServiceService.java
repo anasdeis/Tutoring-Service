@@ -502,7 +502,7 @@ public class TestTutoringServiceService {
 		tutoringSystemRepository.save(tutoringSystem);
 
 		try {
-			service.createTutor(firstName, lastName, dateOfBirth, email, phoneNumber, tutorID, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(firstName, lastName, dateOfBirth, email, phoneNumber, tutorID, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -512,14 +512,12 @@ public class TestTutoringServiceService {
 
 		assertEquals(1, allTutors.size());
 		assertEquals(tutorID, allTutors.get(0).getPersonId());
+		assertEquals(dateOfBirth.toString(), allTutors.get(0).getDateOfBirth().toString());
 		assertEquals(isRegistered, allTutors.get(0).getIsRegistered());
 		assertEquals(firstName, allTutors.get(0).getFirstName());
 		assertEquals(lastName, allTutors.get(0).getLastName());
 		assertEquals(email, allTutors.get(0).getEmail());
 		assertEquals(phoneNumber, allTutors.get(0).getPhoneNumber());
-		service.deleteTutor(tutorID);
-		service.deleteLogin(loginInfo.getUserName());
-
 	}
 
 
@@ -540,13 +538,13 @@ public class TestTutoringServiceService {
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createTutor(first, last, dob, email, phone, tutorId, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(first, last, dob, email, phone, tutorId, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+		assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
 				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
 
 		// check no change in memory
@@ -574,7 +572,7 @@ public class TestTutoringServiceService {
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -607,7 +605,7 @@ public class TestTutoringServiceService {
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}

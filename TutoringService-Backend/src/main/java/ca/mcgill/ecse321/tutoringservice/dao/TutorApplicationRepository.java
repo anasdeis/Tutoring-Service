@@ -8,4 +8,6 @@ public interface TutorApplicationRepository extends CrudRepository<TutorApplicat
     TutorApplication findTutorApplicationByApplicationId(Integer applicationID);
 
     void deleteTutorApplicationByApplicationId(Integer applicationID);
+    
+    boolean existsByApplicationId(Integer applicationId);
 }

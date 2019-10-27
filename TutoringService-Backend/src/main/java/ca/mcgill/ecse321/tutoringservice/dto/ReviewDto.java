@@ -16,6 +16,15 @@ public class ReviewDto{
 		
 	}
 	
+	public ReviewDto(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem) {
+		this.comment = comment;
+		this.isApproved = isApproved;
+		this.reviewID = reviewID;
+		this.manager = manager;
+		this.offering = offering;
+		this.tutoringSystem = tutoringSystem;
+	}
+	
 	public void setComment(String value) {
 		this.comment = value;
 	}
