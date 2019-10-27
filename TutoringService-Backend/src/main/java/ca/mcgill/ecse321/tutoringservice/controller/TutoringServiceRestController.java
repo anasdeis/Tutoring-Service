@@ -73,12 +73,28 @@ public class TutoringServiceRestController {
 		return offeringDto;
 	}
 	
+	private StudentDto convertToDto(Student student) {
+		if (student == null) {
+			throw new IllegalArgumentException("There is no such student!");
+		}
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), student.getLoginInfo(), student.getTutoringSystem());
+		return studentDto; 
+	}
+	
 	private ReviewDto convertToDto(Review review) {
 		if (review == null) {
 			throw new IllegalArgumentException("There is no such Review!");
 		}
 		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID(), review.getManager(), review.getOffering(), review.getTutoringSystem());
 		return reviewDto;
+	}
+	
+	private CommissionDto convertToDto(Commission commission) {
+		if (commission == null) {
+			throw new IllegalArgumentException("There is no such commission!");
+		}
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager(), commission.getOffering(), commission.getTutoringSystem());
+		return commissiondto;
 	}
 	
 
@@ -125,8 +141,17 @@ public class TutoringServiceRestController {
 	}
 	
 	/*
-<<<<<<< HEAD
+	 * @param personId
+	 * @param firstName
+	 * @param lastName
+	 * @param loginInfo
+	 * @param dateOfBirth
+	 * @param email
+	 * @param phoneNumber
+	 * @param tutoringSystem
+	 * @param numCoursesEnrolled
 	 * @return create student
+	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dateOfBirth=<dateOfBirth>&email=<email>&phoneNumber=<phoneNumber>&tutoringSystem=<tutoringSystem>&numCoursesEnrolled=<numCoursesEnrolled>
 	 */
 	@PostMapping(value = { "/student/create/{personId}", "/student/create/{personId}"})
 	public StudentDto createStudent(@PathVariable("personId") Integer personId, 
@@ -144,14 +169,10 @@ public class TutoringServiceRestController {
 		return convertToDto(student);
 	}
 	
-	private StudentDto convertToDto(Student student) {
-		if (student == null) {
-			throw new IllegalArgumentException("There is no such student!");
-		}
-		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), student.getLoginInfo(), student.getTutoringSystem());
-		return studentDto; 
-	}
-	
+
+	/*
+	 * Remove a student
+	 */
 	@RequestMapping(value = {"/student/delete/{personId}", "/student/delete/{personId}/"}, method = RequestMethod.DELETE)
 	public StudentDto deleteStudent(@PathVariable("personId") Integer personId) throws IllegalArgumentException {
 		StudentDto studentDto = convertToDto(service.getStudent(personId));
@@ -160,7 +181,13 @@ public class TutoringServiceRestController {
 	}
 	
 	/*
+	 * @param commissionID
+	 * @param percentage
+	 * @param managerID
+	 * @param offeringID
+	 * @param tutoringSystem
 	 * @return create commission
+	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
 	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
 	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
@@ -183,17 +210,9 @@ public class TutoringServiceRestController {
 		return convertToDto(commission);
 	}
 	
-	private CommissionDto convertToDto(Commission commission) {
-		if (commission == null) {
-			throw new IllegalArgumentException("There is no such commission!");
-		}
-		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager(), commission.getOffering(), commission.getTutoringSystem());
-		return commissiondto;
-	}
 	
 	
 	/*
-=======
 	 * @param userName
 	 * @param password
 	 * @return create login
@@ -219,7 +238,6 @@ public class TutoringServiceRestController {
 	 * @param applicationIds (optional)
 	 * @param offeringIDs (optional)
 	 * @param avaliableSessionIDs (optional)
->>>>>>> master
 	 * @return create tutor
 	 * @sample /tutor/create/5?firstName=anas&lastName=deis&dob=1996-03-19&email=anas.deis@mail.mcgill.ca&phone=911&isRegistered=true&username=adeis&tutoringSystemId=1
 	 */
