@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,12 +73,28 @@ public class TutoringServiceRestController {
 		return offeringDto;
 	}
 	
+	private StudentDto convertToDto(Student student) {
+		if (student == null) {
+			throw new IllegalArgumentException("There is no such student!");
+		}
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), student.getLoginInfo(), student.getTutoringSystem());
+		return studentDto; 
+	}
+	
 	private ReviewDto convertToDto(Review review) {
 		if (review == null) {
 			throw new IllegalArgumentException("There is no such Review!");
 		}
 		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID(), review.getManager(), review.getOffering(), review.getTutoringSystem());
 		return reviewDto;
+	}
+	
+	private CommissionDto convertToDto(Commission commission) {
+		if (commission == null) {
+			throw new IllegalArgumentException("There is no such commission!");
+		}
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager(), commission.getOffering(), commission.getTutoringSystem());
+		return commissiondto;
 	}
 	
 
@@ -121,6 +139,78 @@ public class TutoringServiceRestController {
 		
 		return convertToDto(tutoringSystem);
 	}
+	
+	/*
+	 * @param personId
+	 * @param firstName
+	 * @param lastName
+	 * @param loginInfo
+	 * @param dateOfBirth
+	 * @param email
+	 * @param phoneNumber
+	 * @param tutoringSystem
+	 * @param numCoursesEnrolled
+	 * @return create student
+	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dateOfBirth=<dateOfBirth>&email=<email>&phoneNumber=<phoneNumber>&tutoringSystem=<tutoringSystem>&numCoursesEnrolled=<numCoursesEnrolled>
+	 */
+	@PostMapping(value = { "/student/create/{personId}", "/student/create/{personId}"})
+	public StudentDto createStudent(@PathVariable("personId") Integer personId, 
+	@RequestParam("firstName") String firstName, 
+	@RequestParam("lastName") String lastName, 
+	@RequestParam("loginInfo") LoginDto loginDto, 
+	@RequestParam("dateOfBirth") Date dob, 
+	@RequestParam("email") String email, 
+	@RequestParam("phoneNumber") Integer phone, 
+	@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto, 
+	@RequestParam("numCoursesEnrolled") Integer numCoursesEnrolled) throws IllegalArgumentException{
+		Login login = service.getLogin(loginDto.getUserName());
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Student student = service.createStudent(firstName, lastName, dob, email, phone, personId, numCoursesEnrolled, login, tutoringSystem);
+		return convertToDto(student);
+	}
+	
+
+	/*
+	 * Remove a student
+	 */
+	@RequestMapping(value = {"/student/delete/{personId}", "/student/delete/{personId}/"}, method = RequestMethod.DELETE)
+	public StudentDto deleteStudent(@PathVariable("personId") Integer personId) throws IllegalArgumentException {
+		StudentDto studentDto = convertToDto(service.getStudent(personId));
+		service.deleteStudent(personId);
+		return studentDto;
+	}
+	
+	/*
+	 * @param commissionID
+	 * @param percentage
+	 * @param managerID
+	 * @param offeringID
+	 * @param tutoringSystem
+	 * @return create commission
+	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
+	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
+			@RequestParam("percentage") double percentage, 
+			@RequestParam("managerID") Integer managerID, 
+			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
+			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+		Set<Offering> offerings = null;
+		if(offeringIDs != null){
+			offerings = new HashSet<Offering>();
+			for (String offeringID : offeringIDs) {
+				Offering offering = service.getOffering(offeringID);
+				offerings.add(offering);
+			}
+		}
+		Manager manager = service.getManager(managerID);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Commission commission = service.createCommission(percentage, commissionID, manager, offerings, tutoringSystem);
+		
+		return convertToDto(commission);
+	}
+	
+	
 	
 	/*
 	 * @param userName
@@ -412,6 +502,32 @@ public class TutoringServiceRestController {
 				universityDtos.add(convertToDto(university));
 		}
 		return universityDtos;
+	}
+	
+	/*
+	 * @return list all students
+	 * @sample /student/list
+	 */
+	@GetMapping(value = { "/student/list", "/student/list/" })
+	public List<StudentDto> getAllStudents() {
+		List<StudentDto> studentDtos = new ArrayList<>();
+		for (Student student: service.getAllStudents()) {
+			studentDtos.add(convertToDto(student));
+		}
+		return studentDtos;
+	}
+	
+	/*
+	 * @return list all commissions
+	 * @sample /commission/list
+	 */
+	@GetMapping(value = { "/commission/list", "/commission/list/" })
+	public List<CommissionDto> getAllCommissions() {
+		List<CommissionDto> commissionDtos = new ArrayList<>();
+		for (Commission commission: service.getAllCommissions()) {
+			commissionDtos.add(convertToDto(commission));
+		}
+		return commissionDtos;
 	}
 	
 	/*
