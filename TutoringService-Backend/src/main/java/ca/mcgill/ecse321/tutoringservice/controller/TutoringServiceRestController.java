@@ -183,7 +183,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		Tutor tutor = service.createTutor(firstName, lastName, dob, email, phone, personId, isRegistered, login, tutorApplications, offerings, avaliableSessions, tutoringSystem);
+		Tutor tutor = service.createTutor(firstName, lastName, dob, email, phone, tutorId, isRegistered, login, tutorApplications, offerings, avaliableSessions, tutoringSystem);
 
 		return convertToDto(tutor);
 	}
