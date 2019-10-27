@@ -23,6 +23,14 @@ public class CommissionDto{
 		
 	}
 	
+	public CommissionDto(double percentage, Integer commissionID, Manager manager, Set<Offering> offering, TutoringSystem tutoringSystem) {
+		this.commissionID = commissionID;
+		this.percentage = percentage;
+		this.manager = manager;
+		this.offering = offering;
+		this.tutoringSystem = tutoringSystem;
+	}
+	
 	public void setPercentage(double value) {
 		this.percentage = value;
 	}

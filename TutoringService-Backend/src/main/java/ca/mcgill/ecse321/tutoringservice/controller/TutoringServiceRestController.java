@@ -126,7 +126,7 @@ public class TutoringServiceRestController {
 	
 	/*
 <<<<<<< HEAD
-	 * @return create studentmanag
+	 * @return create student
 	 */
 	@PostMapping(value = { "/student/create/{personId}", "/student/create/{personId}"})
 	public StudentDto createStudent(@PathVariable("personId") Integer personId, 
@@ -164,11 +164,31 @@ public class TutoringServiceRestController {
 	 */
 	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
 	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
-			@RequestParam("percentage") Double percentage, 
-			@RequestParam("manager") ManagerDto managerDto, 
-			@RequestParam("offering") Offering offering, 
+			@RequestParam("percentage") double percentage, 
+			@RequestParam("managerID") Integer managerID, 
+			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
 			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
-		return null;
+		Set<Offering> offerings = null;
+		if(offeringIDs != null){
+			offerings = new HashSet<Offering>();
+			for (String offeringID : offeringIDs) {
+				Offering offering = service.getOffering(offeringID);
+				offerings.add(offering);
+			}
+		}
+		Manager manager = service.getManager(managerID);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		Commission commission = service.createCommission(percentage, commissionID, manager, offerings, tutoringSystem);
+		
+		return convertToDto(commission);
+	}
+	
+	private CommissionDto convertToDto(Commission commission) {
+		if (commission == null) {
+			throw new IllegalArgumentException("There is no such commission!");
+		}
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager(), commission.getOffering(), commission.getTutoringSystem());
+		return commissiondto;
 	}
 	
 	
@@ -441,6 +461,32 @@ public class TutoringServiceRestController {
 				universityDtos.add(convertToDto(university));
 		}
 		return universityDtos;
+	}
+	
+	/*
+	 * @return list all students
+	 * @sample /student/list
+	 */
+	@GetMapping(value = { "/student/list", "/student/list/" })
+	public List<StudentDto> getAllStudents() {
+		List<StudentDto> studentDtos = new ArrayList<>();
+		for (Student student: service.getAllStudents()) {
+			studentDtos.add(convertToDto(student));
+		}
+		return studentDtos;
+	}
+	
+	/*
+	 * @return list all commissions
+	 * @sample /commission/list
+	 */
+	@GetMapping(value = { "/commission/list", "/commission/list/" })
+	public List<CommissionDto> getAllCommissions() {
+		List<CommissionDto> commissionDtos = new ArrayList<>();
+		for (Commission commission: service.getAllCommissions()) {
+			commissionDtos.add(convertToDto(commission));
+		}
+		return commissionDtos;
 	}
 	
 	/*
