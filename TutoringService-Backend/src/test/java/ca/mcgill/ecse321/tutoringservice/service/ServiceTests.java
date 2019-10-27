@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.tutoringservice.service;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -13,15 +14,17 @@ import java.util.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
+import org.mockito.InjectMocks;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import ca.mcgill.ecse321.tutoringservice.controller.TutoringServiceRestController;
 import ca.mcgill.ecse321.tutoringservice.dao.*;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
-//@RunWith(MockitoJUnitRunner.class)
-@RunWith(MockitoJUnitRunner.Silent.class)
+@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.Silent.class)
 public class ServiceTests {
 	@Mock
 	private AvaliableSessionRepository avaliableSessionDao;
@@ -68,6 +71,9 @@ public class ServiceTests {
 	@InjectMocks
 	private TutoringServiceService service;
 	
+	@InjectMocks
+	private TutoringServiceRestController controller;
+	
 	// TODO: please fill in your test case
 	
 	// this test is designed to pass the Travis CI build, will be modified
@@ -95,11 +101,14 @@ public class ServiceTests {
 	private Tutor tutor;
 	private static final Integer TUTORID_KEY = 888;
 	private static final String NOTEXISTING_TUTORID_KEY = "NotATutorID";
+	private static final Boolean ISREGISTERED = true;
 	
 	// student
 	private Student student;
 	private static final Integer STUDENTID_KEY = 777;
 	private static final String NOTEXISTING_STUDENTID_KEY = "NotAStudentID";
+	private static final Integer NUM_COURSE_ENROLLED_KEY = 5;
+	private static final String NOTEXISTING_NUM_COURSE_ENROLLED_KEY = "NotANumCourseEnrolled";
 	
 	// login
 	private Login lgInfo;
@@ -191,7 +200,8 @@ public class ServiceTests {
 	
 	@Before
 	public void setMockOutput() {
-		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+//		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			when(loginDao.findLoginByUserName(anyString())).thenAnswer((InvocationOnMock invocation) -> {	
 			if(invocation.getArgument(0).equals(LOGIN_KEY)) {
 				Login lgInfo = new Login();
 				lgInfo.setUserName(LOGIN_KEY);
@@ -202,18 +212,20 @@ public class ServiceTests {
 			}
 		});
 		// whenever anything is saved, just return the parameter object
+/*		
 		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
 			return invocation.getArgument(0);
 		};
 		when(loginDao.save(any(Login.class))).thenAnswer(returnPatameterAnswer);
-//		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
-		
+		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
+*/		
 		when(managerDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
-			if(invocation.getArgument(0).equals(FIRSTNAME_KEY)) {
+			// here, getArgument(0) should be the first argument for create a manger, which is first name, does it makes more sense for checking managerID?
+			if(invocation.getArgument(0).equals(MANAGERID_KEY)) {
 				Manager manager = new Manager();
 				manager.setFirstName(FIRSTNAME_KEY);
 				manager.setLastName(LASTNAME_KEY);
-				manager.setDateOfBirth(DAY_KEY);
+				manager.setDateOfBirth(dob);
 				manager.setEmail(EMAIL_KEY);
 				manager.setPhoneNumber(PHONE_KEY);
 				manager.setPersonId(MANAGERID_KEY);
@@ -224,18 +236,62 @@ public class ServiceTests {
 				return null;
 			}
 		});
+		
+		when(tutorDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			// here, getArgument(0) should be the first argument for create a tutor, which is first name, does it makes more sense for checking tutorID?
+			if(invocation.getArgument(0).equals(TUTORID_KEY)) {
+				tutor.setFirstName(FIRSTNAME_KEY);
+				tutor.setLastName(LASTNAME_KEY);
+				tutor.setDateOfBirth(dob);
+				tutor.setEmail(EMAIL_KEY);
+				tutor.setPhoneNumber(PHONE_KEY);
+				tutor.setPersonId(TUTORID_KEY);
+				tutor.setIsRegistered(ISREGISTERED);
+				tutor.setLoginInfo(lgInfo);
+				tutor.setTutoringSystem(system);
+				return tutor;
+			} else {
+				return null;
+			}
+		});
+		
+		when(studentDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			// here, getArgument(0) should be the first argument for create a student, which is first name, does it makes more sense for checking studentID?
+			if(invocation.getArgument(0).equals(STUDENTID_KEY)) {
+				student.setFirstName(FIRSTNAME_KEY);
+				student.setLastName(LASTNAME_KEY);
+				student.setDateOfBirth(dob);
+				student.setEmail(EMAIL_KEY);
+				student.setPhoneNumber(PHONE_KEY);
+				student.setPersonId(STUDENTID_KEY);
+				student.setNumCoursesEnrolled(NUM_COURSE_ENROLLED_KEY);
+				student.setLoginInfo(lgInfo);
+				student.setTutoringSystem(system);
+				return student;
+			} else {
+				return null;
+			}
+		});
+		
 	}
 	
-	
-	/*
-	 * I saw this from previous term's project, but don't know where to put mock method...
 	@Before
 	public void setupMock() {
+		manager = mock(Manager.class);
+		tutor = mock(Tutor.class);
+		student = mock(Student.class);
 		lgInfo = mock(Login.class);
+		avaliableSession = mock(AvaliableSession.class);
+		request = mock(SubjectRequest.class);
+		subject = mock(Subject.class);
+		comm = mock(Commission.class);
+		classroom = mock(Classroom.class);
+		university = mock(University.class);
+		offering = mock(Offering.class);
+		review = mock(Review.class);
+		tutorApplication = mock(TutorApplication.class);
 	}
-	*/
-
-
+	
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
@@ -268,6 +324,7 @@ public class ServiceTests {
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
 	}
 	
+	/*
 	@Test
 	public void testCreateLoginSpaces() {
 		String error = "";
@@ -299,6 +356,30 @@ public class ServiceTests {
 		// check error
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
    	}
+	*/
+	
+	@Test
+	public void testMockLoginCreation() {
+		assertNotNull(lgInfo);
+	}
+	
+	@Test
+	public void testMockMangerCreation() {
+		assertNotNull(manager);
+	}
+	
+	@Test
+	public void testMockTutorCreation() {
+		assertNotNull(tutor);
+	}
+	
+	@Test
+	public void testMockStudentCreation() {
+		assertNotNull(student);
+	}
+	
+	
+	
 	
 }
 

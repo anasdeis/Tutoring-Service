@@ -24,10 +24,14 @@ import ca.mcgill.ecse321.tutoringservice.service.*;
 public class TutoringServiceRestController {
 	TutoringServiceService service;
 	
-	@PostMapping(value = { "/userName/{userName}", "/password/{password}"})
-//	@PostMapping(value = { "/userName/{userName}"})
-	public LoginDto createLogin(@PathVariable("userName") String username, @PathVariable("password") String password) throws IllegalArgumentException {
-//	public LoginDto createLogin(@PathVariable("userName") String username, String password) throws IllegalArgumentException {
+	/* TODO
+	 * Login: create with specified parameters
+	 * @param username
+	 * @param password
+	 */
+//	@PostMapping(value = { "/userName/{userName}", "/password/{password}"})
+	@PostMapping("/login/create")
+	public LoginDto createLogin(@RequestParam("username") String username, @RequestParam("password") String password) throws IllegalArgumentException {
 		Login loginInfo = service.createLogin(username, password);
 		return convertToDto(loginInfo);
 	}
@@ -36,12 +40,11 @@ public class TutoringServiceRestController {
 		if (lg == null) {
 			throw new IllegalArgumentException("There is no such login information!");
 		}
-		LoginDto loginDto = new LoginDto(lg.getPassword(), lg.getPassword());
+		LoginDto loginDto = new LoginDto(lg.getUserName(), lg.getPassword());
 		return loginDto;
 		}
 
 	@GetMapping(value = { "/login/list/{username}", "/login/list/{password}"})
-//	public List<LoginDto> getAllLogins(@PathVariable("username") String username) {
 	public List<LoginDto> getAllLogins() {
 
 		List<LoginDto> loginDtos = new ArrayList<>();
@@ -52,21 +55,30 @@ public class TutoringServiceRestController {
 		}
 		return loginDtos;
 	}
-	// TODO
-	@SuppressWarnings("unused")
-	private ClassroomDto createClassroom(@PathVariable("roomcode") String roomcode, @PathVariable("isBooked") Boolean isBooked, @PathVariable("isBigRm") Boolean isBigRm,
-			 @RequestParam("managerID") Integer managerID,
-//			 @RequestParam("tutorID") Integer tutorID,
-			 @RequestParam("lgInfo") LoginDto loginDto,
-			 @RequestParam("offeringID") OfferingDto offeringDto,
-			 @RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto
+	/* TODO
+	 * Classroom: creation with specified parameters
+	 * @param roomcode
+	 * @param isBooked
+	 * @param isBigRoom
+	 * @param managerID
+	 * @param lgInfo
+	 * @param offeringId
+	 * @param tutoringSystem
+	 */
+	@PostMapping("classroom/create")
+	public ClassroomDto createClassroom(
+			@RequestParam("roomcode") String roomcode, 
+			@RequestParam("isBooked") Boolean isBooked, 
+			@PathVariable("isBigRm") Boolean isBigRm,
+			@RequestParam("managerID") Integer managerID,
+//			@RequestParam("lgInfo") LoginDto loginDto,
+			@RequestParam("offeringID") OfferingDto offeringDto,
+			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto
 			) 
 	throws IllegalArgumentException {
-		Login login = service.getLogin(loginDto.getUserName());
+//		Login login = service.getLogin(loginDto.getUserName());
 		TutoringSystem system = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
 		Manager manager = service.getManager(managerID);
-//		need to get a offering lists, can't figure it out rn
-//		Set<Offering> offerings = (Set<Offering>) service.getAllOfferings(offeringDto.getOfferingID());
 		@SuppressWarnings("unchecked")
 		Set<Offering> offering = (Set<Offering>) service.getOffering(offeringDto.getOfferingID());
 		Classroom classroom = service.createClassroom(roomcode, isBooked, isBigRm, manager, offering, system);
@@ -83,7 +95,7 @@ public class TutoringServiceRestController {
 		return classroomDto;
 	}
 	
-	@GetMapping(value = { "/classrooms", "/classrooms/" })
+	@GetMapping(value = { "/classrooms/{roomcode}", "/classrooms/{roomcode}"})
 	public List<ClassroomDto> getAllClassrooms() {
 		List<ClassroomDto> classroomDtos = new ArrayList<>();
 		for (Classroom classroom : service.getAllClassrooms()) {
@@ -92,6 +104,9 @@ public class TutoringServiceRestController {
 		return classroomDtos;
 	}
 	
+	/*
+	 * Manager
+	 */
 	@PostMapping(value = { "/manager/create/{managerId}" })
 	public ManagerDto createManager(@PathVariable("managerId") Integer managerId, 
 			@RequestParam("first") String first, 
