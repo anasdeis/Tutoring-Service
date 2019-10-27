@@ -21,18 +21,18 @@ public class ManagerDto extends Person{
 	public ManagerDto() {
 		
 	}
-	
-	public ManagerDto(String first, String last, Date dob, String email, Integer phoneNumber, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
-		this.setFirstName(first);
-		this.setLastName(last);
-		this.setDateOfBirth(dob);
+		
+	public ManagerDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setDateOfBirth(dateOfBirth);
 		this.setEmail(email);
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(managerID);
 		this.setLoginInfo(loginInfo);
 		this.setTutoringSystem(tutoringSystem);
 	}
-		
+	
 	public Set<SubjectRequest> getSubjectRequest() {
 		return this.subjectRequest;
 	}

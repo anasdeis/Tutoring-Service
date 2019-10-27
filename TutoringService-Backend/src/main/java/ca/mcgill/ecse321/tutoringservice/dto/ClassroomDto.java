@@ -20,30 +20,23 @@ public class ClassroomDto{
 	public ClassroomDto() {
 		
 	}
-	
-	public ClassroomDto(String roomcode, Boolean isBooked, Boolean isBigRoom, Manager manager,
-			Set<Offering> offerings, TutoringSystem tutoringSystem) {
-		this.roomCode = roomcode;
+
+	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem){
+		this.roomCode = roomCode;
 		this.isBooked = isBooked;
-		this.isBigRoom = isBigRoom;
+		this.isBooked = isBigRoom;
 		this.manager = manager;
 		this.offering = offerings;
 		this.tutoringSystem = tutoringSystem;
-	}
-
-	// TODO
-	public ClassroomDto(Class<? extends List> class1) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public String getRoomCode() {
-		return this.roomCode;
 	}
 	
 	public void setRoomCode(String value) {
 		this.roomCode = value;
 	}
-	
+
+	public String getRoomCode() {
+		return this.roomCode;
+	}
 
 	public Set<Offering> getOffering() {
 		return this.offering;
