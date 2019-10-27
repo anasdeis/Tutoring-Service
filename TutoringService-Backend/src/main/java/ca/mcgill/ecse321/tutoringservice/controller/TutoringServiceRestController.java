@@ -89,6 +89,14 @@ public class TutoringServiceRestController {
 		return classroomDto;
 	}
 	
+	private UniversityDto convertToDto(University university) {
+		if (university == null) {
+			throw new IllegalArgumentException("There is no such University!");
+		}
+		UniversityDto universityDto = new UniversityDto(university.getName(), university.getSubject(), university.getTutoringSystem());
+		return universityDto;
+	}
+	
 	/*										
 	 * create methods
 	 * 
@@ -302,7 +310,7 @@ public class TutoringServiceRestController {
 	 * @param managerID
 	 * @param offeringIds (optional)
 	 * @param tutoringSystem
-	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRm=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>,tutoringSystemID=<tutoringSystemID>
+	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRm=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
 
 	@PostMapping(value = { "/classroom/create/{roomCode}", "/classroom/create/{roomCode}/" })
@@ -330,10 +338,52 @@ public class TutoringServiceRestController {
 		return convertToDto(classroom);
 	}
 	
+	/* 
+	 * @return create university
+	 * @param name
+	 * @param subjects (optional)
+	 * @param tutoringSystem
+	 * @sample /classroom/create/{name}?subjects=<subjects>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = { "/university/create/{name}", "/university/create/{name}/" })
+	public UniversityDto createUniversity(@PathVariable("name") String name,
+			@RequestParam(name = "subjects", required = false) Set<String> courseIDs,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		// @formatter:on
+		
+		Set<Subject> subjects = null;
+		if(courseIDs != null){
+			subjects = new HashSet<Subject>();
+			for (String courseID : courseIDs) {
+				Subject subject = service.getSubject(courseID);
+				subjects.add(subject);
+			}
+		}
+		
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+		University university = service.createUniversity(name, subjects, tutoringSystem);
+		
+		return convertToDto(university);
+	}
+	
 	/*
 	 * list methods
 	 * 
 	 */
+	
+	/*
+	 * @return list all university
+	 * @sample /university/list
+	 */
+	
+	@GetMapping(value = { "/university/list", "/university/list/" })
+	public List<UniversityDto> getAllUniversitys() {
+		List<UniversityDto> universityDtos = new ArrayList<>();
+		for (University university : service.getAllUniversitys()) {
+				universityDtos.add(convertToDto(university));
+		}
+		return universityDtos;
+	}
 	
 	/*
 	 * @return list all managers
