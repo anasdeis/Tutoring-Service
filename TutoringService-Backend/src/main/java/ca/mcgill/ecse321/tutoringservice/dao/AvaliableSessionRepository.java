@@ -9,4 +9,6 @@ public interface AvaliableSessionRepository extends CrudRepository<AvaliableSess
     
     
     void deleteAvaliableSessionByAvaliableSessionID (Integer avaliableSessionID);
+    
+    boolean existsByAvaliableSessionID(Integer avaliableSessionID);
 }

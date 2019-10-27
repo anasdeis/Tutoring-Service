@@ -502,7 +502,7 @@ public class TestTutoringServiceService {
 		tutoringSystemRepository.save(tutoringSystem);
 
 		try {
-			service.createTutor(firstName, lastName, dateOfBirth, email, phoneNumber, tutorID, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(firstName, lastName, dateOfBirth, email, phoneNumber, tutorID, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -512,14 +512,12 @@ public class TestTutoringServiceService {
 
 		assertEquals(1, allTutors.size());
 		assertEquals(tutorID, allTutors.get(0).getPersonId());
+		assertEquals(dateOfBirth.toString(), allTutors.get(0).getDateOfBirth().toString());
 		assertEquals(isRegistered, allTutors.get(0).getIsRegistered());
 		assertEquals(firstName, allTutors.get(0).getFirstName());
 		assertEquals(lastName, allTutors.get(0).getLastName());
 		assertEquals(email, allTutors.get(0).getEmail());
 		assertEquals(phoneNumber, allTutors.get(0).getPhoneNumber());
-		service.deleteTutor(tutorID);
-		service.deleteLogin(loginInfo.getUserName());
-
 	}
 
 
@@ -540,13 +538,13 @@ public class TestTutoringServiceService {
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createTutor(first, last, dob, email, phone, tutorId, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(first, last, dob, email, phone, tutorId, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+		assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
 				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
 
 		// check no change in memory
@@ -574,7 +572,7 @@ public class TestTutoringServiceService {
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -607,7 +605,7 @@ public class TestTutoringServiceService {
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, tutoringSystem);
+			service.createTutor(first, last, dob, email,phone, tutorID, isRegistered, loginInfo, null, null, null, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1013,11 +1011,16 @@ public class TestTutoringServiceService {
 		String name = "Math240";
 		String courseID = "MATH240FALL";
 		String description = "Discrete structures";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
+		University university = new University();
+		university.setName("McGill");
+		university.setTutoringSystem(tutoringSystem);
 		tutoringSystemRepository.save(tutoringSystem);
+		universityRepository.save(university);
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -1037,19 +1040,21 @@ public class TestTutoringServiceService {
 		String name = null;
 		String courseID = null;
 		String description = null;
+		SubjectType subjectType = null;
+		University university = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1063,19 +1068,21 @@ public class TestTutoringServiceService {
 		String name = "";
 		String courseID = "";
 		String description = "";
+		SubjectType subjectType = null;
+		University university = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1088,19 +1095,21 @@ public class TestTutoringServiceService {
 		String name = " ";
 		String courseID = " ";
 		String description = " ";
+		SubjectType subjectType = null;
+		University university = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(778);
 		tutoringSystemRepository.save(tutoringSystem);
 
 		String error = null;
 		try {
-			service.createSubject(name, courseID, description, tutoringSystem);
+			service.createSubject(name, courseID, description, subjectType, university, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1263,6 +1272,7 @@ public class TestTutoringServiceService {
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
 		subject.setDescription("None");
+		subject.setSubjectType(SubjectType.HIGH_SCHOOL_COURSE);
 		subject.setTutoringSystem(tutoringSystem);
 
 		Tutor tutor = new Tutor();
@@ -1518,6 +1528,7 @@ public class TestTutoringServiceService {
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
 		subject.setDescription("None");
+		subject.setSubjectType(SubjectType.HIGH_SCHOOL_COURSE);
 		subject.setTutoringSystem(tutoringSystem);
 
 		Tutor tutor = new Tutor();
@@ -1934,13 +1945,13 @@ public class TestTutoringServiceService {
 		Double price = 10.0;
 
 //		time.add(classTime);
-		offering.setClassroom(room);
+		//offering.setClassroom(room);
 		offering.setClassTime(time);
 		offering.setOfferingID(offeringID);
 		offering.setSubject(subject);
 		offering.setTerm(term);
-		offering.setTutor(tutor);
-		offering.setCommission(com);
+		//offering.setTutor(tutor);
+		//offering.setCommission(com);
 		offering.setTutoringSystem(tutoringSystem);
 		
 		tutoringSystem.setTutoringSystemID(123);
@@ -1954,10 +1965,9 @@ public class TestTutoringServiceService {
 		avaliableSessionRepository.save(classTime);
 		subjectRepository.save(subject);
 		commissionRepository.save(com);
-		offeringRepository.save(offering);
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -1980,11 +1990,14 @@ public class TestTutoringServiceService {
 		double price = 0.0;
 		Subject subject = null;
 		Set<AvaliableSession> time = null;
+		Tutor tutor = null;
+		Classroom room = null;
+		Commission com = null;
 
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject,tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -2006,11 +2019,14 @@ public class TestTutoringServiceService {
 		double price = 0.0;
 		Subject subject = null;
 		Set<AvaliableSession> time = null;
+		Tutor tutor = null;
+		Classroom room = null;
+		Commission com = null;
 
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -2033,11 +2049,14 @@ public class TestTutoringServiceService {
 		double price = 0.0;
 		Subject subject = null;
 		Set<AvaliableSession> time = null;
+		Tutor tutor = null;
+		Classroom room = null;
+		Commission com = null;
 
 		TutoringSystem tutoringSystem = null;
 
 		try {
-			service.createOffering(offeringID, term, price, time, subject, tutoringSystem);
+			service.createOffering(offeringID, term, price, time, subject, tutor, com, room, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -2093,6 +2112,7 @@ public class TestTutoringServiceService {
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
+		subject.setSubjectType(SubjectType.HIGH_SCHOOL_COURSE);
 		subject.setDescription("None");
 		subject.setTutoringSystem(tutoringSystem);
 
