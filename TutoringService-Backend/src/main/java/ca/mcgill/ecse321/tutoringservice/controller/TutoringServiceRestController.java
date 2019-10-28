@@ -90,7 +90,17 @@ public class TutoringServiceRestController {
 		if (offering == null) {
 			throw new IllegalArgumentException("There is no such Offering!");
 		}
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), convertToDto(offering.getTutoringSystem()));
+		
+		Set<AvaliableSessionDto> avaliableSessionsDto = null;
+		if(offering.getClassTime() != null)	{
+			avaliableSessionsDto = new HashSet<AvaliableSessionDto>();
+			for(AvaliableSession avaliableSession : offering.getClassTime()){
+				AvaliableSessionDto avaliableSessionDto = convertToDto(avaliableSession);
+				avaliableSessionsDto.add(avaliableSessionDto);
+			}
+		}
+		
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), avaliableSessionsDto, convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), convertToDto(offering.getTutoringSystem()));
 		return offeringDto;
 	}
 
@@ -193,7 +203,6 @@ public class TutoringServiceRestController {
 				tutorsDto.add(tutorDto);
 			}
 		}
-		
 
 		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(availableSession.getStartTime(), availableSession.getEndTime(), availableSession.getAvaliableSessionID(), availableSession.getDay(),tutorsDto, convertToDto(availableSession.getTutoringSystem()));
 		return avaliableSessionDto;
@@ -615,11 +624,36 @@ public class TutoringServiceRestController {
 	}	
 	
 	
-	
 	/**
 	/*
 	 * list methods
 	 */
+	
+	/**
+	 * @return list all avaliableSessions
+	 * @sample /avaliableSession/list
+	 */
+	@GetMapping(value = { "/avaliableSession/list", "/avaliableSession/list/" })
+	public List<AvaliableSessionDto> getAllAvaliableSessions() {
+		List<AvaliableSessionDto> avaliableSessionsDtos = new ArrayList<>();
+		for (AvaliableSession avaliableSession : service.getAllAvaliableSessions()) {
+			avaliableSessionsDtos.add(convertToDto(avaliableSession));
+		}
+		return avaliableSessionsDtos;
+	}
+	
+	/**
+	 * @return list all subjects
+	 * @sample /subject/list
+	 */
+	@GetMapping(value = { "/subject/list", "/subject/list/" })
+	public List<SubjectDto> getAllSubjects() {
+		List<SubjectDto> subjectsDtos = new ArrayList<>();
+		for (Subject subject : service.getAllSubjects()) {
+			subjectsDtos.add(convertToDto(subject));
+		}
+		return subjectsDtos;
+	}
 
 	/**
 	 * @return list all university
