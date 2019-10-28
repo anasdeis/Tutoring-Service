@@ -12,16 +12,16 @@ public class SubjectRequestDto{
 	private Integer requestID;
 	private String name;
 	private String description;
-	private SubjectType subjectType;   
+	private String subjectType;   
 	private TutoringSystemDto tutoringSystem;
 
-	public SubjectRequestDto(Integer requestID, String name, String description, SubjectType subjectType, ManagerDto manager, TutoringSystemDto tutoringSystem) {
+	public SubjectRequestDto(Integer requestID, String name, String description, String subjectType, ManagerDto manager, TutoringSystemDto tutoringSystem) {
 		this.requestID = requestID;              //Integer
 		this.name = name;					     //String
 		this.description = description;          //String
 		this.manager = manager;                  //DTO
 		this.tutoringSystem = tutoringSystem;    //DTO
-		this.subjectType = subjectType;          //SubjectType
+		this.subjectType = subjectType;          //String
 	}
 	
 	
@@ -62,10 +62,10 @@ public class SubjectRequestDto{
 		return this.description;
 	}
 
-	public void setSubjectType(SubjectType value) {
+	public void setSubjectType(String value) {
 		this.subjectType = value;
 	}
-	public SubjectType getSubjectType() {
+	public String getSubjectType() {
 		return this.subjectType;
 	}
 

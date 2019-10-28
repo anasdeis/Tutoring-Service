@@ -184,10 +184,10 @@ public class TutoringServiceRestController {
 	
 	private SubjectRequestDto convertToDto(SubjectRequest sr) {
 		if (sr == null) {
-			throw new IllegalArgumentException("There is no such subject information!");
+			throw new IllegalArgumentException("There is no such subject Request!");
 		}
 
-		SubjectRequestDto subjectRequestDto = new SubjectRequestDto(sr.getRequestID(), sr.getName(), sr.getDescription(), sr.getSubjectType() ,convertToDto(sr.getManager()), convertToDto(sr.getTutoringSystem()));
+		SubjectRequestDto subjectRequestDto = new SubjectRequestDto(sr.getRequestID(), sr.getName(), sr.getDescription(),convertSubjectTypeToString(sr.getSubjectType()),convertToDto(sr.getManager()), convertToDto(sr.getTutoringSystem()));
 		return subjectRequestDto;
 	}
 	
