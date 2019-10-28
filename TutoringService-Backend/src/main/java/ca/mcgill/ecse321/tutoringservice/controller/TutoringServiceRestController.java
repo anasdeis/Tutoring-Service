@@ -1,12 +1,15 @@
 package ca.mcgill.ecse321.tutoringservice.controller;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,6 +73,7 @@ public class TutoringServiceRestController {
 		if (tutoringSystem == null) {
 			throw new IllegalArgumentException("There is no such TutoringSystem!");
 		}
+		
 		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID());
 		return tutoringSystemDto;
 	}
@@ -176,6 +180,25 @@ public class TutoringServiceRestController {
 		return universityDto;
 	}
 	
+	private AvaliableSessionDto convertToDto(AvaliableSession availableSession) {
+		if (availableSession == null) {
+			throw new IllegalArgumentException("There is no such availableSession!");
+		}
+		
+		Set<TutorDto> tutorsDto = null;
+		if(availableSession.getTutor() != null)	{
+			tutorsDto = new HashSet<TutorDto>();
+			for(Tutor tutor : availableSession.getTutor()){
+				TutorDto tutorDto = convertToDto(tutor);
+				tutorsDto.add(tutorDto);
+			}
+		}
+		
+
+		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(availableSession.getStartTime(), availableSession.getEndTime(), availableSession.getAvaliableSessionID(), availableSession.getDay(),tutorsDto, convertToDto(availableSession.getTutoringSystem()));
+		return avaliableSessionDto;
+	}
+	
 	/*										
 	 * create methods
 	 */
@@ -192,6 +215,40 @@ public class TutoringServiceRestController {
 
 		return convertToDto(tutoringSystem);
 	}
+	
+	/**
+	 * @param availableSessionID
+	 * @param startTime
+	 * @param endTime
+	 * @param day
+	 * @param tutors (optional)
+	 * @param tutoringSystem
+	 * @return create availableSession
+	 * @sample /availableSession/create/{availableSessionID}?startTime=<startTime>&endTime=<endTime>&day=<day>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = {"/availableSession/create/{availableSessionID}", "/availableSession/create/{availableSessionID}/"})
+	public AvaliableSessionDto createAvaliableSession(@PathVariable("availableSessionID") Integer availableSessionID, 
+			@RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime, 
+			@RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime,
+			@RequestParam("day") Date day, 
+			@RequestParam(name = "tutorIDs", required = false) Set<Integer> tutorIDs,
+			@RequestParam("tutoringSystemID") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+		
+		Set<Tutor> tutors = null;
+		if(tutorIDs != null){
+			tutors = new HashSet<Tutor>();
+			for (Integer tutorID : tutorIDs) {
+				Tutor tutor = service.getTutor(tutorID);
+				tutors.add(tutor);
+			}
+		}
+
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		AvaliableSession avaliableSession = service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), availableSessionID, day, tutors, tutoringSystem);
+		
+		return convertToDto(avaliableSession);
+	}
+	
 
 	/**
 	 * @param commissionID
@@ -202,12 +259,13 @@ public class TutoringServiceRestController {
 	 * @return create commission
 	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
-	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
+	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}/"})
 	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
 			@RequestParam("percentage") double percentage, 
 			@RequestParam("managerID") Integer managerID, 
 			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
-			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		
 		Set<Offering> offerings = null;
 		if(offeringIDs != null){
 			offerings = new HashSet<Offering>();
@@ -217,7 +275,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		Manager manager = service.getManager(managerID);
-		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		Commission commission = service.createCommission(percentage, commissionID, manager, offerings, tutoringSystem);
 		
 		return convertToDto(commission);
