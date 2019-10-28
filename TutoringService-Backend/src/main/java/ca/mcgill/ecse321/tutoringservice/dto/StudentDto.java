@@ -12,7 +12,7 @@ public class StudentDto extends PersonDto{
 		
 	}
 
-	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer studentId, Integer numCoursesEnrolled, LoginDto loginInfo, Set<String> coursesTakenIDs, Set<Integer> subjectRequestIDs, TutoringSystemDto tutoringSystem) {
+	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer studentId, Integer numCoursesEnrolled, LoginDto loginInfo, Set<String> coursesTakenIDs, Set<Integer> subjectRequestIDs, Integer tutoringSystem) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setDateOfBirth(dateOfBirth);

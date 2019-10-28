@@ -5,16 +5,16 @@ import java.util.Set;
 public class UniversityDto{
 	private String name;
 	private Set<String> subjectCourseIDs;
-	private TutoringSystemDto tutoringSystem;
+	private Integer tutoringSystemID;
 
 	public UniversityDto() {
 		
 	}
 	
-	public UniversityDto(String uniName, Set<String> subjectCourseIDs, TutoringSystemDto tutoringSystem) {
-		this.name = uniName;
-		this.subjectCourseIDs = subjectCourseIDs;
-		this.tutoringSystem = tutoringSystem;
+	public UniversityDto(String uniName, Set<String> subjectCourseIDs, Integer tutoringSystem) {
+		this.setName(uniName);
+		this.setSubject(subjectCourseIDs);
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 
@@ -34,12 +34,12 @@ public class UniversityDto{
 		this.subjectCourseIDs = subjectCourseIDs;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 
 }
