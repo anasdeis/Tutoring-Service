@@ -3,16 +3,16 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 import java.util.Set;
 
 public class TutoringSystemDto{
-	private Set<SubjectRequestDto> subjectRequest;
-	private Set<SubjectDto> subject;
-	private Set<PersonDto> person;
-	private Set<UniversityDto> university;
-	private Set<TutorApplicationDto> tutorApplication;
-	private Set<ReviewDto> review;
-	private Set<AvaliableSessionDto> avaliableSession;
-	private Set<ClassroomDto> classroom;
-	private Set<CommissionDto> commission;
 	private Integer tutoringSystemID;
+	private Set<SubjectRequestDto> subjectRequests;
+	private Set<SubjectDto> subjects;
+	private Set<PersonDto> persons;
+	private Set<UniversityDto> universitys;
+	private Set<TutorApplicationDto> tutorApplications;
+	private Set<ReviewDto> reviews;
+	private Set<AvaliableSessionDto> avaliableSessions;
+	private Set<ClassroomDto> classrooms;
+	private Set<CommissionDto> commissions;
 
 	public TutoringSystemDto() {
 		
@@ -21,77 +21,90 @@ public class TutoringSystemDto{
 	public TutoringSystemDto(Integer tutoringSystemID) {
 		this.tutoringSystemID = tutoringSystemID;
 	}
+	
+	public TutoringSystemDto(Integer tutoringSystemID, Set<SubjectRequestDto> subjectRequest,  Set<SubjectDto> subject, Set<PersonDto> person, Set<UniversityDto> university,  Set<TutorApplicationDto> tutorApplication, Set<ReviewDto> review,  Set<AvaliableSessionDto> avaliableSession, Set<ClassroomDto>classroom, Set<CommissionDto> commission) {
+		this.tutoringSystemID = tutoringSystemID;
+		this.subjectRequests = subjectRequest;
+		this.subjects = subject;
+		this.persons = person;
+		this.universitys = university;
+		this.tutorApplications = tutorApplication;
+		this.reviews = review;
+		this.avaliableSessions = avaliableSession;
+		this.classrooms = classroom;
+		this.commissions = commission;
+	}
 
 	public Set<SubjectRequestDto> getSubjectRequest() {
-		return this.subjectRequest;
+		return this.subjectRequests;
 	}
 
 	public void setSubjectRequest(Set<SubjectRequestDto> subjectRequests) {
-		this.subjectRequest = subjectRequests;
+		this.subjectRequests = subjectRequests;
 	}
 
 	public Set<SubjectDto> getSubject() {
-		return this.subject;
+		return this.subjects;
 	}
 
 	public void setSubject(Set<SubjectDto> subjects) {
-		this.subject = subjects;
+		this.subjects = subjects;
 	}
 
 	public Set<PersonDto> getPerson() {
-		return this.person;
+		return this.persons;
 	}
 
 	public void setPerson(Set<PersonDto> persons) {
-		this.person = persons;
+		this.persons = persons;
 	}
 
 	public Set<UniversityDto> getUniversity() {
-		return this.university;
+		return this.universitys;
 	}
 
 	public void setUniversity(Set<UniversityDto> universitys) {
-		this.university = universitys;
+		this.universitys = universitys;
 	}
 
 	public Set<TutorApplicationDto> getTutorApplication() {
-		return this.tutorApplication;
+		return this.tutorApplications;
 	}
 
 	public void setTutorApplication(Set<TutorApplicationDto> tutorApplications) {
-		this.tutorApplication = tutorApplications;
+		this.tutorApplications = tutorApplications;
 	}
 
 	public Set<ReviewDto> getReview() {
-		return this.review;
+		return this.reviews;
 	}
 
 	public void setReview(Set<ReviewDto> reviews) {
-		this.review = reviews;
+		this.reviews = reviews;
 	}
 
 	public Set<AvaliableSessionDto> getAvaliableSession() {
-		return this.avaliableSession;
+		return this.avaliableSessions;
 	}
 
 	public void setAvaliableSession(Set<AvaliableSessionDto> avaliableSessions) {
-		this.avaliableSession = avaliableSessions;
+		this.avaliableSessions = avaliableSessions;
 	}
 
 	public Set<ClassroomDto> getClassroom() {
-		return this.classroom;
+		return this.classrooms;
 	}
 
 	public void setClassroom(Set<ClassroomDto> classrooms) {
-		this.classroom = classrooms;
+		this.classrooms = classrooms;
 	}
 
 	public Set<CommissionDto> getCommission() {
-		return this.commission;
+		return this.commissions;
 	}
 
 	public void setCommission(Set<CommissionDto> commissions) {
-		this.commission = commissions;
+		this.commissions = commissions;
 	}
 
 	public void setTutoringSystemID(Integer value) {

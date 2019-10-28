@@ -9,15 +9,25 @@ import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 
 public class AvaliableSessionDto{
-	private Time startTime;
 	private Integer avaliableSessionID;
+	private Time startTime;
 	private Time endTime;
-	private TutoringSystem tutoringSystem;
 	private Date day;
-	private Set<Tutor> tutor;
+	private Set<TutorDto> tutor;
+	private TutoringSystemDto tutoringSystem;
 
 	public AvaliableSessionDto() {
 		
+	}
+
+
+	public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<TutorDto> tutors, TutoringSystemDto tutoringSystem) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.avaliableSessionID = AvaliableSessionID;
+		this.day = day;
+		this.tutor = tutors;
+		this.tutoringSystem = tutoringSystem;
 	}
 	
 	public void setStartTime(Time value) {
@@ -41,19 +51,19 @@ public class AvaliableSessionDto{
 		return this.day;
 	}
 
-	public Set<Tutor> getTutor() {
+	public Set<TutorDto> getTutor() {
 		return this.tutor;
 	}
 
-	public void setTutor(Set<Tutor> tutors) {
+	public void setTutor(Set<TutorDto> tutors) {
 		this.tutor = tutors;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
 
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
 
