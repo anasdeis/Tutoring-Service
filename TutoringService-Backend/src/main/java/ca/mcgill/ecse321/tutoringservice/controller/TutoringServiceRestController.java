@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.tutoringservice.controller;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -150,6 +151,23 @@ public class TutoringServiceRestController {
 		return tutorApplicationDto;
 	}
 	
+	private AvaliableSessionDto convertToDto(AvaliableSession avaliableSession) {
+		if (avaliableSession == null) {
+			throw new IllegalArgumentException("There is no such available Session!");
+		}
+		
+		Set<TutorDto> tutorsDto = null;
+		if(avaliableSession.getTutor() != null)	{
+			tutorsDto = new HashSet<TutorDto>();
+			for(Tutor tutor : avaliableSession.getTutor()){
+				TutorDto tutorDto = convertToDto(tutor);
+				tutorsDto.add(tutorDto);
+			}
+		}
+		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(avaliableSession.getStartTime(), avaliableSession.getEndTime(),avaliableSession.getAvaliableSessionID(), avaliableSession.getDay(), tutorsDto,convertToDto(avaliableSession.getTutoringSystem()));
+		return avaliableSessionDto;
+	}
+	
 	private SubjectDto convertToDto(Subject sb) {
 		if (sb == null) {
 			throw new IllegalArgumentException("There is no such subject information!");
@@ -174,7 +192,12 @@ public class TutoringServiceRestController {
 		}
 		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsDto, convertToDto(university.getTutoringSystem()));
 		return universityDto;
+		
+		
 	}
+	
+	
+	
 	
 	/*										
 	 * create methods
