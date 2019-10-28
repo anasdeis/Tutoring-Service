@@ -12,15 +12,16 @@ public class SubjectRequestDto{
 	private Integer requestID;
 	private String name;
 	private String description;
-	private SubjectType subjectType;    //NI
+	private SubjectType subjectType;   
 	private TutoringSystemDto tutoringSystem;
 
-	public SubjectRequestDto(Integer requestID, String name, String description, ManagerDto manager, TutoringSystemDto tutoringSystem) {
+	public SubjectRequestDto(Integer requestID, String name, String description, SubjectType subjectType, ManagerDto manager, TutoringSystemDto tutoringSystem) {
 		this.requestID = requestID;              //Integer
 		this.name = name;					     //String
 		this.description = description;          //String
 		this.manager = manager;                  //DTO
 		this.tutoringSystem = tutoringSystem;    //DTO
+		this.subjectType = subjectType;          //SubjectType
 	}
 	
 	
