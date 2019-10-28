@@ -2,18 +2,18 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 
 import java.sql.Date;
 
-import ca.mcgill.ecse321.tutoringservice.model.Login;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+//import ca.mcgill.ecse321.tutoringservice.model.Login;
+//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 public abstract class PersonDto{
 	private Integer personId;
 	private String firstName;
 	private String lastName;
-	private Login loginInfo;
+	//private Login login;
 	private Date dateOfBirth;
 	private String email;
 	private Integer phoneNumber;
-	private TutoringSystem tutoringSystem;
+	//private TutoringSystem tutoringSystem;
 
 	public PersonDto() {
 
@@ -41,14 +41,6 @@ public abstract class PersonDto{
 		return this.lastName;
 	}
 
-	public Login getLoginInfo() {
-		return this.loginInfo;
-	}
-
-	public void setLoginInfo(Login loginInfo) {
-		this.loginInfo = loginInfo;
-	}
-
 	public void setDateOfBirth(Date value) {
 		this.dateOfBirth = value;
 	}
@@ -69,7 +61,15 @@ public abstract class PersonDto{
 	public Integer getPhoneNumber() {
 		return this.phoneNumber;
 	}
+/*
+	public Login getLoginInfo() {
+		return this.loginInfo;
+	}
 
+	public void setLoginInfo(Login loginInfo) {
+		this.loginInfo = loginInfo;
+	}
+	
 	public TutoringSystem getTutoringSystem() {
 		return this.tutoringSystem;
 	}
@@ -77,5 +77,5 @@ public abstract class PersonDto{
 	public void setTutoringSystem(TutoringSystem tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
-
+*/
 }

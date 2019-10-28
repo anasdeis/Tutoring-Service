@@ -1,7 +1,7 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
 import java.util.Set;
-
+/*
 import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
 import ca.mcgill.ecse321.tutoringservice.model.Classroom;
 import ca.mcgill.ecse321.tutoringservice.model.Commission;
@@ -11,10 +11,10 @@ import ca.mcgill.ecse321.tutoringservice.model.Subject;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectRequest;
 import ca.mcgill.ecse321.tutoringservice.model.TutorApplication;
 import ca.mcgill.ecse321.tutoringservice.model.University;
-
+*/
 
 public class TutoringSystemDto{
-	private Set<SubjectRequest> subjectRequest;
+/*	private Set<SubjectRequest> subjectRequest;
 	private Set<Subject> subject;
 	private Set<Person> person;
 	private Set<University> university;
@@ -23,7 +23,7 @@ public class TutoringSystemDto{
 	private Set<AvaliableSession> avaliableSession;
 	private Set<Classroom> classroom;
 	private Set<Commission> commission;
-	private Integer tutoringSystemID;
+*/	private Integer tutoringSystemID;
 
 	public TutoringSystemDto() {
 		
@@ -32,7 +32,7 @@ public class TutoringSystemDto{
 	public TutoringSystemDto(Integer tutoringSystemID) {
 		this.tutoringSystemID = tutoringSystemID;
 	}
-	
+/*	
 	public Set<SubjectRequest> getSubjectRequest() {
 		return this.subjectRequest;
 	}
@@ -104,8 +104,7 @@ public class TutoringSystemDto{
 	public void setCommission(Set<Commission> commissions) {
 		this.commission = commissions;
 	}
-
-
+*/
 	public void setTutoringSystemID(Integer value) {
 		this.tutoringSystemID = value;
 	}

@@ -1793,7 +1793,7 @@ public class TestTutoringServiceService {
 
 		List<Classroom>allClassrooms = service.getAllClassrooms();
 		assertEquals(0, allClassrooms.size());
-		assertEquals(error, "name cannot be empty!subjects cannot be empty!Tutoring System cannot be empty!");
+		assertEquals(error, "name cannot be empty!Tutoring System cannot be empty!");
 	}
 
 
@@ -1815,7 +1815,7 @@ public class TestTutoringServiceService {
 
 		List<Classroom>allClassrooms = service.getAllClassrooms();
 		assertEquals(0, allClassrooms.size());
-		assertEquals(error, "name cannot be empty!subjects cannot be empty!Tutoring System cannot be empty!");
+		assertEquals(error, "name cannot be empty!Tutoring System cannot be empty!");
 	}
 
 
@@ -1837,7 +1837,7 @@ public class TestTutoringServiceService {
 
 		List<Classroom>allClassrooms = service.getAllClassrooms();
 		assertEquals(0, allClassrooms.size());
-		assertEquals(error, "name cannot be empty!subjects cannot be empty!Tutoring System cannot be empty!");
+		assertEquals(error, "name cannot be empty!Tutoring System cannot be empty!");
 	}
 
 

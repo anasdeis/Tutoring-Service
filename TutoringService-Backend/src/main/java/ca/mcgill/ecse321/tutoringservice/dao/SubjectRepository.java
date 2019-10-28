@@ -8,4 +8,6 @@ public interface SubjectRepository extends CrudRepository<Subject, String> {
     Subject findSubjectByCourseID(String courseID);
 
     void deleteSubjectByCourseID(String courseID);
+    
+    boolean existsByCourseID(String courseID);
 }

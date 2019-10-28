@@ -1,23 +1,17 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
-import java.util.Set;
+//import java.util.Set;
 
-import ca.mcgill.ecse321.tutoringservice.model.Subject;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+//import ca.mcgill.ecse321.tutoringservice.model.Subject;
+//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 public class UniversityDto{
 	private String name;
-	private Set<Subject> subject;
-	private TutoringSystem tutoringSystem;
+	//private Set<Subject> subject;
+	//private TutoringSystem tutoringSystem;
 
 	public UniversityDto() {
 		
-	}
-	
-	public UniversityDto(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
-		this.name = name;
-		this.subject = subjects;
-		this.tutoringSystem = tutoringSystem;
 	}
 	
 	public UniversityDto(String uniName) {
@@ -30,7 +24,7 @@ public class UniversityDto{
 	public String getName() {
 		return this.name;
 	}
-
+/*
 	public Set<Subject> getSubject() {
 		return this.subject;
 	}
@@ -47,5 +41,5 @@ public class UniversityDto{
 	public void setTutoringSystem(TutoringSystem tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
-
+*/
 }

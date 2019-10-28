@@ -35,7 +35,7 @@ public class TutoringServiceRestController {
 		if (tutor == null) {
 			throw new IllegalArgumentException("There is no such Tutor!");
 		}
-		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), tutor.getLoginInfo(), tutor.getTutorApplication(), tutor.getOffering(),tutor.getAvaliableSession(), tutor.getTutoringSystem());
+		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered());
 		return tutorDto;
 	}
 
@@ -59,7 +59,7 @@ public class TutoringServiceRestController {
 		if (manager == null) {				
 			throw new IllegalArgumentException("There is no such Manager!");
 		}
-		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), manager.getLoginInfo(), manager.getTutoringSystem());
+		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId());
 		return managerDto;
 	}
 
@@ -67,7 +67,7 @@ public class TutoringServiceRestController {
 		if (offering == null) {
 			throw new IllegalArgumentException("There is no such Offering!");
 		}
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), offering.getClassTime(), offering.getSubject(), offering.getTutor(), offering.getCommission(), offering.getClassroom(), offering.getTutoringSystem());
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), offering.getClassTime());
 		return offeringDto;
 	}
 
@@ -75,7 +75,7 @@ public class TutoringServiceRestController {
 		if (student == null) {
 			throw new IllegalArgumentException("There is no such student!");
 		}
-		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), student.getLoginInfo(), student.getTutoringSystem());
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled());
 		return studentDto; 
 	}
 	
@@ -83,7 +83,7 @@ public class TutoringServiceRestController {
 		if (review == null) {
 			throw new IllegalArgumentException("There is no such Review!");
 		}
-		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID(), review.getManager(), review.getOffering(), review.getTutoringSystem());
+		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID());
 		return reviewDto;
 	}
 	
@@ -91,7 +91,7 @@ public class TutoringServiceRestController {
 		if (commission == null) {
 			throw new IllegalArgumentException("There is no such commission!");
 		}
-		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager(), commission.getOffering(), commission.getTutoringSystem());
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID());
 		return commissiondto;
 	}
 
@@ -99,8 +99,7 @@ public class TutoringServiceRestController {
 		if (classroom == null) {
 			throw new IllegalArgumentException("There is no such classroom!");
 		}
-		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), classroom.getManager(), 
-				classroom.getOffering(), classroom.getTutoringSystem());
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom());
 		return classroomDto;
 	}
 	
@@ -108,7 +107,7 @@ public class TutoringServiceRestController {
 		if (tutorApplication == null) {
 			throw new IllegalArgumentException("There is no such tutor Application!");
 		}
-		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), tutorApplication.getTutor(), tutorApplication.getTutoringSystem());
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted());
 		return tutorApplicationDto;
 	}
 	
@@ -116,7 +115,7 @@ public class TutoringServiceRestController {
 		if (university == null) {
 			throw new IllegalArgumentException("There is no such University!");
 		}
-		UniversityDto universityDto = new UniversityDto(university.getName(), university.getSubject(), university.getTutoringSystem());
+		UniversityDto universityDto = new UniversityDto(university.getName());
 		return universityDto;
 	}
 	
@@ -125,7 +124,7 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such subject information!");
 		}
 
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), sb.getUniversity());
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType());
 
 		return subjectDto;
 	}
@@ -367,12 +366,12 @@ public class TutoringServiceRestController {
 	 * @param managerID
 	 * @param offeringIds (optional)
 	 * @param tutoringSystem
-	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRm=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
+	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRoom=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
 	@PostMapping(value = { "/classroom/create/{roomCode}", "/classroom/create/{roomCode}/" })
 	public ClassroomDto createClassroom(@PathVariable("roomCode") String roomCode,
 			@RequestParam("isBooked") Boolean isBooked,
-			@PathVariable("isBigRm") Boolean isBigRm,
+			@RequestParam("isBigRoom") Boolean isBigRoom,
 			@RequestParam("managerID") Integer managerID,
 			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
@@ -389,7 +388,7 @@ public class TutoringServiceRestController {
 
 		Manager manager = service.getManager(managerID);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
-		Classroom classroom = service.createClassroom(roomCode, isBooked, isBigRm, manager, offerings, tutoringSystem);
+		Classroom classroom = service.createClassroom(roomCode, isBooked, isBigRoom, manager, offerings, tutoringSystem);
 
 		return convertToDto(classroom);
 	}
