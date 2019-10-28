@@ -2,38 +2,33 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 
 import java.util.Set;
 
-import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
-//import ca.mcgill.ecse321.tutoringservice.model.Classroom;
-//import ca.mcgill.ecse321.tutoringservice.model.Commission;
-//import ca.mcgill.ecse321.tutoringservice.model.Review;
-//import ca.mcgill.ecse321.tutoringservice.model.Student;
-//import ca.mcgill.ecse321.tutoringservice.model.Subject;
-//import ca.mcgill.ecse321.tutoringservice.model.Tutor;
-//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
-
 public class OfferingDto{
 	private String offeringID;
-	//private Set<Student> studentsEnrolled;
-	//private Subject subject;
+	private Set<StudentDto> studentsEnrolled;
+	private SubjectDto subject;
 	private String term;
 	private double pricePerHour;
-	//private Classroom classroom;
-	private Set<AvaliableSession> classTime;
-	//private Set<Review> review;
-	//private Commission commission;
-	//private Tutor tutor;
-	//private TutoringSystem tutoringSystem;
+	private ClassroomDto classroom;
+	private Set<AvaliableSessionDto> classTime;
+	private Set<ReviewDto> review;
+	private CommissionDto commission;
+	private TutorDto tutor;
+	private TutoringSystemDto tutoringSystem;
 
 	public OfferingDto() {
 		
 	}
 	
-	public OfferingDto(String offId, String term, double price, Set<AvaliableSession> classTime){
+	public OfferingDto(String offId, String term, double price, SubjectDto subject, TutorDto tutor, CommissionDto commission, ClassroomDto classroom, TutoringSystemDto tutoringSystem){
 		this.offeringID = offId;
 		this.term = term;
 		this.pricePerHour = price;
-		this.classTime = classTime;
-
+	//	this.classTime = classTime;
+		this.subject = subject;
+		this.tutor = tutor;
+		this.commission = commission;
+		this.classroom = classroom;
+		this.tutoringSystem = tutoringSystem;
 	}
 	
 	public void setOfferingID(String value) {
@@ -57,68 +52,68 @@ public class OfferingDto{
 		return this.pricePerHour;
 	}
 
-	public Set<AvaliableSession> getClassTime() {
+	public Set<AvaliableSessionDto> getClassTime() {
 		return this.classTime;
 	}
 
-	public void setClassTime(Set<AvaliableSession> classTimes) {
+	public void setClassTime(Set<AvaliableSessionDto> classTimes) {
 		this.classTime = classTimes;
 	}
-/*
+
  
-  	public Classroom getClassroom() {
+  	public ClassroomDto getClassroom() {
 		return this.classroom;
 	}
 
-	public void setClassroom(Classroom classroom) {
+	public void setClassroom(ClassroomDto classroom) {
 		this.classroom = classroom;
 	}
 	
-	public Set<Review> getReview() {
+	public Set<ReviewDto> getReview() {
 		return this.review;
 	}
 
-	public void setReview(Set<Review> reviews) {
+	public void setReview(Set<ReviewDto> reviews) {
 		this.review = reviews;
 	}
 
-	public Commission getCommission() {
+	public CommissionDto getCommission() {
 		return this.commission;
 	}
 
-	public void setCommission(Commission commission) {
+	public void setCommission(CommissionDto commission) {
 		this.commission = commission;
 	}
 
-	public Tutor getTutor() {
+	public TutorDto getTutor() {
 		return this.tutor;
 	}
 
-	public void setTutor(Tutor tutor) {
+	public void setTutor(TutorDto tutor) {
 		this.tutor = tutor;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
 	
-		public Set<Student> getStudentsEnrolled() {
+		public Set<StudentDto> getStudentsEnrolled() {
 		return this.studentsEnrolled;
 	}
 
-	public void setStudentsEnrolled(Set<Student> studentsEnrolleds) {
+	public void setStudentsEnrolled(Set<StudentDto> studentsEnrolleds) {
 		this.studentsEnrolled = studentsEnrolleds;
 	}
 
-	public Subject getSubject() {
+	public SubjectDto getSubject() {
 		return this.subject;
 	}
 
-	public void setSubject(Subject subject) {
+	public void setSubject(SubjectDto subject) {
 		this.subject = subject;
 	}
-	*/
+	
 }

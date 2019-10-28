@@ -1,29 +1,18 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
 import java.util.Set;
-/*
-import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
-import ca.mcgill.ecse321.tutoringservice.model.Classroom;
-import ca.mcgill.ecse321.tutoringservice.model.Commission;
-import ca.mcgill.ecse321.tutoringservice.model.Person;
-import ca.mcgill.ecse321.tutoringservice.model.Review;
-import ca.mcgill.ecse321.tutoringservice.model.Subject;
-import ca.mcgill.ecse321.tutoringservice.model.SubjectRequest;
-import ca.mcgill.ecse321.tutoringservice.model.TutorApplication;
-import ca.mcgill.ecse321.tutoringservice.model.University;
-*/
 
 public class TutoringSystemDto{
-/*	private Set<SubjectRequest> subjectRequest;
-	private Set<Subject> subject;
-	private Set<Person> person;
-	private Set<University> university;
-	private Set<TutorApplication> tutorApplication;
-	private Set<Review> review;
-	private Set<AvaliableSession> avaliableSession;
-	private Set<Classroom> classroom;
-	private Set<Commission> commission;
-*/	private Integer tutoringSystemID;
+	private Set<SubjectRequestDto> subjectRequest;
+	private Set<SubjectDto> subject;
+	private Set<PersonDto> person;
+	private Set<UniversityDto> university;
+	private Set<TutorApplicationDto> tutorApplication;
+	private Set<ReviewDto> review;
+	private Set<AvaliableSessionDto> avaliableSession;
+	private Set<ClassroomDto> classroom;
+	private Set<CommissionDto> commission;
+	private Integer tutoringSystemID;
 
 	public TutoringSystemDto() {
 		
@@ -32,79 +21,79 @@ public class TutoringSystemDto{
 	public TutoringSystemDto(Integer tutoringSystemID) {
 		this.tutoringSystemID = tutoringSystemID;
 	}
-/*	
-	public Set<SubjectRequest> getSubjectRequest() {
+
+	public Set<SubjectRequestDto> getSubjectRequest() {
 		return this.subjectRequest;
 	}
 
-	public void setSubjectRequest(Set<SubjectRequest> subjectRequests) {
+	public void setSubjectRequest(Set<SubjectRequestDto> subjectRequests) {
 		this.subjectRequest = subjectRequests;
 	}
 
-	public Set<Subject> getSubject() {
+	public Set<SubjectDto> getSubject() {
 		return this.subject;
 	}
 
-	public void setSubject(Set<Subject> subjects) {
+	public void setSubject(Set<SubjectDto> subjects) {
 		this.subject = subjects;
 	}
 
-	public Set<Person> getPerson() {
+	public Set<PersonDto> getPerson() {
 		return this.person;
 	}
 
-	public void setPerson(Set<Person> persons) {
+	public void setPerson(Set<PersonDto> persons) {
 		this.person = persons;
 	}
 
-	public Set<University> getUniversity() {
+	public Set<UniversityDto> getUniversity() {
 		return this.university;
 	}
 
-	public void setUniversity(Set<University> universitys) {
+	public void setUniversity(Set<UniversityDto> universitys) {
 		this.university = universitys;
 	}
 
-	public Set<TutorApplication> getTutorApplication() {
+	public Set<TutorApplicationDto> getTutorApplication() {
 		return this.tutorApplication;
 	}
 
-	public void setTutorApplication(Set<TutorApplication> tutorApplications) {
+	public void setTutorApplication(Set<TutorApplicationDto> tutorApplications) {
 		this.tutorApplication = tutorApplications;
 	}
 
-	public Set<Review> getReview() {
+	public Set<ReviewDto> getReview() {
 		return this.review;
 	}
 
-	public void setReview(Set<Review> reviews) {
+	public void setReview(Set<ReviewDto> reviews) {
 		this.review = reviews;
 	}
 
-	public Set<AvaliableSession> getAvaliableSession() {
+	public Set<AvaliableSessionDto> getAvaliableSession() {
 		return this.avaliableSession;
 	}
 
-	public void setAvaliableSession(Set<AvaliableSession> avaliableSessions) {
+	public void setAvaliableSession(Set<AvaliableSessionDto> avaliableSessions) {
 		this.avaliableSession = avaliableSessions;
 	}
 
-	public Set<Classroom> getClassroom() {
+	public Set<ClassroomDto> getClassroom() {
 		return this.classroom;
 	}
 
-	public void setClassroom(Set<Classroom> classrooms) {
+	public void setClassroom(Set<ClassroomDto> classrooms) {
 		this.classroom = classrooms;
 	}
 
-	public Set<Commission> getCommission() {
+	public Set<CommissionDto> getCommission() {
 		return this.commission;
 	}
 
-	public void setCommission(Set<Commission> commissions) {
+	public void setCommission(Set<CommissionDto> commissions) {
 		this.commission = commissions;
 	}
-*/
+
 	public void setTutoringSystemID(Integer value) {
 		this.tutoringSystemID = value;
 	}

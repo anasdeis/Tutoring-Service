@@ -3,19 +3,21 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 import java.util.Set;
 
 import ca.mcgill.ecse321.tutoringservice.model.Subject;
-//import ca.mcgill.ecse321.tutoringservice.model.Tutor;
-//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+import ca.mcgill.ecse321.tutoringservice.dto.TutorDto;
+import ca.mcgill.ecse321.tutoringservice.dto.TutoringSystemDto;
 
 public class TutorApplicationDto{
 private Integer applicationId;
 private Set<Subject> subject;
-//private Tutor tutor;
+private TutorDto tutor;
 private Boolean isAccepted;
-//private TutoringSystem tutoringSystem;
+private TutoringSystemDto tutoringSystem;
 
-public TutorApplicationDto(Integer applicationId, Boolean isAccepted) {
+public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  TutorDto tutor, TutoringSystemDto tutoringSystem) {
 	this.applicationId = applicationId;
 	this.isAccepted = isAccepted;
+	this.tutor = tutor;
+	this.tutoringSystem = tutoringSystem;
 }
 	
 	public void setApplicationId(Integer value) {
@@ -40,20 +42,20 @@ public TutorApplicationDto(Integer applicationId, Boolean isAccepted) {
 		return this.isAccepted;
 	}
 	
-/*	public Tutor getTutor() {
+	public TutorDto getTutor() {
 		return this.tutor;
 	}
 
-	public void setTutor(Tutor tutor) {
+	public void setTutor(TutorDto tutor) {
 		this.tutor = tutor;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
 
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
-*/
+
 }
