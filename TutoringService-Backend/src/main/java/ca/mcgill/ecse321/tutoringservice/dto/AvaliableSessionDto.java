@@ -20,6 +20,16 @@ public class AvaliableSessionDto{
 		
 	}
 	
+public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.avaliableSessionID = AvaliableSessionID;
+		this.day = day;
+		this.tutor = tutors;
+		this.tutoringSystem = tutoringSystem;
+	
+	}
+	
 	public void setStartTime(Time value) {
 		this.startTime = value;
 	}
