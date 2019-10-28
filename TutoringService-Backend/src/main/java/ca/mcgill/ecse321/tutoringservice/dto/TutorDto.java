@@ -4,15 +4,15 @@ import java.sql.Date;
 import java.util.Set;
 
 public class TutorDto extends PersonDto{
-	private Set<TutorApplicationDto> tutorApplications;
+	private Set<Integer> tutorApplicationIDs;
 	private Boolean isRegistered;
-	private Set<OfferingDto> offerings;
-	private Set<AvaliableSessionDto> avaliableSession;
+	private Set<String> offeringIDs;
+	private Set<Integer> avaliableSessionIDs;
 
 	public TutorDto() {
 	}
 	
-	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered,  LoginDto login, Set<TutorApplicationDto> tutorApplications, Set<OfferingDto> offerings, TutoringSystemDto tutoringSystem) {
+	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered,  LoginDto login, Set<Integer> tutorApplicationIDs, Set<String> offeringIDs, Set<Integer> avaliableSessionIDs, TutoringSystemDto tutoringSystem) {
 		this.isRegistered = isRegistered;
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -21,8 +21,9 @@ public class TutorDto extends PersonDto{
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(tutorID);
 		this.setLoginInfo(login);
-		this.tutorApplications = tutorApplications;
-		this.offerings = offerings;
+		this.tutorApplicationIDs = tutorApplicationIDs;
+		this.offeringIDs = offeringIDs;
+		this.avaliableSessionIDs = avaliableSessionIDs;
 		this.setTutoringSystem(tutoringSystem);
 	}
 	
@@ -33,28 +34,28 @@ public class TutorDto extends PersonDto{
 		return this.isRegistered;
 	}
 	
-	public Set<TutorApplicationDto> getTutorApplication() {
-		return this.tutorApplications;
+	public Set<Integer> getTutorApplication() {
+		return this.tutorApplicationIDs;
 	}
 
-	public void setTutorApplication(Set<TutorApplicationDto> tutorApplications) {
-		this.tutorApplications = tutorApplications;
+	public void setTutorApplication(Set<Integer> tutorApplicationIDs) {
+		this.tutorApplicationIDs = tutorApplicationIDs;
 	}
 
-	public Set<OfferingDto> getOffering() {
-		return this.offerings;
+	public Set<String> getOffering() {
+		return this.offeringIDs;
 	}
 
-	public void setOffering(Set<OfferingDto> offerings) {
-		this.offerings = offerings;
+	public void setOffering(Set<String> offeringIDs) {
+		this.offeringIDs = offeringIDs;
 	}
 
-	public Set<AvaliableSessionDto> getAvaliableSession() {
-		return this.avaliableSession;
+	public Set<Integer> getAvaliableSession() {
+		return this.avaliableSessionIDs;
 	}
 
-	public void setAvaliableSession(Set<AvaliableSessionDto> avaliableSessions) {
-		this.avaliableSession = avaliableSessions;
+	public void setAvaliableSession(Set<Integer> avaliableSessionIDs) {
+		this.avaliableSessionIDs = avaliableSessionIDs;
 	}
 	
 }

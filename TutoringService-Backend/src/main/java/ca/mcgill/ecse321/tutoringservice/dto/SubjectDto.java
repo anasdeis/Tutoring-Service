@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
 
-import ca.mcgill.ecse321.tutoringservice.model.SubjectType;
 import ca.mcgill.ecse321.tutoringservice.dto.UniversityDto;
 
 
@@ -9,14 +8,14 @@ public class SubjectDto{
 	private String name;
 	private String courseID;
 	private String description;
-	private SubjectType subjectType;
+	private String subjectType;
 	private UniversityDto university;
 
 	public SubjectDto() {
 		
 	}
 	
-	public SubjectDto(String name, String courseID, String description, SubjectType subjectType, UniversityDto university) {
+	public SubjectDto(String name, String courseID, String description, String subjectType, UniversityDto university) {
 		this.setName(name);
 		this.setCourseID(courseID);
 		this.setDescription(description);
@@ -45,10 +44,11 @@ public class SubjectDto{
 		return this.description;
 	}
 
-	public void setSubjectType(SubjectType value) {
+	public void setSubjectType(String value) {
 		this.subjectType = value;
 	}
-	public SubjectType getSubjectType() {
+	
+	public String getSubjectType() {
 		return this.subjectType;
 	}
 

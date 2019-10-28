@@ -6,7 +6,7 @@ public class CommissionDto{
 	private double percentage;
 	private Integer commissionID;
 	private ManagerDto manager;
-	private Set<OfferingDto> offerings;
+	private Set<String> offeringIDs;
 	private TutoringSystemDto tutoringSystem;
 
 
@@ -14,11 +14,11 @@ public class CommissionDto{
 		
 	}
 	
-	public CommissionDto(double percentage, Integer commissionID, ManagerDto manager, Set<OfferingDto> offerings, TutoringSystemDto tutoringSystem) {
+	public CommissionDto(double percentage, Integer commissionID, ManagerDto manager, Set<String> offeringIDs, TutoringSystemDto tutoringSystem) {
 		this.commissionID = commissionID;
 		this.percentage = percentage;
 		this.manager = manager;
-		this.offerings = offerings;
+		this.offeringIDs = offeringIDs;
 		this.tutoringSystem = tutoringSystem;
 	}
 	
@@ -44,12 +44,12 @@ public class CommissionDto{
 		this.manager = manager;
 	}
 
-	public Set<OfferingDto> getOffering() {
-		return this.offerings;
+	public Set<String> getOffering() {
+		return this.offeringIDs;
 	}
 
-	public void setOffering(Set<OfferingDto> offerings) {
-		this.offerings = offerings;
+	public void setOffering(Set<String> offeringIDs) {
+		this.offeringIDs = offeringIDs;
 	}
 
 	public TutoringSystemDto getTutoringSystem() {
