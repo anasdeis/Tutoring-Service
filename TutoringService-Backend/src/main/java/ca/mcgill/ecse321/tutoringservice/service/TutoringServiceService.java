@@ -256,7 +256,7 @@ public class TutoringServiceService {
 	 * Subject Request
 	 */
 	@Transactional
-	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description, Manager manager, TutoringSystem tutoringSystem){
+	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description,SubjectType subjectType, Manager manager, TutoringSystem tutoringSystem){
 		String error = "";
 		if (name == null || name.trim().length() == 0) {
 			error = error + "name cannot be null!";
@@ -266,6 +266,9 @@ public class TutoringServiceService {
 		}
 		if (requestID == null || requestID == 0) {
 			error = error + "requestID cannot be empty!";
+		}
+		if (subjectType == null) {
+			error = error + "subjectType cannot be empty!";
 		}
 		if (manager == null) {
 			error = error + "manager cannot be empty!";
@@ -283,6 +286,7 @@ public class TutoringServiceService {
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
+		subjectrequest.setSubjectType(subjectType);
 		subjectrequest.setManager(manager);
 		subjectrequest.setTutoringSystem(tutoringSystem);
 		subjectRequestRepository.save(subjectrequest);
