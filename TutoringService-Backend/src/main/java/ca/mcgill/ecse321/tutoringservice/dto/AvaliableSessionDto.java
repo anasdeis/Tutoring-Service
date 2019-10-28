@@ -4,16 +4,13 @@ import java.sql.Time;
 import java.sql.Date;
 import java.util.Set;
 
-import ca.mcgill.ecse321.tutoringservice.model.Tutor;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
-
 
 public class AvaliableSessionDto{
 	private Integer avaliableSessionID;
 	private Time startTime;
 	private Time endTime;
 	private Date day;
-	private Set<TutorDto> tutor;
+	private Set<Integer> tutorIDs;
 	private TutoringSystemDto tutoringSystem;
 
 	public AvaliableSessionDto() {
@@ -21,12 +18,12 @@ public class AvaliableSessionDto{
 	}
 
 
-	public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<TutorDto> tutors, TutoringSystemDto tutoringSystem) {
+	public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Integer> tutorIDs, TutoringSystemDto tutoringSystem) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.avaliableSessionID = AvaliableSessionID;
 		this.day = day;
-		this.tutor = tutors;
+		this.tutorIDs = tutorIDs;
 		this.tutoringSystem = tutoringSystem;
 	}
 	
@@ -51,12 +48,12 @@ public class AvaliableSessionDto{
 		return this.day;
 	}
 
-	public Set<TutorDto> getTutor() {
-		return this.tutor;
+	public Set<Integer> getTutor() {
+		return this.tutorIDs;
 	}
 
-	public void setTutor(Set<TutorDto> tutors) {
-		this.tutor = tutors;
+	public void setTutor(Set<Integer> tutorIDs) {
+		this.tutorIDs = tutorIDs;
 	}
 
 	public TutoringSystemDto getTutoringSystem() {

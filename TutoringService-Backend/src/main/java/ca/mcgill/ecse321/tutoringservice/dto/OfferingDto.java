@@ -9,7 +9,7 @@ public class OfferingDto{
 	private String term;
 	private double pricePerHour;
 	private ClassroomDto classroom;
-	private Set<AvaliableSessionDto> classTime;
+	private Set<Integer> classTimeIDs;
 	private Set<ReviewDto> review;
 	private CommissionDto commission;
 	private TutorDto tutor;
@@ -19,11 +19,11 @@ public class OfferingDto{
 		
 	}
 	
-	public OfferingDto(String offId, String term, double price, Set<AvaliableSessionDto> classTime, SubjectDto subject, TutorDto tutor, CommissionDto commission, ClassroomDto classroom, TutoringSystemDto tutoringSystem){
+	public OfferingDto(String offId, String term, double price, Set<Integer> classTimeIDs, SubjectDto subject, TutorDto tutor, CommissionDto commission, ClassroomDto classroom, TutoringSystemDto tutoringSystem){
 		this.offeringID = offId;
 		this.term = term;
 		this.pricePerHour = price;
-		this.classTime = classTime;
+		this.classTimeIDs = classTimeIDs;
 		this.subject = subject;
 		this.tutor = tutor;
 		this.commission = commission;
@@ -52,12 +52,12 @@ public class OfferingDto{
 		return this.pricePerHour;
 	}
 
-	public Set<AvaliableSessionDto> getClassTime() {
-		return this.classTime;
+	public Set<Integer> getClassTime() {
+		return this.classTimeIDs;
 	}
 
-	public void setClassTime(Set<AvaliableSessionDto> classTimes) {
-		this.classTime = classTimes;
+	public void setClassTime(Set<Integer> classTimeIDs) {
+		this.classTimeIDs = classTimeIDs;
 	}
 
  
