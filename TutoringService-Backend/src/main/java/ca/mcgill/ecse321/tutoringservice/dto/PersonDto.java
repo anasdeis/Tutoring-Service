@@ -10,7 +10,7 @@ public abstract class PersonDto{
 	private Date dateOfBirth;
 	private String email;
 	private Integer phoneNumber;
-	private TutoringSystemDto tutoringSystem;
+	private Integer tutoringSystemID;
 
 	public PersonDto() {
 
@@ -67,11 +67,11 @@ public abstract class PersonDto{
 		this.loginInfo = loginInfo;
 	}
 	
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 }

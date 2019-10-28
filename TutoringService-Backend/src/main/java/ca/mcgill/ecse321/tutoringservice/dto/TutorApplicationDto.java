@@ -10,10 +10,10 @@ private Set<String> courseIDs;
 private TutoringSystemDto tutoringSystem;
 
 public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  TutorDto tutor, Set<String> courseIDs, TutoringSystemDto tutoringSystem) {
-	this.applicationId = applicationId;
-	this.isAccepted = isAccepted;
-	this.tutor = tutor;
-	this.tutoringSystem = tutoringSystem;
+	this.setApplicationId(applicationId);
+	this.setIsAccepted(isAccepted);
+	this.setTutor(tutor);
+	this.setTutoringSystem(tutoringSystem);
 	this.setSubject(courseIDs);
 }
 	

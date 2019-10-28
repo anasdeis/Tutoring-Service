@@ -8,32 +8,32 @@ public class SubjectDto{
 	private String courseID;
 	private String description;
 	private String subjectType;
-	private UniversityDto university;
+	private String universityName;
 	private Set<Integer> tutorApplicationIDs;
 	private Set<String> offeringIDs;
-	private TutoringSystemDto tutoringSystem;
+	private Integer tutoringSystemID;
 
 	public SubjectDto() {
 		
 	}
 	
-	public SubjectDto(String name, String courseID, String description, String subjectType, UniversityDto university, Set<Integer> tutorApplicationIDs, Set<String> offeringIDs, TutoringSystemDto tutoringSystem) {
+	public SubjectDto(String name, String courseID, String description, String subjectType, String universityName, Set<Integer> tutorApplicationIDs, Set<String> offeringIDs, Integer tutoringSystemID) {
 		this.setName(name);
 		this.setCourseID(courseID);
 		this.setDescription(description);
 		this.setSubjectType(subjectType);
-		this.university = university;
+		this.setUniversity(universityName);
 		this.setOffering(offeringIDs);
 		this.setTutorRole(tutorApplicationIDs);
-		this.setTutoringSystem(tutoringSystem);
+		this.setTutoringSystem(tutoringSystemID);
 	}
 	
-	public TutoringSystemDto getTutoringSystem() {
-		 return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		 return this.tutoringSystemID;
 	}
 		   
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		 this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystem) {
+		 this.tutoringSystemID = tutoringSystem;
 	}
 	
 	public Set<String> getOffering() {
@@ -81,12 +81,12 @@ public class SubjectDto{
 		return this.subjectType;
 	}
 
-	public UniversityDto getUniversity() {
-		return this.university;
+	public String getUniversity() {
+		return this.universityName;
 	}
 
-	public void setUniversity(UniversityDto university) {
-		this.university = university;
+	public void setUniversity(String university) {
+		this.universityName = university;
 	}
 
 }

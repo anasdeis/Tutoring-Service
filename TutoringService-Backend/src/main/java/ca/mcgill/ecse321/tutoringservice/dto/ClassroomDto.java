@@ -5,22 +5,22 @@ import java.util.Set;
 public class ClassroomDto{
 	private String roomCode;
 	private Boolean isBooked;
-	private ManagerDto manager;
+	private Integer managerID;
 	private Boolean isBigRoom;
 	private Set<String> offeringIDs;
-	private TutoringSystemDto tutoringSystem;
+	private Integer tutoringSystemID;
 
 	public ClassroomDto() {
 		
 	}
 
-	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, ManagerDto manager, Set<String> offeringIDs, TutoringSystemDto tutoringSystem){
-		this.roomCode = roomCode;
-		this.isBooked = isBooked;
-		this.isBigRoom = isBigRoom;
-		this.manager = manager;
-		this.offeringIDs = offeringIDs;
-		this.tutoringSystem = tutoringSystem;
+	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, Integer manager, Set<String> offeringIDs, Integer tutoringSystem){
+		this.setRoomCode(roomCode);
+		this.setIsBooked(isBooked);
+		this.setIsBigRoom(isBigRoom);
+		this.setManager(manager);
+		this.setOffering(offeringIDs);
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 	public void setRoomCode(String value) {
@@ -55,19 +55,19 @@ public class ClassroomDto{
 		this.offeringIDs = offeringIDs;
 	}
 	
-	public ManagerDto getManager() {
-		return this.manager;
+	public Integer getManager() {
+		return this.managerID;
 	}
 
-	public void setManager(ManagerDto manager) {
-		this.manager = manager;
+	public void setManager(Integer managerID) {
+		this.managerID = managerID;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 }

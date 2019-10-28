@@ -5,21 +5,21 @@ import java.util.Set;
 public class CommissionDto{
 	private double percentage;
 	private Integer commissionID;
-	private ManagerDto manager;
+	private Integer managerID;
 	private Set<String> offeringIDs;
-	private TutoringSystemDto tutoringSystem;
+	private Integer tutoringSystemID;
 
 
 	public CommissionDto() {
 		
 	}
 	
-	public CommissionDto(double percentage, Integer commissionID, ManagerDto manager, Set<String> offeringIDs, TutoringSystemDto tutoringSystem) {
-		this.commissionID = commissionID;
-		this.percentage = percentage;
-		this.manager = manager;
-		this.offeringIDs = offeringIDs;
-		this.tutoringSystem = tutoringSystem;
+	public CommissionDto(double percentage, Integer commissionID, Integer manager, Set<String> offeringIDs, Integer tutoringSystem) {
+		this.setCommissionID(commissionID);
+		this.setPercentage(percentage);
+		this.setManager(manager);
+		this.setOffering(offeringIDs);
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 	public void setPercentage(double value) {
@@ -36,12 +36,12 @@ public class CommissionDto{
 		return this.commissionID;
 	}
 
-	public ManagerDto getManager() {
-		return this.manager;
+	public Integer getManager() {
+		return this.managerID;
 	}
 
-	public void setManager(ManagerDto manager) {
-		this.manager = manager;
+	public void setManager(Integer managerID) {
+		this.managerID = managerID;
 	}
 
 	public Set<String> getOffering() {
@@ -52,11 +52,11 @@ public class CommissionDto{
 		this.offeringIDs = offeringIDs;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 }

@@ -23,16 +23,16 @@ public class TutoringSystemDto{
 	}
 	
 	public TutoringSystemDto(Integer tutoringSystemID, Set<Integer> subjectRequestIDs,  Set<String> courseIDs, Set<Integer> personIDs, Set<String> universityNames,  Set<Integer> tutorApplicationIDs, Set<Integer> reviewIDs,  Set<Integer> avaliableSessionIDs, Set<String> classRoomCodes, Set<Integer> commissionIDs) {
-		this.tutoringSystemID = tutoringSystemID;
-		this.subjectRequestIDs = subjectRequestIDs;
-		this.courseIDs = courseIDs;
-		this.personIDs = personIDs;
-		this.universityNames = universityNames;
-		this.tutorApplicationIDs = tutorApplicationIDs;
-		this.reviewIDs = reviewIDs;
-		this.avaliableSessionIDs = avaliableSessionIDs;
-		this.classRoomCodes = classRoomCodes;
-		this.commissionIDs = commissionIDs;
+		this.setTutoringSystemID(tutoringSystemID);
+		this.setSubjectRequest(subjectRequestIDs);
+		this.setSubject(courseIDs);
+		this.setPerson(personIDs);
+		this.setUniversity(universityNames);
+		this.setTutorApplication(tutorApplicationIDs);
+		this.setReview(reviewIDs);
+		this.setAvaliableSession(avaliableSessionIDs);
+		this.setClassroom(classRoomCodes);
+		this.setCommission(commissionIDs);
 	}
 
 	public Set<Integer> getSubjectRequest() {
