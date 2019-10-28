@@ -3,23 +3,23 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 import java.sql.Date;
 import java.util.Set;
 
-import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
-import ca.mcgill.ecse321.tutoringservice.model.Login;
-import ca.mcgill.ecse321.tutoringservice.model.Offering;
+//import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
+//import ca.mcgill.ecse321.tutoringservice.model.Login;
+//import ca.mcgill.ecse321.tutoringservice.model.Offering;
 import ca.mcgill.ecse321.tutoringservice.model.Person;
-import ca.mcgill.ecse321.tutoringservice.model.TutorApplication;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+//import ca.mcgill.ecse321.tutoringservice.model.TutorApplication;
+//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 public class TutorDto extends Person{
-	private Set<TutorApplication> tutorApplication;
+	//private Set<TutorApplication> tutorApplication;
 	private Boolean isRegistered;
-	private Set<Offering> offering;
-	private Set<AvaliableSession> avaliableSession;
+	//private Set<Offering> offering;
+	//private Set<AvaliableSession> avaliableSession;
 
 	public TutorDto() {
 	}
 	
-	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> availableSessions, TutoringSystem tutoringSystem) {
+	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered) {
 		this.isRegistered = isRegistered;
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -27,26 +27,21 @@ public class TutorDto extends Person{
 		this.setEmail(email);
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(tutorID);
-		this.setLoginInfo(loginInfo);
-		this.tutorApplication = tutorApplications;
-		this.offering = offerings;
-		this.avaliableSession = availableSessions;
-		this.setTutoringSystem(tutoringSystem);
 	}
 	
+	public void setIsRegistered(Boolean value) {
+		this.isRegistered = value;
+	}
+	public Boolean getIsRegistered() {
+		return this.isRegistered;
+	}
+/*	
 	public Set<TutorApplication> getTutorApplication() {
 		return this.tutorApplication;
 	}
 
 	public void setTutorApplication(Set<TutorApplication> tutorApplications) {
 		this.tutorApplication = tutorApplications;
-	}
-
-	public void setIsRegistered(Boolean value) {
-		this.isRegistered = value;
-	}
-	public Boolean getIsRegistered() {
-		return this.isRegistered;
 	}
 
 	public Set<Offering> getOffering() {
@@ -64,5 +59,5 @@ public class TutorDto extends Person{
 	public void setAvaliableSession(Set<AvaliableSession> avaliableSessions) {
 		this.avaliableSession = avaliableSessions;
 	}
-
+*/
 }

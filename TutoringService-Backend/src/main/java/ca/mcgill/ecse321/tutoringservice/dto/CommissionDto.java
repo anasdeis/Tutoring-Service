@@ -5,30 +5,27 @@ import javax.persistence.ManyToOne;
 import java.util.Set;
 import javax.persistence.OneToMany;
 
-import ca.mcgill.ecse321.tutoringservice.model.Manager;
-import ca.mcgill.ecse321.tutoringservice.model.Offering;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+//import ca.mcgill.ecse321.tutoringservice.model.Manager;
+//import ca.mcgill.ecse321.tutoringservice.model.Offering;
+//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 import javax.persistence.Id;
 
 public class CommissionDto{
 	private double percentage;
 	private Integer commissionID;
-	private Manager manager;
-	private Set<Offering> offering;
-	private TutoringSystem tutoringSystem;
+	//private Manager manager;
+	//private Set<Offering> offering;
+	//private TutoringSystem tutoringSystem;
 
 
 	public CommissionDto() {
 		
 	}
 	
-	public CommissionDto(double percentage, Integer commissionID, Manager manager, Set<Offering> offering, TutoringSystem tutoringSystem) {
+	public CommissionDto(double percentage, Integer commissionID) {
 		this.commissionID = commissionID;
 		this.percentage = percentage;
-		this.manager = manager;
-		this.offering = offering;
-		this.tutoringSystem = tutoringSystem;
 	}
 	
 	public void setPercentage(double value) {
@@ -37,7 +34,14 @@ public class CommissionDto{
 	public double getPercentage() {
 		return this.percentage;
 	}
-
+	
+	public void setCommissionID(Integer value) {
+		this.commissionID = value;
+	}
+	public Integer getCommissionID() {
+		return this.commissionID;
+	}
+/*
 	public Manager getManager() {
 		return this.manager;
 	}
@@ -61,11 +65,5 @@ public class CommissionDto{
 	public void setTutoringSystem(TutoringSystem tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
-
-	public void setCommissionID(Integer value) {
-		this.commissionID = value;
-	}
-	public Integer getCommissionID() {
-		return this.commissionID;
-	}
+*/
 }

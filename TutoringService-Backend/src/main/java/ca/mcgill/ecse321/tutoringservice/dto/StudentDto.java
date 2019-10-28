@@ -7,15 +7,15 @@ import java.sql.Date;
 import java.util.Set;
 import javax.persistence.ManyToMany;
 
-import ca.mcgill.ecse321.tutoringservice.model.Login;
+//import ca.mcgill.ecse321.tutoringservice.model.Login;
 import ca.mcgill.ecse321.tutoringservice.model.Offering;
 import ca.mcgill.ecse321.tutoringservice.model.Person;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectRequest;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 public class StudentDto extends Person{
-	private Set<Offering> coursesTaken;
-	private Set<SubjectRequest> subjectRequest;
+	//private Set<Offering> coursesTaken;
+	//private Set<SubjectRequest> subjectRequest;
 	private Integer numCoursesEnrolled;
 
 	public StudentDto() {
@@ -23,7 +23,7 @@ public class StudentDto extends Person{
 	}
 
 	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber,
-			Integer studentId, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
+			Integer studentId, Integer numCoursesEnrolled) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setDateOfBirth(dateOfBirth);
@@ -31,11 +31,9 @@ public class StudentDto extends Person{
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(studentId);
 		this.setNumCoursesEnrolled(numCoursesEnrolled);
-		this.setLoginInfo(loginInfo);
-		this.setTutoringSystem(tutoringSystem);
 	}
 
-
+/*
 	public Set<Offering> getCoursesTaken() {
 		return this.coursesTaken;
 	}
@@ -51,7 +49,7 @@ public class StudentDto extends Person{
 	public void setSubjectRequest(Set<SubjectRequest> subjectRequests) {
 		this.subjectRequest = subjectRequests;
 	}
-
+*/
 	public void setNumCoursesEnrolled(Integer value) {
 		this.numCoursesEnrolled = value;
 	}
