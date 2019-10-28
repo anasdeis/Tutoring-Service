@@ -16,11 +16,11 @@ public class SubjectRequestDto{
 	private TutoringSystemDto tutoringSystem;
 
 	public SubjectRequestDto(Integer requestID, String name, String description, ManagerDto manager, TutoringSystemDto tutoringSystem) {
-		this.requestID = requestID;
-		this.name = name;
-		this.description = description;
-		this.manager = manager;
-		this.tutoringSystem = tutoringSystem;
+		this.requestID = requestID;              //Integer
+		this.name = name;					     //String
+		this.description = description;          //String
+		this.manager = manager;                  //DTO
+		this.tutoringSystem = tutoringSystem;    //DTO
 	}
 	
 	

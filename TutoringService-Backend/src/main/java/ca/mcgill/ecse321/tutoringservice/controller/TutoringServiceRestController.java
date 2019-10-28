@@ -182,6 +182,15 @@ public class TutoringServiceRestController {
 		return subjectDto;
 	}
 	
+	private SubjectRequestDto convertToDto(SubjectRequest sr) {
+		if (sr == null) {
+			throw new IllegalArgumentException("There is no such subject information!");
+		}
+
+		SubjectRequestDto subjectRequestDto = new SubjectRequestDto(sr.getRequestID(), sr.getName(), sr.getDescription(), convertToDto(sr.getManager()), convertToDto(sr.getTutoringSystem()));
+		return subjectRequestDto;
+	}
+	
 	private UniversityDto convertToDto(University university) {
 		if (university == null) {
 			throw new IllegalArgumentException("There is no such University!");
