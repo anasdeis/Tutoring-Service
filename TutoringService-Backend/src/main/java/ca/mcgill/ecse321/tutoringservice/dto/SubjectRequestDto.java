@@ -5,12 +5,12 @@ import java.util.Set;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectType;
 
 public class SubjectRequestDto{
-	private Set<StudentDto> student;
-	private ManagerDto manager;
 	private Integer requestID;
 	private String name;
 	private String description;
 	private SubjectType subjectType;
+	private ManagerDto manager;
+	private Set<StudentDto> student;
 	private TutoringSystemDto tutoringSystem;
 
 	public SubjectRequestDto() {

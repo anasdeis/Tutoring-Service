@@ -8,7 +8,6 @@ public class ManagerDto extends PersonDto{
 	private Set<Integer> reviewIDs;
 	private Set<Integer> commissionIDs;
 	private Set<String> classRoomCodes;
-	private TutoringSystemDto tutoringSystem;
 
 	public ManagerDto() {
 		
@@ -26,7 +25,7 @@ public class ManagerDto extends PersonDto{
 		this.classRoomCodes = classRoomCodes;
 		this.reviewIDs = reviewIDs;
 		this.subjectRequestIDs =subjectRequestIDs;
-		this.tutoringSystem = tutoringSystem;
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 	public Set<Integer> getSubjectRequest() {

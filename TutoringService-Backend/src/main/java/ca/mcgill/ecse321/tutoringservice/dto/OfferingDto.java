@@ -4,15 +4,15 @@ import java.util.Set;
 
 public class OfferingDto{
 	private String offeringID;
-	private Set<Integer> studentIDs;
-	private SubjectDto subject;
 	private String term;
 	private double pricePerHour;
-	private ClassroomDto classroom;
 	private Set<Integer> classTimeIDs;
-	private Set<Integer> reviewIDs;
+	private SubjectDto subject;
+	private ClassroomDto classroom;
 	private CommissionDto commission;
 	private TutorDto tutor;
+	private Set<Integer> reviewIDs;
+	private Set<Integer> studentIDs;
 	private TutoringSystemDto tutoringSystem;
 
 	public OfferingDto() {

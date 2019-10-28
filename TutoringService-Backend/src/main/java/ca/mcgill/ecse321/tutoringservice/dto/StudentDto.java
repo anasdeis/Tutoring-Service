@@ -4,10 +4,10 @@ import java.sql.Date;
 import java.util.Set;
 
 public class StudentDto extends PersonDto{
+	private Integer numCoursesEnrolled;
 	private Set<String> coursesTakenIDs;
 	private Set<Integer> subjectRequestIDs;
-	private Integer numCoursesEnrolled;
-
+	
 	public StudentDto() {
 		
 	}

@@ -4,8 +4,8 @@ import java.sql.Date;
 import java.util.Set;
 
 public class TutorDto extends PersonDto{
-	private Set<Integer> tutorApplicationIDs;
 	private Boolean isRegistered;
+	private Set<Integer> tutorApplicationIDs;
 	private Set<String> offeringIDs;
 	private Set<Integer> avaliableSessionIDs;
 
