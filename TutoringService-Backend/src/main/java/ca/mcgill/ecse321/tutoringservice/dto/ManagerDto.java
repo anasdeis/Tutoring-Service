@@ -4,58 +4,61 @@ import java.sql.Date;
 import java.util.Set;
 
 public class ManagerDto extends PersonDto{
-	private Set<SubjectRequestDto> subjectRequest;
-	private Set<ReviewDto> review;
-	private Set<CommissionDto> commission;
-	private Set<ClassroomDto> classroom;
-	private LoginDto loginInfo;
+	private Set<Integer> subjectRequestIDs;
+	private Set<Integer> reviewIDs;
+	private Set<Integer> commissionIDs;
+	private Set<String> classRoomCodes;
 	private TutoringSystemDto tutoringSystem;
 
 	public ManagerDto() {
 		
 	}
 		
-	public ManagerDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer managerID, LoginDto login, TutoringSystemDto tutoringSystem) {
+	public ManagerDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer managerID, LoginDto login, Set<Integer> reviewIDs, Set<Integer> commissionIDs, Set<String> classRoomCodes,  Set<Integer> subjectRequestIDs, TutoringSystemDto tutoringSystem) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setDateOfBirth(dateOfBirth);
 		this.setEmail(email);
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(managerID);
-		this.loginInfo = login;
+		this.setLoginInfo(login);
+		this.commissionIDs = commissionIDs;
+		this.classRoomCodes = classRoomCodes;
+		this.reviewIDs = reviewIDs;
+		this.subjectRequestIDs =subjectRequestIDs;
 		this.tutoringSystem = tutoringSystem;
 	}
 	
-	public Set<SubjectRequestDto> getSubjectRequest() {
-		return this.subjectRequest;
+	public Set<Integer> getSubjectRequest() {
+		return this.subjectRequestIDs;
 	}
 
-	public void setSubjectRequest(Set<SubjectRequestDto> subjectRequests) {
-		this.subjectRequest = subjectRequests;
+	public void setSubjectRequest(Set<Integer> subjectRequestIDs) {
+		this.subjectRequestIDs = subjectRequestIDs;
 	}
 
-	public Set<ReviewDto> getReview() {
-		return this.review;
+	public Set<Integer> getReview() {
+		return this.reviewIDs;
 	}
 
-	public void setReview(Set<ReviewDto> reviews) {
-		this.review = reviews;
+	public void setReview(Set<Integer> reviewIDs) {
+		this.reviewIDs = reviewIDs;
 	}
 
-	public Set<CommissionDto> getCommission() {
-		return this.commission;
+	public Set<Integer> getCommission() {
+		return this.commissionIDs;
 	}
 
-	public void setCommission(Set<CommissionDto> commissions) {
-		this.commission = commissions;
+	public void setCommission(Set<Integer> commissionIDs) {
+		this.commissionIDs = commissionIDs;
 	}
 
-	public Set<ClassroomDto> getClassroom() {
-		return this.classroom;
+	public Set<String> getClassroom() {
+		return this.classRoomCodes;
 	}
 
-	public void setClassroom(Set<ClassroomDto> classrooms) {
-		this.classroom = classrooms;
+	public void setClassroom(Set<String> classRoomCodes) {
+		this.classRoomCodes = classRoomCodes;
 	}
 
 }

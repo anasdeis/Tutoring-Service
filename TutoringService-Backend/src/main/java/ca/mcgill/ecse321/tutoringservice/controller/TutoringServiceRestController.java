@@ -58,7 +58,7 @@ public class TutoringServiceRestController {
 		}
 		
 		Set<Integer> avaliableSessionIDs = null;
-		if(tutor.getTutorApplication() != null)	{
+		if(tutor.getAvaliableSession() != null)	{
 			avaliableSessionIDs = new HashSet<Integer>();
 			for(AvaliableSession availableSession : tutor.getAvaliableSession()){
 				Integer avaliableSessionID = availableSession.getAvaliableSessionID();
@@ -83,7 +83,88 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such TutoringSystem!");
 		}
 		
-		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID());
+		Set<Integer> commissionIDs = null;
+		if(tutoringSystem.getCommission() != null)	{
+			commissionIDs = new HashSet<Integer>();
+			for(Commission commission : tutoringSystem.getCommission()){
+				Integer commissionID = commission.getCommissionID();
+				commissionIDs.add(commissionID);
+			}
+		}
+		
+		Set<Integer> reviewIDs = null;
+		if(tutoringSystem.getReview() != null)	{
+			reviewIDs = new HashSet<Integer>();
+			for(Review review : tutoringSystem.getReview()){
+				Integer reviewID = review.getReviewID();
+				reviewIDs.add(reviewID);
+			}
+		}
+		
+		Set<Integer> subjectRequestIDs = null;
+		if(tutoringSystem.getSubjectRequest() != null)	{
+			subjectRequestIDs = new HashSet<Integer>();
+			for(SubjectRequest subjectRequest : tutoringSystem.getSubjectRequest()){
+				Integer subjectRequestID = subjectRequest.getRequestID();
+				subjectRequestIDs.add(subjectRequestID);
+			}
+		}
+		
+		Set<String> universityNames = null;
+		if(tutoringSystem.getUniversity() != null)	{
+			universityNames = new HashSet<String>();
+			for(University university : tutoringSystem.getUniversity()){
+				String universityName = university.getName();
+				universityNames.add(universityName);
+			}
+		}
+		
+		Set<String> classRoomCodes = null;
+		if(tutoringSystem.getClassroom() != null)	{
+			classRoomCodes = new HashSet<String>();
+			for(Classroom classroom : tutoringSystem.getClassroom()){
+				String classRoomCode = classroom.getRoomCode();
+				classRoomCodes.add(classRoomCode);
+			}
+		}
+		
+		Set<Integer> tutorApplicationsIDs = null;
+		if(tutoringSystem.getTutorApplication() != null)	{
+			tutorApplicationsIDs = new HashSet<Integer>();
+			for(TutorApplication tutorApplication : tutoringSystem.getTutorApplication()){
+				Integer tutorApplicationsID = tutorApplication.getApplicationId();
+				tutorApplicationsIDs.add(tutorApplicationsID);
+			}
+		}
+		
+		Set<Integer> avaliableSessionIDs = null;
+		if(tutoringSystem.getAvaliableSession() != null)	{
+			avaliableSessionIDs = new HashSet<Integer>();
+			for(AvaliableSession availableSession : tutoringSystem.getAvaliableSession()){
+				Integer avaliableSessionID = availableSession.getAvaliableSessionID();
+				avaliableSessionIDs.add(avaliableSessionID);
+			}
+		}
+		
+		Set<String> subjectsCourseIDs = null;
+		if(tutoringSystem.getSubject() != null)	{
+			subjectsCourseIDs = new HashSet<String>();
+			for(Subject subject : tutoringSystem.getSubject()){
+				String subjectsCourseID = subject.getCourseID();
+				subjectsCourseIDs.add(subjectsCourseID);
+			}
+		}
+		
+		Set<Integer> personIDs = null;
+		if(tutoringSystem.getPerson() != null)	{
+			personIDs = new HashSet<Integer>();
+			for(Person person : tutoringSystem.getPerson()){
+				Integer personID = person.getPersonId();
+				personIDs.add(personID);
+			}
+		}
+		
+		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID(), subjectRequestIDs, subjectsCourseIDs, personIDs, universityNames,  tutorApplicationsIDs , reviewIDs,  avaliableSessionIDs, classRoomCodes, commissionIDs);
 		return tutoringSystemDto;
 	}
 
@@ -91,7 +172,44 @@ public class TutoringServiceRestController {
 		if (manager == null) {				
 			throw new IllegalArgumentException("There is no such Manager!");
 		}
-		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), convertToDto(manager.getLoginInfo()), convertToDto(manager.getTutoringSystem()));
+		
+		Set<String> classRoomCodes = null;
+		if(manager.getClassroom() != null)	{
+			classRoomCodes = new HashSet<String>();
+			for(Classroom classroom : manager.getClassroom()){
+				String classRoomCode = classroom.getRoomCode();
+				classRoomCodes.add(classRoomCode);
+			}
+		}
+		
+		Set<Integer> commissionIDs = null;
+		if(manager.getCommission() != null)	{
+			commissionIDs = new HashSet<Integer>();
+			for(Commission commission : manager.getCommission()){
+				Integer commissionID = commission.getCommissionID();
+				commissionIDs.add(commissionID);
+			}
+		}
+		
+		Set<Integer> reviewIDs = null;
+		if(manager.getReview() != null)	{
+			reviewIDs = new HashSet<Integer>();
+			for(Review review : manager.getReview()){
+				Integer reviewID = review.getReviewID();
+				reviewIDs.add(reviewID);
+			}
+		}
+		
+		Set<Integer> subjectRequestIDs = null;
+		if(manager.getSubjectRequest() != null)	{
+			subjectRequestIDs = new HashSet<Integer>();
+			for(SubjectRequest subjectRequest : manager.getSubjectRequest()){
+				Integer subjectRequestID = subjectRequest.getRequestID();
+				subjectRequestIDs.add(subjectRequestID);
+			}
+		}
+		
+		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), convertToDto(manager.getLoginInfo()), reviewIDs, commissionIDs, classRoomCodes, subjectRequestIDs, convertToDto(manager.getTutoringSystem()));
 		return managerDto;
 	}
 
@@ -109,7 +227,25 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), avaliableSessionsIDs, convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), convertToDto(offering.getTutoringSystem()));
+		Set<Integer> studentIDs = null;
+		if(offering.getStudentsEnrolled() != null)	{
+			studentIDs = new HashSet<Integer>();
+			for(Student student : offering.getStudentsEnrolled()){
+				Integer studentID = student.getPersonId();
+				studentIDs.add(studentID);
+			}
+		}
+		
+		Set<Integer> reviewIDs = null;
+		if(offering.getReview() != null)	{
+			reviewIDs = new HashSet<Integer>();
+			for(Review review : offering.getReview()){
+				Integer reviewID = review.getReviewID();
+				reviewIDs.add(reviewID);
+			}
+		}
+		
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), avaliableSessionsIDs, convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), studentIDs, reviewIDs,convertToDto(offering.getTutoringSystem()));
 		return offeringDto;
 	}
 
@@ -117,7 +253,26 @@ public class TutoringServiceRestController {
 		if (student == null) {
 			throw new IllegalArgumentException("There is no such student!");
 		}
-		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), convertToDto(student.getLoginInfo()), convertToDto(student.getTutoringSystem()));
+		
+		Set<String> offeringIDs = null;
+		if(student.getCoursesTaken() != null)	{
+			offeringIDs = new HashSet<String>();
+			for(Offering offering : student.getCoursesTaken()){
+				String offeringID = offering.getOfferingID();
+				offeringIDs.add(offeringID);
+			}
+		}
+		
+		Set<Integer> subjectRequestIDs = null;
+		if(student.getSubjectRequest() != null)	{
+			subjectRequestIDs = new HashSet<Integer>();
+			for(SubjectRequest subjectRequest : student.getSubjectRequest()){
+				Integer subjectRequestID = subjectRequest.getRequestID();
+				subjectRequestIDs.add(subjectRequestID);
+			}
+		}
+		
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), convertToDto(student.getLoginInfo()), offeringIDs, subjectRequestIDs,convertToDto(student.getTutoringSystem()));
 		return studentDto; 
 	}
 	
@@ -169,7 +324,17 @@ public class TutoringServiceRestController {
 		if (tutorApplication == null) {
 			throw new IllegalArgumentException("There is no such tutor Application!");
 		}
-		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), convertToDto(tutorApplication.getTutor()), convertToDto(tutorApplication.getTutoringSystem()));
+		
+		Set<String> subjectsCourseIDs = null;
+		if(tutorApplication.getSubject() != null)	{
+			subjectsCourseIDs = new HashSet<String>();
+			for(Subject subject : tutorApplication.getSubject()){
+				String subjectsCourseID = subject.getCourseID();
+				subjectsCourseIDs.add(subjectsCourseID);
+			}
+		}
+		
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), convertToDto(tutorApplication.getTutor()), subjectsCourseIDs, convertToDto(tutorApplication.getTutoringSystem()));
 		return tutorApplicationDto;
 	}
 	
@@ -177,8 +342,26 @@ public class TutoringServiceRestController {
 		if (sb == null) {
 			throw new IllegalArgumentException("There is no such subject information!");
 		}
+		
+		Set<String> offeringIDs = null;
+		if(sb.getOffering() != null)	{
+			offeringIDs = new HashSet<String>();
+			for(Offering offering : sb.getOffering()){
+				String offeringID = offering.getOfferingID();
+				offeringIDs.add(offeringID);
+			}
+		}
+		
+		Set<Integer> tutorApplicationsIDs = null;
+		if(sb.getTutorRole() != null)	{
+			tutorApplicationsIDs = new HashSet<Integer>();
+			for(TutorApplication tutorApplication : sb.getTutorRole()){
+				Integer tutorApplicationsID = tutorApplication.getApplicationId();
+				tutorApplicationsIDs.add(tutorApplicationsID);
+			}
+		}
 
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), convertToDto(sb.getUniversity()));
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), convertToDto(sb.getUniversity()), tutorApplicationsIDs, offeringIDs, convertToDto(sb.getTutoringSystem()));
 		return subjectDto;
 	}
 	

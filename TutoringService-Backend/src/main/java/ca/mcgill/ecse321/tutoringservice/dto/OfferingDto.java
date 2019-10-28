@@ -4,13 +4,13 @@ import java.util.Set;
 
 public class OfferingDto{
 	private String offeringID;
-	private Set<StudentDto> studentsEnrolled;
+	private Set<Integer> studentIDs;
 	private SubjectDto subject;
 	private String term;
 	private double pricePerHour;
 	private ClassroomDto classroom;
 	private Set<Integer> classTimeIDs;
-	private Set<ReviewDto> review;
+	private Set<Integer> reviewIDs;
 	private CommissionDto commission;
 	private TutorDto tutor;
 	private TutoringSystemDto tutoringSystem;
@@ -19,7 +19,7 @@ public class OfferingDto{
 		
 	}
 	
-	public OfferingDto(String offId, String term, double price, Set<Integer> classTimeIDs, SubjectDto subject, TutorDto tutor, CommissionDto commission, ClassroomDto classroom, TutoringSystemDto tutoringSystem){
+	public OfferingDto(String offId, String term, double price, Set<Integer> classTimeIDs, SubjectDto subject, TutorDto tutor, CommissionDto commission, ClassroomDto classroom, Set<Integer> studentIDs, Set<Integer> reviewIDs, TutoringSystemDto tutoringSystem){
 		this.offeringID = offId;
 		this.term = term;
 		this.pricePerHour = price;
@@ -69,12 +69,12 @@ public class OfferingDto{
 		this.classroom = classroom;
 	}
 	
-	public Set<ReviewDto> getReview() {
-		return this.review;
+	public Set<Integer> getReview() {
+		return this.reviewIDs;
 	}
 
-	public void setReview(Set<ReviewDto> reviews) {
-		this.review = reviews;
+	public void setReview(Set<Integer> reviewIDs) {
+		this.reviewIDs = reviewIDs;
 	}
 
 	public CommissionDto getCommission() {
@@ -100,12 +100,12 @@ public class OfferingDto{
 		this.tutoringSystem = tutoringSystem;
 	}
 	
-		public Set<StudentDto> getStudentsEnrolled() {
-		return this.studentsEnrolled;
+	public Set<Integer> getStudents() {
+		return this.studentIDs;
 	}
 
-	public void setStudentsEnrolled(Set<StudentDto> studentsEnrolleds) {
-		this.studentsEnrolled = studentsEnrolleds;
+	public void setStudents(Set<Integer> studentIDs) {
+		this.studentIDs = studentIDs;
 	}
 
 	public SubjectDto getSubject() {
