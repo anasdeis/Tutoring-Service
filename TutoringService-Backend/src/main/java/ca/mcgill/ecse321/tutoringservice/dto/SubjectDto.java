@@ -1,8 +1,7 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
 
-import ca.mcgill.ecse321.tutoringservice.dto.UniversityDto;
-
+import java.util.Set;
 
 public class SubjectDto{
 	private String name;
@@ -10,17 +9,47 @@ public class SubjectDto{
 	private String description;
 	private String subjectType;
 	private UniversityDto university;
+	private Set<Integer> tutorApplicationIDs;
+	private Set<String> offeringIDs;
+	private TutoringSystemDto tutoringSystem;
 
 	public SubjectDto() {
 		
 	}
 	
-	public SubjectDto(String name, String courseID, String description, String subjectType, UniversityDto university) {
+	public SubjectDto(String name, String courseID, String description, String subjectType, UniversityDto university, Set<Integer> tutorApplicationIDs, Set<String> offeringIDs, TutoringSystemDto tutoringSystem) {
 		this.setName(name);
 		this.setCourseID(courseID);
 		this.setDescription(description);
 		this.setSubjectType(subjectType);
 		this.university = university;
+		this.setOffering(offeringIDs);
+		this.setTutorRole(tutorApplicationIDs);
+		this.setTutoringSystem(tutoringSystem);
+	}
+	
+	public TutoringSystemDto getTutoringSystem() {
+		 return this.tutoringSystem;
+	}
+		   
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
+		 this.tutoringSystem = tutoringSystem;
+	}
+	
+	public Set<String> getOffering() {
+		return this.offeringIDs;
+    }
+
+	public void setOffering(Set<String> offeringIDs) {
+		this.offeringIDs = offeringIDs;
+	}
+	
+    public Set<Integer> getTutorRole() {
+	    return this.tutorApplicationIDs;
+	}
+	   
+	public void setTutorRole(Set<Integer> tutorApplicationIDs) {
+	    this.tutorApplicationIDs = tutorApplicationIDs;
 	}
 	
 	public void setName(String value) {
