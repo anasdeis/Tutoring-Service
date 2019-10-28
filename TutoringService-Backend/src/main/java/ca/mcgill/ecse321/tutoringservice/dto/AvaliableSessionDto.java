@@ -12,7 +12,7 @@ public class AvaliableSessionDto{
 	private Time startTime;
 	private Integer avaliableSessionID;
 	private Time endTime;
-	private TutoringSystem tutoringSystem;
+	private TutoringSystemDto tutoringSystem;
 	private Date day;
 	private Set<Tutor> tutor;
 
@@ -20,7 +20,7 @@ public class AvaliableSessionDto{
 		
 	}
 	
-public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
+public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystemDto tutoringSystem) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.avaliableSessionID = AvaliableSessionID;
@@ -59,11 +59,11 @@ public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessio
 		this.tutor = tutors;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
 
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
 
