@@ -567,7 +567,7 @@ public class TutoringServiceService {
 		//			throw new IllegalArgumentException("valid input needed");
 		//		}
 
-		if (!(tutorApplications == null || tutorApplications.isEmpty()))
+		if (tutorApplications != null)
 		{
 			for (TutorApplication tutorApplication : tutorApplications) {
 				if (tutorApplication == null) {
@@ -578,7 +578,7 @@ public class TutoringServiceService {
 			}
 		}
 		
-		if (!(offerings == null || offerings.isEmpty()))
+		if (offerings != null)
 		{
 			for (Offering offering : offerings) {
 				if (offering == null) {
@@ -589,7 +589,7 @@ public class TutoringServiceService {
 			}
 		}
 		
-		if (!(avaliableSessions == null || avaliableSessions.isEmpty()))
+		if (avaliableSessions != null)
 		{
 			for (AvaliableSession avaliableSession : avaliableSessions) {
 				if (avaliableSession == null) {

@@ -1,31 +1,25 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import java.util.Set;
-import javax.persistence.OneToMany;
-
-//import ca.mcgill.ecse321.tutoringservice.model.Manager;
-//import ca.mcgill.ecse321.tutoringservice.model.Offering;
-//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
-
-import javax.persistence.Id;
 
 public class CommissionDto{
 	private double percentage;
 	private Integer commissionID;
-	//private Manager manager;
-	//private Set<Offering> offering;
-	//private TutoringSystem tutoringSystem;
+	private ManagerDto manager;
+	private Set<OfferingDto> offerings;
+	private TutoringSystemDto tutoringSystem;
 
 
 	public CommissionDto() {
 		
 	}
 	
-	public CommissionDto(double percentage, Integer commissionID) {
+	public CommissionDto(double percentage, Integer commissionID, ManagerDto manager, Set<OfferingDto> offerings, TutoringSystemDto tutoringSystem) {
 		this.commissionID = commissionID;
 		this.percentage = percentage;
+		this.manager = manager;
+		this.offerings = offerings;
+		this.tutoringSystem = tutoringSystem;
 	}
 	
 	public void setPercentage(double value) {
@@ -41,29 +35,28 @@ public class CommissionDto{
 	public Integer getCommissionID() {
 		return this.commissionID;
 	}
-/*
-	public Manager getManager() {
+
+	public ManagerDto getManager() {
 		return this.manager;
 	}
 
-	public void setManager(Manager manager) {
+	public void setManager(ManagerDto manager) {
 		this.manager = manager;
 	}
 
-	public Set<Offering> getOffering() {
-		return this.offering;
+	public Set<OfferingDto> getOffering() {
+		return this.offerings;
 	}
 
-	public void setOffering(Set<Offering> offerings) {
-		this.offering = offerings;
+	public void setOffering(Set<OfferingDto> offerings) {
+		this.offerings = offerings;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
 
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
-*/
 }

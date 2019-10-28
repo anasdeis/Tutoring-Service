@@ -3,23 +3,16 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 import java.sql.Date;
 import java.util.Set;
 
-//import ca.mcgill.ecse321.tutoringservice.model.AvaliableSession;
-//import ca.mcgill.ecse321.tutoringservice.model.Login;
-//import ca.mcgill.ecse321.tutoringservice.model.Offering;
-import ca.mcgill.ecse321.tutoringservice.model.Person;
-//import ca.mcgill.ecse321.tutoringservice.model.TutorApplication;
-//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
-
-public class TutorDto extends Person{
-	//private Set<TutorApplication> tutorApplication;
+public class TutorDto extends PersonDto{
+	private Set<TutorApplicationDto> tutorApplications;
 	private Boolean isRegistered;
-	//private Set<Offering> offering;
-	//private Set<AvaliableSession> avaliableSession;
+	private Set<OfferingDto> offerings;
+	private Set<AvaliableSessionDto> avaliableSession;
 
 	public TutorDto() {
 	}
 	
-	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered) {
+	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered,  LoginDto login, Set<TutorApplicationDto> tutorApplications, Set<OfferingDto> offerings, TutoringSystemDto tutoringSystem) {
 		this.isRegistered = isRegistered;
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -27,6 +20,10 @@ public class TutorDto extends Person{
 		this.setEmail(email);
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(tutorID);
+		this.setLoginInfo(login);
+		this.tutorApplications = tutorApplications;
+		this.offerings = offerings;
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 	public void setIsRegistered(Boolean value) {
@@ -35,29 +32,29 @@ public class TutorDto extends Person{
 	public Boolean getIsRegistered() {
 		return this.isRegistered;
 	}
-/*	
-	public Set<TutorApplication> getTutorApplication() {
-		return this.tutorApplication;
+	
+	public Set<TutorApplicationDto> getTutorApplication() {
+		return this.tutorApplications;
 	}
 
-	public void setTutorApplication(Set<TutorApplication> tutorApplications) {
-		this.tutorApplication = tutorApplications;
+	public void setTutorApplication(Set<TutorApplicationDto> tutorApplications) {
+		this.tutorApplications = tutorApplications;
 	}
 
-	public Set<Offering> getOffering() {
-		return this.offering;
+	public Set<OfferingDto> getOffering() {
+		return this.offerings;
 	}
 
-	public void setOffering(Set<Offering> offerings) {
-		this.offering = offerings;
+	public void setOffering(Set<OfferingDto> offerings) {
+		this.offerings = offerings;
 	}
 
-	public Set<AvaliableSession> getAvaliableSession() {
+	public Set<AvaliableSessionDto> getAvaliableSession() {
 		return this.avaliableSession;
 	}
 
-	public void setAvaliableSession(Set<AvaliableSession> avaliableSessions) {
+	public void setAvaliableSession(Set<AvaliableSessionDto> avaliableSessions) {
 		this.avaliableSession = avaliableSessions;
 	}
-*/
+	
 }

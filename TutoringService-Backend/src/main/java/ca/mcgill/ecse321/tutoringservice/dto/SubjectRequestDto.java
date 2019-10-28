@@ -2,38 +2,35 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 
 import java.util.Set;
 
-import ca.mcgill.ecse321.tutoringservice.model.Manager;
-import ca.mcgill.ecse321.tutoringservice.model.Student;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectType;
-import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
 public class SubjectRequestDto{
-	private Set<Student> student;
-	private Manager manager;
+	private Set<StudentDto> student;
+	private ManagerDto manager;
 	private Integer requestID;
 	private String name;
 	private String description;
 	private SubjectType subjectType;
-	private TutoringSystem tutoringSystem;
+	private TutoringSystemDto tutoringSystem;
 
 	public SubjectRequestDto() {
 		
 	}
 	
 	
-	public Set<Student> getStudent() {
+	public Set<StudentDto> getStudent() {
 		return this.student;
 	}
 
-	public void setStudent(Set<Student> students) {
+	public void setStudent(Set<StudentDto> students) {
 		this.student = students;
 	}
 
-	public Manager getManager() {
+	public ManagerDto getManager() {
 		return this.manager;
 	}
 
-	public void setManager(Manager manager) {
+	public void setManager(ManagerDto manager) {
 		this.manager = manager;
 	}
 
@@ -65,11 +62,11 @@ public class SubjectRequestDto{
 		return this.subjectType;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
 
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
 

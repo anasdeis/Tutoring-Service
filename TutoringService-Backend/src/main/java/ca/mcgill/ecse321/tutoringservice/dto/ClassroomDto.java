@@ -1,30 +1,32 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
-//import java.util.List;
-//import java.util.Set;
+import java.util.Set;
 
-//import ca.mcgill.ecse321.tutoringservice.model.Manager;
-//import ca.mcgill.ecse321.tutoringservice.model.Offering;
-//import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
+import ca.mcgill.ecse321.tutoringservice.dto.ManagerDto;
+import ca.mcgill.ecse321.tutoringservice.dto.OfferingDto;
+import ca.mcgill.ecse321.tutoringservice.dto.TutoringSystemDto;
 
 
 
 public class ClassroomDto{
 	private String roomCode;
-	//private TutoringSystem tutoringSystem;
-	//private Set<Offering> offering;
+	private TutoringSystemDto tutoringSystem;
+	private Set<OfferingDto> offering;
 	private Boolean isBooked;
-	//private Manager manager;
+	private ManagerDto manager;
 	private Boolean isBigRoom;
 
 	public ClassroomDto() {
 		
 	}
 
-	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom){
+	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, ManagerDto manager, Set<OfferingDto> offering, TutoringSystemDto tutoringSystem){
 		this.roomCode = roomCode;
 		this.isBooked = isBooked;
 		this.isBigRoom = isBigRoom;
+		this.manager = manager;
+		this.offering = offering;
+		this.tutoringSystem = tutoringSystem;
 	}
 	
 	public void setRoomCode(String value) {
@@ -50,29 +52,28 @@ public class ClassroomDto{
 	public void setIsBigRoom(Boolean value) {
 		this.isBigRoom = value;
 	}
-/*	
-	public Set<Offering> getOffering() {
+	
+	public Set<OfferingDto> getOffering() {
 		return this.offering;
 	}
 
-	public void setOffering(Set<Offering> offerings) {
+	public void setOffering(Set<OfferingDto> offerings) {
 		this.offering = offerings;
 	}
 	
-	public Manager getManager() {
+	public ManagerDto getManager() {
 		return this.manager;
 	}
 
-	public void setManager(Manager manager) {
+	public void setManager(ManagerDto manager) {
 		this.manager = manager;
 	}
 
-	public TutoringSystem getTutoringSystem() {
+	public TutoringSystemDto getTutoringSystem() {
 		return this.tutoringSystem;
 	}
 
-	public void setTutoringSystem(TutoringSystem tutoringSystem) {
+	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
 	}
-*/
 }

@@ -35,7 +35,26 @@ public class TutoringServiceRestController {
 		if (tutor == null) {
 			throw new IllegalArgumentException("There is no such Tutor!");
 		}
-		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered());
+		
+		Set<OfferingDto> offeringsDto = null;
+		if(tutor.getOffering() != null)	{
+			offeringsDto = new HashSet<OfferingDto>();
+			for(Offering offering : tutor.getOffering()){
+				OfferingDto offeringDto = convertToDto(offering);
+				offeringsDto.add(offeringDto);
+			}
+		}
+		
+		Set<TutorApplicationDto> tutorApplicationsDto = null;
+		if(tutor.getTutorApplication() != null)	{
+			tutorApplicationsDto = new HashSet<TutorApplicationDto>();
+			for(TutorApplication tutorApplication : tutor.getTutorApplication()){
+				TutorApplicationDto tutorApplicationDto = convertToDto(tutorApplication);
+				tutorApplicationsDto.add(tutorApplicationDto);
+			}
+		}
+		
+		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), convertToDto(tutor.getLoginInfo()), tutorApplicationsDto, offeringsDto, convertToDto(tutor.getTutoringSystem()));
 		return tutorDto;
 	}
 
@@ -59,7 +78,7 @@ public class TutoringServiceRestController {
 		if (manager == null) {				
 			throw new IllegalArgumentException("There is no such Manager!");
 		}
-		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId());
+		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), convertToDto(manager.getLoginInfo()), convertToDto(manager.getTutoringSystem()));
 		return managerDto;
 	}
 
@@ -67,7 +86,7 @@ public class TutoringServiceRestController {
 		if (offering == null) {
 			throw new IllegalArgumentException("There is no such Offering!");
 		}
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), offering.getClassTime());
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), convertToDto(offering.getTutoringSystem()));
 		return offeringDto;
 	}
 
@@ -75,7 +94,7 @@ public class TutoringServiceRestController {
 		if (student == null) {
 			throw new IllegalArgumentException("There is no such student!");
 		}
-		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled());
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), convertToDto(student.getLoginInfo()), convertToDto(student.getTutoringSystem()));
 		return studentDto; 
 	}
 	
@@ -83,7 +102,7 @@ public class TutoringServiceRestController {
 		if (review == null) {
 			throw new IllegalArgumentException("There is no such Review!");
 		}
-		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID());
+		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID(), convertToDto(review.getManager()), convertToDto(review.getOffering()), convertToDto(review.getTutoringSystem()));
 		return reviewDto;
 	}
 	
@@ -91,7 +110,17 @@ public class TutoringServiceRestController {
 		if (commission == null) {
 			throw new IllegalArgumentException("There is no such commission!");
 		}
-		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID());
+		
+		Set<OfferingDto> offeringsDto = null;
+		if(commission.getOffering() != null)	{
+			offeringsDto = new HashSet<OfferingDto>();
+			for(Offering offering : commission.getOffering()){
+				OfferingDto offeringDto = convertToDto(offering);
+				offeringsDto.add(offeringDto);
+			}
+		}
+		
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), convertToDto(commission.getManager()), offeringsDto, convertToDto(commission.getTutoringSystem()));
 		return commissiondto;
 	}
 
@@ -99,7 +128,17 @@ public class TutoringServiceRestController {
 		if (classroom == null) {
 			throw new IllegalArgumentException("There is no such classroom!");
 		}
-		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom());
+		
+		Set<OfferingDto> offeringsDto = null;
+		if(classroom.getOffering() != null)	{
+			offeringsDto = new HashSet<OfferingDto>();
+			for(Offering offering : classroom.getOffering()){
+				OfferingDto offeringDto = convertToDto(offering);
+				offeringsDto.add(offeringDto);
+			}
+		}
+		
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), convertToDto(classroom.getManager()), offeringsDto, convertToDto(classroom.getTutoringSystem()));
 		return classroomDto;
 	}
 	
@@ -107,16 +146,8 @@ public class TutoringServiceRestController {
 		if (tutorApplication == null) {
 			throw new IllegalArgumentException("There is no such tutor Application!");
 		}
-		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted());
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), convertToDto(tutorApplication.getTutor()), convertToDto(tutorApplication.getTutoringSystem()));
 		return tutorApplicationDto;
-	}
-	
-	private UniversityDto convertToDto(University university) {
-		if (university == null) {
-			throw new IllegalArgumentException("There is no such University!");
-		}
-		UniversityDto universityDto = new UniversityDto(university.getName());
-		return universityDto;
 	}
 	
 	private SubjectDto convertToDto(Subject sb) {
@@ -124,9 +155,25 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such subject information!");
 		}
 
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType());
-
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), convertToDto(sb.getUniversity()));
 		return subjectDto;
+	}
+	
+	private UniversityDto convertToDto(University university) {
+		if (university == null) {
+			throw new IllegalArgumentException("There is no such University!");
+		}
+		
+		Set<SubjectDto> subjectsDto = null;
+		if(university.getSubject() != null)	{
+			subjectsDto = new HashSet<SubjectDto>();
+			for(Subject subject : university.getSubject()){
+				SubjectDto subjectDto = convertToDto(subject);
+				subjectsDto.add(subjectDto);
+			}
+		}
+		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsDto, convertToDto(university.getTutoringSystem()));
+		return universityDto;
 	}
 	
 	/*										
