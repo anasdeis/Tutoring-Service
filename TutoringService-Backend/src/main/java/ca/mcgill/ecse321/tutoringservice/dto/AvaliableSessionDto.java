@@ -14,13 +14,13 @@ public class AvaliableSessionDto{
 	private Time endTime;
 	private TutoringSystemDto tutoringSystem;
 	private Date day;
-	private Set<Tutor> tutor;
+	private Set<TutorDto> tutor;
 
 	public AvaliableSessionDto() {
 		
 	}
 	
-public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystemDto tutoringSystem) {
+public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<TutorDto> tutors, TutoringSystemDto tutoringSystem) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.avaliableSessionID = AvaliableSessionID;
@@ -51,11 +51,11 @@ public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessio
 		return this.day;
 	}
 
-	public Set<Tutor> getTutor() {
+	public Set<TutorDto> getTutor() {
 		return this.tutor;
 	}
 
-	public void setTutor(Set<Tutor> tutors) {
+	public void setTutor(Set<TutorDto> tutors) {
 		this.tutor = tutors;
 	}
 
