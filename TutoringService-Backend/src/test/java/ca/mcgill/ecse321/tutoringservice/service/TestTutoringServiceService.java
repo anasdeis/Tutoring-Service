@@ -960,7 +960,7 @@ public class TestTutoringServiceService {
 		String description = "";
 		Manager manager = null;
 		Integer tssID= 123;
-		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+		SubjectType subjectType = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(tssID);
 		tutoringSystemRepository.save(tutoringSystem);
@@ -988,7 +988,7 @@ public class TestTutoringServiceService {
 		String description = "   ";
 		Manager manager = null;
 		Integer tssID= 456;
-		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+		SubjectType subjectType = null;
 		TutoringSystem tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(tssID);
 		tutoringSystemRepository.save(tutoringSystem);
