@@ -2,12 +2,14 @@ package ca.mcgill.ecse321.tutoringservice.controller;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,25 +39,34 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such Tutor!");
 		}
 		
-		Set<OfferingDto> offeringsDto = null;
+		Set<String> offeringIDs = null;
 		if(tutor.getOffering() != null)	{
-			offeringsDto = new HashSet<OfferingDto>();
+			offeringIDs = new HashSet<String>();
 			for(Offering offering : tutor.getOffering()){
-				OfferingDto offeringDto = convertToDto(offering);
-				offeringsDto.add(offeringDto);
+				String offeringID = offering.getOfferingID();
+				offeringIDs.add(offeringID);
 			}
 		}
 		
-		Set<TutorApplicationDto> tutorApplicationsDto = null;
+		Set<Integer> tutorApplicationsIDs = null;
 		if(tutor.getTutorApplication() != null)	{
-			tutorApplicationsDto = new HashSet<TutorApplicationDto>();
+			tutorApplicationsIDs = new HashSet<Integer>();
 			for(TutorApplication tutorApplication : tutor.getTutorApplication()){
-				TutorApplicationDto tutorApplicationDto = convertToDto(tutorApplication);
-				tutorApplicationsDto.add(tutorApplicationDto);
+				Integer tutorApplicationsID = tutorApplication.getApplicationId();
+				tutorApplicationsIDs.add(tutorApplicationsID);
 			}
 		}
 		
-		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), convertToDto(tutor.getLoginInfo()), tutorApplicationsDto, offeringsDto, convertToDto(tutor.getTutoringSystem()));
+		Set<Integer> avaliableSessionIDs = null;
+		if(tutor.getTutorApplication() != null)	{
+			avaliableSessionIDs = new HashSet<Integer>();
+			for(AvaliableSession availableSession : tutor.getAvaliableSession()){
+				Integer avaliableSessionID = availableSession.getAvaliableSessionID();
+				avaliableSessionIDs.add(avaliableSessionID);
+			}
+		}
+		
+		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), convertToDto(tutor.getLoginInfo()), tutorApplicationsIDs, offeringIDs, avaliableSessionIDs, convertToDto(tutor.getTutoringSystem()));
 		return tutorDto;
 	}
 
@@ -71,6 +82,7 @@ public class TutoringServiceRestController {
 		if (tutoringSystem == null) {
 			throw new IllegalArgumentException("There is no such TutoringSystem!");
 		}
+		
 		TutoringSystemDto tutoringSystemDto = new TutoringSystemDto(tutoringSystem.getTutoringSystemID());
 		return tutoringSystemDto;
 	}
@@ -87,7 +99,17 @@ public class TutoringServiceRestController {
 		if (offering == null) {
 			throw new IllegalArgumentException("There is no such Offering!");
 		}
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), convertToDto(offering.getTutoringSystem()));
+		
+		Set<Integer> avaliableSessionsIDs = null;
+		if(offering.getClassTime() != null)	{
+			avaliableSessionsIDs = new HashSet<Integer>();
+			for(AvaliableSession avaliableSession : offering.getClassTime()){
+				Integer avaliableSessionsID = avaliableSession.getAvaliableSessionID();
+				avaliableSessionsIDs.add(avaliableSessionsID);
+			}
+		}
+		
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), avaliableSessionsIDs, convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), convertToDto(offering.getTutoringSystem()));
 		return offeringDto;
 	}
 
@@ -112,16 +134,16 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such commission!");
 		}
 		
-		Set<OfferingDto> offeringsDto = null;
+		Set<String> offeringIDs = null;
 		if(commission.getOffering() != null)	{
-			offeringsDto = new HashSet<OfferingDto>();
+			offeringIDs = new HashSet<String>();
 			for(Offering offering : commission.getOffering()){
-				OfferingDto offeringDto = convertToDto(offering);
-				offeringsDto.add(offeringDto);
+				String offeringID = offering.getOfferingID();
+				offeringIDs.add(offeringID);
 			}
 		}
 		
-		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), convertToDto(commission.getManager()), offeringsDto, convertToDto(commission.getTutoringSystem()));
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), convertToDto(commission.getManager()), offeringIDs, convertToDto(commission.getTutoringSystem()));
 		return commissiondto;
 	}
 
@@ -130,16 +152,16 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such classroom!");
 		}
 		
-		Set<OfferingDto> offeringsDto = null;
+		Set<String> offeringIDs = null;
 		if(classroom.getOffering() != null)	{
-			offeringsDto = new HashSet<OfferingDto>();
+			offeringIDs = new HashSet<String>();
 			for(Offering offering : classroom.getOffering()){
-				OfferingDto offeringDto = convertToDto(offering);
-				offeringsDto.add(offeringDto);
+				String offeringID = offering.getOfferingID();
+				offeringIDs.add(offeringID);
 			}
 		}
 		
-		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), convertToDto(classroom.getManager()), offeringsDto, convertToDto(classroom.getTutoringSystem()));
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), convertToDto(classroom.getManager()), offeringIDs, convertToDto(classroom.getTutoringSystem()));
 		return classroomDto;
 	}
 	
@@ -151,29 +173,12 @@ public class TutoringServiceRestController {
 		return tutorApplicationDto;
 	}
 	
-	private AvaliableSessionDto convertToDto(AvaliableSession avaliableSession) {
-		if (avaliableSession == null) {
-			throw new IllegalArgumentException("There is no such available Session!");
-		}
-		
-		Set<TutorDto> tutorsDto = null;
-		if(avaliableSession.getTutor() != null)	{
-			tutorsDto = new HashSet<TutorDto>();
-			for(Tutor tutor : avaliableSession.getTutor()){
-				TutorDto tutorDto = convertToDto(tutor);
-				tutorsDto.add(tutorDto);
-			}
-		}
-		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(avaliableSession.getStartTime(), avaliableSession.getEndTime(),avaliableSession.getAvaliableSessionID(), avaliableSession.getDay(), tutorsDto,convertToDto(avaliableSession.getTutoringSystem()));
-		return avaliableSessionDto;
-	}
-	
 	private SubjectDto convertToDto(Subject sb) {
 		if (sb == null) {
 			throw new IllegalArgumentException("There is no such subject information!");
 		}
 
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), sb.getSubjectType(), convertToDto(sb.getUniversity()));
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), convertToDto(sb.getUniversity()));
 		return subjectDto;
 	}
 	
@@ -181,23 +186,57 @@ public class TutoringServiceRestController {
 		if (university == null) {
 			throw new IllegalArgumentException("There is no such University!");
 		}
-		
-		Set<SubjectDto> subjectsDto = null;
+	
+		Set<String> subjectsCourseIDs = null;
 		if(university.getSubject() != null)	{
-			subjectsDto = new HashSet<SubjectDto>();
+			subjectsCourseIDs = new HashSet<String>();
 			for(Subject subject : university.getSubject()){
-				SubjectDto subjectDto = convertToDto(subject);
-				subjectsDto.add(subjectDto);
+				String subjectsCourseID = subject.getCourseID();
+				subjectsCourseIDs.add(subjectsCourseID);
 			}
 		}
-		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsDto, convertToDto(university.getTutoringSystem()));
+		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsCourseIDs, convertToDto(university.getTutoringSystem()));
 		return universityDto;
 		
 		
 	}
 	
+
+	private AvaliableSessionDto convertToDto(AvaliableSession availableSession) {
+		if (availableSession == null) {
+			throw new IllegalArgumentException("There is no such availableSession!");
+		}
+		
+		Set<Integer> tutorIDs = null;
+		if(availableSession.getTutor() != null)	{
+			tutorIDs = new HashSet<Integer>();
+			for(Tutor tutor : availableSession.getTutor()){
+				Integer tutorID = tutor.getPersonId();
+				tutorIDs.add(tutorID);
+			}
+		}
+
+		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(availableSession.getStartTime(), availableSession.getEndTime(), availableSession.getAvaliableSessionID(), availableSession.getDay(),tutorIDs, convertToDto(availableSession.getTutoringSystem()));
+		return avaliableSessionDto;
+	}
 	
+	/*
+	 * 
+	 * Convert Subject Type to String
+	 */
 	
+	private String convertSubjectTypeToString(SubjectType subjectType) {
+		String sbType = null;
+		if (SubjectType.UNIVERSITY_COURSE.equals(subjectType)) {
+			sbType = "University";
+		}else if(SubjectType.HIGH_SCHOOL_COURSE.equals(subjectType)) {
+			sbType = "HighSchool";
+		} else if(SubjectType.CGEP_COURSE.equals(subjectType)) {
+			sbType = "CGEP";
+		}
+		return sbType;
+	}
+
 	
 	/*										
 	 * create methods
@@ -215,6 +254,40 @@ public class TutoringServiceRestController {
 
 		return convertToDto(tutoringSystem);
 	}
+	
+	/**
+	 * @param availableSessionID
+	 * @param startTime
+	 * @param endTime
+	 * @param day
+	 * @param tutors (optional)
+	 * @param tutoringSystem
+	 * @return create availableSession
+	 * @sample /availableSession/create/{availableSessionID}?startTime=<startTime>&endTime=<endTime>&day=<day>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = {"/availableSession/create/{availableSessionID}", "/availableSession/create/{availableSessionID}/"})
+	public AvaliableSessionDto createAvaliableSession(@PathVariable("availableSessionID") Integer availableSessionID, 
+			@RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime, 
+			@RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime,
+			@RequestParam("day") Date day, 
+			@RequestParam(name = "tutorIDs", required = false) Set<Integer> tutorIDs,
+			@RequestParam("tutoringSystemID") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+		
+		Set<Tutor> tutors = null;
+		if(tutorIDs != null){
+			tutors = new HashSet<Tutor>();
+			for (Integer tutorID : tutorIDs) {
+				Tutor tutor = service.getTutor(tutorID);
+				tutors.add(tutor);
+			}
+		}
+
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		AvaliableSession avaliableSession = service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), availableSessionID, day, tutors, tutoringSystem);
+		
+		return convertToDto(avaliableSession);
+	}
+	
 
 	/**
 	 * @param commissionID
@@ -225,12 +298,13 @@ public class TutoringServiceRestController {
 	 * @return create commission
 	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
-	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}"})
+	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}/"})
 	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
 			@RequestParam("percentage") double percentage, 
 			@RequestParam("managerID") Integer managerID, 
 			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
-			@RequestParam("tutoringSystem") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+		
 		Set<Offering> offerings = null;
 		if(offeringIDs != null){
 			offerings = new HashSet<Offering>();
@@ -240,7 +314,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		Manager manager = service.getManager(managerID);
-		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		Commission commission = service.createCommission(percentage, commissionID, manager, offerings, tutoringSystem);
 		
 		return convertToDto(commission);
@@ -555,7 +629,7 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystemID
 	 * @return subject added
 	 * @throws IllegalArgumentException
-	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemI=<tutoringSystemId>
+	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemID=<tutoringSystemID>
 	 */
 	@PostMapping(value = { "/subject/create/{name}", "/subject/create/{name}/" })
 	public SubjectDto createSubject(@PathVariable("name") String name, 
@@ -570,7 +644,7 @@ public class TutoringServiceRestController {
 			sbType = SubjectType.UNIVERSITY_COURSE;
 		}else if(subjectType.equals("HighSchool")) {
 			sbType = SubjectType.HIGH_SCHOOL_COURSE;
-		} else if(subjectType.equals("CPEG")) {
+		} else if(subjectType.equals("CGEP")) {
 			sbType = SubjectType.CGEP_COURSE;
 		}
 		
@@ -580,11 +654,36 @@ public class TutoringServiceRestController {
 	}	
 	
 	
-	
 	/**
 	/*
 	 * list methods
 	 */
+	
+	/**
+	 * @return list all avaliableSessions
+	 * @sample /avaliableSession/list
+	 */
+	@GetMapping(value = { "/avaliableSession/list", "/avaliableSession/list/" })
+	public List<AvaliableSessionDto> getAllAvaliableSessions() {
+		List<AvaliableSessionDto> avaliableSessionsDtos = new ArrayList<>();
+		for (AvaliableSession avaliableSession : service.getAllAvaliableSessions()) {
+			avaliableSessionsDtos.add(convertToDto(avaliableSession));
+		}
+		return avaliableSessionsDtos;
+	}
+	
+	/**
+	 * @return list all subjects
+	 * @sample /subject/list
+	 */
+	@GetMapping(value = { "/subject/list", "/subject/list/" })
+	public List<SubjectDto> getAllSubjects() {
+		List<SubjectDto> subjectsDtos = new ArrayList<>();
+		for (Subject subject : service.getAllSubjects()) {
+			subjectsDtos.add(convertToDto(subject));
+		}
+		return subjectsDtos;
+	}
 
 	/**
 	 * @return list all university

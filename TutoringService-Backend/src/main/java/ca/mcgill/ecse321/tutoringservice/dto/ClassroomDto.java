@@ -11,7 +11,7 @@ import ca.mcgill.ecse321.tutoringservice.dto.TutoringSystemDto;
 public class ClassroomDto{
 	private String roomCode;
 	private TutoringSystemDto tutoringSystem;
-	private Set<OfferingDto> offering;
+	private Set<String> offeringIDs;
 	private Boolean isBooked;
 	private ManagerDto manager;
 	private Boolean isBigRoom;
@@ -20,12 +20,12 @@ public class ClassroomDto{
 		
 	}
 
-	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, ManagerDto manager, Set<OfferingDto> offering, TutoringSystemDto tutoringSystem){
+	public ClassroomDto(String roomCode, Boolean isBooked, Boolean isBigRoom, ManagerDto manager, Set<String> offeringIDs, TutoringSystemDto tutoringSystem){
 		this.roomCode = roomCode;
 		this.isBooked = isBooked;
 		this.isBigRoom = isBigRoom;
 		this.manager = manager;
-		this.offering = offering;
+		this.offeringIDs = offeringIDs;
 		this.tutoringSystem = tutoringSystem;
 	}
 	
@@ -53,12 +53,12 @@ public class ClassroomDto{
 		this.isBigRoom = value;
 	}
 	
-	public Set<OfferingDto> getOffering() {
-		return this.offering;
+	public Set<String> getOffering() {
+		return this.offeringIDs;
 	}
 
-	public void setOffering(Set<OfferingDto> offerings) {
-		this.offering = offerings;
+	public void setOffering(Set<String> offeringIDs) {
+		this.offeringIDs = offeringIDs;
 	}
 	
 	public ManagerDto getManager() {

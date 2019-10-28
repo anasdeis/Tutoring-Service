@@ -921,7 +921,7 @@ public class TutoringServiceService {
 			error = error + "name cannot be empty!";
 		}
 
-		if (!(subjects == null || subjects.isEmpty()))
+		if (subjects != null)
 		{
 			for (Subject subject : subjects) {
 				if (subject == null) {
