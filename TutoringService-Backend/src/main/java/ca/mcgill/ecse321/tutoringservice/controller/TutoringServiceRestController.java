@@ -662,6 +662,40 @@ public class TutoringServiceRestController {
 		return convertToDto(subject);
 	}	
 	
+	/** Add SubjectRequest
+	 * @param requestID
+	 * @param name
+	 * @param description
+	 * @param subjectType: University/HighSchool/CGEP
+	 * @param manager	
+	 * @param tutoringSystemID
+	 * @return subjectRequest is added
+	 * sample: /subjectRequest/create/{name}?requestID=<requestID>&description=<description>&subjectType=<subjectType>&manager=<managerID>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = { "/subjectRequest/create/{name}", "/subjectRequest/create/{name}/" })
+	public SubjectRequestDto createSubjectRequest(@PathVariable("name") String name, 
+			@RequestParam("requestID") Integer requestID, 
+			@RequestParam("description") String description, 
+			@RequestParam("subjectType") String subjectType,
+			@RequestParam("managerID") Integer managerID,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+		Manager manager = service.getManager(managerID);
+
+		SubjectType subjectType1 = null;
+		if (subjectType.equals("University")) {
+			subjectType1 = SubjectType.UNIVERSITY_COURSE;
+		}else if(subjectType.equals("HighSchool")) {
+			subjectType1 = SubjectType.HIGH_SCHOOL_COURSE;
+		} else if(subjectType.equals("CGEP")) {
+			subjectType1  = SubjectType.CGEP_COURSE;
+		}
+		
+	
+		SubjectRequest subjectRequest = service.createSubjectRequest(requestID, name, description, subjectType1, manager, tutoringSystem);
+		return convertToDto(subjectRequest);
+	}	
 	
 	/**
 	/*
