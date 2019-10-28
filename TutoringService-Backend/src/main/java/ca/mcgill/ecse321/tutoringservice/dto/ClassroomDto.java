@@ -2,19 +2,13 @@ package ca.mcgill.ecse321.tutoringservice.dto;
 
 import java.util.Set;
 
-import ca.mcgill.ecse321.tutoringservice.dto.ManagerDto;
-import ca.mcgill.ecse321.tutoringservice.dto.OfferingDto;
-import ca.mcgill.ecse321.tutoringservice.dto.TutoringSystemDto;
-
-
-
 public class ClassroomDto{
 	private String roomCode;
-	private TutoringSystemDto tutoringSystem;
-	private Set<String> offeringIDs;
 	private Boolean isBooked;
 	private ManagerDto manager;
 	private Boolean isBigRoom;
+	private Set<String> offeringIDs;
+	private TutoringSystemDto tutoringSystem;
 
 	public ClassroomDto() {
 		

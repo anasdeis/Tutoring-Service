@@ -4,15 +4,15 @@ import java.sql.Date;
 import java.util.Set;
 
 public class StudentDto extends PersonDto{
-	private Set<OfferingDto> coursesTaken;
-	private Set<SubjectRequestDto> subjectRequest;
 	private Integer numCoursesEnrolled;
-
+	private Set<String> coursesTakenIDs;
+	private Set<Integer> subjectRequestIDs;
+	
 	public StudentDto() {
 		
 	}
 
-	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer studentId, Integer numCoursesEnrolled, LoginDto loginInfo, TutoringSystemDto tutoringSystem) {
+	public StudentDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer studentId, Integer numCoursesEnrolled, LoginDto loginInfo, Set<String> coursesTakenIDs, Set<Integer> subjectRequestIDs, TutoringSystemDto tutoringSystem) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setDateOfBirth(dateOfBirth);
@@ -22,23 +22,24 @@ public class StudentDto extends PersonDto{
 		this.setNumCoursesEnrolled(numCoursesEnrolled);
 		this.setLoginInfo(loginInfo);
 		this.setTutoringSystem(tutoringSystem);
+		this.setCoursesTaken(coursesTakenIDs);
+		this.setSubjectRequest(subjectRequestIDs);
 	}
 
-
-	public Set<OfferingDto> getCoursesTaken() {
-		return this.coursesTaken;
+	public Set<String> getCoursesTaken() {
+		return this.coursesTakenIDs;
 	}
 
-	public void setCoursesTaken(Set<OfferingDto> coursesTakens) {
-		this.coursesTaken = coursesTakens;
+	public void setCoursesTaken(Set<String> coursesTakenIDs) {
+		this.coursesTakenIDs = coursesTakenIDs;
 	}
 
-	public Set<SubjectRequestDto> getSubjectRequest() {
-		return this.subjectRequest;
+	public Set<Integer> getSubjectRequest() {
+		return this.subjectRequestIDs;
 	}
 
-	public void setSubjectRequest(Set<SubjectRequestDto> subjectRequests) {
-		this.subjectRequest = subjectRequests;
+	public void setSubjectRequest(Set<Integer> subjectRequestIDs) {
+		this.subjectRequestIDs = subjectRequestIDs;
 	}
 
 	public void setNumCoursesEnrolled(Integer value) {

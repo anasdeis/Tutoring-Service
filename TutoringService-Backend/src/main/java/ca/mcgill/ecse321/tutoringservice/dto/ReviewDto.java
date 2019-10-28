@@ -1,12 +1,12 @@
 package ca.mcgill.ecse321.tutoringservice.dto;
 
 public class ReviewDto{
+	private Integer reviewID;
 	private String comment;
 	private Boolean isApproved;
 	private OfferingDto offering;
 	private ManagerDto manager;
 	private TutoringSystemDto tutoringSystem;
-	private Integer reviewID;
 
 	public ReviewDto() {
 		
