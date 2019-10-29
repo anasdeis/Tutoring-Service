@@ -365,6 +365,15 @@ public class TutoringServiceRestController {
 		return subjectDto;
 	}
 	
+	private SubjectRequestDto convertToDto(SubjectRequest sr) {
+		if (sr == null) {
+			throw new IllegalArgumentException("There is no such subject Request!");
+		}
+
+		SubjectRequestDto subjectRequestDto = new SubjectRequestDto(sr.getRequestID(), sr.getName(), sr.getDescription(),convertSubjectTypeToString(sr.getSubjectType()),convertToDto(sr.getManager()), convertToDto(sr.getTutoringSystem()));
+		return subjectRequestDto;
+	}
+	
 	private UniversityDto convertToDto(University university) {
 		if (university == null) {
 			throw new IllegalArgumentException("There is no such University!");
@@ -380,8 +389,11 @@ public class TutoringServiceRestController {
 		}
 		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsCourseIDs, university.getTutoringSystem().getTutoringSystemID());
 		return universityDto;
+		
+		
 	}
 	
+
 	private AvaliableSessionDto convertToDto(AvaliableSession availableSession) {
 		if (availableSession == null) {
 			throw new IllegalArgumentException("There is no such availableSession!");
@@ -416,6 +428,7 @@ public class TutoringServiceRestController {
 		}
 		return sbType;
 	}
+
 	
 	/*										
 	 * create methods
@@ -832,6 +845,40 @@ public class TutoringServiceRestController {
 		return convertToDto(subject);
 	}	
 	
+	/** Add SubjectRequest
+	 * @param requestID
+	 * @param name
+	 * @param description
+	 * @param subjectType: University/HighSchool/CGEP
+	 * @param manager	
+	 * @param tutoringSystemID
+	 * @return subjectRequest is added
+	 * sample: /subjectRequest/create/{name}?requestID=<requestID>&description=<description>&subjectType=<subjectType>&manager=<managerID>&tutoringSystemID=<tutoringSystemID>
+	 */
+	@PostMapping(value = { "/subjectRequest/create/{name}", "/subjectRequest/create/{name}/" })
+	public SubjectRequestDto createSubjectRequest(@PathVariable("name") String name, 
+			@RequestParam("requestID") Integer requestID, 
+			@RequestParam("description") String description, 
+			@RequestParam("subjectType") String subjectType,
+			@RequestParam("managerID") Integer managerID,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
+		Manager manager = service.getManager(managerID);
+
+		SubjectType subjectType1 = null;
+		if (subjectType.equals("University")) {
+			subjectType1 = SubjectType.UNIVERSITY_COURSE;
+		}else if(subjectType.equals("HighSchool")) {
+			subjectType1 = SubjectType.HIGH_SCHOOL_COURSE;
+		} else if(subjectType.equals("CGEP")) {
+			subjectType1  = SubjectType.CGEP_COURSE;
+		}
+		
+	
+		SubjectRequest subjectRequest = service.createSubjectRequest(requestID, name, description, subjectType1, manager, tutoringSystem);
+		return convertToDto(subjectRequest);
+	}	
 	
 	/**
 	/*
@@ -862,6 +909,19 @@ public class TutoringServiceRestController {
 			subjectsDtos.add(convertToDto(subject));
 		}
 		return subjectsDtos;
+	}
+	
+	/**
+	 * @return list of subjectRequests
+	 * @sample /subjectRequest/list
+	 */
+	@GetMapping(value = { "/subjectRequest/list", "/subjectRequest/list/" })
+	public List<SubjectRequestDto> getAllSubjectRequests() {
+		List<SubjectRequestDto> subjectRequestDtos = new ArrayList<>();
+		for (SubjectRequest subjectRequest : service.getAllSubjectRequests()) {
+			subjectRequestDtos.add(convertToDto(subjectRequest));
+		}
+		return subjectRequestDtos;
 	}
 
 	/**

@@ -9,9 +9,11 @@ public class AvaliableSessionDto{
 	private Integer avaliableSessionID;
 	private Time startTime;
 	private Time endTime;
+	private TutoringSystemDto tutoringSystem;
 	private Date day;
 	private Set<Integer> tutorIDs;
 	private Integer tutoringSystemID;
+
 
 	public AvaliableSessionDto() {
 		
@@ -26,6 +28,7 @@ public class AvaliableSessionDto{
 		this.setTutor(tutorIDs);
 		this.setTutoringSystem(tutoringSystem);
 	}
+	
 	
 	public void setStartTime(Time value) {
 		this.startTime = value;
@@ -54,6 +57,7 @@ public class AvaliableSessionDto{
 
 	public void setTutor(Set<Integer> tutorIDs) {
 		this.tutorIDs = tutorIDs;
+
 	}
 
 	public Integer getTutoringSystem() {
