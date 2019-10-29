@@ -947,7 +947,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 		// check error
-		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!manager cannot be empty!Tutoring System cannot be empty!", error);
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!manager cannot be empty!Tutoring System cannot be empty!", error);
 	}
 
 
@@ -975,7 +975,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 		// check error
-		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!manager cannot be empty!", error);
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!manager cannot be empty!", error);
 	}
 
 
@@ -1003,7 +1003,7 @@ public class TestTutoringServiceService {
 		assertEquals(0, service.getAllSubjectRequests().size());
 
 		// check error
-		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!manager cannot be empty!", error);
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!manager cannot be empty!", error);
 	}	
 
 	/*
