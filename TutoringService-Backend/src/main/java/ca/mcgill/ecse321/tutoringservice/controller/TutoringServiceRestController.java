@@ -66,7 +66,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), convertToDto(tutor.getLoginInfo()), tutorApplicationsIDs, offeringIDs, avaliableSessionIDs, convertToDto(tutor.getTutoringSystem()));
+		TutorDto tutorDto = new TutorDto(tutor.getFirstName(), tutor.getLastName(), tutor.getDateOfBirth(), tutor.getEmail(), tutor.getPhoneNumber(), tutor.getPersonId(), tutor.getIsRegistered(), convertToDto(tutor.getLoginInfo()), tutorApplicationsIDs, offeringIDs, avaliableSessionIDs, tutor.getTutoringSystem().getTutoringSystemID());
 		return tutorDto;
 	}
 
@@ -209,7 +209,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), convertToDto(manager.getLoginInfo()), reviewIDs, commissionIDs, classRoomCodes, subjectRequestIDs, convertToDto(manager.getTutoringSystem()));
+		ManagerDto managerDto = new ManagerDto(manager.getFirstName(), manager.getLastName(), manager.getDateOfBirth(), manager.getEmail(), manager.getPhoneNumber(), manager.getPersonId(), convertToDto(manager.getLoginInfo()), reviewIDs, commissionIDs, classRoomCodes, subjectRequestIDs, manager.getTutoringSystem().getTutoringSystemID());
 		return managerDto;
 	}
 
@@ -245,7 +245,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), avaliableSessionsIDs, convertToDto(offering.getSubject()), convertToDto(offering.getTutor()), convertToDto(offering.getCommission()), convertToDto(offering.getClassroom()), studentIDs, reviewIDs,convertToDto(offering.getTutoringSystem()));
+		OfferingDto offeringDto = new OfferingDto(offering.getOfferingID(), offering.getTerm(), offering.getPricePerHour(), avaliableSessionsIDs, offering.getSubject().getCourseID(), offering.getTutor().getPersonId(), offering.getCommission().getCommissionID(), offering.getClassroom().getRoomCode(), studentIDs, reviewIDs, offering.getTutoringSystem().getTutoringSystemID());
 		return offeringDto;
 	}
 
@@ -272,7 +272,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), convertToDto(student.getLoginInfo()), offeringIDs, subjectRequestIDs,convertToDto(student.getTutoringSystem()));
+		StudentDto studentDto = new StudentDto(student.getFirstName(), student.getLastName(), student.getDateOfBirth(), student.getEmail(), student.getPhoneNumber(), student.getPersonId(), student.getNumCoursesEnrolled(), convertToDto(student.getLoginInfo()), offeringIDs, subjectRequestIDs, student.getTutoringSystem().getTutoringSystemID());
 		return studentDto; 
 	}
 	
@@ -280,7 +280,7 @@ public class TutoringServiceRestController {
 		if (review == null) {
 			throw new IllegalArgumentException("There is no such Review!");
 		}
-		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID(), convertToDto(review.getManager()), convertToDto(review.getOffering()), convertToDto(review.getTutoringSystem()));
+		ReviewDto reviewDto = new ReviewDto(review.getComment(), review.getIsApproved(), review.getReviewID(), review.getManager().getPersonId(), review.getOffering().getOfferingID(), review.getTutoringSystem().getTutoringSystemID());
 		return reviewDto;
 	}
 	
@@ -298,7 +298,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), convertToDto(commission.getManager()), offeringIDs, convertToDto(commission.getTutoringSystem()));
+		CommissionDto commissiondto = new CommissionDto(commission.getPercentage(), commission.getCommissionID(), commission.getManager().getPersonId(), offeringIDs, commission.getTutoringSystem().getTutoringSystemID());
 		return commissiondto;
 	}
 
@@ -316,7 +316,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), convertToDto(classroom.getManager()), offeringIDs, convertToDto(classroom.getTutoringSystem()));
+		ClassroomDto classroomDto = new ClassroomDto(classroom.getRoomCode(), classroom.getIsBooked(), classroom.getIsBigRoom(), classroom.getManager().getPersonId(), offeringIDs, classroom.getTutoringSystem().getTutoringSystemID());
 		return classroomDto;
 	}
 	
@@ -361,7 +361,7 @@ public class TutoringServiceRestController {
 			}
 		}
 
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), convertToDto(sb.getUniversity()), tutorApplicationsIDs, offeringIDs, convertToDto(sb.getTutoringSystem()));
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), sb.getUniversity().getName(), tutorApplicationsIDs, offeringIDs, sb.getTutoringSystem().getTutoringSystemID());
 		return subjectDto;
 	}
 	
@@ -387,7 +387,7 @@ public class TutoringServiceRestController {
 				subjectsCourseIDs.add(subjectsCourseID);
 			}
 		}
-		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsCourseIDs, convertToDto(university.getTutoringSystem()));
+		UniversityDto universityDto = new UniversityDto(university.getName(), subjectsCourseIDs, university.getTutoringSystem().getTutoringSystemID());
 		return universityDto;
 		
 		
@@ -408,7 +408,7 @@ public class TutoringServiceRestController {
 			}
 		}
 
-		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(availableSession.getStartTime(), availableSession.getEndTime(), availableSession.getAvaliableSessionID(), availableSession.getDay(),tutorIDs, convertToDto(availableSession.getTutoringSystem()));
+		AvaliableSessionDto avaliableSessionDto = new AvaliableSessionDto(availableSession.getStartTime(), availableSession.getEndTime(), availableSession.getAvaliableSessionID(), availableSession.getDay(),tutorIDs, availableSession.getTutoringSystem().getTutoringSystemID());
 		return avaliableSessionDto;
 	}
 	

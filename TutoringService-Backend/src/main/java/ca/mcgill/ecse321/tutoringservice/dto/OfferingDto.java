@@ -7,28 +7,28 @@ public class OfferingDto{
 	private String term;
 	private double pricePerHour;
 	private Set<Integer> classTimeIDs;
-	private SubjectDto subject;
-	private ClassroomDto classroom;
-	private CommissionDto commission;
-	private TutorDto tutor;
+	private String courseID;
+	private String roomCode;
+	private Integer commissionID;
+	private Integer tutorID;
 	private Set<Integer> reviewIDs;
 	private Set<Integer> studentIDs;
-	private TutoringSystemDto tutoringSystem;
+	private Integer tutoringSystemID;
 
 	public OfferingDto() {
 		
 	}
 	
-	public OfferingDto(String offId, String term, double price, Set<Integer> classTimeIDs, SubjectDto subject, TutorDto tutor, CommissionDto commission, ClassroomDto classroom, Set<Integer> studentIDs, Set<Integer> reviewIDs, TutoringSystemDto tutoringSystem){
-		this.offeringID = offId;
-		this.term = term;
-		this.pricePerHour = price;
-		this.classTimeIDs = classTimeIDs;
-		this.subject = subject;
-		this.tutor = tutor;
-		this.commission = commission;
-		this.classroom = classroom;
-		this.tutoringSystem = tutoringSystem;
+	public OfferingDto(String offId, String term, double price, Set<Integer> classTimeIDs, String subject, Integer tutor, Integer commission, String classroom, Set<Integer> studentIDs, Set<Integer> reviewIDs, Integer tutoringSystem){
+		this.setOfferingID(offId);
+		this.setTerm(term);
+		this.setPricePerHour(pricePerHour);
+		this.setClassTime(classTimeIDs);
+		this.setSubject(subject);
+		this.setTutor(tutor);
+		this.setCommission(commission);
+		this.setClassroom(classroom);
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 	public void setOfferingID(String value) {
@@ -61,12 +61,12 @@ public class OfferingDto{
 	}
 
  
-  	public ClassroomDto getClassroom() {
-		return this.classroom;
+  	public String getClassroom() {
+		return this.roomCode;
 	}
 
-	public void setClassroom(ClassroomDto classroom) {
-		this.classroom = classroom;
+	public void setClassroom(String roomCode) {
+		this.roomCode = roomCode;
 	}
 	
 	public Set<Integer> getReview() {
@@ -77,27 +77,27 @@ public class OfferingDto{
 		this.reviewIDs = reviewIDs;
 	}
 
-	public CommissionDto getCommission() {
-		return this.commission;
+	public Integer getCommission() {
+		return this.commissionID;
 	}
 
-	public void setCommission(CommissionDto commission) {
-		this.commission = commission;
+	public void setCommission(Integer commissionID) {
+		this.commissionID = commissionID;
 	}
 
-	public TutorDto getTutor() {
-		return this.tutor;
+	public Integer getTutor() {
+		return this.tutorID;
 	}
 
-	public void setTutor(TutorDto tutor) {
-		this.tutor = tutor;
+	public void setTutor(Integer tutorID) {
+		this.tutorID = tutorID;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 	
 	public Set<Integer> getStudents() {
@@ -108,12 +108,12 @@ public class OfferingDto{
 		this.studentIDs = studentIDs;
 	}
 
-	public SubjectDto getSubject() {
-		return this.subject;
+	public String getSubject() {
+		return this.courseID;
 	}
 
-	public void setSubject(SubjectDto subject) {
-		this.subject = subject;
+	public void setSubject(String courseID) {
+		this.courseID = courseID;
 	}
 	
 }

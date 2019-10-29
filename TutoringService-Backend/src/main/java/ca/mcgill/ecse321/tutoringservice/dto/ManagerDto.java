@@ -13,7 +13,7 @@ public class ManagerDto extends PersonDto{
 		
 	}
 		
-	public ManagerDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer managerID, LoginDto login, Set<Integer> reviewIDs, Set<Integer> commissionIDs, Set<String> classRoomCodes,  Set<Integer> subjectRequestIDs, TutoringSystemDto tutoringSystem) {
+	public ManagerDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer managerID, LoginDto login, Set<Integer> reviewIDs, Set<Integer> commissionIDs, Set<String> classRoomCodes,  Set<Integer> subjectRequestIDs, Integer tutoringSystem) {
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setDateOfBirth(dateOfBirth);
@@ -21,10 +21,10 @@ public class ManagerDto extends PersonDto{
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(managerID);
 		this.setLoginInfo(login);
-		this.commissionIDs = commissionIDs;
-		this.classRoomCodes = classRoomCodes;
-		this.reviewIDs = reviewIDs;
-		this.subjectRequestIDs =subjectRequestIDs;
+		this.setCommission(commissionIDs);
+		this.setClassroom(classRoomCodes);
+		this.setReview(reviewIDs);
+		this.setSubjectRequest(subjectRequestIDs);
 		this.setTutoringSystem(tutoringSystem);
 	}
 	

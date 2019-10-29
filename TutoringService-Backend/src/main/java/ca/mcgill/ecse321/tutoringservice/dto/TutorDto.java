@@ -12,8 +12,8 @@ public class TutorDto extends PersonDto{
 	public TutorDto() {
 	}
 	
-	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered,  LoginDto login, Set<Integer> tutorApplicationIDs, Set<String> offeringIDs, Set<Integer> avaliableSessionIDs, TutoringSystemDto tutoringSystem) {
-		this.isRegistered = isRegistered;
+	public TutorDto(String firstName, String lastName, Date dateOfBirth, String email, Integer phoneNumber, Integer tutorID, Boolean isRegistered,  LoginDto login, Set<Integer> tutorApplicationIDs, Set<String> offeringIDs, Set<Integer> avaliableSessionIDs, Integer tutoringSystem) {
+		this.setIsRegistered(isRegistered);
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
 		this.setDateOfBirth(dateOfBirth);
@@ -21,9 +21,9 @@ public class TutorDto extends PersonDto{
 		this.setPhoneNumber(phoneNumber);
 		this.setPersonId(tutorID);
 		this.setLoginInfo(login);
-		this.tutorApplicationIDs = tutorApplicationIDs;
-		this.offeringIDs = offeringIDs;
-		this.avaliableSessionIDs = avaliableSessionIDs;
+		this.setTutorApplication(tutorApplicationIDs);
+		this.setOffering(offeringIDs);
+		this.setAvaliableSession(avaliableSessionIDs);
 		this.setTutoringSystem(tutoringSystem);
 	}
 	

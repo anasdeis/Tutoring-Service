@@ -4,21 +4,21 @@ public class ReviewDto{
 	private Integer reviewID;
 	private String comment;
 	private Boolean isApproved;
-	private OfferingDto offering;
-	private ManagerDto manager;
-	private TutoringSystemDto tutoringSystem;
+	private String offeringID;
+	private Integer managerID;
+	private Integer tutoringSystemID;
 
 	public ReviewDto() {
 		
 	}
 	
-	public ReviewDto(String comment, Boolean isApproved, Integer reviewID, ManagerDto manager, OfferingDto offering, TutoringSystemDto tutoringSystem) {
-		this.comment = comment;
-		this.isApproved = isApproved;
-		this.reviewID = reviewID;
-		this.manager = manager;
-		this.offering = offering;
-		this.tutoringSystem = tutoringSystem;
+	public ReviewDto(String comment, Boolean isApproved, Integer reviewID, Integer manager, String offering, Integer tutoringSystem) {
+		this.setComment(comment);
+		this.setIsApproved(isApproved);
+		this.setReviewID(reviewID);
+		this.setManager(manager);
+		this.setOffering(offering);
+		this.setTutoringSystem(tutoringSystem);
 	}
 	
 	public void setComment(String value) {
@@ -43,28 +43,28 @@ public class ReviewDto{
 		return this.reviewID;
 	}
 
-	public OfferingDto getOffering() {
-		return this.offering;
+	public String getOffering() {
+		return this.offeringID;
 	}
 
-	public void setOffering(OfferingDto offering) {
-		this.offering = offering;
+	public void setOffering(String offeringID) {
+		this.offeringID = offeringID;
 	}
 
-	public ManagerDto getManager() {
-		return this.manager;
+	public Integer getManager() {
+		return this.managerID;
 	}
 
-	public void setManager(ManagerDto manager) {
-		this.manager = manager;
+	public void setManager(Integer managerID) {
+		this.managerID = managerID;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 
 }
