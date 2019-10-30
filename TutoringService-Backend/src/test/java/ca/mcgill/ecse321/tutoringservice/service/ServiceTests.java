@@ -197,7 +197,24 @@ public class ServiceTests {
 	
 	private TutoringSystem system;
 	
-	
+	@Before
+	public void clearDatabase() {
+		subjectDao.deleteAll();
+		subjectRequestDao.deleteAll();
+		commissionDao.deleteAll();
+		offeringDao.deleteAll();
+		classroomDao.deleteAll();
+		managerDao.deleteAll();
+		avaliableSessionDao.deleteAll();
+		reviewDao.deleteAll();
+		studentDao.deleteAll();
+		tutorApplicationDao.deleteAll();
+		tutorDao.deleteAll();
+		loginDao.deleteAll();
+		universityDao.deleteAll();
+		tutoringSystemDao.deleteAll();
+	}
+
 	@Before
 	public void setMockOutput() {
 //		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
@@ -212,13 +229,7 @@ public class ServiceTests {
 			}
 		});
 		// whenever anything is saved, just return the parameter object
-/*		
-		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
-			return invocation.getArgument(0);
-		};
-		when(loginDao.save(any(Login.class))).thenAnswer(returnPatameterAnswer);
-		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
-*/		
+		
 		when(managerDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a manger, which is first name, does it makes more sense for checking managerID?
 			if(invocation.getArgument(0).equals(MANAGERID_KEY)) {
@@ -240,6 +251,7 @@ public class ServiceTests {
 		when(tutorDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a tutor, which is first name, does it makes more sense for checking tutorID?
 			if(invocation.getArgument(0).equals(TUTORID_KEY)) {
+				Tutor tutor = new Tutor();
 				tutor.setFirstName(FIRSTNAME_KEY);
 				tutor.setLastName(LASTNAME_KEY);
 				tutor.setDateOfBirth(dob);
@@ -258,6 +270,7 @@ public class ServiceTests {
 		when(studentDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a student, which is first name, does it makes more sense for checking studentID?
 			if(invocation.getArgument(0).equals(STUDENTID_KEY)) {
+				Student student = new Student();
 				student.setFirstName(FIRSTNAME_KEY);
 				student.setLastName(LASTNAME_KEY);
 				student.setDateOfBirth(dob);
@@ -273,6 +286,31 @@ public class ServiceTests {
 			}
 		});
 		
+		when(subjectDao.findSubjectByCourseID((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(COURSEID_KEY)) {
+				Subject subject = new Subject();
+				subject.setCourseID(COURSEID_KEY);
+				subject.setDescription(DESCRIPTION);
+				subject.setName(SUBJECT_NAME_KEY);
+				subject.setSubjectType(SubjectType.UNIVERSITY_COURSE);
+				subject.setUniversity(university);
+				subject.setTutoringSystem(system);
+				return subject;
+			} else {
+				return null;
+			}
+		});
+
+		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
+			return invocation.getArgument(0);
+		};
+		when(loginDao.save(any(Login.class))).thenAnswer(returnPatameterAnswer);
+		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
+		when(managerDao.save(any(Manager.class))).thenAnswer(returnPatameterAnswer);
+		when(tutorDao.save(any(Tutor.class))).thenAnswer(returnPatameterAnswer);
+		when(studentDao.save(any(Student.class))).thenAnswer(returnPatameterAnswer);
+		when(subjectDao.save(any(Subject.class))).thenAnswer(returnPatameterAnswer);
+
 	}
 	
 	@Before
@@ -357,8 +395,142 @@ public class ServiceTests {
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
    	}
 	*/
-
 	
+	
+	@Test
+	public void testCreateSubject() {
+		assertEquals(0, service.getAllSubjects().size());
+		
+		String name = "Intro to Software Engineering";
+		String courseID = "ECSE321";
+		String description = "Introduction to large scale software systems";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(courseID, subject.getCourseID());
+		assertEquals(description, subject.getDescription());
+		assertEquals(name, subject.getName());
+		assertEquals(null, subject.getOffering());
+		assertEquals(null, subject.getTutorRole());
+		assertEquals(subjectType, subject.getSubjectType());
+		assertEquals(university, subject.getUniversity());
+		assertEquals(system, subject.getTutoringSystem());
+	}
+	
+	@Test
+	public void testCreateSubjectNull() {
+		assertEquals(0, service.getAllSubjects().size());
+		
+		String name = null;
+		String courseID = null;
+		String description = null;
+		SubjectType subjectType = null;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("name cannot be empty or null!description cannot be empty or null!"
+				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university course", error);
+	}
+
+	@Test
+	public void testCreateSubjectEmpty() {
+		assertEquals(0, service.getAllSubjects().size());
+		
+		String name = "";
+		String courseID = "";
+		String description = "";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("name cannot be empty or null!description cannot be empty or null!"
+				+ "courseID cannot be empty or null!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectSpaces() {
+		assertEquals(0, service.getAllSubjects().size());
+		
+		String name = " ";
+		String courseID = " ";
+		String description = " ";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("name cannot be empty or null!description cannot be empty or null!"
+				+ "courseID cannot be empty or null!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectUniversityCourseNoUniversity() {
+		assertEquals(0, service.getAllSubjects().size());
+		
+		String name = "Intro to Software Engineering";
+		String courseID = "ECSE321";
+		String description = "Introduction to large scale software systems";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, null, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("university must be defined for university course", error);
+	}
+
+	@Test
+	public void testCreateSubjectNotUniversityCourseWithUniversity() {
+		assertEquals(0, service.getAllSubjects().size());
+		
+		String name = "Intro to Software Engineering";
+		String courseID = "ECSE321";
+		String description = "Introduction to large scale software systems";
+		SubjectType subjectType = SubjectType.HIGH_SCHOOL_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("cannot assign university to non university course", error);
+	}
+	
+	@Test
+	public void testGetExistingSubject() {
+		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
+	}
+
+	@Test
+	public void testGetNonExistingSubject() {
+		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
+	}
+
 	@Test
 	public void testMockLoginCreation() {
 		assertNotNull(lgInfo);
@@ -377,6 +549,11 @@ public class ServiceTests {
 	@Test
 	public void testMockStudentCreation() {
 		assertNotNull(student);
+	}
+	
+	@Test
+	public void testMockSubjectCreation() {
+		assertNotNull(subject);
 	}
 	
 	
