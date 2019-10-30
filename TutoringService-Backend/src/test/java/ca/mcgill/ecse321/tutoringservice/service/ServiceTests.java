@@ -415,7 +415,7 @@ public class ServiceTests {
 		}
 		
 		assertEquals("name cannot be empty or null!description cannot be empty or null!"
-				+ "courseID cannot be empty or null!subjectType cannot be null!", error);
+				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university course", error);
 	}
 
 	@Test
