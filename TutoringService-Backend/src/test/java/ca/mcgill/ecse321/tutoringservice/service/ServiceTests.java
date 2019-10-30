@@ -11,6 +11,8 @@ import java.time.LocalTime;
 import java.time.format.*;
 import java.util.*;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.SubjectKeyIDRequest;
+
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -29,57 +31,57 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 public class ServiceTests {
 	@Mock
 	private AvaliableSessionRepository avaliableSessionDao;
-	
+
 	@Mock
 	private ClassroomRepository classroomDao;
-	
+
 	@Mock
 	private CommissionRepository commissionDao;
-	
+
 	@Mock 
 	private LoginRepository loginDao;
-	
+
 	@Mock
 	private ManagerRepository managerDao;
-	
+
 	@Mock
 	private OfferingRepository offeringDao;
-	
+
 	@Mock
 	private ReviewRepository reviewDao;
-	
+
 	@Mock
 	private StudentRepository studentDao;
-	
+
 	@Mock
 	private SubjectRepository subjectDao;
-	
+
 	@Mock
 	private SubjectRequestRepository subjectRequestDao;
-	
+
 	@Mock
 	private TutorApplicationRepository tutorApplicationDao;
-	
+
 	@Mock
 	private TutoringSystemRepository tutoringSystemDao;
-	
+
 	@Mock
 	private TutorRepository tutorDao;
-	
+
 	@Mock
 	private UniversityRepository universityDao;
-	
+
 	@InjectMocks
 	private TutoringServiceService service;
-	
+
 	@InjectMocks
 	private TutoringServiceRestController controller;
-	
-	
+
+
 	// this test is designed to pass the Travis CI build, will be modified
-	
-//	private static final String PERSON_KEY = "TestPerson";
-//	private static final String NONEXISTING_KEY = "NotAPerson";
+
+	//	private static final String PERSON_KEY = "TestPerson";
+	//	private static final String NONEXISTING_KEY = "NotAPerson";
 
 	// common info for Person
 	private static final String FIRSTNAME_KEY = "TestFirst";
@@ -96,20 +98,20 @@ public class ServiceTests {
 	private Manager manager;
 	private static final Integer MANAGERID_KEY = 999;
 	private static final Integer NOTEXISTING_MANAGERID_KEY = -999;
-	
+
 	// tutor
 	private Tutor tutor;
 	private static final Integer TUTORID_KEY = 888;
 	private static final Integer NOTEXISTING_TUTORID_KEY = -888;
 	private static final Boolean ISREGISTERED = true;
-	
+
 	// student
 	private Student student;
 	private static final Integer STUDENTID_KEY = 777;
 	private static final Integer NOTEXISTING_STUDENTID_KEY = -777;
 	private static final Integer NUM_COURSE_ENROLLED_KEY = 5;
 	private static final Integer NOTEXISTING_NUM_COURSE_ENROLLED_KEY = -5;
-	
+
 	// login
 	private Login lgInfo;
 	private static final String LOGIN_KEY = "TestUsername";
@@ -129,23 +131,23 @@ public class ServiceTests {
 	private static final Integer NOTEXISTING_AVA_SESSION_ID_KEY = -6;
 	private static final Date DAY_KEY = null;
 	private static final String NOTEXISTING_DAY_KEY = "NotADay";
-	
+
 	// common variable for subject and subject request
 	private static final String SUBJECT_NAME_KEY = "ECSE321";
 	private static final String NOTEXISTING_SUBJECT_NAME_KEY = "NotASubjectName";
 	private static final String DESCRIPTION_KEY = "Intro to SE";
 	private static final String NOTEXISTING_DESCRIPTION_KEY = "NotADescription";
-	
+
 	// subject request
 	private SubjectRequest request;
 	private static final Integer REQUEST_ID_KEY = 7;
 	private static final Integer NOTEXISTING_REQUEST_ID_KEY = -7;
-	
+
 	// subject
 	private Subject subject;
 	private static final String COURSEID_KEY = "ECSE321F";
 	private static final String NOTEXISTING_COURSEID_KEY = "NotACourseID";
-	
+
 	// commission
 	// do we need Set<Offering>
 	private Commission comm;
@@ -153,7 +155,7 @@ public class ServiceTests {
 	private static final Integer NOTEXISTING_COMMISSION_ID_KEY = -8;
 	private static final double PERCENTAGE_KEY = 12.5;
 	private static final double NOTEXISTING_PERCENTAGE_KEY = -12.5;
-	
+
 	// classroom
 	// do we need Set<Offering>
 	private Classroom classroom;
@@ -161,7 +163,7 @@ public class ServiceTests {
 	private static final String NOTEXISTING_ROOMCODE_KEY = "NotARoomcode";
 	private static final Boolean ISBOOKED = true;
 	private static final Boolean ISBIGROOM = true;
-	
+
 	// university 
 	// do we need Set<Subject>
 	private University university;
@@ -178,7 +180,7 @@ public class ServiceTests {
 	private static final String NOTEXISTING_TERM_KEY = "NotATerm";
 	private static final double PRICE_KEY = 15.0;
 	private static final String NOTEXISTING_PRICE_KEY = "NotAPrice";
-	
+
 	// review
 	// manager, offering already created
 	private Review review;
@@ -186,17 +188,17 @@ public class ServiceTests {
 	private static final String NOTEXISRING_COMMENT_KEY = "NotAComment";
 	private static final Boolean ISAPPROVED = true;
 	private static final Integer REVIEWID_KEY = 9;
-	private static final String NOTEXISTING_REVIEWID_KEY = "NotAReviewID";
-	
+	private static final Integer NOTEXISTING_REVIEWID_KEY = -9;
+
 	// tutor application
 	// tutor already created
 	private TutorApplication tutorApplication;
 	private static final Integer APPLICATIONID_KEY = 10;
 	private static final Integer NOTEXISTING_APPLICATIONID_KEY = -10;
 	private static final Boolean ISACCEPTED = true;
-	
+
 	private TutoringSystem system;
-	
+
 	@Before
 	public void clearDatabase() {
 		subjectDao.deleteAll();
@@ -217,11 +219,11 @@ public class ServiceTests {
 
 	@Before
 	public void setMockOutput() {
-//		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+		//		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 		// public Login createLogin(String userName, String password) 
-			when(loginDao.findLoginByUserName(anyString())).thenAnswer((InvocationOnMock invocation) -> {	
+		when(loginDao.findLoginByUserName(anyString())).thenAnswer((InvocationOnMock invocation) -> {	
 			if(invocation.getArgument(0).equals(LOGIN_KEY)) {
-				Login lgInfo = new Login();
+//				Login lgInfo = new Login();
 				lgInfo.setUserName(LOGIN_KEY);
 				lgInfo.setPassword(LOGIN_PASS);
 				return lgInfo;
@@ -230,10 +232,8 @@ public class ServiceTests {
 			}
 		});
 		
+		// 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 		when(managerDao.findManagerByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
-
-			// here, getArgument(0) should be the first argument for create a manger, which is first name, does it makes more sense for checking managerID?
-			// 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 			if(invocation.getArgument(0).equals(MANAGERID_KEY)) {
 //				Manager manager = new Manager();
 				manager.setFirstName(FIRSTNAME_KEY);
@@ -249,10 +249,9 @@ public class ServiceTests {
 				return null;
 			}
 		});
-		
+
+		// 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> avaliableSessions, TutoringSystem tutoringSystem) {
 		when(tutorDao.findTutorByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
-			// here, getArgument(0) should be the first argument for create a tutor, which is first name, does it makes more sense for checking tutorID?
-			// 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> avaliableSessions, TutoringSystem tutoringSystem) {
 			if(invocation.getArgument(0).equals(TUTORID_KEY)) {
 //				Tutor tutor = new Tutor();
 				tutor.setFirstName(FIRSTNAME_KEY);
@@ -270,9 +269,8 @@ public class ServiceTests {
 			}
 		});
 		
+		// 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
 		when(studentDao.findStudentByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
-			// here, getArgument(0) should be the first argument for create a student, which is first name, does it makes more sense for checking studentID
-			// 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
 			if(invocation.getArgument(0).equals(STUDENTID_KEY)) {
 //				Student student = new Student();
 				student.setFirstName(FIRSTNAME_KEY);
@@ -289,15 +287,13 @@ public class ServiceTests {
 				return null;
 			}
 		});
-		
+
 		// 	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
-		// TODO  need modification
 		when(avaliableSessionDao.findAvaliableSessionByAvaliableSessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(AVA_SESSION_ID_KEY)) {
 //				AvaliableSession avaliableSession = new AvaliableSession();
-//				@SuppressWarnings("unchecked")
-				Set<Tutor> tutors = new HashSet<Tutor>();	// temp solution, will modify TODO
-//				Set<Tutor> tutors = (Set<Tutor>) mock(Tutor.class);
+				Set<Tutor> tutors = new HashSet<Tutor>();	// TODO temp solution, will modify, but works
+				tutors.add(tutor);
 				avaliableSession.setAvaliableSessionID(AVA_SESSION_ID_KEY);
 				avaliableSession.setStartTime(START_TIME_KEY);
 				avaliableSession.setEndTime(START_TIME_KEY);
@@ -308,14 +304,13 @@ public class ServiceTests {
 			} else 
 				return null;
 		});
-		
-		
+
 		// 	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description,SubjectType subjectType, Manager manager, TutoringSystem tutoringSystem){
-		// TODO : need modification
 		when(subjectRequestDao.findSubjectRequestByRequestID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(REQUEST_ID_KEY)) {
-				Set<Student> students = new HashSet<Student>();	// temp solution, will modify TODO
-//				Set<Student> students = (Set<Student>) mock(Student.class);
+//				SubjectRequest request = new SubjectRequest();
+				Set<Student> students = new HashSet<Student>();	// TODO temp solution, will modify, but works
+				students.add(student);
 				SubjectType type = SubjectType.UNIVERSITY_COURSE;
 				request.setRequestID(REQUEST_ID_KEY);
 				request.setManager(manager);
@@ -344,40 +339,105 @@ public class ServiceTests {
 				return null;
 			}
 		});
-		
+
 		// 	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
+		when(commissionDao.findCommissionBycommissionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(COMMISSION_ID_KEY)) {
+//				Commission comm = new Commission();
+				Set<Offering> offerings = new HashSet<Offering>();	// TODO temp solution, will modify, but works
+				offerings.add(offering);
+				comm.setCommissionID(COMMISSION_ID_KEY);
+				comm.setManager(manager);
+				comm.setPercentage(PERCENTAGE_KEY);
+				comm.setOffering(offerings);
+				comm.setTutoringSystem(system);
+				return comm;
+			} else 
+				return null;
+		});
 
-		
-		
 		//  public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
+		when(classroomDao.findClassroomByRoomCode((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+		if(invocation.getArgument(0).equals(ROOMCODE_KEY)) {
+//			Classroom classroom = new Classroom();
+			Set<Offering> offerings = new HashSet<Offering>();	// TODO temp solution, will modify, but works
+			offerings.add(offering);
+			classroom.setRoomCode(ROOMCODE_KEY);
+			classroom.setIsBigRoom(ISBIGROOM);
+			classroom.setIsBooked(ISBOOKED);
+			classroom.setManager(manager);
+			classroom.setOffering(offerings);
+			classroom.setTutoringSystem(system);
+			return classroom;
+		} else
+			return null;
+		});
 
-		
-		
-		
 		// 	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
-
-		
-		
+		when(universityDao.findUniversityByName((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(UNIVERSITY_NAME_KEY)) {
+//			University university = new University();
+			Set<Subject> subjects = new HashSet<Subject>();	// TODO temp solution, will modify, but works
+			subjects.add(subject);
+			university.setName(UNIVERSITY_NAME_KEY);
+			university.setSubject(subjects);
+			university.setTutoringSystem(system);
+			return university;
+			} else
+				return null;
+		});
 		
 		//  public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
+		when(offeringDao.findOfferingByOfferingID((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(OFFERID_KEY)) {
+//				Offering offering = new Offering();
+				Set<AvaliableSession> classTimes = new HashSet<AvaliableSession>();
+				classTimes.add(avaliableSession);
+				offering.setOfferingID(OFFERID_KEY);
+				offering.setClassroom(classroom);
+				offering.setClassTime(classTimes);
+				return offering;
+			} else
+				return null;
+		});
 
-		
-		
-		
 		// 	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
+		when(reviewDao.findReviewByReviewID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(REVIEWID_KEY)) {
+//				Review review = new Review();
+				review.setReviewID(REVIEWID_KEY);
+				review.setComment(COMMENT_KEY);
+				review.setIsApproved(ISAPPROVED);
+				review.setManager(manager);
+				review.setOffering(offering);
+				review.setTutoringSystem(system);
+				return review;
+			} else
+				return null;
+		});
 
-		
-		
-		
 		// 	public TutorApplication createTutorApplication(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
+		when(tutorApplicationDao.findTutorApplicationByApplicationId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(APPLICATIONID_KEY)) {
+//				TutorApplication tutorApplication = new TutorApplication();
+				Set<Subject> subjects = new HashSet<Subject>();	// TODO temp solution, will modify, but works
+				subjects.add(subject);
+				tutorApplication.setApplicationId(APPLICATIONID_KEY);
+				tutorApplication.setIsAccepted(ISACCEPTED);
+				tutorApplication.setSubject(subjects);
+				tutorApplication.setTutor(tutor);
+				tutorApplication.setTutoringSystem(system);
+				return tutorApplication;
+			} else
+				return null;
+		});
 
-		
-		
-		
+
+
 		// 	public TutoringSystem createTutoringSystem(Integer tutoringSystemID) {
 
-/*
- * 	not sure what these code do, but giving unnecessary mock error
+		/*
+		 * 	not sure what these code do, but giving unnecessary mock error
 		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
 			return invocation.getArgument(0);
 		};
@@ -389,9 +449,9 @@ public class ServiceTests {
 		when(avaliableSessionDao.save(any(AvaliableSession.class))).thenAnswer(returnPatameterAnswer);
 		when(subjectRequestDao.save(any(SubjectRequest.class))).thenAnswer(returnPatameterAnswer);
 		when(subjectDao.save(any(Subject.class))).thenAnswer(returnPatameterAnswer);
-*/	
+		 */	
 	}
-	
+
 	@Before
 	public void setupMock() {
 		manager = mock(Manager.class);
@@ -408,30 +468,30 @@ public class ServiceTests {
 		review = mock(Review.class);
 		tutorApplication = mock(TutorApplication.class);
 	}
-	
+
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
-		
+
 		String username = "user";
 		String password = "pass";
-		
+
 		try {
 			lgInfo = service.createLogin(username, password);
 		} catch (IllegalArgumentException e) {
 			fail();
 		}
-		
+
 		assertEquals(username, lgInfo.getUserName());
 		assertEquals(password, lgInfo.getPassword());
 	}
-	
+
 	@Test
 	public void testCreateLoginNull() {
-		String error = ""
-;		String username = null;
+		String error = "";
+		String username = null;
 		String password = null;
-		
+
 		try {
 			lgInfo = service.createLogin(username, password);
 		} catch (IllegalArgumentException e) {
@@ -440,8 +500,24 @@ public class ServiceTests {
 		// check error
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
 	}
+
+
+	@Test
+	public void testCreateLoginEmpty() {
+		String error = "";
+
+		String username = "";
+		String password = "";
+
+		try {
+			service.createLogin(username, password);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		// check error
+		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
+	}
 	
-	/*
 	@Test
 	public void testCreateLoginSpaces() {
 		String error = "";
@@ -457,41 +533,37 @@ public class ServiceTests {
 		// check error
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
    	}
-	
 	@Test
-	public void testCreateLoginEmpty() {
-		String error = "";
+	public void testMockLoginCreation() {
+		assertNotNull(lgInfo);
+	}
 
-		String username = "";
-		String password = "";
+	@Test
+	public void testMockLoginQueryFound() {
+		assertNotNull(service.getLogin(LOGIN_KEY));
+	}
 
-		try {
-			service.createLogin(username, password);
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-		// check error
-		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
-   	}
-	*/
-	
-	
+	@Test
+	public void testMockLoginQueryNotFound() {
+		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
+	}
+
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
-		
+
 		String name = "Intro to Software Engineering";
 		String courseID = "ECSE321";
 		String description = "Introduction to large scale software systems";
 		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
-				
-		
+
+
 		try {
 			subject = service.createSubject(name, courseID, description, subjectType, university, system);
 		} catch (IllegalArgumentException e) {
 			fail();
 		}
-		
+
 		assertEquals(courseID, subject.getCourseID());
 		assertEquals(description, subject.getDescription());
 		assertEquals(name, subject.getName());
@@ -501,23 +573,23 @@ public class ServiceTests {
 		assertEquals(university, subject.getUniversity());
 		assertEquals(system, subject.getTutoringSystem());
 	}
-	
+
 	@Test
 	public void testCreateSubjectNull() {
 		assertEquals(0, service.getAllSubjects().size());
-		
+
 		String name = null;
 		String courseID = null;
 		String description = null;
 		SubjectType subjectType = null;
-				
+
 		String error = "";
 		try {
 			subject = service.createSubject(name, courseID, description, subjectType, university, system);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-		
+
 		assertEquals("name cannot be empty or null!description cannot be empty or null!"
 				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university course", error);
 	}
@@ -525,166 +597,161 @@ public class ServiceTests {
 	@Test
 	public void testCreateSubjectEmpty() {
 		assertEquals(0, service.getAllSubjects().size());
-		
+
 		String name = "";
 		String courseID = "";
 		String description = "";
 		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
-				
+
 		String error = "";
 		try {
 			subject = service.createSubject(name, courseID, description, subjectType, university, system);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-		
+
 		assertEquals("name cannot be empty or null!description cannot be empty or null!"
 				+ "courseID cannot be empty or null!", error);
 	}
-	
+
 	@Test
 	public void testCreateSubjectSpaces() {
 		assertEquals(0, service.getAllSubjects().size());
-		
+
 		String name = " ";
 		String courseID = " ";
 		String description = " ";
 		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
-				
+
 		String error = "";
 		try {
 			subject = service.createSubject(name, courseID, description, subjectType, university, system);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-		
+
 		assertEquals("name cannot be empty or null!description cannot be empty or null!"
 				+ "courseID cannot be empty or null!", error);
 	}
-	
+
 	@Test
 	public void testCreateSubjectUniversityCourseNoUniversity() {
 		assertEquals(0, service.getAllSubjects().size());
-		
+
 		String name = "Intro to Software Engineering";
 		String courseID = "ECSE321";
 		String description = "Introduction to large scale software systems";
 		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
-				
+
 		String error = "";
 		try {
 			subject = service.createSubject(name, courseID, description, subjectType, null, system);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-		
+
 		assertEquals("university must be defined for university course", error);
 	}
 
 	@Test
 	public void testCreateSubjectNotUniversityCourseWithUniversity() {
 		assertEquals(0, service.getAllSubjects().size());
-		
+
 		String name = "Intro to Software Engineering";
 		String courseID = "ECSE321";
 		String description = "Introduction to large scale software systems";
 		SubjectType subjectType = SubjectType.HIGH_SCHOOL_COURSE;
-				
+
 		String error = "";
 		try {
 			subject = service.createSubject(name, courseID, description, subjectType, university, system);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
-		
+
 		assertEquals("cannot assign university to non university course", error);
 	}
+
+	@Test
+	public void testMockSubjectCreation() {
+		assertNotNull(subject);
+	}
 	
-	// TODO this test fails
+	// but this one works
+	@Test
+	public void testMockSubjectQueryFound() {
+		assertNotNull(service.getSubject(COURSEID_KEY));
+	}
 	/*
+	// TODO this test fails
 	@Test
 	public void testGetExistingSubject() {
 		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
+//		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY));
 	}
-	*/
-
+*/
 	@Test
-	public void testGetNonExistingSubject() {
+	public void testMockSubjectQueryNotFound() {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
-	}
-
-	@Test
-	public void testMockLoginCreation() {
-		assertNotNull(lgInfo);
-	}
-	
-	@Test
-	public void testMockLoginQueryFound() {
-		assertNotNull(service.getLogin(LOGIN_KEY));
-	}
-	
-	@Test
-	public void testMockLoginQueryNotFound() {
-		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
 	}
 	
 	@Test
 	public void testMockMangerCreation() {
 		assertNotNull(manager);
 	}
-	
+
 	@Test
 	public void testMockManagerQueryFound() {
 		assertNotNull(service.getManager(MANAGERID_KEY));
 	}
-	
+
 	@Test
 	public void testMockManagerQueryNotFound() {
 		assertNull(service.getManager(NOTEXISTING_MANAGERID_KEY));
 	}
-	
+
 	@Test
 	public void testMockTutorCreation() {
 		assertNotNull(tutor);
 	}
-	
+
 	@Test
 	public void testMockTutorQueryFound() {
 		assertNotNull(service.getTutor(TUTORID_KEY));
 	}
-	
+
 	@Test
 	public void testMockTutorQueryNotFound() {
 		assertNull(service.getTutor(NOTEXISTING_TUTORID_KEY));
 	}
-	
+
 	@Test
 	public void testMockStudentCreation() {
 		assertNotNull(student);
 	}
-	
+
 	@Test
 	public void tsetMockStudentQueryFound() {
 		assertNotNull(service.getStudent(STUDENTID_KEY));
 	}
-	
+
 	@Test
 	public void tsetMockStudentQueryNotFound() {
 		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
 	}
-	
+
 	@Test
 	public void testMockAvaliableSessionCreation() {
 		assertNotNull(avaliableSession);
 	}
+
+	// TODO
+//	this method is not passing, TutoringServiceService @848
+//	@Test
+//	public void testMockAvaliableSessionQueryFound() {
+//		assertNotNull(service.getAvaliableSession(AVA_SESSION_ID_KEY));
+//	}
 	
-	/* TODO
-	 * this method is not passing, TutoringServiceService @848
-	@Test
-	public void testMockAvaliableSessionQueryFound() {
-		assertNotNull(service.getAvaliableSession(AVA_SESSION_ID_KEY));
-	}
-	*/
 	@Test
 	public void testMockAvaliableSessionQueryNotFound() {
 		assertNull(service.getAvaliableSession(NOTEXISTING_AVA_SESSION_ID_KEY));
@@ -694,16 +761,12 @@ public class ServiceTests {
 	public void testMockSubjectRequestCreation() {
 		assertNotNull(request);
 	}
-
-	public void testMockSubjectCreation() {
-		assertNotNull(subject);
-	}
 	
 	@Test
 	public void testMockSubjectRequestQueryFound() {
 		assertNotNull(service.getSubjectRequest(REQUEST_ID_KEY));
 	}
-	
+
 	@Test
 	public void testMockSubjectRequestQueryNotFound() {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
@@ -715,8 +778,28 @@ public class ServiceTests {
 	}
 	
 	@Test
+	public void testMockCommissionQueryFound() {
+		assertNotNull(service.getCommission(COMMISSION_ID_KEY));
+	}
+
+	@Test
+	public void testMockCommissionQueryNotFound() {
+		assertNull(service.getCommission(NOTEXISTING_COMMISSION_ID_KEY));
+	}
+	
+	@Test
 	public void testMockClassroomCreation() {
 		assertNotNull(classroom);
+	}
+	
+	@Test
+	public void testMockClassroomQueryFound() {
+		assertNotNull(service.getClassroom(ROOMCODE_KEY));
+	}
+
+	@Test
+	public void testMockClassroomQueryNotFound() {
+		assertNull(service.getClassroom(NOTEXISTING_ROOMCODE_KEY));
 	}
 	
 	@Test
@@ -725,8 +808,28 @@ public class ServiceTests {
 	}
 	
 	@Test
+	public void testMockUniversityQueryFound() {
+		assertNotNull(service.getUniversity(UNIVERSITY_NAME_KEY));
+	}
+
+	@Test
+	public void testMockUniversityQueryNotFound() {
+		assertNull(service.getUniversity(NOTEXISTING_UNIVERSITY_NAME_KEY));
+	}
+	
+	@Test
 	public void testMockOfferingCreation() {
 		assertNotNull(offering);
+	}
+
+	@Test
+	public void testMockOfferingQueryFound() {
+		assertNotNull(service.getOffering(OFFERID_KEY));
+	}
+	
+	@Test
+	public void testMockOfferingQueryNotFound() {
+		assertNull(service.getOffering(NOTEXISTING_OFFERID_KEY));
 	}
 	
 	@Test
@@ -735,10 +838,29 @@ public class ServiceTests {
 	}
 	
 	@Test
+	public void testMockReviewQueryFound() {
+		assertNotNull(service.getReview(REVIEWID_KEY));
+	}
+
+	@Test
+	public void testMockReviewQueryNotFound() {
+		assertNull(service.getReview(NOTEXISTING_REVIEWID_KEY));
+	}
+	
+	@Test
 	public void testMockTutorApplicationCreation() {
 		assertNotNull(tutorApplication);
 	}
 	
+	@Test
+	public void testMockTutorApplicationQueryFound() {
+		assertNotNull(service.getTutorApplication(APPLICATIONID_KEY));
+	}
+
+	@Test
+	public void testMockTutorApplicationQueryNotFound() {
+		assertNull(service.getTutorApplication(NOTEXISTING_APPLICATIONID_KEY));
+	}
 }
 
 
