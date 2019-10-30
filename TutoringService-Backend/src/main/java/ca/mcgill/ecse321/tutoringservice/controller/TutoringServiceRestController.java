@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -1113,6 +1114,19 @@ public class TutoringServiceRestController {
 		TutorDto tutorDto = convertToDto(tutor);
 
 		return tutorDto;
+	}
+	
+	/**
+	 * @return Update tutor Application to isAccepted
+	 * @sample /tutorApplication/update/{tutorApplicationID}?boolean=<isAccepted>
+	 */
+	@PatchMapping(value = { "/tutorApplication/update/{tutorApplicationID}", "/tutorApplication/update/{tutorApplicationID}/" })
+	public TutorApplicationDto updateTutorApplicationisAccepted(@PathVariable("tutorApplicationID") Integer tutorApplicationID,
+			@RequestParam("isAccepted") Boolean isAccepted) {
+		TutorApplication tutorApplication = (service.setTutorApplicationIsAccepted(service.getTutorApplication(tutorApplicationID), isAccepted));
+		TutorApplicationDto tutorApplicationDto = convertToDto(tutorApplication);
+
+		return tutorApplicationDto;
 	}
 	
 	/**
