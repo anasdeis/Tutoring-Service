@@ -642,6 +642,16 @@ public class TutoringServiceService {
 		
 		return tutorRepository.save(tutor);
 	}
+	
+	@Transactional
+	public TutorApplication setTutorApplicationIsAccepted (TutorApplication tutorApplication, Boolean isAccepted) {
+		if (isAccepted == null) {
+			throw new IllegalArgumentException(" isApproved cannot be null!");
+		}
+		tutorApplication.setIsAccepted(isAccepted);
+		
+		return tutorApplicationRepository.save(tutorApplication);
+	}
 
 	@Transactional
 	public Tutor getTutor(Integer tutorID) {
