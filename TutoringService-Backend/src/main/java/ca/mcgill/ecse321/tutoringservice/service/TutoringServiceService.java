@@ -215,22 +215,29 @@ public class TutoringServiceService {
 			error += "description cannot be empty or null!";
 		if (courseID == null || courseID.trim().length() == 0)
 			error += "courseID cannot be empty or null!";
-		if(subjType == null) {
+		if(subjType == null) 
 			error += "subjectType cannot be null!";
-		}
+		if(subjType == SubjectType.UNIVERSITY_COURSE && university == null)
+			error += "university must be defined for university course";
+		if(subjType != SubjectType.UNIVERSITY_COURSE && university != null)
+			error += "cannot assign university to non university course";
 
 		error = error.trim();
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		Subject subject = new Subject();
-		subject.setName(name);
-		subject.setSubjectType(subjType);
-		subject.setCourseID(courseID);
-		subject.setDescription(description);
-		subject.setUniversity(university);
-		subject.setTutoringSystem(tutoringSystem);
-		subjectRepository.save(subject);
+		
+		Subject subject = subjectRepository.findSubjectByCourseID(courseID);
+		if(subject == null) {
+			subject = new Subject();
+			subject.setName(name);
+			subject.setSubjectType(subjType);
+			subject.setCourseID(courseID);
+			subject.setDescription(description);
+			subject.setUniversity(university);
+			subject.setTutoringSystem(tutoringSystem);
+			subjectRepository.save(subject);
+		}
 		return subject;
 	}
 
