@@ -197,7 +197,24 @@ public class ServiceTests {
 	
 	private TutoringSystem system;
 	
-	
+	@Before
+	public void clearDatabase() {
+		subjectDao.deleteAll();
+		subjectRequestDao.deleteAll();
+		commissionDao.deleteAll();
+		offeringDao.deleteAll();
+		classroomDao.deleteAll();
+		managerDao.deleteAll();
+		avaliableSessionDao.deleteAll();
+		reviewDao.deleteAll();
+		studentDao.deleteAll();
+		tutorApplicationDao.deleteAll();
+		tutorDao.deleteAll();
+		loginDao.deleteAll();
+		universityDao.deleteAll();
+		tutoringSystemDao.deleteAll();
+	}
+
 	@Before
 	public void setMockOutput() {
 //		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
@@ -212,13 +229,7 @@ public class ServiceTests {
 			}
 		});
 		// whenever anything is saved, just return the parameter object
-/*		
-		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
-			return invocation.getArgument(0);
-		};
-		when(loginDao.save(any(Login.class))).thenAnswer(returnPatameterAnswer);
-		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
-*/		
+		
 		when(managerDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a manger, which is first name, does it makes more sense for checking managerID?
 			if(invocation.getArgument(0).equals(MANAGERID_KEY)) {
@@ -240,6 +251,7 @@ public class ServiceTests {
 		when(tutorDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a tutor, which is first name, does it makes more sense for checking tutorID?
 			if(invocation.getArgument(0).equals(TUTORID_KEY)) {
+				Tutor tutor = new Tutor();
 				tutor.setFirstName(FIRSTNAME_KEY);
 				tutor.setLastName(LASTNAME_KEY);
 				tutor.setDateOfBirth(dob);
@@ -258,6 +270,7 @@ public class ServiceTests {
 		when(studentDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a student, which is first name, does it makes more sense for checking studentID?
 			if(invocation.getArgument(0).equals(STUDENTID_KEY)) {
+				Student student = new Student();
 				student.setFirstName(FIRSTNAME_KEY);
 				student.setLastName(LASTNAME_KEY);
 				student.setDateOfBirth(dob);
@@ -273,8 +286,10 @@ public class ServiceTests {
 			}
 		});
 		
-		when(subjectDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+		when(subjectDao.findSubjectByCourseID((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(COURSEID_KEY)) {
+				Subject subject = new Subject();
+				subject.setCourseID(COURSEID_KEY);
 				subject.setDescription(DESCRIPTION);
 				subject.setName(SUBJECT_NAME_KEY);
 				subject.setSubjectType(SubjectType.UNIVERSITY_COURSE);
@@ -285,7 +300,17 @@ public class ServiceTests {
 				return null;
 			}
 		});
-		
+
+		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
+			return invocation.getArgument(0);
+		};
+		when(loginDao.save(any(Login.class))).thenAnswer(returnPatameterAnswer);
+		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
+		when(managerDao.save(any(Manager.class))).thenAnswer(returnPatameterAnswer);
+		when(tutorDao.save(any(Tutor.class))).thenAnswer(returnPatameterAnswer);
+		when(studentDao.save(any(Student.class))).thenAnswer(returnPatameterAnswer);
+		when(subjectDao.save(any(Subject.class))).thenAnswer(returnPatameterAnswer);
+
 	}
 	
 	@Before
@@ -374,7 +399,7 @@ public class ServiceTests {
 	
 	@Test
 	public void testCreateSubject() {
-		assertEquals(0, service.getAllLogins().size());
+		assertEquals(0, service.getAllSubjects().size());
 		
 		String name = "Intro to Software Engineering";
 		String courseID = "ECSE321";
@@ -400,7 +425,7 @@ public class ServiceTests {
 	
 	@Test
 	public void testCreateSubjectNull() {
-		assertEquals(0, service.getAllLogins().size());
+		assertEquals(0, service.getAllSubjects().size());
 		
 		String name = null;
 		String courseID = null;
@@ -420,7 +445,7 @@ public class ServiceTests {
 
 	@Test
 	public void testCreateSubjectEmpty() {
-		assertEquals(0, service.getAllLogins().size());
+		assertEquals(0, service.getAllSubjects().size());
 		
 		String name = "";
 		String courseID = "";
@@ -440,7 +465,7 @@ public class ServiceTests {
 	
 	@Test
 	public void testCreateSubjectSpaces() {
-		assertEquals(0, service.getAllLogins().size());
+		assertEquals(0, service.getAllSubjects().size());
 		
 		String name = " ";
 		String courseID = " ";
@@ -460,7 +485,7 @@ public class ServiceTests {
 	
 	@Test
 	public void testCreateSubjectUniversityCourseNoUniversity() {
-		assertEquals(0, service.getAllLogins().size());
+		assertEquals(0, service.getAllSubjects().size());
 		
 		String name = "Intro to Software Engineering";
 		String courseID = "ECSE321";
@@ -479,7 +504,7 @@ public class ServiceTests {
 
 	@Test
 	public void testCreateSubjectNotUniversityCourseWithUniversity() {
-		assertEquals(0, service.getAllLogins().size());
+		assertEquals(0, service.getAllSubjects().size());
 		
 		String name = "Intro to Software Engineering";
 		String courseID = "ECSE321";
@@ -495,9 +520,17 @@ public class ServiceTests {
 		
 		assertEquals("cannot assign university to non university course", error);
 	}
-
-
 	
+	@Test
+	public void testGetExistingSubject() {
+		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
+	}
+
+	@Test
+	public void testGetNonExistingSubject() {
+		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
+	}
+
 	@Test
 	public void testMockLoginCreation() {
 		assertNotNull(lgInfo);
