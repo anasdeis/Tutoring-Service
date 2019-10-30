@@ -273,6 +273,19 @@ public class ServiceTests {
 			}
 		});
 		
+		when(subjectDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(COURSEID_KEY)) {
+				subject.setDescription(DESCRIPTION);
+				subject.setName(SUBJECT_NAME_KEY);
+				subject.setSubjectType(SubjectType.UNIVERSITY_COURSE);
+				subject.setUniversity(university);
+				subject.setTutoringSystem(system);
+				return subject;
+			} else {
+				return null;
+			}
+		});
+		
 	}
 	
 	@Before
@@ -357,6 +370,132 @@ public class ServiceTests {
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
    	}
 	*/
+	
+	
+	@Test
+	public void testCreateSubject() {
+		assertEquals(0, service.getAllLogins().size());
+		
+		String name = "Intro to Software Engineering";
+		String courseID = "ECSE321";
+		String description = "Introduction to large scale software systems";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(courseID, subject.getCourseID());
+		assertEquals(description, subject.getDescription());
+		assertEquals(name, subject.getName());
+		assertEquals(null, subject.getOffering());
+		assertEquals(null, subject.getTutorRole());
+		assertEquals(subjectType, subject.getSubjectType());
+		assertEquals(university, subject.getUniversity());
+		assertEquals(system, subject.getTutoringSystem());
+	}
+	
+	@Test
+	public void testCreateSubjectNull() {
+		assertEquals(0, service.getAllLogins().size());
+		
+		String name = null;
+		String courseID = null;
+		String description = null;
+		SubjectType subjectType = null;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("name cannot be empty or null!description cannot be empty or null!"
+				+ "courseID cannot be empty or null!subjectType cannot be null!", error);
+	}
+
+	@Test
+	public void testCreateSubjectEmpty() {
+		assertEquals(0, service.getAllLogins().size());
+		
+		String name = "";
+		String courseID = "";
+		String description = "";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("name cannot be empty or null!description cannot be empty or null!"
+				+ "courseID cannot be empty or null!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectSpaces() {
+		assertEquals(0, service.getAllLogins().size());
+		
+		String name = " ";
+		String courseID = " ";
+		String description = " ";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("name cannot be empty or null!description cannot be empty or null!"
+				+ "courseID cannot be empty or null!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectUniversityCourseNoUniversity() {
+		assertEquals(0, service.getAllLogins().size());
+		
+		String name = "Intro to Software Engineering";
+		String courseID = "ECSE321";
+		String description = "Introduction to large scale software systems";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, null, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("university must be defined for university course", error);
+	}
+
+	@Test
+	public void testCreateSubjectNotUniversityCourseWithUniversity() {
+		assertEquals(0, service.getAllLogins().size());
+		
+		String name = "Intro to Software Engineering";
+		String courseID = "ECSE321";
+		String description = "Introduction to large scale software systems";
+		SubjectType subjectType = SubjectType.HIGH_SCHOOL_COURSE;
+				
+		String error = "";
+		try {
+			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("cannot assign university to non university course", error);
+	}
+
 
 	
 	@Test
@@ -377,6 +516,11 @@ public class ServiceTests {
 	@Test
 	public void testMockStudentCreation() {
 		assertNotNull(student);
+	}
+	
+	@Test
+	public void testMockSubjectCreation() {
+		assertNotNull(subject);
 	}
 	
 	
