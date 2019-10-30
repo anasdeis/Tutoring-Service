@@ -23,8 +23,8 @@ import ca.mcgill.ecse321.tutoringservice.controller.TutoringServiceRestControlle
 import ca.mcgill.ecse321.tutoringservice.dao.*;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
-//@RunWith(MockitoJUnitRunner.class)
-@RunWith(MockitoJUnitRunner.Silent.class)
+@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.Silent.class)
 public class ServiceTests {
 	@Mock
 	private AvaliableSessionRepository avaliableSessionDao;
@@ -74,7 +74,6 @@ public class ServiceTests {
 	@InjectMocks
 	private TutoringServiceRestController controller;
 	
-	// TODO: please fill in your test case
 	
 	// this test is designed to pass the Travis CI build, will be modified
 	
@@ -95,20 +94,20 @@ public class ServiceTests {
 	// manager
 	private Manager manager;
 	private static final Integer MANAGERID_KEY = 999;
-	private static final String NOTEXISTING_MANAGERID_KEY = "NotAManagerID";
+	private static final Integer NOTEXISTING_MANAGERID_KEY = -999;
 	
 	// tutor
 	private Tutor tutor;
 	private static final Integer TUTORID_KEY = 888;
-	private static final String NOTEXISTING_TUTORID_KEY = "NotATutorID";
+	private static final Integer NOTEXISTING_TUTORID_KEY = -888;
 	private static final Boolean ISREGISTERED = true;
 	
 	// student
 	private Student student;
 	private static final Integer STUDENTID_KEY = 777;
-	private static final String NOTEXISTING_STUDENTID_KEY = "NotAStudentID";
+	private static final Integer NOTEXISTING_STUDENTID_KEY = -777;
 	private static final Integer NUM_COURSE_ENROLLED_KEY = 5;
-	private static final String NOTEXISTING_NUM_COURSE_ENROLLED_KEY = "NotANumCourseEnrolled";
+	private static final Integer NOTEXISTING_NUM_COURSE_ENROLLED_KEY = -5;
 	
 	// login
 	private Login lgInfo;
@@ -126,20 +125,20 @@ public class ServiceTests {
 	private static final Time END_TIME_KEY = null;
 	private static final String NOTEXISTING_END_TIME_KEY = "NotAEndTine";	
 	private static final Integer AVA_SESSION_ID_KEY = 6;
-	private static final String NOTEXISTING_AVA_SESSION_ID_KEY = "NotAAvaSessionID";
+	private static final Integer NOTEXISTING_AVA_SESSION_ID_KEY = -6;
 	private static final Date DAY_KEY = null;
 	private static final String NOTEXISTING_DAY_KEY = "NotADay";
 	
 	// common variable for subject and subject request
 	private static final String SUBJECT_NAME_KEY = "ECSE321";
 	private static final String NOTEXISTING_SUBJECT_NAME_KEY = "NotASubjectName";
-	private static final String DESCRIPTION = "Intro to SE";
-	private static final String NOTEXISTING_DESCRIPTION = "NotADescription";
+	private static final String DESCRIPTION_KEY = "Intro to SE";
+	private static final String NOTEXISTING_DESCRIPTION_KEY = "NotADescription";
 	
 	// subject request
 	private SubjectRequest request;
 	private static final Integer REQUEST_ID_KEY = 7;
-	private static final String NOTEXISTING_REQUEST_ID_KEY = "NotARequestID";
+	private static final Integer NOTEXISTING_REQUEST_ID_KEY = -7;
 	
 	// subject
 	private Subject subject;
@@ -150,9 +149,9 @@ public class ServiceTests {
 	// do we need Set<Offering>
 	private Commission comm;
 	private static final Integer COMMISSION_ID_KEY = 8;
-	private static final String NOTEXISTING_COMMISSION_ID_KEY = "NotACommmissionID";
+	private static final Integer NOTEXISTING_COMMISSION_ID_KEY = -8;
 	private static final double PERCENTAGE_KEY = 12.5;
-	private static final String NOTEXISTING_PERCENTAGE_KEY = "NotAPercentage";
+	private static final double NOTEXISTING_PERCENTAGE_KEY = -12.5;
 	
 	// classroom
 	// do we need Set<Offering>
@@ -192,7 +191,7 @@ public class ServiceTests {
 	// tutor already created
 	private TutorApplication tutorApplication;
 	private static final Integer APPLICATIONID_KEY = 10;
-	private static final String NOTEXISTING_APPLICATIONID_KEY = "NotAApplicationID";
+	private static final Integer NOTEXISTING_APPLICATIONID_KEY = -10;
 	private static final Boolean ISACCEPTED = true;
 	
 	private TutoringSystem system;
@@ -201,6 +200,7 @@ public class ServiceTests {
 	@Before
 	public void setMockOutput() {
 //		when(loginDao.findById((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
+		// public Login createLogin(String userName, String password) 
 			when(loginDao.findLoginByUserName(anyString())).thenAnswer((InvocationOnMock invocation) -> {	
 			if(invocation.getArgument(0).equals(LOGIN_KEY)) {
 				Login lgInfo = new Login();
@@ -219,10 +219,11 @@ public class ServiceTests {
 		when(loginDao.save(any(Login.class))).thenAnswer(returnPatameterAnswer);
 		when(tutoringSystemDao.save(any(TutoringSystem.class))).thenAnswer(returnPatameterAnswer);
 */		
-		when(managerDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+		when(managerDao.findManagerByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a manger, which is first name, does it makes more sense for checking managerID?
+			// 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 			if(invocation.getArgument(0).equals(MANAGERID_KEY)) {
-				Manager manager = new Manager();
+//				Manager manager = new Manager();
 				manager.setFirstName(FIRSTNAME_KEY);
 				manager.setLastName(LASTNAME_KEY);
 				manager.setDateOfBirth(dob);
@@ -237,9 +238,11 @@ public class ServiceTests {
 			}
 		});
 		
-		when(tutorDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+		when(tutorDao.findTutorByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			// here, getArgument(0) should be the first argument for create a tutor, which is first name, does it makes more sense for checking tutorID?
+			// 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> avaliableSessions, TutoringSystem tutoringSystem) {
 			if(invocation.getArgument(0).equals(TUTORID_KEY)) {
+//				Tutor tutor = new Tutor();
 				tutor.setFirstName(FIRSTNAME_KEY);
 				tutor.setLastName(LASTNAME_KEY);
 				tutor.setDateOfBirth(dob);
@@ -255,9 +258,11 @@ public class ServiceTests {
 			}
 		});
 		
-		when(studentDao.findById((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
-			// here, getArgument(0) should be the first argument for create a student, which is first name, does it makes more sense for checking studentID?
+		when(studentDao.findStudentByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			// here, getArgument(0) should be the first argument for create a student, which is first name, does it makes more sense for checking studentID
+			// 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
 			if(invocation.getArgument(0).equals(STUDENTID_KEY)) {
+//				Student student = new Student();
 				student.setFirstName(FIRSTNAME_KEY);
 				student.setLastName(LASTNAME_KEY);
 				student.setDateOfBirth(dob);
@@ -273,6 +278,79 @@ public class ServiceTests {
 			}
 		});
 		
+		// 	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
+		// TODO  need modification
+		when(avaliableSessionDao.findAvaliableSessionByAvaliableSessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(AVA_SESSION_ID_KEY)) {
+//				AvaliableSession avaliableSession = new AvaliableSession();
+//				@SuppressWarnings("unchecked")
+				Set<Tutor> tutors = new HashSet<Tutor>();	// temp solution, will modify TODO
+//				Set<Tutor> tutors = (Set<Tutor>) mock(Tutor.class);
+				avaliableSession.setAvaliableSessionID(AVA_SESSION_ID_KEY);
+				avaliableSession.setStartTime(START_TIME_KEY);
+				avaliableSession.setEndTime(START_TIME_KEY);
+				avaliableSession.setDay(DAY_KEY);
+				avaliableSession.setTutor(tutors);
+				avaliableSession.setTutoringSystem(system);
+				return student;
+			} else 
+				return null;
+		});
+		
+		
+		// 	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description,SubjectType subjectType, Manager manager, TutoringSystem tutoringSystem){
+		// TODO : need modification
+		when(subjectRequestDao.findSubjectRequestByRequestID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(REQUEST_ID_KEY)) {
+				Set<Student> students = new HashSet<Student>();	// temp solution, will modify TODO
+//				Set<Student> students = (Set<Student>) mock(Student.class);
+				SubjectType type = SubjectType.UNIVERSITY_COURSE;
+				request.setRequestID(REQUEST_ID_KEY);
+				request.setManager(manager);
+				request.setDescription(DESCRIPTION_KEY);
+				request.setName(SUBJECT_NAME_KEY);
+				request.setStudent(students);
+				request.setSubjectType(type);
+				request.setTutoringSystem(system);
+				return request;
+			} else
+				return null;
+		});
+
+		// 	public Subject createSubject(String name, String courseID, String description, SubjectType subjType, University university,TutoringSystem tutoringSystem) {
+
+		
+		// 	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
+
+		
+		
+		//  public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
+
+		
+		
+		
+		// 	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
+
+		
+		
+		
+		//  public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
+
+		
+		
+		
+		// 	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
+
+		
+		
+		
+		// 	public TutorApplication createTutorApplication(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
+
+		
+		
+		
+		// 	public TutoringSystem createTutoringSystem(Integer tutoringSystemID) {
+
 	}
 	
 	@Before
@@ -365,8 +443,28 @@ public class ServiceTests {
 	}
 	
 	@Test
+	public void testMockLoginQueryFound() {
+		assertNotNull(service.getLogin(LOGIN_KEY));
+	}
+	
+	@Test
+	public void testMockLoginQueryNotFound() {
+		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
+	}
+	
+	@Test
 	public void testMockMangerCreation() {
 		assertNotNull(manager);
+	}
+	
+	@Test
+	public void testMockManagerQueryFound() {
+		assertNotNull(service.getManager(MANAGERID_KEY));
+	}
+	
+	@Test
+	public void testMockManagerQueryNotFound() {
+		assertNull(service.getManager(NOTEXISTING_MANAGERID_KEY));
 	}
 	
 	@Test
@@ -375,12 +473,96 @@ public class ServiceTests {
 	}
 	
 	@Test
+	public void testMockTutorQueryFound() {
+		assertNotNull(service.getTutor(TUTORID_KEY));
+	}
+	
+	@Test
+	public void testMockTutorQueryNotFound() {
+		assertNull(service.getTutor(NOTEXISTING_TUTORID_KEY));
+	}
+	
+	@Test
 	public void testMockStudentCreation() {
 		assertNotNull(student);
 	}
 	
+	@Test
+	public void tsetMockStudentQueryFound() {
+		assertNotNull(service.getStudent(STUDENTID_KEY));
+	}
 	
+	@Test
+	public void tsetMockStudentQueryNotFound() {
+		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
+	}
 	
+	@Test
+	public void testMockAvaliableSessionCreation() {
+		assertNotNull(avaliableSession);
+	}
+	
+	/* TODO
+	 * this method is not passing, TutoringServiceService @848
+	@Test
+	public void testMockAvaliableSessionQueryFound() {
+		assertNotNull(service.getAvaliableSession(AVA_SESSION_ID_KEY));
+	}
+	*/
+	@Test
+	public void testMockAvaliableSessionQueryNotFound() {
+		assertNull(service.getAvaliableSession(NOTEXISTING_AVA_SESSION_ID_KEY));
+	}
+	
+	@Test
+	public void testMockSubjectRequestCreation() {
+		assertNotNull(request);
+	}
+	
+	@Test
+	public void testMockSubjectRequestQueryFound() {
+		assertNotNull(service.getSubjectRequest(REQUEST_ID_KEY));
+	}
+	
+	@Test
+	public void testMockSubjectRequestQueryNotFound() {
+		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
+	}
+	
+	@Test
+	public void testMockSubjectCreation() {
+		assertNotNull(subject);
+	}
+	
+	@Test
+	public void testMockCommissionCreation() {
+		assertNotNull(comm);
+	}
+	
+	@Test
+	public void testMockClassroomCreation() {
+		assertNotNull(classroom);
+	}
+	
+	@Test
+	public void testMockUniversityCreation() {
+		assertNotNull(university);
+	}
+	
+	@Test
+	public void testMockOfferingCreation() {
+		assertNotNull(offering);
+	}
+	
+	@Test
+	public void testMockReviewCreation() {
+		assertNotNull(review);
+	}
+	
+	@Test
+	public void testMockTutorApplicationCreation() {
+		assertNotNull(tutorApplication);
+	}
 	
 }
 
