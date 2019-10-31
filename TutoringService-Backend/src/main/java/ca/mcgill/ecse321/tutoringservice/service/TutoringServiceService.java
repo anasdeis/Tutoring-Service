@@ -159,7 +159,10 @@ public class TutoringServiceService {
 		if (percentage <= 0) {
 			error += "percentage cannot be <= 0!";
 		}
-		if (commissionID <= 0) {
+		if (commissionID == null) {
+			error += "commissionID cannot be null!";
+		}
+		else if (commissionID <= 0) {
 			error += "commissionID cannot be <= 0!";
 		}
 		if (manager == null) {

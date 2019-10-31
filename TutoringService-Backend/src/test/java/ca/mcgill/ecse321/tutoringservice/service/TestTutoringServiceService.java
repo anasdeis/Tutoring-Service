@@ -1467,7 +1467,7 @@ public class TestTutoringServiceService {
 		String error = "";
 
 		double percentage = 1;
-		Integer commissionID = 1;
+		Integer commissionID = null;
 
 		Manager manager = null;
 		TutoringSystem tutoringSystem = null;
@@ -1482,7 +1482,7 @@ public class TestTutoringServiceService {
 		List<Commission> allCommissions = service.getAllCommissions();
 
 		// check error
-		assertEquals("manager cannot be null!offerings cannot be null!tutoringSystem cannot be null!", error);
+		assertEquals("commissionID cannot be null!manager cannot be null!offerings cannot be null!tutoringSystem cannot be null!", error);
 		assertEquals(0, allCommissions.size());
 	}
 
