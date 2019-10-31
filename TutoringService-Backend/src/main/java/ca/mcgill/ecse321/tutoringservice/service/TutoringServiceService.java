@@ -417,9 +417,6 @@ public class TutoringServiceService {
 		if (studentID == null || studentID == 0) {
 			error = error + "Student ID cannot be empty!";
 		}
-		if (numCoursesEnrolled == null || numCoursesEnrolled == 0) {
-			error = error + "Number of courses enrolled cannot be empty!";
-		}
 		if (loginInfo == null) {
 			error = error + "Login Info cannot be empty!";
 		}

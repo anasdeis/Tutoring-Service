@@ -373,6 +373,10 @@ public class ServiceTests {
 			return null;
 		});
 
+//		when(tutoringSystemDao.findTutoringSystemByTutoringSystemID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+//			if(invocation.getArgument(0).equals()) {
+//		}
+		
 		// 	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
 		when(universityDao.findUniversityByName((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(UNIVERSITY_NAME_KEY)) {
@@ -469,105 +473,7 @@ public class ServiceTests {
 		tutorApplication = mock(TutorApplication.class);
 	}
 	
-	@Test
-	public void testCreateStudent() {
-		assertEquals(0, service.getAllStudents().size());
-		String firstName = "Charles";
-		String lastName = "Liu";
-		String email = "asdf@mcgill.ca";
-		Integer phone = 1234567890;
-		Integer studentID = 88888888;
-		Integer numCoursesEnrolled = 5;
-		
-		try {
-			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
-		} catch (IllegalArgumentException e) {
-			fail();
-		}
-		
-		assertEquals(firstName, student.getFirstName());
-		assertEquals(lastName, student.getLastName());
-		assertEquals(dob, student.getDateOfBirth());
-		assertEquals(email, student.getEmail());
-		assertEquals(numCoursesEnrolled, student.getNumCoursesEnrolled());
-		assertEquals(studentID, student.getPersonId());
-		assertEquals(lgInfo, student.getLoginInfo());
-		assertEquals(system, student.getTutoringSystem());
-		assertEquals(phone, student.getPhoneNumber());
-		assertEquals(null, student.getSubjectRequest());
-		assertEquals(null, student.getCoursesTaken());
-	}
 	
-	@Test public void testCreateStudentNull() {
-		String error = "";
-		String firstName =  null;
-		String lastName = null;
-		String email = null;
-		Integer phone = null;
-		Integer studentID = null;
-		Integer numCoursesEnrolled = null;
-		
-		try {
-			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-		
-		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Number of courses enrolled cannot be empty!Tutoring System cannot be empty!", error); 
-	}
-	
-	@Test public void testCreateStudentEmpty() {
-		String error = "";
-		String firstName =  "";
-		String lastName = "";
-		String email = "";
-		Integer phone = 0;
-		Integer studentID = 0;
-		Integer numCoursesEnrolled =0;
-		
-		try {
-			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-		
-		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Number of courses enrolled cannot be empty!Tutoring System cannot be empty!", error); 
-	}
-	
-	@Test public void testCreateStudentSpaces() {
-		String error = "";
-		String firstName =  "   ";
-		String lastName = "   ";
-		String email = "   ";
-		Integer phone = 0;
-		Integer studentID = 0;
-		Integer numCoursesEnrolled = 0;
-		
-		try {
-			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
-		} catch (IllegalArgumentException e) {
-			error = e.getMessage();
-		}
-		
-		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Number of courses enrolled cannot be empty!Tutoring System cannot be empty!", error); 
-	}
-	
-	@Test
-	public void testMockStudentCreation() {
-		assertNotNull(student);
-	}
-
-	@Test
-	public void tsetMockStudentQueryFound() {
-		assertNotNull(service.getStudent(STUDENTID_KEY));
-	}
-
-	@Test
-	public void tsetMockStudentQueryNotFound() {
-		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
-	}
-
-
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
@@ -796,6 +702,108 @@ public class ServiceTests {
 	public void testMockSubjectQueryNotFound() {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
 	}
+	
+	
+	@Test
+	public void testCreateStudent() {
+		assertEquals(0, service.getAllStudents().size());
+		String firstName = "Charles";
+		String lastName = "Liu";
+		String email = "asdf@mcgill.ca";
+		Integer phone = 1234567890;
+		Integer studentID = 88888888;
+		Integer numCoursesEnrolled = 5;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(firstName, student.getFirstName());
+		assertEquals(lastName, student.getLastName());
+		assertEquals(dob, student.getDateOfBirth());
+		assertEquals(email, student.getEmail());
+		assertEquals(numCoursesEnrolled, student.getNumCoursesEnrolled());
+		assertEquals(studentID, student.getPersonId());
+		assertEquals(lgInfo, student.getLoginInfo());
+		assertEquals(system, student.getTutoringSystem());
+		assertEquals(phone, student.getPhoneNumber());
+		assertEquals(null, student.getSubjectRequest());
+		assertEquals(null, student.getCoursesTaken());
+	}
+	
+	@Test public void testCreateStudentNull() {
+		String error = "";
+		String firstName =  null;
+		String lastName = null;
+		String email = null;
+		Integer phone = null;
+		Integer studentID = null;
+		Integer numCoursesEnrolled = null;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	@Test public void testCreateStudentEmpty() {
+		String error = "";
+		String firstName =  "";
+		String lastName = "";
+		String email = "";
+		Integer phone = 0;
+		Integer studentID = 0;
+		Integer numCoursesEnrolled =0;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	@Test public void testCreateStudentSpaces() {
+		String error = "";
+		String firstName =  "   ";
+		String lastName = "   ";
+		String email = "   ";
+		Integer phone = 0;
+		Integer studentID = 0;
+		Integer numCoursesEnrolled = 0;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	@Test
+	public void testMockStudentCreation() {
+		assertNotNull(student);
+	}
+
+	@Test
+	public void tsetMockStudentQueryFound() {
+		assertNotNull(service.getStudent(STUDENTID_KEY));
+	}
+
+	@Test
+	public void tsetMockStudentQueryNotFound() {
+		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
+	}
+
+
+	
 	
 	@Test
 	public void testMockMangerCreation() {
