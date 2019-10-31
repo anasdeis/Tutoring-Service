@@ -572,9 +572,9 @@ public class TutoringServiceService {
 			error = error + "Last name cannot be empty!";
 		}
 		
-		if (dob == null) {
-			error = error + "DOB cannot be empty!";
-		}
+//		if (dob == null) {
+//			error = error + "DOB cannot be empty!";
+//		}
 		 
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
@@ -598,38 +598,38 @@ public class TutoringServiceService {
 		//			throw new IllegalArgumentException("valid input needed");
 		//		}
 
-		if (tutorApplications != null)
-		{
-			for (TutorApplication tutorApplication : tutorApplications) {
-				if (tutorApplication == null) {
-					error = error + "TutorApplications needs to be selected for tutor!";
-				} else if (!tutorApplicationRepository.existsByApplicationId(tutorApplication.getApplicationId())) {
-					error = error + "TutorApplication does not exist!";
-				}
-			}
-		}
-		
-		if (offerings != null)
-		{
-			for (Offering offering : offerings) {
-				if (offering == null) {
-					error = error + "Offering needs to be selected for tutor!";
-				} else if (!offeringRepository.existsByOfferingID(offering.getOfferingID())) {
-					error = error + "Offering does not exist!";
-				}
-			}
-		}
-		
-		if (AvailableSessions != null)
-		{
-			for (AvailableSession AvailableSession : AvailableSessions) {
-				if (AvailableSession == null) {
-					error = error + "AvailableSession needs to be selected for tutor!";
-				} else if (!AvailableSessionRepository.existsByAvailableSessionID(AvailableSession.getAvailableSessionID())) {
-					error = error + "AvailableSession does not exist!";
-				}
-			}
-		}
+//		if (tutorApplications != null)
+//		{
+//			for (TutorApplication tutorApplication : tutorApplications) {
+//				if (tutorApplication == null) {
+//					error = error + "TutorApplications needs to be selected for tutor!";
+//				} else if (!tutorApplicationRepository.existsByApplicationId(tutorApplication.getApplicationId())) {
+//					error = error + "TutorApplication does not exist!";
+//				}
+//			}
+//		}
+//		
+//		if (offerings != null)
+//		{
+//			for (Offering offering : offerings) {
+//				if (offering == null) {
+//					error = error + "Offering needs to be selected for tutor!";
+//				} else if (!offeringRepository.existsByOfferingID(offering.getOfferingID())) {
+//					error = error + "Offering does not exist!";
+//				}
+//			}
+//		}
+//		
+//		if (AvailableSessions != null)
+//		{
+//			for (AvailableSession AvailableSession : AvailableSessions) {
+//				if (AvailableSession == null) {
+//					error = error + "AvailableSession needs to be selected for tutor!";
+//				} else if (!AvailableSessionRepository.existsByAvailableSessionID(AvailableSession.getAvailableSessionID())) {
+//					error = error + "AvailableSession does not exist!";
+//				}
+//			}
+//		}
 		
 		error = error.trim();
 		if (error.length() > 0) {

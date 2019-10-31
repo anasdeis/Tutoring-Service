@@ -544,7 +544,7 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("First name cannot be empty!Last name cannot be empty!DOB cannot be empty!Email cannot be empty!"
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
 				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
 
 		// check no change in memory

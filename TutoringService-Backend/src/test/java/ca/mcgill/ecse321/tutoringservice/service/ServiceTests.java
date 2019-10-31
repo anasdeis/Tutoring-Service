@@ -824,6 +824,125 @@ public class ServiceTests {
 	public void testMockManagerQueryNotFound() {
 		assertNull(service.getManager(NOTEXISTING_MANAGERID_KEY));
 	}
+	
+	
+	
+	/*
+	 * Tutor
+	 */
+	@Test
+	public void testCreateTutor() {
+		assertEquals(0, service.getAllTutors().size());
+		Integer tutorID = 88888;
+		String first = "Andy";
+		String last = "He";
+		String email = "88888@gmail.com";
+		Integer phone = 5141234;
+		Boolean isRegistered = true;
+		Set<Offering> offerings = new HashSet<Offering>();
+		Set<AvailableSession> classtimes = new HashSet<AvailableSession>();
+		Set<TutorApplication> tutorApplications = new HashSet<TutorApplication>();
+//		offering = findOfferingByOfferingID("123");
+		
+//		Offering offering = new Offering();
+		offerings.add(offering);
+		tutorApplications.add(tutorApplication);
+		classtimes.add(AvailableSession);
+
+		
+		try {
+			tutor = service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, lgInfo, tutorApplications, offerings, classtimes, system);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+		
+		assertEquals(first, tutor.getFirstName());
+		assertEquals(last, tutor.getLastName());
+		assertEquals(dob, tutor.getDateOfBirth());
+		assertEquals(email, tutor.getEmail());
+		assertEquals(phone, tutor.getPhoneNumber());
+		assertEquals(tutorID, tutor.getPersonId());
+		assertEquals(isRegistered, tutor.getIsRegistered());
+		assertEquals(offerings, tutor.getOffering());
+		assertEquals(tutorApplications, tutor.getTutorApplication());
+		assertEquals(classtimes, tutor.getAvailableSession());
+		assertEquals(lgInfo, tutor.getLoginInfo());
+		assertEquals(system, tutor.getTutoringSystem());
+	}
+	
+	
+	@Test
+	public void testCreateTutorNull() {
+		String error = "";
+
+		Integer tutorID = null;
+		String first = null;
+		String last = null;
+		String email = null;
+		Integer phone = null;
+		Boolean isRegistered = null;
+		Login lgInfo = null;
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, lgInfo, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+}
+	
+	@Test
+	public void testCreateTutorEmpty() {
+		String error = "";
+
+		Integer tutorID = 0;
+		String first = "";
+		String last = "";
+		String email = "";
+		Integer phone = 0;
+		Boolean isRegistered = null;
+
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+}
+	
+	@Test
+	public void testCreateTutorSpace() {
+		String error = "";
+
+		Integer tutorID = 0;
+		String first = " ";
+		String last = " ";
+		String email = " ";
+		Integer phone = 0;
+		Boolean isRegistered = null;
+
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+}
+	
+	
+	
 
 	@Test
 	public void testMockTutorCreation() {
