@@ -563,7 +563,7 @@ public class TutoringServiceService {
 	 * Tutor 
 	 */
 	@Transactional
-	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvailableSession> AvailableSessions, TutoringSystem tutoringSystem) {
+	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvailableSession> availableSessions, TutoringSystem tutoringSystem) {
 		String error = ""; 
 
 		if (first == null || first.trim().length() == 0) {
@@ -573,11 +573,11 @@ public class TutoringServiceService {
 		if (last == null || last.trim().length() == 0) {
 			error = error + "Last name cannot be empty!";
 		}
-		
+		/*
 		if (dob == null) {
 			error = error + "DOB cannot be empty!";
 		}
-		 
+		*/ 
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
 		}
@@ -622,9 +622,9 @@ public class TutoringServiceService {
 			}
 		}
 		
-		if (AvailableSessions != null)
+		if (availableSessions != null)
 		{
-			for (AvailableSession AvailableSession : AvailableSessions) {
+			for (AvailableSession AvailableSession : availableSessions) {
 				if (AvailableSession == null) {
 					error = error + "AvailableSession needs to be selected for tutor!";
 				} else if (!AvailableSessionRepository.existsByAvailableSessionID(AvailableSession.getAvailableSessionID())) {
@@ -649,7 +649,7 @@ public class TutoringServiceService {
 		tutor.setIsRegistered(isRegistered);
 		tutor.setLoginInfo(loginInfo);
 	    tutor.setTutorApplication(tutorApplications);
-	    tutor.setAvailableSession(AvailableSessions);
+	    tutor.setAvailableSession(availableSessions);
 	    tutor.setOffering(offerings);
 		tutor.setTutoringSystem(tutoringSystem);
 		tutorRepository.save(tutor);

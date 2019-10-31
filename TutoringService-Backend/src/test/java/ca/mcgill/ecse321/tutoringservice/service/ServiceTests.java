@@ -5,11 +5,13 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
+
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.format.*;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.SubjectKeyIDRequest;
 
@@ -20,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.mockito.internal.util.collections.Sets;
 
 import ca.mcgill.ecse321.tutoringservice.controller.TutoringServiceRestController;
 import ca.mcgill.ecse321.tutoringservice.dao.*;
@@ -478,10 +481,11 @@ public class ServiceTests {
 		review = mock(Review.class);
 		tutorApplication = mock(TutorApplication.class);
 		system = mock(TutoringSystem.class);
-	}
+		
+	}		
 	
 	/*
-	 * Login
+	 * Login Done
 	 */
 	@Test
 	public void testCreateLogin() {
@@ -555,16 +559,20 @@ public class ServiceTests {
 	@Test
 	public void testMockLoginQueryFound() {
 		assertNotNull(service.getLogin(LOGIN_KEY));
-		assertEquals(LOGIN_KEY,service.getLogin(LOGIN_KEY).getUserName());
 	}
 
+	@Test
+	public void testGetExistingLogin() {
+		assertEquals(LOGIN_KEY,service.getLogin(LOGIN_KEY).getUserName());
+	}
+	
 	@Test
 	public void testMockLoginQueryNotFound() {
 		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
 	}	
 	
 	/*
-	 * Subject
+	 * Subject Done
 	 */
 	@Test
 	public void testCreateSubject() {
@@ -698,16 +706,20 @@ public class ServiceTests {
 	@Test
 	public void testMockSubjectQueryFound() {
 		assertNotNull(service.getSubject(COURSEID_KEY));
-		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
 	}
 
+	@Test
+	public void testGetExistingSubject() {
+		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
+	}
+	
 	@Test
 	public void testMockSubjectQueryNotFound() {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
 	}
 
 /*
- * Student	
+ * Student	Done
  */
 	@Test
 	public void testCreateStudent() {
@@ -800,6 +812,10 @@ public class ServiceTests {
 	@Test
 	public void tsetMockStudentQueryFound() {
 		assertNotNull(service.getStudent(STUDENTID_KEY));
+	}
+	
+	@Test
+	public void testGetExistingStudent() {
 		assertEquals(STUDENTID_KEY,service.getStudent(STUDENTID_KEY).getPersonId());
 	}
 
@@ -809,7 +825,7 @@ public class ServiceTests {
 	}
 	
 	/*
-	 * Manager
+	 * Manager Done
 	 */
 	@Test
 	public void testCreateManager() {
@@ -846,7 +862,7 @@ public class ServiceTests {
 		Integer phone = null;
 
 		try {
-			service.createManager(first, last, dob, email, phone, managerID, null, null);
+			manager = service.createManager(first, last, dob, email, phone, managerID, null, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -869,7 +885,7 @@ public class ServiceTests {
 		String error = null;
 
 		try {
-			service.createManager(first, last, dob, email, phone, managerID, null, null);
+			manager = service.createManager(first, last, dob, email, phone, managerID, null, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -895,7 +911,7 @@ public class ServiceTests {
 		String error = null ;
 
 		try {
-			service.createManager(first, last, dob, email, phone, managerID, null, null);
+			manager = service.createManager(first, last, dob, email, phone, managerID, null, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -917,14 +933,131 @@ public class ServiceTests {
 	@Test
 	public void testMockManagerQueryFound() {
 		assertNotNull(service.getManager(MANAGERID_KEY));
-		assertEquals(MANAGERID_KEY, service.getManager(MANAGERID_KEY).getPersonId());
 	}
 
+	@Test
+	public void testGetExistingManager() {
+		assertEquals(MANAGERID_KEY, service.getManager(MANAGERID_KEY).getPersonId());
+	}
+	
 	@Test
 	public void testMockManagerQueryNotFound() {
 		assertNull(service.getManager(NOTEXISTING_MANAGERID_KEY));
 	}
 
+	/*
+	 * Tutor
+	 */
+	/*@Test
+	public void testCreateTutor() {
+		assertEquals(0, service.getAllTutors().size());
+		Integer tutorID = 88888;
+		String first = "Andy";
+		String last = "He";
+		String email = "88888@gmail.com";
+		Integer phone = 5141234;
+		Boolean isRegistered = true;
+		Set<Offering> offerings = new HashSet<Offering>();
+		Set<AvailableSession> classtimes = new HashSet<AvailableSession>();
+		Set<TutorApplication> tutorApplications = new HashSet<TutorApplication>();
+//		offering = findOfferingByOfferingID("123");
+		
+//		Offering offering = new Offering();
+		offerings.add(offering);
+		tutorApplications.add(tutorApplication);
+		classtimes.add(availableSession);
+		
+		try {
+			tutor = service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, lgInfo, tutorApplications, offerings, classtimes, system);
+
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(first, tutor.getFirstName());
+		assertEquals(last, tutor.getLastName());
+		assertEquals(dob, tutor.getDateOfBirth());
+		assertEquals(email, tutor.getEmail());
+		assertEquals(phone, tutor.getPhoneNumber());
+		assertEquals(tutorID, tutor.getPersonId());
+		assertEquals(isRegistered, tutor.getIsRegistered());
+		assertEquals(offerings, tutor.getOffering());
+		assertEquals(tutorApplications, tutor.getTutorApplication());
+		assertEquals(classtimes, tutor.getAvailableSession());
+		assertEquals(lgInfo, tutor.getLoginInfo());
+		assertEquals(system, tutor.getTutoringSystem());
+	}
+	*/
+	
+	@Test
+	public void testCreateTutorNull() {
+		String error = "";
+
+		Integer tutorID = null;
+		String first = null;
+		String last = null;
+		String email = null;
+		Integer phone = null;
+		Boolean isRegistered = null;
+		Login lgInfo = null;
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, lgInfo, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+}
+	
+	@Test
+	public void testCreateTutorEmpty() {
+		String error = "";
+
+		Integer tutorID = 0;
+		String first = "";
+		String last = "";
+		String email = "";
+		Integer phone = 0;
+		Boolean isRegistered = null;
+
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+}
+	
+	@Test
+	public void testCreateTutorSpace() {
+		String error = "";
+
+		Integer tutorID = 0;
+		String first = " ";
+		String last = " ";
+		String email = " ";
+		Integer phone = 0;
+		Boolean isRegistered = null;
+
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Tutor ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+}
+	
 	@Test
 	public void testMockTutorCreation() {
 		assertNotNull(tutor);
@@ -934,13 +1067,20 @@ public class ServiceTests {
 	public void testMockTutorQueryFound() {
 		assertNotNull(service.getTutor(TUTORID_KEY));
 	}
-
+	
+	@Test
+	public void testGetExistingTutor() {
+		assertEquals(TUTORID_KEY, service.getTutor(TUTORID_KEY).getPersonId());
+	}
+	
 	@Test
 	public void testMockTutorQueryNotFound() {
 		assertNull(service.getTutor(NOTEXISTING_TUTORID_KEY));
 	}
-
 	
+	/*
+	 * Available Session
+	 */
 	@Test
 	public void testMockAvailableSessionCreation() {
 		assertNotNull(availableSession);
@@ -952,6 +1092,12 @@ public class ServiceTests {
 //	public void testMockAvailableSessionQueryFound() {
 //		assertNotNull(service.getAvailableSession(AVA_SESSION_ID_KEY));
 //	}
+	
+//	same error as testMock...QueryFound, cannot be cast to ...
+//	@Test
+//	public void testGetExistingAvaSession() {
+//		assertEquals(AVA_SESSION_ID_KEY, service.getAvailableSession(AVA_SESSION_ID_KEY).getAvailableSessionID());
+//	}	
 	
 	@Test
 	public void testMockAvailableSessionQueryNotFound() {
@@ -973,7 +1119,9 @@ public class ServiceTests {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
 	}
 	
-
+	/*
+	 * Commission Done
+	 */
 	@Test
 	public void testCreateCommission() {
 		assertEquals(0, service.getAllCommissions().size());
@@ -1045,7 +1193,6 @@ public class ServiceTests {
 		assertEquals("percentage cannot be <= 0!commissionID cannot be <= 0!", error); 
 	}
 	
-	
 	@Test
 	public void testMockCommissionCreation() {
 		assertNotNull(comm);
@@ -1055,12 +1202,20 @@ public class ServiceTests {
 	public void testMockCommissionQueryFound() {
 		assertNotNull(service.getCommission(COMMISSION_ID_KEY));
 	}
-
+	
+	@Test
+	public void testGetExistingCommission() {
+		assertEquals(COMMISSION_ID_KEY, service.getCommission(COMMISSION_ID_KEY).getCommissionID());
+	}
+	
 	@Test
 	public void testMockCommissionQueryNotFound() {
 		assertNull(service.getCommission(NOTEXISTING_COMMISSION_ID_KEY));
 	}
 	
+	/*
+	 * Classroom
+	 */
 	@Test
 	public void testMockClassroomCreation() {
 		assertNotNull(classroom);
@@ -1072,10 +1227,18 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingClassroom() {
+		assertEquals(ROOMCODE_KEY, service.getClassroom(ROOMCODE_KEY).getRoomCode());
+	}
+
+	@Test
 	public void testMockClassroomQueryNotFound() {
 		assertNull(service.getClassroom(NOTEXISTING_ROOMCODE_KEY));
 	}
 	
+	/*
+	 * University
+	 */
 	@Test
 	public void testMockUniversityCreation() {
 		assertNotNull(university);
@@ -1087,10 +1250,18 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingUniversity() {
+		assertEquals(UNIVERSITY_NAME_KEY, service.getUniversity(UNIVERSITY_NAME_KEY).getName());
+	}
+	
+	@Test
 	public void testMockUniversityQueryNotFound() {
 		assertNull(service.getUniversity(NOTEXISTING_UNIVERSITY_NAME_KEY));
 	}
 	
+	/*
+	 * Offering
+	 */
 	@Test
 	public void testMockOfferingCreation() {
 		assertNotNull(offering);
@@ -1102,10 +1273,18 @@ public class ServiceTests {
 	}
 	
 	@Test
+	public void testGetExistingOffering() {
+		assertEquals(OFFERID_KEY, service.getOffering(OFFERID_KEY).getOfferingID());
+	}
+	
+	@Test
 	public void testMockOfferingQueryNotFound() {
 		assertNull(service.getOffering(NOTEXISTING_OFFERID_KEY));
 	}
 	
+	/*
+	 * Review
+	 */
 	@Test
 	public void testMockReviewCreation() {
 		assertNotNull(review);
@@ -1115,12 +1294,20 @@ public class ServiceTests {
 	public void testMockReviewQueryFound() {
 		assertNotNull(service.getReview(REVIEWID_KEY));
 	}
+	
+	@Test
+	public void testGetExistingReview() {
+		assertEquals(REVIEWID_KEY, service.getReview(REVIEWID_KEY).getReviewID());
+	}
 
 	@Test
 	public void testMockReviewQueryNotFound() {
 		assertNull(service.getReview(NOTEXISTING_REVIEWID_KEY));
 	}
 	
+	/*
+	 * Tutor Application
+	 */
 	@Test
 	public void testMockTutorApplicationCreation() {
 		assertNotNull(tutorApplication);
@@ -1129,6 +1316,11 @@ public class ServiceTests {
 	@Test
 	public void testMockTutorApplicationQueryFound() {
 		assertNotNull(service.getTutorApplication(APPLICATIONID_KEY));
+	}
+	
+	@Test
+	public void testGetExistingTutorApplication() {
+		assertEquals(APPLICATIONID_KEY, service.getTutorApplication(APPLICATIONID_KEY).getApplicationId());
 	}
 
 	@Test
