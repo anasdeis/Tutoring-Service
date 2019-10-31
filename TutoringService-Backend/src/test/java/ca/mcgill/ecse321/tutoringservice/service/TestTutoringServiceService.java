@@ -36,7 +36,7 @@ public class TestTutoringServiceService {
 	private TutoringServiceService service;
 
 	@Autowired
-	private AvaliableSessionRepository avaliableSessionRepository;
+	private AvailableSessionRepository AvailableSessionRepository;
 
 	@Autowired
 	private ClassroomRepository classroomRepository;
@@ -86,7 +86,7 @@ public class TestTutoringServiceService {
 		offeringRepository.deleteAll();
 		classroomRepository.deleteAll();
 		managerRepository.deleteAll();
-		avaliableSessionRepository.deleteAll();
+		AvailableSessionRepository.deleteAll();
 		reviewRepository.deleteAll();
 		studentRepository.deleteAll();
 		tutorApplicationRepository.deleteAll();
@@ -96,7 +96,7 @@ public class TestTutoringServiceService {
 		tutoringSystemRepository.deleteAll();
 	}
 
-	private void setTutor(Tutor tutor, String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<AvaliableSession> availableSessions, Set<Offering> offerings,TutoringSystem tutoringSystem) {
+	private void setTutor(Tutor tutor, String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<AvailableSession> availableSessions, Set<Offering> offerings,TutoringSystem tutoringSystem) {
 		tutor.setFirstName(first);
 		tutor.setLastName(last);
 		tutor.setDateOfBirth(dob);
@@ -105,7 +105,7 @@ public class TestTutoringServiceService {
 		tutor.setPersonId(tutorID);
 		tutor.setIsRegistered(isRegistered);
 		tutor.setLoginInfo(loginInfo);
-		tutor.setAvaliableSession(availableSessions);
+		tutor.setAvailableSession(availableSessions);
 		tutor.setTutorApplication(tutorApplications);
 		tutor.setOffering(offerings);
 		tutor.setTutoringSystem(tutoringSystem);
@@ -620,11 +620,11 @@ public class TestTutoringServiceService {
 	}
 
 	/*
-	 * Avaliable Session
+	 * Available Session
 	 */
 	@Test
-	public void testCreateAvaliableSession() {
-		assertEquals(0, service.getAllAvaliableSessions().size());
+	public void testCreateAvailableSession() {
+		assertEquals(0, service.getAllAvailableSessions().size());
 
 		Calendar c = Calendar.getInstance();
 
@@ -645,7 +645,7 @@ public class TestTutoringServiceService {
 		LocalTime startTime = LocalTime.parse("09:00");
 		c.set(2017, Calendar.MARCH, 16, 10, 30, 0);
 		LocalTime endTime = LocalTime.parse("10:30");
-		Integer avaliableSessionID = 5;
+		Integer AvailableSessionID = 5;
 
 		//tutors
 		String first = "Anas";
@@ -666,23 +666,23 @@ public class TestTutoringServiceService {
 		tutorRepository.save(tutor);
 
 		try {
-			service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), avaliableSessionID, day, tutors, tutoringSystem);
+			service.createAvailableSession(Time.valueOf(startTime), Time.valueOf(endTime), AvailableSessionID, day, tutors, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 
 		//Available Session
-		assertEquals(1, service.getAllAvaliableSessions().size());
-		assertEquals(avaliableSessionID, service.getAllAvaliableSessions().get(0).getAvaliableSessionID());
-		assertEquals(day.toString(), service.getAllAvaliableSessions().get(0).getDay().toString());
+		assertEquals(1, service.getAllAvailableSessions().size());
+		assertEquals(AvailableSessionID, service.getAllAvailableSessions().get(0).getAvailableSessionID());
+		assertEquals(day.toString(), service.getAllAvailableSessions().get(0).getDay().toString());
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-		assertEquals(startTime.format(formatter).toString(), service.getAllAvaliableSessions().get(0).getStartTime().toString());
-		assertEquals(endTime.format(formatter).toString(), service.getAllAvaliableSessions().get(0).getEndTime().toString());
+		assertEquals(startTime.format(formatter).toString(), service.getAllAvailableSessions().get(0).getStartTime().toString());
+		assertEquals(endTime.format(formatter).toString(), service.getAllAvailableSessions().get(0).getEndTime().toString());
 
 		// Need to assert by ID using foreign key for TutoringSystem (in this case tutoringSystemsID @ManyToOne
 		//No foreign key for Tutor
-		assertEquals(service.getAllTutoringSystems().get(0).getTutoringSystemID(), service.getAllAvaliableSessions().get(0).getTutoringSystem().getTutoringSystemID());
+		assertEquals(service.getAllTutoringSystems().get(0).getTutoringSystemID(), service.getAllAvailableSessions().get(0).getTutoringSystem().getTutoringSystemID());
 
 		//Tutor
 		assertEquals(1, service.getAllTutors().size());
@@ -703,8 +703,8 @@ public class TestTutoringServiceService {
 	}
 
 	@Test
-	public void testCreateAvaliableSessionNull() {
-		assertEquals(0, service.getAllAvaliableSessions().size());
+	public void testCreateAvailableSessionNull() {
+		assertEquals(0, service.getAllAvailableSessions().size());
 
 		//tutoringSystem
 		TutoringSystem tutoringSystem = null;
@@ -721,30 +721,30 @@ public class TestTutoringServiceService {
 		Date day = null;
 		Time startTime = null;
 		Time endTime = null;
-		Integer avaliableSessionID = null;
+		Integer AvailableSessionID = null;
 
 
 		String error = null;
 		try {
-			service.createAvaliableSession(startTime, endTime, avaliableSessionID, day, tutors, tutoringSystem); 
+			service.createAvailableSession(startTime, endTime, AvailableSessionID, day, tutors, tutoringSystem); 
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
 		assertEquals(
-				"AvaliableSession AvaliableSessionID cannot be empty!AvaliableSession start time cannot be empty!AvaliableSession end time cannot be empty!AvaliableSession day cannot be empty!TutoringSystem needs to be selected for available session!Tutor needs to be selected for available session!",
+				"AvailableSession AvailableSessionID cannot be empty!AvailableSession start time cannot be empty!AvailableSession end time cannot be empty!AvailableSession day cannot be empty!TutoringSystem needs to be selected for available session!Tutor needs to be selected for available session!",
 				error);
 		// check model in memory
-		assertEquals(0, service.getAllAvaliableSessions().size());
+		assertEquals(0, service.getAllAvailableSessions().size());
 		assertEquals(0, service.getAllTutors().size());
 		assertEquals(0, service.getAllTutoringSystems().size());
 	}
 
 
 	@Test
-	public void testCreateAvaliableSessionEndTimeBeforeStartTime() {
-		assertEquals(0, service.getAllAvaliableSessions().size());
+	public void testCreateAvailableSessionEndTimeBeforeStartTime() {
+		assertEquals(0, service.getAllAvailableSessions().size());
 
 		Calendar c = Calendar.getInstance();
 
@@ -760,7 +760,7 @@ public class TestTutoringServiceService {
 		setLogin(login, userName, password);
 
 		//availableSession
-		Integer avaliableSessionID = 15;
+		Integer AvailableSessionID = 15;
 		c.set(2016, Calendar.OCTOBER, 16, 9, 00, 0);
 		Date day = new Date(c.getTimeInMillis());
 		LocalTime startTime = LocalTime.parse("09:00");
@@ -787,15 +787,15 @@ public class TestTutoringServiceService {
 
 		String error = null;
 		try {
-			service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), avaliableSessionID, day, tutors, tutoringSystem);
+			service.createAvailableSession(Time.valueOf(startTime), Time.valueOf(endTime), AvailableSessionID, day, tutors, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		// check error
-		assertEquals("AvaliableSession end time cannot be before event start time!", error);
+		assertEquals("AvailableSession end time cannot be before event start time!", error);
 		// check model in memory
-		assertEquals(0, service.getAllAvaliableSessions().size());
+		assertEquals(0, service.getAllAvailableSessions().size());
 
 		//Tutor
 		assertEquals(1, service.getAllTutors().size());
@@ -816,8 +816,8 @@ public class TestTutoringServiceService {
 	}
 
 	@Test
-	public void testAvaliableSessionTutorAndTutoringSystemDoNotExist() {
-		assertEquals(0, service.getAllAvaliableSessions().size());
+	public void testAvailableSessionTutorAndTutoringSystemDoNotExist() {
+		assertEquals(0, service.getAllAvailableSessions().size());
 
 		Calendar c = Calendar.getInstance();
 
@@ -833,7 +833,7 @@ public class TestTutoringServiceService {
 		LocalTime startTime = LocalTime.parse("09:00");
 		c.set(2017, Calendar.MARCH, 16, 10, 30, 0);
 		LocalTime endTime = LocalTime.parse("10:30");
-		Integer avaliableSessionID = 5;
+		Integer AvailableSessionID = 5;
 
 		//login
 		String userName = "adeis";
@@ -857,7 +857,7 @@ public class TestTutoringServiceService {
 
 		String error = null;
 		try {
-			service.createAvaliableSession(Time.valueOf(startTime), Time.valueOf(endTime), avaliableSessionID, day, tutors, tutoringSystem);
+			service.createAvailableSession(Time.valueOf(startTime), Time.valueOf(endTime), AvailableSessionID, day, tutors, tutoringSystem);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -866,7 +866,7 @@ public class TestTutoringServiceService {
 		assertEquals("TutoringSystem does not exist!Tutor does not exist!", error);
 
 		// check model in memory
-		assertEquals(0, service.getAllAvaliableSessions().size());
+		assertEquals(0, service.getAllAvailableSessions().size());
 		assertEquals(0, service.getAllTutors().size());
 		assertEquals(0, service.getAllTutoringSystems().size());
 	}
@@ -1156,10 +1156,10 @@ public class TestTutoringServiceService {
 
 		String offeringID = "FALL19";
 		String term = "fall";
-		AvaliableSession classTime = new AvaliableSession();
+		AvailableSession classTime = new AvailableSession();
 		classTime.setDay(dateOfBirth);
 		classTime.setTutoringSystem(tutoringSystem);
-		classTime.setAvaliableSessionID(123456);
+		classTime.setAvailableSessionID(123456);
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
@@ -1189,7 +1189,7 @@ public class TestTutoringServiceService {
 		room.setRoomCode("123");
 		room.setTutoringSystem(tutoringSystem);
 
-		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
 //		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
@@ -1216,7 +1216,7 @@ public class TestTutoringServiceService {
 		tutorRepository.save(tutor);
 		classroomRepository.save(room);
 		subjectRepository.save(subject);
-		avaliableSessionRepository.save(classTime);
+		AvailableSessionRepository.save(classTime);
 		commissionRepository.save(com);
 		offeringRepository.save(offering);
 
@@ -1268,10 +1268,10 @@ public class TestTutoringServiceService {
 
 		String offeringID = "FALL19";
 		String term = "fall";
-		AvaliableSession classTime = new AvaliableSession();
+		AvailableSession classTime = new AvailableSession();
 		classTime.setDay(dateOfBirth);
 		classTime.setTutoringSystem(tutoringSystem);
-		classTime.setAvaliableSessionID(1234);
+		classTime.setAvailableSessionID(1234);
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
@@ -1302,7 +1302,7 @@ public class TestTutoringServiceService {
 		room.setRoomCode("rm123");
 		room.setTutoringSystem(tutoringSystem);
 
-		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
 //		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
@@ -1329,7 +1329,7 @@ public class TestTutoringServiceService {
 		tutorRepository.save(tutor);
 		classroomRepository.save(room);
 		subjectRepository.save(subject);
-		avaliableSessionRepository.save(classTime);
+		AvailableSessionRepository.save(classTime);
 		commissionRepository.save(com);
 		offeringRepository.save(offering);
 
@@ -1382,10 +1382,10 @@ public class TestTutoringServiceService {
 
 		String offeringID = "FALL19";
 		String term = "fall";
-		AvaliableSession classTime = new AvaliableSession();
+		AvailableSession classTime = new AvailableSession();
 		classTime.setDay(dateOfBirth);
 		classTime.setTutoringSystem(tutoringSystem);
-		classTime.setAvaliableSessionID(123456);
+		classTime.setAvailableSessionID(123456);
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
@@ -1415,7 +1415,7 @@ public class TestTutoringServiceService {
 		room.setRoomCode("123");
 		room.setTutoringSystem(tutoringSystem);
 
-		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
 //		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
@@ -1442,7 +1442,7 @@ public class TestTutoringServiceService {
 		tutorRepository.save(tutor);
 		classroomRepository.save(room);
 		subjectRepository.save(subject);
-		avaliableSessionRepository.save(classTime);
+		AvailableSessionRepository.save(classTime);
 		commissionRepository.save(com);
 		offeringRepository.save(offering);
 
@@ -1524,10 +1524,10 @@ public class TestTutoringServiceService {
 
 		String offeringID = "FALL19";
 		String term = "fall";
-		AvaliableSession classTime = new AvaliableSession();
+		AvailableSession classTime = new AvailableSession();
 		classTime.setDay(dateOfBirth);
 		classTime.setTutoringSystem(tutoringSystem);
-		classTime.setAvaliableSessionID(123456);
+		classTime.setAvailableSessionID(123456);
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
@@ -1558,7 +1558,7 @@ public class TestTutoringServiceService {
 		room.setRoomCode("123");
 		room.setTutoringSystem(tutoringSystem);
 
-		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
 //		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
@@ -1585,7 +1585,7 @@ public class TestTutoringServiceService {
 		tutorRepository.save(tutor);
 		classroomRepository.save(room);
 		subjectRepository.save(subject);
-		avaliableSessionRepository.save(classTime);
+		AvailableSessionRepository.save(classTime);
 		commissionRepository.save(com);
 		offeringRepository.save(offering);
 
@@ -1923,11 +1923,11 @@ public class TestTutoringServiceService {
 		c1.set(2016, Calendar.OCTOBER, 16, 10, 30, 0);
 		Time endTime = new Time(c1.getTimeInMillis());
 
-		AvaliableSession classTime = new AvaliableSession();
+		AvailableSession classTime = new AvailableSession();
 		classTime.setDay(offerDay);
 		classTime.setStartTime(startTime);
 		classTime.setEndTime(endTime);
-		classTime.setAvaliableSessionID(123456);
+		classTime.setAvailableSessionID(123456);
 		classTime.setTutoringSystem(tutoringSystem);
 
 		Subject subject = new Subject();
@@ -1943,7 +1943,7 @@ public class TestTutoringServiceService {
 		com.setTutoringSystem(tutoringSystem);
 		
 		Offering offering = new Offering();
-		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
 		String offeringID = "FALL19";
 		String term = "fall";
 		Double price = 10.0;
@@ -1966,7 +1966,7 @@ public class TestTutoringServiceService {
 		managerRepository.save(manager);
 		tutorRepository.save(tutor);
 		classroomRepository.save(room);
-		avaliableSessionRepository.save(classTime);
+		AvailableSessionRepository.save(classTime);
 		subjectRepository.save(subject);
 		commissionRepository.save(com);
 
@@ -1993,7 +1993,7 @@ public class TestTutoringServiceService {
 		String term = null;
 		double price = 0.0;
 		Subject subject = null;
-		Set<AvaliableSession> time = null;
+		Set<AvailableSession> time = null;
 		Tutor tutor = null;
 		Classroom room = null;
 		Commission com = null;
@@ -2022,7 +2022,7 @@ public class TestTutoringServiceService {
 		String term = "";
 		double price = 0.0;
 		Subject subject = null;
-		Set<AvaliableSession> time = null;
+		Set<AvailableSession> time = null;
 		Tutor tutor = null;
 		Classroom room = null;
 		Commission com = null;
@@ -2052,7 +2052,7 @@ public class TestTutoringServiceService {
 		String term = " ";
 		double price = 0.0;
 		Subject subject = null;
-		Set<AvaliableSession> time = null;
+		Set<AvailableSession> time = null;
 		Tutor tutor = null;
 		Classroom room = null;
 		Commission com = null;
@@ -2109,10 +2109,10 @@ public class TestTutoringServiceService {
 
 		String offeringID = "FALL19";
 		String term = "fall";
-		AvaliableSession classTime = new AvaliableSession();
+		AvailableSession classTime = new AvailableSession();
 		classTime.setDay(dateOfBirth);
 		classTime.setTutoringSystem(tutoringSystem);
-		classTime.setAvaliableSessionID(123456);
+		classTime.setAvailableSessionID(123456);
 		Subject subject = new Subject();
 		subject.setCourseID(offeringID);
 		subject.setName("12233");
@@ -2143,7 +2143,7 @@ public class TestTutoringServiceService {
 		room.setRoomCode("123");
 		room.setTutoringSystem(tutoringSystem);
 
-		Set<AvaliableSession> time = new HashSet<AvaliableSession>();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
 //		time.add(classTime);
 		offering.setClassroom(room);
 		offering.setClassTime(time);
@@ -2170,7 +2170,7 @@ public class TestTutoringServiceService {
 		tutorRepository.save(tutor);  //ok , through offering
 		classroomRepository.save(room); //ok , through offering
 		subjectRepository.save(subject); //ok , through offering
-		avaliableSessionRepository.save(classTime); // ok , IN offering
+		AvailableSessionRepository.save(classTime); // ok , IN offering
 		commissionRepository.save(com);
 		offeringRepository.save(offering);  
 

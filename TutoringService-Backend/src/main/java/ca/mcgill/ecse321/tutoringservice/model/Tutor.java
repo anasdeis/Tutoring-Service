@@ -37,15 +37,15 @@ public Boolean getIsRegistered() {
       this.offering = offerings;
    }
    
-   private Set<AvaliableSession> avaliableSession;
+   private Set<AvailableSession> AvailableSession;
    
    @ManyToMany(mappedBy="tutor" )
-   public Set<AvaliableSession> getAvaliableSession() {
-      return this.avaliableSession;
+   public Set<AvailableSession> getAvailableSession() {
+      return this.AvailableSession;
    }
    
-   public void setAvaliableSession(Set<AvaliableSession> avaliableSessions) {
-      this.avaliableSession = avaliableSessions;
+   public void setAvailableSession(Set<AvailableSession> AvailableSessions) {
+      this.AvailableSession = AvailableSessions;
    }
    
    }
