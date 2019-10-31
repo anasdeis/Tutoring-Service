@@ -1046,9 +1046,7 @@ public class TestTutoringServiceService {
 		String description = null;
 		SubjectType subjectType = null;
 		University university = null;
-		TutoringSystem tutoringSystem = new TutoringSystem();
-		tutoringSystem.setTutoringSystemID(778);
-		tutoringSystemRepository.save(tutoringSystem);
+		TutoringSystem tutoringSystem = null;
 
 		String error = null;
 		try {
@@ -1058,7 +1056,7 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!", error);
+		assertEquals("name cannot be empty or null!description cannot be empty or null!courseID cannot be empty or null!subjectType cannot be null!tutoringSystem cannot be null!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllSubjects().size());
@@ -1467,7 +1465,7 @@ public class TestTutoringServiceService {
 		String error = "";
 
 		double percentage = 1;
-		Integer commissionID = 1;
+		Integer commissionID = null;
 
 		Manager manager = null;
 		TutoringSystem tutoringSystem = null;
@@ -1482,7 +1480,7 @@ public class TestTutoringServiceService {
 		List<Commission> allCommissions = service.getAllCommissions();
 
 		// check error
-		assertEquals("manager cannot be null!offerings cannot be null!tutoringSystem cannot be null!", error);
+		assertEquals("commissionID cannot be null!manager cannot be null!offerings cannot be null!tutoringSystem cannot be null!", error);
 		assertEquals(0, allCommissions.size());
 	}
 

@@ -185,7 +185,7 @@ public class ServiceTests {
 	// manager, offering already created
 	private Review review;
 	private static final String COMMENT_KEY = "Love this course!";
-	private static final String NOTEXISRING_COMMENT_KEY = "NotAComment";
+	private static final String NOTEXISTING_COMMENT_KEY = "NotAComment";
 	private static final Boolean ISAPPROVED = true;
 	private static final Integer REVIEWID_KEY = 9;
 	private static final Integer NOTEXISTING_REVIEWID_KEY = -9;
@@ -198,7 +198,9 @@ public class ServiceTests {
 	private static final Boolean ISACCEPTED = true;
 
 	private TutoringSystem system;
-
+	private static final Integer SYSTEMID_KEY = 100;
+	private static final Integer NONEXISTING_SYSTEMID_KEY = -100;
+	
 	@Before
 	public void clearDatabase() {
 		subjectDao.deleteAll();
@@ -373,6 +375,16 @@ public class ServiceTests {
 			return null;
 		});
 
+		//LOOKS LIKE WE DON'T NEED THIS --CHARLES
+		//public TutoringSystem createTutoringSystem(Integer tutoringSystemID)
+//		when(tutoringSystemDao.findTutoringSystemByTutoringSystemID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+//			if(invocation.getArgument(0).equals(SYSTEMID_KEY)) {
+//				system.setTutoringSystemID(SYSTEMID_KEY);
+//				return system;
+//			} else
+//				return null;
+//		});
+		
 		// 	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
 		when(universityDao.findUniversityByName((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(UNIVERSITY_NAME_KEY)) {
@@ -467,8 +479,10 @@ public class ServiceTests {
 		offering = mock(Offering.class);
 		review = mock(Review.class);
 		tutorApplication = mock(TutorApplication.class);
+		system = mock(TutoringSystem.class);
 	}
-
+	
+	
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
@@ -548,6 +562,8 @@ public class ServiceTests {
 		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
 	}
 
+	
+	
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -585,14 +601,15 @@ public class ServiceTests {
 
 		String error = "";
 		try {
-			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+			subject = service.createSubject(name, courseID, description, subjectType, university, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		assertEquals("name cannot be empty or null!description cannot be empty or null!"
-				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university course", error);
+				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university coursetutoringSystem cannot be null!", error);
 	}
+	
 
 	@Test
 	public void testCreateSubjectEmpty() {
@@ -694,6 +711,108 @@ public class ServiceTests {
 	public void testMockSubjectQueryNotFound() {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
 	}
+
+	
+	@Test
+	public void testCreateStudent() {
+		assertEquals(0, service.getAllStudents().size());
+		String firstName = "Charles";
+		String lastName = "Liu";
+		String email = "asdf@mcgill.ca";
+		Integer phone = 1234567890;
+		Integer studentID = 88888888;
+		Integer numCoursesEnrolled = 5;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(firstName, student.getFirstName());
+		assertEquals(lastName, student.getLastName());
+		assertEquals(dob, student.getDateOfBirth());
+		assertEquals(email, student.getEmail());
+		assertEquals(numCoursesEnrolled, student.getNumCoursesEnrolled());
+		assertEquals(studentID, student.getPersonId());
+		assertEquals(lgInfo, student.getLoginInfo());
+		assertEquals(system, student.getTutoringSystem());
+		assertEquals(phone, student.getPhoneNumber());
+		assertEquals(null, student.getSubjectRequest());
+		assertEquals(null, student.getCoursesTaken());
+	}
+	
+	@Test public void testCreateStudentNull() {
+		String error = "";
+		String firstName =  null;
+		String lastName = null;
+		String email = null;
+		Integer phone = null;
+		Integer studentID = null;
+		Integer numCoursesEnrolled = null;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	@Test public void testCreateStudentEmpty() {
+		String error = "";
+		String firstName =  "";
+		String lastName = "";
+		String email = "";
+		Integer phone = 0;
+		Integer studentID = 0;
+		Integer numCoursesEnrolled =0;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!", error); 
+	}
+	
+	@Test public void testCreateStudentSpaces() {
+		String error = "";
+		String firstName =  "   ";
+		String lastName = "   ";
+		String email = "   ";
+		Integer phone = 0;
+		Integer studentID = 0;
+		Integer numCoursesEnrolled = 0;
+		
+		try {
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!Phone cannot be empty!Student ID cannot be empty!", error); 
+	}
+	
+	@Test
+	public void testMockStudentCreation() {
+		assertNotNull(student);
+	}
+
+	@Test
+	public void tsetMockStudentQueryFound() {
+		assertNotNull(service.getStudent(STUDENTID_KEY));
+	}
+
+	@Test
+	public void tsetMockStudentQueryNotFound() {
+		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
+	}
+
+
+	
 	
 	@Test
 	public void testMockMangerCreation() {
@@ -725,21 +844,7 @@ public class ServiceTests {
 		assertNull(service.getTutor(NOTEXISTING_TUTORID_KEY));
 	}
 
-	@Test
-	public void testMockStudentCreation() {
-		assertNotNull(student);
-	}
-
-	@Test
-	public void tsetMockStudentQueryFound() {
-		assertNotNull(service.getStudent(STUDENTID_KEY));
-	}
-
-	@Test
-	public void tsetMockStudentQueryNotFound() {
-		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
-	}
-
+	
 	@Test
 	public void testMockAvailableSessionCreation() {
 		assertNotNull(AvailableSession);
@@ -771,6 +876,79 @@ public class ServiceTests {
 	public void testMockSubjectRequestQueryNotFound() {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
 	}
+	
+
+	@Test
+	public void testCreateCommission() {
+		assertEquals(0, service.getAllCommissions().size());
+		double percentage = 0.30;
+		Integer commissionID = 123456;
+		Set<Offering> offerings = new HashSet<Offering>();
+		offerings.add(offering);
+		
+		try {
+			comm = service.createCommission(percentage, commissionID, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		if(percentage!=comm.getPercentage())
+			fail();
+		assertEquals(commissionID, comm.getCommissionID());
+		assertEquals(offerings, comm.getOffering());
+		assertEquals(manager, comm.getManager());
+		assertEquals(system, comm.getTutoringSystem());
+	}
+	
+	@Test
+	public void testCreateCommissionNull() {
+		assertEquals(0, service.getAllCommissions().size());
+		String error = "";
+		double percentage = 1.0;
+		Integer commissionID = null;
+		Set<Offering> offerings = null;	
+		
+		try {
+			comm = service.createCommission(percentage, commissionID, null, offerings, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("commissionID cannot be null!manager cannot be null!offerings cannot be null!tutoringSystem cannot be null!", error); 
+	}
+	
+	@Test
+	public void testCreateCommissionZero() {
+		assertEquals(0, service.getAllCommissions().size());
+		String error = "";
+		double percentage = 0.0;
+		Integer commissionID = 0;
+		Set<Offering> offerings = new HashSet<Offering>();	
+		offerings.add(offering);
+		
+		try {
+			comm = service.createCommission(percentage, commissionID, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("percentage cannot be <= 0!commissionID cannot be <= 0!", error); 
+	}
+	
+	@Test
+	public void testCreateCommissionNegative() {
+		assertEquals(0, service.getAllCommissions().size());
+		String error = "";
+		double percentage = -30.0;
+		Integer commissionID = -1234;
+		Set<Offering> offerings = new HashSet<Offering>();	
+		offerings.add(offering);
+		
+		try {
+			comm = service.createCommission(percentage, commissionID, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("percentage cannot be <= 0!commissionID cannot be <= 0!", error); 
+	}
+	
 	
 	@Test
 	public void testMockCommissionCreation() {
