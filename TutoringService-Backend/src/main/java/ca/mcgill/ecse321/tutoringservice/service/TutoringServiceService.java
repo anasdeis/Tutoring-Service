@@ -1024,16 +1024,16 @@ public class TutoringServiceService {
 			error = error + "name cannot be empty!";
 		}
 
-		if (subjects != null)
-		{
-			for (Subject subject : subjects) {
-				if (subject == null) {
-					error = error + "Subject needs to be selected for university!";
-				} else if (!subjectRepository.existsByCourseID(subject.getCourseID())) {
-					error = error + "Subject does not exist!";
-				}
-			}
-		}
+//		if (subjects != null)
+//		{
+//			for (Subject subject : subjects) {
+//				if (subject == null) {
+//					error = error + "Subject needs to be selected for university!";
+//				} else if (!subjectRepository.existsByCourseID(subject.getCourseID())) {
+//					error = error + "Subject does not exist!";
+//				}
+//			}
+//		}
 
 		if (tutoringSystem == null) {
 			error = error + "Tutoring System cannot be empty!";

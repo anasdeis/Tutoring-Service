@@ -1095,6 +1095,23 @@ public class ServiceTests {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
 	}
 
+	@Test
+	public void testCreateUniversity() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String name = "McGill";
+		Set<Subject> subjects = new HashSet<Subject>();
+		subjects.add(subject);
+		
+		try {
+			university = service.createUniversity(name, subjects, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(name, university.getName());
+		assertEquals(subjects, university.getSubject());
+		assertEquals(system, university.getTutoringSystem());
+	}
+	
 
 	@Test
 	public void testCreateCommission() {
@@ -1198,6 +1215,55 @@ public class ServiceTests {
 		assertNull(service.getClassroom(NOTEXISTING_ROOMCODE_KEY));
 	}
 
+	
+	@Test
+	public void testCreateUniversityNull() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String error = "";
+		String name = null;
+		Set<Subject> subjects = null;	
+		
+		try {
+			university = service.createUniversity(name, subjects, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("name cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	
+	@Test
+	public void testCreateUniversityEmpty() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String error = "";
+		String name = "";
+		Set<Subject> subjects = null;	
+		
+		try {
+			university = service.createUniversity(name, subjects, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("name cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	
+	@Test
+	public void testCreateUniversitySpaces() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String error = "";
+		String name = "    ";
+		Set<Subject> subjects = null;	
+		
+		try {
+			university = service.createUniversity(name, subjects, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("name cannot be empty!Tutoring System cannot be empty!", error); 
+	}
+	
+	
 	@Test
 	public void testMockUniversityCreation() {
 		assertNotNull(university);
