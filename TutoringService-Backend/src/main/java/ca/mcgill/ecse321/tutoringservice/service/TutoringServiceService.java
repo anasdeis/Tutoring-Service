@@ -908,6 +908,39 @@ public class TutoringServiceService {
 		classroomRepository.save(classroom);
 		return classroom;
 	}
+	
+	@Transactional
+	public Classroom createReviewSession(String offeringID, Integer managerID, String roomCode, Integer tutoringSystemID){
+		Offering offering = getOffering(offeringID);
+
+		Boolean isBooked = true;
+		Boolean isBigRoom = true;
+		
+		List<Classroom> classrooms = new ArrayList<Classroom>();
+		classrooms = getAllClassrooms();
+		String thisClassID = null;
+		for(Classroom c : classrooms) {
+			if(c.getIsBigRoom()) {
+				Set <Offering> currOfferings = new HashSet<Offering>();
+				currOfferings.add(offering);
+				c.setOffering(currOfferings);
+				c.setIsBooked(isBooked);
+				thisClassID = c.getRoomCode();
+				break;
+			}
+		}
+		
+		Classroom thisClass = getClassroom(thisClassID);
+		if (thisClass == null) {
+			Manager manager = getManager(managerID);
+			TutoringSystem tutoringSystem = getTutoringSystem(tutoringSystemID);
+			Set<Offering> thisOffering = new HashSet<Offering>();
+			thisOffering.add(offering);
+			thisClass = createClassroom(roomCode, isBooked, isBigRoom, manager, thisOffering, tutoringSystem);
+			classroomRepository.save(thisClass);
+		}
+		return thisClass;
+	}
 
 	@Transactional
 	public Classroom getClassroom(String roomCode) {
