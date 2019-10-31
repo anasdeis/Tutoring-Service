@@ -6,23 +6,23 @@ import ca.mcgill.ecse321.tutoringservice.model.Manager;
 import ca.mcgill.ecse321.tutoringservice.model.SubjectType;
 import ca.mcgill.ecse321.tutoringservice.model.TutoringSystem;
 
-public class SubjectRequestDto{
-	private Set<Integer> studentIDs;    //NI
-	private ManagerDto manager;
+public class SubjectRequestDto{	
 	private Integer requestID;
 	private String name;
 	private String description;
-	private String subjectType;   
+	private String subjectType; 
+	private Integer managerID;
+	private Set<Integer> studentIDs;
+	private Integer tutoringSystemID;
 
-	private TutoringSystemDto tutoringSystem;
-
-	public SubjectRequestDto(Integer requestID, String name, String description, String subjectType, ManagerDto manager, TutoringSystemDto tutoringSystem) {
-		this.requestID = requestID;              //Integer
-		this.name = name;					     //String
-		this.description = description;          //String
-		this.manager = manager;                  //DTO
-		this.tutoringSystem = tutoringSystem;    //DTO
-		this.subjectType = subjectType;          //String
+	public SubjectRequestDto(Integer requestID, String name, String description, String subjectType, Integer manager, Set<Integer> studentIDs, Integer tutoringSystem) {
+		this.setRequestID(requestID);            //Integer
+		this.setName(name);				         //String
+		this.setDescription(description);        //String
+		this.setManager(manager);                //Integer
+		this.setTutoringSystem(tutoringSystem);  //Integer
+		this.setSubjectType(subjectType);        //String
+		this.setStudent(studentIDs);
 	}
 	
 	
@@ -30,16 +30,16 @@ public class SubjectRequestDto{
 		return this.studentIDs;
 	}
 
-	public void setStudent(Set<Integer> students) {
-		this.studentIDs = students;
+	public void setStudent(Set<Integer> studentIDs) {
+		this.studentIDs = studentIDs;
 	}
 
-	public ManagerDto getManager() {
-		return this.manager;
+	public Integer getManager() {
+		return this.managerID;
 	}
 
-	public void setManager(ManagerDto manager) {
-		this.manager = manager;
+	public void setManager(Integer managerID) {
+		this.managerID = managerID;
 	}
 
 	public void setRequestID(Integer value) {
@@ -70,12 +70,12 @@ public class SubjectRequestDto{
 		return this.subjectType;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 
 }

@@ -296,7 +296,7 @@ public class ServiceTests {
 		// 	public AvailableSession createAvailableSession(Time startTime, Time endTime, Integer AvailableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
 		when(AvailableSessionDao.findAvailableSessionByAvailableSessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(AVA_SESSION_ID_KEY)) {
-				AvailableSession availableSession = new AvailableSession();
+				AvailableSession avaliableSession = new AvailableSession();
 				Set<Tutor> tutors = new HashSet<Tutor>();	// TODO temp solution, will modify, but works
 				tutors.add(tutor);
 				availableSession.setAvailableSessionID(AVA_SESSION_ID_KEY);
