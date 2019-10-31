@@ -361,8 +361,14 @@ public class TutoringServiceRestController {
 				tutorApplicationsIDs.add(tutorApplicationsID);
 			}
 		}
+		
+		University university = sb.getUniversity();
+		String universityName = "";
+		if (university != null) {
+			universityName = university.getName();
+		}
 
-		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), sb.getUniversity().getName(), tutorApplicationsIDs, offeringIDs, sb.getTutoringSystem().getTutoringSystemID());
+		SubjectDto subjectDto = new SubjectDto(sb.getName(), sb.getCourseID(), sb.getDescription(), convertSubjectTypeToString(sb.getSubjectType()), universityName, tutorApplicationsIDs, offeringIDs, sb.getTutoringSystem().getTutoringSystemID());
 		return subjectDto;
 	}
 	
@@ -838,19 +844,20 @@ public class TutoringServiceRestController {
 			@RequestParam("courseID") String courseID, 
 			@RequestParam("description") String description, 
 			@RequestParam("subjectType") String subjectType,
-			@RequestParam("university") String university,
+			@RequestParam(name = "university", required = false) String university,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		SubjectType sbType = null;
+		University uni = null;
 		if (subjectType.equals("University")) {
 			sbType = SubjectType.UNIVERSITY_COURSE;
+			uni = service.getUniversity(university);
 		}else if(subjectType.equals("HighSchool")) {
 			sbType = SubjectType.HIGH_SCHOOL_COURSE;
 		} else if(subjectType.equals("CGEP")) {
 			sbType = SubjectType.CGEP_COURSE;
 		}
-		
-		University uni = service.getUniversity(university);
+
 		Subject subject = service.createSubject(name, courseID, description, sbType, uni, tutoringSystem);
 		return convertToDto(subject);
 	}	
@@ -1182,7 +1189,7 @@ public class TutoringServiceRestController {
 	 * @param managerID
 	 * @param offeringID
 	 * @param tutoringSystemID
-	 * @return
+	 * @return review session classroom
 	 * @throws IllegalArgumentException
 	 */
 	@PostMapping(value = { "/classroom/review/create/{offeringID}", "/subject/review/create/{offeringID}/" })
@@ -1191,33 +1198,7 @@ public class TutoringServiceRestController {
 			@RequestParam("roomCode") String roomCode,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 
-		Offering offering = service.getOffering(offeringID);
-
-		Boolean isBooked = true;
-		Boolean isBigRoom = true;
-		
-		List<Classroom> classrooms = new ArrayList<Classroom>();
-		classrooms = service.getAllClassrooms();
-		String thisClassID = null;
-		for(Classroom c : classrooms) {
-			if(c.getIsBigRoom()) {
-				Set <Offering> currOfferings = new HashSet<Offering>();
-				currOfferings.add(offering);
-				c.setOffering(currOfferings);
-				c.setIsBooked(isBooked);
-				thisClassID = c.getRoomCode();
-				break;
-			}
-		}
-		
-		Classroom thisClass = service.getClassroom(thisClassID);
-		if (thisClass == null) {
-			Manager manager = service.getManager(managerID);
-			TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
-			Set<Offering> thisOffering = new HashSet<Offering>();
-			thisOffering.add(offering);
-			thisClass = service.createClassroom(roomCode, isBooked, isBigRoom, manager, thisOffering, tutoringSystem);
-		}
+		Classroom thisClass = service.createReviewSession(offeringID, managerID, roomCode, tutoringSystemID);
 		
 		return convertToDto(thisClass);
 	}

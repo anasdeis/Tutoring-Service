@@ -26,8 +26,8 @@ import ca.mcgill.ecse321.tutoringservice.dao.*;
 import ca.mcgill.ecse321.tutoringservice.dto.AvailableSessionDto;
 import ca.mcgill.ecse321.tutoringservice.model.*;
 
-@RunWith(MockitoJUnitRunner.class)
-//@RunWith(MockitoJUnitRunner.Silent.class)
+//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class ServiceTests {
 	@Mock
 	private AvailableSessionRepository AvailableSessionDao;
@@ -225,7 +225,7 @@ public class ServiceTests {
 		// public Login createLogin(String userName, String password) 
 		when(loginDao.findLoginByUserName(anyString())).thenAnswer((InvocationOnMock invocation) -> {	
 			if(invocation.getArgument(0).equals(LOGIN_KEY)) {
-//				Login lgInfo = new Login();
+				Login lgInfo = new Login();
 				lgInfo.setUserName(LOGIN_KEY);
 				lgInfo.setPassword(LOGIN_PASS);
 				return lgInfo;
@@ -237,7 +237,7 @@ public class ServiceTests {
 		// 	public Manager createManager(String first, String last, Date dob, String email, Integer phone, Integer managerID, Login loginInfo, TutoringSystem tutoringSystem) {
 		when(managerDao.findManagerByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(MANAGERID_KEY)) {
-//				Manager manager = new Manager();
+				Manager manager = new Manager();
 				manager.setFirstName(FIRSTNAME_KEY);
 				manager.setLastName(LASTNAME_KEY);
 				manager.setDateOfBirth(dob);
@@ -255,7 +255,7 @@ public class ServiceTests {
 		// 	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvailableSession> AvailableSessions, TutoringSystem tutoringSystem) {
 		when(tutorDao.findTutorByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(TUTORID_KEY)) {
-//				Tutor tutor = new Tutor();
+				Tutor tutor = new Tutor();
 				tutor.setFirstName(FIRSTNAME_KEY);
 				tutor.setLastName(LASTNAME_KEY);
 				tutor.setDateOfBirth(dob);
@@ -274,7 +274,7 @@ public class ServiceTests {
 		// 	public Student createStudent(String first, String last, Date dob, String email, Integer phone, Integer studentID, Integer numCoursesEnrolled, Login loginInfo, TutoringSystem tutoringSystem) {
 		when(studentDao.findStudentByPersonId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(STUDENTID_KEY)) {
-//				Student student = new Student();
+				Student student = new Student();
 				student.setFirstName(FIRSTNAME_KEY);
 				student.setLastName(LASTNAME_KEY);
 				student.setDateOfBirth(dob);
@@ -293,7 +293,7 @@ public class ServiceTests {
 		// 	public AvailableSession createAvailableSession(Time startTime, Time endTime, Integer AvailableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
 		when(AvailableSessionDao.findAvailableSessionByAvailableSessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(AVA_SESSION_ID_KEY)) {
-//				AvailableSession AvailableSession = new AvailableSession();
+				AvailableSession avaliableSession = new AvailableSession();
 				Set<Tutor> tutors = new HashSet<Tutor>();	// TODO temp solution, will modify, but works
 				tutors.add(tutor);
 				AvailableSession.setAvailableSessionID(AVA_SESSION_ID_KEY);
@@ -310,7 +310,7 @@ public class ServiceTests {
 		// 	public SubjectRequest createSubjectRequest(Integer requestID, String name, String description,SubjectType subjectType, Manager manager, TutoringSystem tutoringSystem){
 		when(subjectRequestDao.findSubjectRequestByRequestID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(REQUEST_ID_KEY)) {
-//				SubjectRequest request = new SubjectRequest();
+				SubjectRequest request = new SubjectRequest();
 				Set<Student> students = new HashSet<Student>();	// TODO temp solution, will modify, but works
 				students.add(student);
 				SubjectType type = SubjectType.UNIVERSITY_COURSE;
@@ -329,7 +329,7 @@ public class ServiceTests {
 		// 	public Subject createSubject(String name, String courseID, String description, SubjectType subjType, University university,TutoringSystem tutoringSystem) {
 		when(subjectDao.findSubjectByCourseID((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(COURSEID_KEY)) {
-//				Subject subject = new Subject();
+				Subject subject = new Subject();
 				subject.setCourseID(COURSEID_KEY);
 				subject.setDescription(DESCRIPTION_KEY);
 				subject.setName(SUBJECT_NAME_KEY);
@@ -345,7 +345,7 @@ public class ServiceTests {
 		// 	public Commission createCommission(double percentage, Integer commissionID, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
 		when(commissionDao.findCommissionBycommissionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(COMMISSION_ID_KEY)) {
-//				Commission comm = new Commission();
+				Commission comm = new Commission();
 				Set<Offering> offerings = new HashSet<Offering>();	// TODO temp solution, will modify, but works
 				offerings.add(offering);
 				comm.setCommissionID(COMMISSION_ID_KEY);
@@ -361,7 +361,7 @@ public class ServiceTests {
 		//  public Classroom createClassroom(String roomCode, Boolean isBooked, Boolean isBigRoom, Manager manager, Set<Offering> offerings, TutoringSystem tutoringSystem) {
 		when(classroomDao.findClassroomByRoomCode((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 		if(invocation.getArgument(0).equals(ROOMCODE_KEY)) {
-//			Classroom classroom = new Classroom();
+			Classroom classroom = new Classroom();
 			Set<Offering> offerings = new HashSet<Offering>();	// TODO temp solution, will modify, but works
 			offerings.add(offering);
 			classroom.setRoomCode(ROOMCODE_KEY);
@@ -388,7 +388,7 @@ public class ServiceTests {
 		// 	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
 		when(universityDao.findUniversityByName((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(UNIVERSITY_NAME_KEY)) {
-//			University university = new University();
+			University university = new University();
 			Set<Subject> subjects = new HashSet<Subject>();	// TODO temp solution, will modify, but works
 			subjects.add(subject);
 			university.setName(UNIVERSITY_NAME_KEY);
@@ -402,7 +402,7 @@ public class ServiceTests {
 		//  public Offering createOffering(String offId, String term, double price, Set<AvailableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
 		when(offeringDao.findOfferingByOfferingID((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(OFFERID_KEY)) {
-//				Offering offering = new Offering();
+				Offering offering = new Offering();
 				Set<AvailableSession> classTimes = new HashSet<AvailableSession>();
 				classTimes.add(AvailableSession);
 				offering.setOfferingID(OFFERID_KEY);
@@ -416,7 +416,7 @@ public class ServiceTests {
 		// 	public Review createReview(String comment, Boolean isApproved, Integer reviewID, Manager manager, Offering offering, TutoringSystem tutoringSystem){
 		when(reviewDao.findReviewByReviewID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(REVIEWID_KEY)) {
-//				Review review = new Review();
+				Review review = new Review();
 				review.setReviewID(REVIEWID_KEY);
 				review.setComment(COMMENT_KEY);
 				review.setIsApproved(ISAPPROVED);
@@ -431,7 +431,7 @@ public class ServiceTests {
 		// 	public TutorApplication createTutorApplication(Integer applicationId, Boolean isAccepted, Tutor tutor, TutoringSystem tutoringSystem) {
 		when(tutorApplicationDao.findTutorApplicationByApplicationId((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(APPLICATIONID_KEY)) {
-//				TutorApplication tutorApplication = new TutorApplication();
+				TutorApplication tutorApplication = new TutorApplication();
 				Set<Subject> subjects = new HashSet<Subject>();	// TODO temp solution, will modify, but works
 				subjects.add(subject);
 				tutorApplication.setApplicationId(APPLICATIONID_KEY);
@@ -448,8 +448,7 @@ public class ServiceTests {
 
 		// 	public TutoringSystem createTutoringSystem(Integer tutoringSystemID) {
 
-		/*
-		 * 	not sure what these code do, but giving unnecessary mock error
+		
 		Answer<?> returnPatameterAnswer = (InvocationOnMock invocation) -> {
 			return invocation.getArgument(0);
 		};
@@ -461,7 +460,6 @@ public class ServiceTests {
 		when(AvailableSessionDao.save(any(AvailableSession.class))).thenAnswer(returnPatameterAnswer);
 		when(subjectRequestDao.save(any(SubjectRequest.class))).thenAnswer(returnPatameterAnswer);
 		when(subjectDao.save(any(Subject.class))).thenAnswer(returnPatameterAnswer);
-		 */	
 	}
 
 	@Before
@@ -699,14 +697,12 @@ public class ServiceTests {
 	public void testMockSubjectQueryFound() {
 		assertNotNull(service.getSubject(COURSEID_KEY));
 	}
-	/*
-	// TODO this test fails
+	
 	@Test
 	public void testGetExistingSubject() {
 		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
-//		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY));
 	}
-*/
+
 	@Test
 	public void testMockSubjectQueryNotFound() {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
