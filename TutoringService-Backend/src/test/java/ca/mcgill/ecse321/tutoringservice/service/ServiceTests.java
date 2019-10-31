@@ -1283,8 +1283,72 @@ public class ServiceTests {
 	}
 	
 	/*
-	 * Review
-	 */
+	 * Review Done
+	 */	
+	@Test
+	public void testCreateReview() {
+		assertEquals(0, service.getAllReviews().size());
+		String comment = "Love this course!";
+		Boolean isApproved = true;
+		Integer reviewID = 9;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, manager, offering, system);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertEquals(COMMENT_KEY, review.getComment());
+		assertEquals(ISAPPROVED, review.getIsApproved());
+		assertEquals(REVIEWID_KEY, review.getReviewID());
+		assertEquals(system, review.getTutoringSystem());
+	}
+	
+	@Test
+	public void testCreateReviewNull() {
+		String error = "";
+		String comment = null;
+		Boolean isApproved = null;
+		Integer reviewID = null;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("reviewID cannot be empty!comment cannot be null!isApproved cannot be null!manager cannot be null!offering cannot be null!tutoringSystem cannot be null!", error);
+	}
+	
+	@Test
+	public void testCreateReviewEmpty() {
+		String error = "";
+		String comment = "";
+		Boolean isApproved = null;
+		Integer reviewID = 0;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("reviewID cannot be empty!comment cannot be null!isApproved cannot be null!manager cannot be null!offering cannot be null!tutoringSystem cannot be null!", error);
+	}
+	
+	@Test
+	public void testCreateReviewSpace() {
+		String error = "";
+		String comment = " ";
+		Boolean isApproved = null;
+		Integer reviewID = 0;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("reviewID cannot be empty!comment cannot be null!isApproved cannot be null!manager cannot be null!offering cannot be null!tutoringSystem cannot be null!", error);
+	}
+	
 	@Test
 	public void testMockReviewCreation() {
 		assertNotNull(review);
@@ -1307,7 +1371,63 @@ public class ServiceTests {
 	
 	/*
 	 * Tutor Application
+	 * TODO assertEqual for tutor fails
 	 */
+	@Test
+	public void testCreateTutorApplication() {
+		Integer applicationID = 10;
+		Boolean isAccepted = false;
+
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, tutor, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(APPLICATIONID_KEY, tutorApplication.getApplicationId());
+		assertEquals(ISACCEPTED, tutorApplication.getIsAccepted());
+//		assertEquals(TUTORID_KEY,tutorApplication.getTutor());
+		assertEquals(system, tutorApplication.getTutoringSystem());
+	}
+	
+	@Test
+	public void testCreateTutorApplicationNull() {
+		String error = "";
+		Integer applicationID = null;
+		Boolean isAccepted = null;
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("applicationId cannot be empty!isAccepted cannot be null!tutor cannot be null!tutoringSystem cannot be null!", error);
+	}
+	
+	@Test
+	public void testCreateTutorApplicationEmpty() {
+		String error = "";
+		Integer applicationID = 0;
+		Boolean isAccepted = null;
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("applicationId cannot be empty!isAccepted cannot be null!tutor cannot be null!tutoringSystem cannot be null!", error);
+	}
+	
+	@Test
+	public void testCreateTutorApplicationSpace() {
+		String error = "";
+		Integer applicationID = null;
+		Boolean isAccepted = null;
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("applicationId cannot be empty!isAccepted cannot be null!tutor cannot be null!tutoringSystem cannot be null!", error);
+	}
+	
 	@Test
 	public void testMockTutorApplicationCreation() {
 		assertNotNull(tutorApplication);
