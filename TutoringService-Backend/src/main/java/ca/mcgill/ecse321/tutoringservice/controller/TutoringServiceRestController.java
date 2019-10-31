@@ -377,7 +377,16 @@ public class TutoringServiceRestController {
 			throw new IllegalArgumentException("There is no such subject Request!");
 		}
 
-		SubjectRequestDto subjectRequestDto = new SubjectRequestDto(sr.getRequestID(), sr.getName(), sr.getDescription(),convertSubjectTypeToString(sr.getSubjectType()),convertToDto(sr.getManager()), convertToDto(sr.getTutoringSystem()));
+		Set<Integer> studentIDs = null;
+		if(sr.getStudent() != null)	{
+			studentIDs = new HashSet<Integer>();
+			for(Student student : sr.getStudent()){
+				Integer studentID = student.getPersonId();
+				studentIDs.add(studentID);
+			}
+		}
+		
+		SubjectRequestDto subjectRequestDto = new SubjectRequestDto(sr.getRequestID(), sr.getName(), sr.getDescription(),convertSubjectTypeToString(sr.getSubjectType()),sr.getManager().getPersonId(), studentIDs, sr.getTutoringSystem().getTutoringSystemID());
 		return subjectRequestDto;
 	}
 	
@@ -799,7 +808,7 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystem
  	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dateOfBirth=<dateOfBirth>&email=<email>&phoneNumber=<phoneNumber>&tutoringSystem=<tutoringSystem>&numCoursesEnrolled=<numCoursesEnrolled>
 	 */
-	@PostMapping(value = {"/student/create/{studnetID}", "/student/create/{studnetID}/"})
+	@PostMapping(value = {"/student/create/{studentID}", "/student/create/{studentID}/"})
 	public StudentDto createStudent(@PathVariable("studentID") Integer studentID,
 			@RequestParam("first") String first,
 			@RequestParam("last") String last,
