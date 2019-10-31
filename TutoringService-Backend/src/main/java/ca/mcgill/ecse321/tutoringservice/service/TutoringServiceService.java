@@ -944,6 +944,25 @@ public class TutoringServiceService {
 	
 	@Transactional
 	public Classroom createReviewSession(String offeringID, Integer managerID, String roomCode, Integer tutoringSystemID){
+		String error = "";
+		if (offeringID == null || offeringID.trim().length() == 0) {
+			error = error + "offeringID cannot be empty!";
+		}
+		if (managerID == null || managerID <= 0) {
+			error = error + "managerID cannot be empty or <= 0!";
+		}
+		if (roomCode == null || roomCode.trim().length() == 0) {
+			error = error + "roomCode cannot be empty!";
+		}
+		if (tutoringSystemID == null || tutoringSystemID <= 0) {
+			error = error + "tutoringSystemID cannot be empty or <= 0!";
+		}
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		
 		Offering offering = getOffering(offeringID);
 
 		Boolean isBooked = true;
@@ -951,27 +970,26 @@ public class TutoringServiceService {
 		
 		List<Classroom> classrooms = new ArrayList<Classroom>();
 		classrooms = getAllClassrooms();
-		String thisClassID = null;
+		Classroom thisClass = null;
 		for(Classroom c : classrooms) {
 			if(c.getIsBigRoom()) {
 				Set <Offering> currOfferings = new HashSet<Offering>();
 				currOfferings.add(offering);
 				c.setOffering(currOfferings);
 				c.setIsBooked(isBooked);
-				thisClassID = c.getRoomCode();
+				thisClass = getClassroom(c.getRoomCode());
 				break;
 			}
 		}
 		
-		Classroom thisClass = getClassroom(thisClassID);
 		if (thisClass == null) {
 			Manager manager = getManager(managerID);
 			TutoringSystem tutoringSystem = getTutoringSystem(tutoringSystemID);
 			Set<Offering> thisOffering = new HashSet<Offering>();
 			thisOffering.add(offering);
 			thisClass = createClassroom(roomCode, isBooked, isBigRoom, manager, thisOffering, tutoringSystem);
-			classroomRepository.save(thisClass);
 		}
+		classroomRepository.save(thisClass);
 		return thisClass;
 	}
 
