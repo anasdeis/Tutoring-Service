@@ -480,7 +480,9 @@ public class ServiceTests {
 		system = mock(TutoringSystem.class);
 	}
 	
-	
+	/*
+	 * Login
+	 */
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
@@ -513,7 +515,6 @@ public class ServiceTests {
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
 	}
 
-
 	@Test
 	public void testCreateLoginEmpty() {
 		String error = "";
@@ -545,6 +546,7 @@ public class ServiceTests {
 		// check error
 		assertEquals("userName cannot be null or empty!password cannot be null or empty!", error);
    	}
+	
 	@Test
 	public void testMockLoginCreation() {
 		assertNotNull(lgInfo);
@@ -553,15 +555,17 @@ public class ServiceTests {
 	@Test
 	public void testMockLoginQueryFound() {
 		assertNotNull(service.getLogin(LOGIN_KEY));
+		assertEquals(LOGIN_KEY,service.getLogin(LOGIN_KEY).getUserName());
 	}
 
 	@Test
 	public void testMockLoginQueryNotFound() {
 		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
-	}
-
+	}	
 	
-	
+	/*
+	 * Subject
+	 */
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -608,7 +612,6 @@ public class ServiceTests {
 				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university coursetutoringSystem cannot be null!", error);
 	}
 	
-
 	@Test
 	public void testCreateSubjectEmpty() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -692,14 +695,9 @@ public class ServiceTests {
 		assertNotNull(subject);
 	}
 	
-	// but this one works
 	@Test
 	public void testMockSubjectQueryFound() {
 		assertNotNull(service.getSubject(COURSEID_KEY));
-	}
-	
-	@Test
-	public void testGetExistingSubject() {
 		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
 	}
 
@@ -708,7 +706,9 @@ public class ServiceTests {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
 	}
 
-	
+/*
+ * Student	
+ */
 	@Test
 	public void testCreateStudent() {
 		assertEquals(0, service.getAllStudents().size());
@@ -800,15 +800,114 @@ public class ServiceTests {
 	@Test
 	public void tsetMockStudentQueryFound() {
 		assertNotNull(service.getStudent(STUDENTID_KEY));
+		assertEquals(STUDENTID_KEY,service.getStudent(STUDENTID_KEY).getPersonId());
 	}
 
 	@Test
 	public void tsetMockStudentQueryNotFound() {
 		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
 	}
-
-
 	
+	/*
+	 * Manager
+	 */
+	@Test
+	public void testCreateManager() {
+		assertEquals(0, service.getAllManagers().size());
+		Integer managerID = 99999;
+		String firstName = "Andy";
+		String lastName = "He";
+		String email = "123456@gmail.com";
+		Integer phone = 45612378;
+
+		try {
+			manager = service.createManager(firstName, lastName, dob, email, phone, managerID, lgInfo, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(firstName, manager.getFirstName());
+		assertEquals(lastName, manager.getLastName());
+		assertEquals(dob, manager.getDateOfBirth());
+		assertEquals(email, manager.getEmail());
+		assertEquals(phone, manager.getPhoneNumber());
+		assertEquals(managerID, manager.getPersonId());
+		assertEquals(lgInfo, manager.getLoginInfo());
+		assertEquals(system, manager.getTutoringSystem());
+	}
+
+	@Test
+	public void testCreateManagerNull() {
+		String error = "";
+
+		Integer managerID = null;
+		String first = null;
+		String last = null;
+		String email = null;
+		Integer phone = null;
+
+		try {
+			service.createManager(first, last, dob, email, phone, managerID, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Manager ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+	}
+
+	@Test
+	public void testCreateManagerEmpty() {
+//		assertEquals(0, service.getAllManagers().size());
+
+		Integer managerID = 0;
+		String first = "";
+		String last = "";
+		String email = "";
+		Integer phone = 0;
+
+		String error = null;
+
+		try {
+			service.createManager(first, last, dob, email, phone, managerID, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Manager ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+		// check no change in memory
+//		assertEquals(0, service.getAllManagers().size());
+
+	}
+
+	@Test
+	public void testCreateManagerSpaces() {
+//		assertEquals(0, service.getAllManagers().size());
+
+		Integer managerID = 0;
+		String first = " ";
+		String last = " ";
+		String email = " ";
+		Integer phone = 0;
+
+		String error = null ;
+
+		try {
+			service.createManager(first, last, dob, email, phone, managerID, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("First name cannot be empty!Last name cannot be empty!Email cannot be empty!"
+				+ "Phone cannot be empty!Manager ID cannot be empty!Login Info cannot be empty!Tutoring System cannot be empty!", error);
+
+		// check no change in memory
+//		assertEquals(0, service.getAllManagers().size());
+
+	}
 	
 	@Test
 	public void testMockMangerCreation() {
@@ -818,6 +917,7 @@ public class ServiceTests {
 	@Test
 	public void testMockManagerQueryFound() {
 		assertNotNull(service.getManager(MANAGERID_KEY));
+		assertEquals(MANAGERID_KEY, service.getManager(MANAGERID_KEY).getPersonId());
 	}
 
 	@Test

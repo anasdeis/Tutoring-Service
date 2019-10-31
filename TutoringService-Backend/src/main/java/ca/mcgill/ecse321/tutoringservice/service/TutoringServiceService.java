@@ -372,7 +372,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		
 		Manager manager = managerRepository.findManagerByPersonId(managerID);
+
 		if (manager == null) {
 		manager = new Manager();
 		manager.setFirstName(first);
