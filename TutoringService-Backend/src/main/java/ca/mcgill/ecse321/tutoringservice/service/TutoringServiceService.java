@@ -77,10 +77,12 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		TutoringSystem tutoringSystem = new TutoringSystem();
+		TutoringSystem tutoringSystem = tutoringSystemRepository.findTutoringSystemByTutoringSystemID(tutoringSystemID);
+		if (tutoringSystem == null) {
+		tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(tutoringSystemID);
 		tutoringSystemRepository.save(tutoringSystem);
+		}
 		return tutoringSystem;
 	}
 
@@ -126,11 +128,13 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Login login = new Login();
+		Login login = loginRepository.findLoginByUserName(userName);
+		if (login == null) {
+		login = new Login();
 		login.setUserName(userName);
 		login.setPassword(password);
 		loginRepository.save(login);
+		}
 		return login;
 	}
 
@@ -176,14 +180,17 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Commission commission = new Commission();
+		
+		Commission commission = commissionRepository.findCommissionBycommissionID(commissionID);
+		if ( commission == null) {
+		commission = new Commission();
 		commission.setCommissionID(commissionID);
 		commission.setPercentage(percentage);
 		commission.setManager(manager);
 		commission.setOffering(offerings);
 		commission.setTutoringSystem(tutoringSystem);
 		commissionRepository.save(commission);
+		}
 		return commission;
 	}
 
@@ -226,6 +233,7 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		
 		
 		Subject subject = subjectRepository.findSubjectByCourseID(courseID);
 		if(subject == null) {
@@ -288,8 +296,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		SubjectRequest subjectrequest = new SubjectRequest();
+		SubjectRequest subjectrequest = subjectRequestRepository.findSubjectRequestByRequestID(requestID);
+		if (subjectrequest == null) {
+		subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
@@ -297,6 +306,7 @@ public class TutoringServiceService {
 		subjectrequest.setManager(manager);
 		subjectrequest.setTutoringSystem(tutoringSystem);
 		subjectRequestRepository.save(subjectrequest);
+		}
 		return subjectrequest;
 	}
 
@@ -357,8 +367,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Manager manager = new Manager();
+		Manager manager = managerRepository.findManagerByPersonId(managerID);
+		if (manager == null) {
+		manager = new Manager();
 		manager.setFirstName(first);
 		manager.setLastName(last);
 		manager.setDateOfBirth(dob);
@@ -368,6 +379,7 @@ public class TutoringServiceService {
 		manager.setLoginInfo(loginInfo);
 		manager.setTutoringSystem(tutoringSystem);
 		managerRepository.save(manager);
+		}
 		return manager;
 	}
 
@@ -428,8 +440,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Student student = new Student();
+		Student student = studentRepository.findStudentByPersonId(studentID);
+		if (student == null) {
+		student = new Student();
 		student.setFirstName(first);
 		student.setLastName(last);
 		student.setDateOfBirth(dob);
@@ -440,6 +453,7 @@ public class TutoringServiceService {
 		student.setNumCoursesEnrolled(numCoursesEnrolled);
 		student.setTutoringSystem(tutoringSystem);
 		studentRepository.save(student);
+		}
 		return student;
 	}
 
@@ -503,8 +517,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Offering offering = new Offering();
+		Offering offering = offeringRepository.findOfferingByOfferingID(offId);
+		if (offering == null) {
+		offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
 		offering.setPricePerHour(price);
@@ -517,7 +532,7 @@ public class TutoringServiceService {
 		offering.setClassroom(classroom);
 		offering.setTutoringSystem(tutoringSystem);
 		offeringRepository.save(offering);
-		
+		}
 		return offering;
 	}
 
@@ -615,8 +630,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Tutor tutor = new Tutor();
+		Tutor tutor = tutorRepository.findTutorByPersonId(tutorID);
+		if (tutor == null) {
+		tutor = new Tutor();
 		tutor.setFirstName(first);
 		tutor.setLastName(last);
 		tutor.setDateOfBirth(dob);
@@ -630,6 +646,7 @@ public class TutoringServiceService {
 	    tutor.setOffering(offerings);
 		tutor.setTutoringSystem(tutoringSystem);
 		tutorRepository.save(tutor);
+		}
 		return tutor;
 	}
 	
@@ -704,8 +721,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Review review = new Review();
+		Review review = reviewRepository.findReviewByReviewID(reviewID);
+		if (review == null) {
+		review = new Review();
 		review.setComment(comment);
 		review.setIsApproved(isApproved);
 		review.setReviewID(reviewID);
@@ -713,6 +731,7 @@ public class TutoringServiceService {
 		review.setOffering(offering);
 		review.setTutoringSystem(tutoringSystem);
 		reviewRepository.save(review);
+		}
 		return review;
 	}
 	
@@ -774,13 +793,15 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		TutorApplication tutorapplication = new TutorApplication();
+		TutorApplication tutorapplication = tutorApplicationRepository.findTutorApplicationByApplicationId(applicationId);
+		if (tutorapplication == null) {
+		tutorapplication = new TutorApplication();
 		tutorapplication.setApplicationId(applicationId);
 		tutorapplication.setTutor(tutor);
 		tutorapplication.setIsAccepted(isAccepted);
 		tutorapplication.setTutoringSystem(tutoringSystem);
 		tutorApplicationRepository.save(tutorapplication);
+		}
 		return tutorapplication;
 	}	
 	@Transactional
@@ -845,8 +866,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		AvaliableSession AvaliableSession = new AvaliableSession();
+		AvaliableSession AvaliableSession = avaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		if (AvaliableSession == null) {
+		AvaliableSession = new AvaliableSession();
 		AvaliableSession.setAvaliableSessionID(AvaliableSessionID);
 		AvaliableSession.setDay(day);
 		AvaliableSession.setStartTime(startTime);
@@ -854,6 +876,7 @@ public class TutoringServiceService {
 		AvaliableSession.setTutoringSystem(tutoringSystem);
 		AvaliableSession.setTutor(tutors);
 		avaliableSessionRepository.save(AvaliableSession);
+		}
 		return AvaliableSession;
 	}
 
@@ -898,7 +921,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		Classroom classroom = new Classroom();
+		Classroom classroom = classroomRepository.findClassroomByRoomCode(roomCode);
+		if (classroom == null) {
+		classroom = new Classroom();
 		classroom.setRoomCode(roomCode);
 		classroom.setIsBooked(isBooked);
 		classroom.setIsBigRoom(isBigRoom);
@@ -906,6 +931,7 @@ public class TutoringServiceService {
 		classroom.setOffering(offerings);
 		classroom.setTutoringSystem(tutoringSystem);
 		classroomRepository.save(classroom);
+		}
 		return classroom;
 	}
 
@@ -960,13 +986,14 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		University university = new University();
+		University university = universityRepository.findUniversityByName(name);
+		if(university == null) {
+		university = new University();
 		university.setName(name);
 		university.setSubject(subjects);
 		university.setTutoringSystem(tutoringSystem);
 		universityRepository.save(university);
-
+		}
 		return university;
 	}
 
