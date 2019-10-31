@@ -5,8 +5,8 @@ import java.sql.Date;
 import java.util.Set;
 
 
-public class AvaliableSessionDto{
-	private Integer avaliableSessionID;
+public class AvailableSessionDto{
+	private Integer AvailableSessionID;
 	private Time startTime;
 	private Time endTime;
 	private TutoringSystemDto tutoringSystem;
@@ -15,15 +15,15 @@ public class AvaliableSessionDto{
 	private Integer tutoringSystemID;
 
 
-	public AvaliableSessionDto() {
+	public AvailableSessionDto() {
 		
 	}
 
 
-	public AvaliableSessionDto(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Integer> tutorIDs, Integer tutoringSystem) {
+	public AvailableSessionDto(Time startTime, Time endTime, Integer AvailableSessionID, Date day, Set<Integer> tutorIDs, Integer tutoringSystem) {
 		this.setStartTime(startTime);
 		this.setEndTime(endTime);
-		this.setAvaliableSessionID(AvaliableSessionID);
+		this.setAvailableSessionID(AvailableSessionID);
 		this.setDay(day);
 		this.setTutor(tutorIDs);
 		this.setTutoringSystem(tutoringSystem);
@@ -68,11 +68,11 @@ public class AvaliableSessionDto{
 		this.tutoringSystemID = tutoringSystemID;
 	}
 
-	public void setAvaliableSessionID(Integer value) {
-		this.avaliableSessionID = value;
+	public void setAvailableSessionID(Integer value) {
+		this.AvailableSessionID = value;
 	}
 
-	public Integer getAvaliableSessionID() {
-		return this.avaliableSessionID;
+	public Integer getAvailableSessionID() {
+		return this.AvailableSessionID;
 	}
 }

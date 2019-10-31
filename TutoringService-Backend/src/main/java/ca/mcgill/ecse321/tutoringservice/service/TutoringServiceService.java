@@ -20,7 +20,7 @@ import ca.mcgill.ecse321.tutoringservice.model.*;
 public class TutoringServiceService {
 
 	@Autowired
-	private AvaliableSessionRepository avaliableSessionRepository;
+	private AvailableSessionRepository AvailableSessionRepository;
 
 	@Autowired
 	private ClassroomRepository classroomRepository;
@@ -77,10 +77,12 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		TutoringSystem tutoringSystem = new TutoringSystem();
+		TutoringSystem tutoringSystem = tutoringSystemRepository.findTutoringSystemByTutoringSystemID(tutoringSystemID);
+		if (tutoringSystem == null) {
+		tutoringSystem = new TutoringSystem();
 		tutoringSystem.setTutoringSystemID(tutoringSystemID);
 		tutoringSystemRepository.save(tutoringSystem);
+		}
 		return tutoringSystem;
 	}
 
@@ -126,11 +128,13 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Login login = new Login();
+		Login login = loginRepository.findLoginByUserName(userName);
+		if (login == null) {
+		login = new Login();
 		login.setUserName(userName);
 		login.setPassword(password);
 		loginRepository.save(login);
+		}
 		return login;
 	}
 
@@ -176,14 +180,17 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Commission commission = new Commission();
+		
+		Commission commission = commissionRepository.findCommissionBycommissionID(commissionID);
+		if ( commission == null) {
+		commission = new Commission();
 		commission.setCommissionID(commissionID);
 		commission.setPercentage(percentage);
 		commission.setManager(manager);
 		commission.setOffering(offerings);
 		commission.setTutoringSystem(tutoringSystem);
 		commissionRepository.save(commission);
+		}
 		return commission;
 	}
 
@@ -226,6 +233,7 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		
 		
 		Subject subject = subjectRepository.findSubjectByCourseID(courseID);
 		if(subject == null) {
@@ -288,8 +296,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		SubjectRequest subjectrequest = new SubjectRequest();
+		SubjectRequest subjectrequest = subjectRequestRepository.findSubjectRequestByRequestID(requestID);
+		if (subjectrequest == null) {
+		subjectrequest = new SubjectRequest();
 		subjectrequest.setName(name);
 		subjectrequest.setRequestID(requestID);
 		subjectrequest.setDescription(description);
@@ -297,6 +306,7 @@ public class TutoringServiceService {
 		subjectrequest.setManager(manager);
 		subjectrequest.setTutoringSystem(tutoringSystem);
 		subjectRequestRepository.save(subjectrequest);
+		}
 		return subjectrequest;
 	}
 
@@ -357,8 +367,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Manager manager = new Manager();
+		Manager manager = managerRepository.findManagerByPersonId(managerID);
+		if (manager == null) {
+		manager = new Manager();
 		manager.setFirstName(first);
 		manager.setLastName(last);
 		manager.setDateOfBirth(dob);
@@ -368,6 +379,7 @@ public class TutoringServiceService {
 		manager.setLoginInfo(loginInfo);
 		manager.setTutoringSystem(tutoringSystem);
 		managerRepository.save(manager);
+		}
 		return manager;
 	}
 
@@ -428,8 +440,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Student student = new Student();
+		Student student = studentRepository.findStudentByPersonId(studentID);
+		if (student == null) {
+		student = new Student();
 		student.setFirstName(first);
 		student.setLastName(last);
 		student.setDateOfBirth(dob);
@@ -440,6 +453,7 @@ public class TutoringServiceService {
 		student.setNumCoursesEnrolled(numCoursesEnrolled);
 		student.setTutoringSystem(tutoringSystem);
 		studentRepository.save(student);
+		}
 		return student;
 	}
 
@@ -463,7 +477,7 @@ public class TutoringServiceService {
 	 * Offering
 	 */
 	@Transactional
-	public Offering createOffering(String offId, String term, double price, Set<AvaliableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
+	public Offering createOffering(String offId, String term, double price, Set<AvailableSession> classTime, Subject subject, Tutor tutor, Commission commission, Classroom classroom, TutoringSystem tutoringSystem){
 		String error ="";
 		if (offId == null || offId.trim().length() == 0) {
 			error = error + "Offering ID cannot be empty!";			
@@ -503,21 +517,22 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Offering offering = new Offering();
+		Offering offering = offeringRepository.findOfferingByOfferingID(offId);
+		if (offering == null) {
+		offering = new Offering();
 		offering.setOfferingID(offId);
 		offering.setTerm(term);
 		offering.setPricePerHour(price);
-		// class ca.mcgill.ecse321.tutoringservice.model.AvaliableSession cannot be cast to class java.util.Set (ca.mcgill.ecse321.tutoringservice.model.AvaliableSession
+		// class ca.mcgill.ecse321.tutoringservice.model.AvailableSession cannot be cast to class java.util.Set (ca.mcgill.ecse321.tutoringservice.model.AvailableSession
 		//is in unnamed module of loader 'app'; java.util.Set is in module java.base of loader 'bootstrap')
-		offering.setClassTime((Set<AvaliableSession>) classTime);
+		offering.setClassTime((Set<AvailableSession>) classTime);
 		offering.setSubject(subject);
 		offering.setTutor(tutor);;
 		offering.setCommission(commission);
 		offering.setClassroom(classroom);
 		offering.setTutoringSystem(tutoringSystem);
 		offeringRepository.save(offering);
-		
+		}
 		return offering;
 	}
 
@@ -541,7 +556,7 @@ public class TutoringServiceService {
 	 * Tutor 
 	 */
 	@Transactional
-	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvaliableSession> avaliableSessions, TutoringSystem tutoringSystem) {
+	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvailableSession> AvailableSessions, TutoringSystem tutoringSystem) {
 		String error = ""; 
 
 		if (first == null || first.trim().length() == 0) {
@@ -600,13 +615,13 @@ public class TutoringServiceService {
 			}
 		}
 		
-		if (avaliableSessions != null)
+		if (AvailableSessions != null)
 		{
-			for (AvaliableSession avaliableSession : avaliableSessions) {
-				if (avaliableSession == null) {
-					error = error + "AvaliableSession needs to be selected for tutor!";
-				} else if (!avaliableSessionRepository.existsByAvaliableSessionID(avaliableSession.getAvaliableSessionID())) {
-					error = error + "AvaliableSession does not exist!";
+			for (AvailableSession AvailableSession : AvailableSessions) {
+				if (AvailableSession == null) {
+					error = error + "AvailableSession needs to be selected for tutor!";
+				} else if (!AvailableSessionRepository.existsByAvailableSessionID(AvailableSession.getAvailableSessionID())) {
+					error = error + "AvailableSession does not exist!";
 				}
 			}
 		}
@@ -615,8 +630,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Tutor tutor = new Tutor();
+		Tutor tutor = tutorRepository.findTutorByPersonId(tutorID);
+		if (tutor == null) {
+		tutor = new Tutor();
 		tutor.setFirstName(first);
 		tutor.setLastName(last);
 		tutor.setDateOfBirth(dob);
@@ -626,10 +642,11 @@ public class TutoringServiceService {
 		tutor.setIsRegistered(isRegistered);
 		tutor.setLoginInfo(loginInfo);
 	    tutor.setTutorApplication(tutorApplications);
-	    tutor.setAvaliableSession(avaliableSessions);
+	    tutor.setAvailableSession(AvailableSessions);
 	    tutor.setOffering(offerings);
 		tutor.setTutoringSystem(tutoringSystem);
 		tutorRepository.save(tutor);
+		}
 		return tutor;
 	}
 	
@@ -704,8 +721,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		Review review = new Review();
+		Review review = reviewRepository.findReviewByReviewID(reviewID);
+		if (review == null) {
+		review = new Review();
 		review.setComment(comment);
 		review.setIsApproved(isApproved);
 		review.setReviewID(reviewID);
@@ -713,6 +731,7 @@ public class TutoringServiceService {
 		review.setOffering(offering);
 		review.setTutoringSystem(tutoringSystem);
 		reviewRepository.save(review);
+		}
 		return review;
 	}
 	
@@ -774,13 +793,15 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		TutorApplication tutorapplication = new TutorApplication();
+		TutorApplication tutorapplication = tutorApplicationRepository.findTutorApplicationByApplicationId(applicationId);
+		if (tutorapplication == null) {
+		tutorapplication = new TutorApplication();
 		tutorapplication.setApplicationId(applicationId);
 		tutorapplication.setTutor(tutor);
 		tutorapplication.setIsAccepted(isAccepted);
 		tutorapplication.setTutoringSystem(tutoringSystem);
 		tutorApplicationRepository.save(tutorapplication);
+		}
 		return tutorapplication;
 	}	
 	@Transactional
@@ -806,23 +827,23 @@ public class TutoringServiceService {
 	/*
 	 * Available Session
 	 */
-	public AvaliableSession createAvaliableSession(Time startTime, Time endTime, Integer AvaliableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
+	public AvailableSession createAvailableSession(Time startTime, Time endTime, Integer AvailableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
 		// Input validation
 		String error = "";
-		if (AvaliableSessionID == null) {
-			error = error + "AvaliableSession AvaliableSessionID cannot be empty!";
+		if (AvailableSessionID == null) {
+			error = error + "AvailableSession AvailableSessionID cannot be empty!";
 		}
 		if (startTime == null) {
-			error = error + "AvaliableSession start time cannot be empty!";
+			error = error + "AvailableSession start time cannot be empty!";
 		}
 		if (endTime == null) {
-			error = error + "AvaliableSession end time cannot be empty!";
+			error = error + "AvailableSession end time cannot be empty!";
 		}
 		if (day == null) {
-			error = error + "AvaliableSession day cannot be empty!";
+			error = error + "AvailableSession day cannot be empty!";
 		}
 		if (endTime != null && startTime != null && endTime.before(startTime)) {
-			error = error + "AvaliableSession end time cannot be before event start time!";
+			error = error + "AvailableSession end time cannot be before event start time!";
 		}
 		if (tutoringSystem == null) {
 			error = error + "TutoringSystem needs to be selected for available session!";
@@ -845,38 +866,40 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		AvaliableSession AvaliableSession = new AvaliableSession();
-		AvaliableSession.setAvaliableSessionID(AvaliableSessionID);
-		AvaliableSession.setDay(day);
-		AvaliableSession.setStartTime(startTime);
-		AvaliableSession.setEndTime(endTime);
-		AvaliableSession.setTutoringSystem(tutoringSystem);
-		AvaliableSession.setTutor(tutors);
-		avaliableSessionRepository.save(AvaliableSession);
-		return AvaliableSession;
-	}
-
-	@Transactional
-	public AvaliableSession getAvaliableSession(Integer AvaliableSessionID) {
-		if (AvaliableSessionID == null) {
-			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
+		AvailableSession AvailableSession = AvailableSessionRepository.findAvailableSessionByAvailableSessionID(AvailableSessionID);
+		if (AvailableSession == null) {
+		AvailableSession = new AvailableSession();
+		AvailableSession.setAvailableSessionID(AvailableSessionID);
+		AvailableSession.setDay(day);
+		AvailableSession.setStartTime(startTime);
+		AvailableSession.setEndTime(endTime);
+		AvailableSession.setTutoringSystem(tutoringSystem);
+		AvailableSession.setTutor(tutors);
+		AvailableSessionRepository.save(AvailableSession);
 		}
-		AvaliableSession AvaliableSession = avaliableSessionRepository.findAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
-		return AvaliableSession;
+		return AvailableSession;
 	}
 
 	@Transactional
-	public List<AvaliableSession> getAllAvaliableSessions() {
-		return toList(avaliableSessionRepository.findAll());
-	}
-
-	@Transactional
-	public void deleteAvaliableSession(Integer AvaliableSessionID) {
-		if (AvaliableSessionID == null) {
-			throw new IllegalArgumentException("AvaliableSession AvaliableSessionID cannot be empty!");
+	public AvailableSession getAvailableSession(Integer AvailableSessionID) {
+		if (AvailableSessionID == null) {
+			throw new IllegalArgumentException("AvailableSession AvailableSessionID cannot be empty!");
 		}
-		avaliableSessionRepository.deleteAvaliableSessionByAvaliableSessionID(AvaliableSessionID);
+		AvailableSession AvailableSession = AvailableSessionRepository.findAvailableSessionByAvailableSessionID(AvailableSessionID);
+		return AvailableSession;
+	}
+
+	@Transactional
+	public List<AvailableSession> getAllAvailableSessions() {
+		return toList(AvailableSessionRepository.findAll());
+	}
+
+	@Transactional
+	public void deleteAvailableSession(Integer AvailableSessionID) {
+		if (AvailableSessionID == null) {
+			throw new IllegalArgumentException("AvailableSession AvailableSessionID cannot be empty!");
+		}
+		AvailableSessionRepository.deleteAvailableSessionByAvailableSessionID(AvailableSessionID);
 	}
 
 	/*
@@ -898,7 +921,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-		Classroom classroom = new Classroom();
+		Classroom classroom = classroomRepository.findClassroomByRoomCode(roomCode);
+		if (classroom == null) {
+		classroom = new Classroom();
 		classroom.setRoomCode(roomCode);
 		classroom.setIsBooked(isBooked);
 		classroom.setIsBigRoom(isBigRoom);
@@ -906,6 +931,7 @@ public class TutoringServiceService {
 		classroom.setOffering(offerings);
 		classroom.setTutoringSystem(tutoringSystem);
 		classroomRepository.save(classroom);
+		}
 		return classroom;
 	}
 
@@ -960,13 +986,14 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
-
-		University university = new University();
+		University university = universityRepository.findUniversityByName(name);
+		if(university == null) {
+		university = new University();
 		university.setName(name);
 		university.setSubject(subjects);
 		university.setTutoringSystem(tutoringSystem);
 		universityRepository.save(university);
-
+		}
 		return university;
 	}
 
