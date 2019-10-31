@@ -185,7 +185,7 @@ public class ServiceTests {
 	// manager, offering already created
 	private Review review;
 	private static final String COMMENT_KEY = "Love this course!";
-	private static final String NOTEXISRING_COMMENT_KEY = "NotAComment";
+	private static final String NOTEXISTING_COMMENT_KEY = "NotAComment";
 	private static final Boolean ISAPPROVED = true;
 	private static final Integer REVIEWID_KEY = 9;
 	private static final Integer NOTEXISTING_REVIEWID_KEY = -9;
@@ -198,7 +198,9 @@ public class ServiceTests {
 	private static final Boolean ISACCEPTED = true;
 
 	private TutoringSystem system;
-
+	private static final Integer SYSTEMID_KEY = 100;
+	private static final Integer NONEXISTING_SYSTEMID_KEY = -100;
+	
 	@Before
 	public void clearDatabase() {
 		subjectDao.deleteAll();
@@ -373,9 +375,14 @@ public class ServiceTests {
 			return null;
 		});
 
-//		when(tutoringSystemDao.findTutoringSystemByTutoringSystemID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
-//			if(invocation.getArgument(0).equals()) {
-//		}
+		//public TutoringSystem createTutoringSystem(Integer tutoringSystemID)
+		when(tutoringSystemDao.findTutoringSystemByTutoringSystemID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(SYSTEMID_KEY)) {
+				system.setTutoringSystemID(SYSTEMID_KEY);
+				return system;
+			} else
+				return null;
+		});
 		
 		// 	public University createUniversity(String name, Set<Subject> subjects, TutoringSystem tutoringSystem) {
 		when(universityDao.findUniversityByName((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
@@ -471,6 +478,7 @@ public class ServiceTests {
 		offering = mock(Offering.class);
 		review = mock(Review.class);
 		tutorApplication = mock(TutorApplication.class);
+		system = mock(TutoringSystem.class);
 	}
 	
 	
@@ -717,6 +725,7 @@ public class ServiceTests {
 		try {
 			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, system);
 		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
 			fail();
 		}
 		
