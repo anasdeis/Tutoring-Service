@@ -122,7 +122,7 @@ public class ServiceTests {
 	// Available session
 	// TODO need to initialize start time, end time, day
 	// do we need Set<Tutor> ?
-	private AvailableSession AvailableSession;
+	private AvailableSession availableSession;
 	private static final Time START_TIME_KEY = null;
 	private static final String NOTEXISTING_START_TIME_KEY = "NotAStartTine";
 	private static final Time END_TIME_KEY = null;
@@ -293,15 +293,15 @@ public class ServiceTests {
 		// 	public AvailableSession createAvailableSession(Time startTime, Time endTime, Integer AvailableSessionID, Date day, Set<Tutor> tutors, TutoringSystem tutoringSystem) {
 		when(AvailableSessionDao.findAvailableSessionByAvailableSessionID((anyInt()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(AVA_SESSION_ID_KEY)) {
-				AvaliableSession avaliableSession = new AvaliableSession();
+				AvailableSession availableSession = new AvailableSession();
 				Set<Tutor> tutors = new HashSet<Tutor>();	// TODO temp solution, will modify, but works
 				tutors.add(tutor);
-				AvailableSession.setAvailableSessionID(AVA_SESSION_ID_KEY);
-				AvailableSession.setStartTime(START_TIME_KEY);
-				AvailableSession.setEndTime(START_TIME_KEY);
-				AvailableSession.setDay(DAY_KEY);
-				AvailableSession.setTutor(tutors);
-				AvailableSession.setTutoringSystem(system);
+				availableSession.setAvailableSessionID(AVA_SESSION_ID_KEY);
+				availableSession.setStartTime(START_TIME_KEY);
+				availableSession.setEndTime(START_TIME_KEY);
+				availableSession.setDay(DAY_KEY);
+				availableSession.setTutor(tutors);
+				availableSession.setTutoringSystem(system);
 				return student;
 			} else 
 				return null;
@@ -403,8 +403,8 @@ public class ServiceTests {
 		when(offeringDao.findOfferingByOfferingID((anyString()))).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(OFFERID_KEY)) {
 				Offering offering = new Offering();
-				Set<AvaliableSession> classTimes = new HashSet<AvaliableSession>();
-				classTimes.add(avaliableSession);
+				Set<AvailableSession> classTimes = new HashSet<AvailableSession>();
+				classTimes.add(availableSession);
 				offering.setOfferingID(OFFERID_KEY);
 				offering.setClassroom(classroom);
 				offering.setClassTime(classTimes);
@@ -468,7 +468,7 @@ public class ServiceTests {
 		tutor = mock(Tutor.class);
 		student = mock(Student.class);
 		lgInfo = mock(Login.class);
-		AvailableSession = mock(AvailableSession.class);
+		availableSession = mock(AvailableSession.class);
 		request = mock(SubjectRequest.class);
 		subject = mock(Subject.class);
 		comm = mock(Commission.class);
@@ -843,7 +843,7 @@ public class ServiceTests {
 	
 	@Test
 	public void testMockAvailableSessionCreation() {
-		assertNotNull(AvailableSession);
+		assertNotNull(availableSession);
 	}
 
 	// TODO
