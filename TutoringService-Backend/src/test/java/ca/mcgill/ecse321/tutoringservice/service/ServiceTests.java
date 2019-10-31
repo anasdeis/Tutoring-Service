@@ -601,13 +601,13 @@ public class ServiceTests {
 
 		String error = "";
 		try {
-			subject = service.createSubject(name, courseID, description, subjectType, university, system);
+			subject = service.createSubject(name, courseID, description, subjectType, university, null);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
 
 		assertEquals("name cannot be empty or null!description cannot be empty or null!"
-				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university course", error);
+				+ "courseID cannot be empty or null!subjectType cannot be null!cannot assign university to non university coursetutoringSystem cannot be null!", error);
 	}
 	
 

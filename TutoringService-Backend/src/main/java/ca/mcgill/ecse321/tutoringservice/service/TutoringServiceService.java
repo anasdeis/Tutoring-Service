@@ -224,6 +224,8 @@ public class TutoringServiceService {
 			error += "university must be defined for university course";
 		if(subjType != SubjectType.UNIVERSITY_COURSE && university != null)
 			error += "cannot assign university to non university course";
+		if (tutoringSystem == null) 
+			error += "tutoringSystem cannot be null!";
 
 		error = error.trim();
 		if (error.length() > 0) {
