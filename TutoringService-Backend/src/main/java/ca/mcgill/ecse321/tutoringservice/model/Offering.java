@@ -67,14 +67,14 @@ public class Offering{
 		this.classroom = classroom;
 	}
 
-	private Set<AvaliableSession> classTime;
+	private Set<AvailableSession> classTime;
 
 	@ManyToMany
-	public Set<AvaliableSession> getClassTime() {
+	public Set<AvailableSession> getClassTime() {
 		return this.classTime;
 	}
 
-	public void setClassTime(Set<AvaliableSession> classTimes) {
+	public void setClassTime(Set<AvailableSession> classTimes) {
 		this.classTime = classTimes;
 	}
 
