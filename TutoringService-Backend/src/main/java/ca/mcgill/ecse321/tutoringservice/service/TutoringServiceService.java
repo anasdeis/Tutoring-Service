@@ -490,7 +490,7 @@ public class TutoringServiceService {
 		if (term == null || term.trim().length() == 0) {
 			error = error + "Offering term cannot be empty!";
 		}
-		if (price == 0.0) {
+		if (price <= 0.0) {
 			error = error + "Hourly rate cannot be empty!";
 		}
 		if (classTime == null) {
