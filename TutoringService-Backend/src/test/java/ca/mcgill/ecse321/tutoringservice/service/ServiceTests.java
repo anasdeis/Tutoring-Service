@@ -667,6 +667,101 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testCreateSubjectRequest() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+		Integer requestID = 789456;
+		String name = "Math240";
+		String description = "Discrete structures";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description, subjectType, manager, system);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		assertEquals(requestID, request.getRequestID());
+		assertEquals(name, request.getName());
+		assertEquals(description, request.getDescription());
+		assertEquals(manager, request.getManager());
+		assertEquals(system, request.getTutoringSystem());
+
+	}
+	
+	@Test
+	public void testCreateSubjectRequestNull() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = null;
+		String name = null;
+		String description = null;
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
+		SubjectType subjectType = null;
+
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description, subjectType, manager, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check no change in memory
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!manager cannot be empty!Tutoring System cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectRequestEmpty() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = 0;
+		String name = "";
+		String description = "";
+		SubjectType subjectType = null;
+
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description,subjectType, manager, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectRequestSpaces() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = 0;
+		String name = " ";
+		String description = " ";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description,subjectType, manager, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
+	}
+
+	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
 
@@ -690,6 +785,7 @@ public class ServiceTests {
 		assertEquals(university, subject.getUniversity());
 		assertEquals(system, subject.getTutoringSystem());
 	}
+	
 
 	@Test
 	public void testCreateSubjectNull() {
