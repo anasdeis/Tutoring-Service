@@ -481,7 +481,48 @@ public class ServiceTests {
 		system = mock(TutoringSystem.class);
 	}
 
-
+	@Test
+	public void testCreateTutoringSystem() {
+		Integer tsID = 123;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertEquals(tsID, system.getTutoringSystemID());
+	}
+	
+	@Test
+	public void testCreateTutoringSystemNull() {
+		String error = null;
+		Integer tsID = null;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateTutoringSystemEmpty() {
+		String error = null;
+		Integer tsID = 0;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+	}
+	
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
