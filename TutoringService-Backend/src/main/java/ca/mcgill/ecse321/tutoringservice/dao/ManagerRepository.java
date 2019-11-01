@@ -8,4 +8,6 @@ public interface ManagerRepository extends CrudRepository<Manager, Integer> {
     Manager findManagerByPersonId(Integer managerID);
 
     void deleteManagerByPersonId(Integer managerID);
+    
+    boolean existsByPersonId(Integer managerID);
 }

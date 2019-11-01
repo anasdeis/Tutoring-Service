@@ -8,4 +8,6 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
     Student findStudentByPersonId(Integer studentID);
 
     void deleteStudentByPersonId(Integer studentID);
+    
+    boolean existsByPersonId(Integer studentID);
 }

@@ -8,4 +8,6 @@ public interface LoginRepository extends CrudRepository<Login, String> {
     Login findLoginByUserName(String userName);
 
     void deleteLoginByUserName(String userName);
+    
+    boolean existsByUserName (String userName);
 }

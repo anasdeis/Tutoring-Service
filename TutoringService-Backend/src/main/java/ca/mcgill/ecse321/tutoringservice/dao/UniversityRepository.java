@@ -7,4 +7,6 @@ public interface UniversityRepository extends CrudRepository<University, String>
     University findUniversityByName(String name);
 
     void deleteUniversityByName(String name);
+    
+    boolean existsByName(String name);
 }
