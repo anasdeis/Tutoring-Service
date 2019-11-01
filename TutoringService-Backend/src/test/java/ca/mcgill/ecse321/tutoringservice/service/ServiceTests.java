@@ -1054,6 +1054,7 @@ public class ServiceTests {
 	/*
 	 * Tutor
 	 */
+	/*
 	@Test
 	public void testCreateTutor() {
 		assertEquals(0, service.getAllTutors().size());
@@ -1093,7 +1094,7 @@ public class ServiceTests {
 		assertEquals(lgInfo, tutor.getLoginInfo());
 		assertEquals(system, tutor.getTutoringSystem());
 	}
-
+*/
 	
 	@Test
 	public void testCreateTutorNull() {
@@ -1232,7 +1233,6 @@ public class ServiceTests {
 	public void testMockSubjectRequestQueryNotFound() {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
 	}
-
 	/*
 	 * Commission Done
 	 */
@@ -1414,6 +1414,7 @@ public class ServiceTests {
 		assertNull(service.getClassroom(NOTEXISTING_ROOMCODE_KEY));
 	}
 
+
 	/*
 	 * University
 	 */
@@ -1504,6 +1505,92 @@ public class ServiceTests {
 	/*
 	 * Offering
 	 */
+	@Test
+	public void testCreateOffering() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = "ECSE321";
+		String term = "Winter";
+		double price = 10.0;
+		Set<AvailableSession> classTime = new HashSet<AvailableSession>();
+		classTime.add(availableSession);
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, subject, tutor, comm, classroom, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(offId, offering.getOfferingID());
+		assertEquals(term, offering.getTerm());
+		if(price!=offering.getPricePerHour())
+			fail();
+		assertEquals(classTime, offering.getClassTime());
+		assertEquals(subject, offering.getSubject());
+		assertEquals(tutor, offering.getTutor());
+		assertEquals(comm, offering.getCommission());
+		assertEquals(classroom, offering.getClassroom());
+		assertEquals(system, offering.getTutoringSystem());
+		assertEquals(null, offering.getReview());
+		assertEquals(null, offering.getStudentsEnrolled());
+	}
+
+
+	@Test
+	public void testCreateOfferingNull() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = null;
+		String term = null;
+		String error = "";
+		double price = 0.0;
+		Set<AvailableSession> classTime = null;
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error); 
+	}
+	
+	
+	@Test
+	public void testCreateOfferingEmpty() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = "";
+		String term = "";
+		String error = "";
+		double price = 0.0;
+		Set<AvailableSession> classTime = null;
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error); 
+	}
+	
+	
+	@Test
+	public void testCreateOfferingSpaces() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = "   ";
+		String term = "   ";
+		String error = "";
+		double price = 0.0;
+		Set<AvailableSession> classTime = null;
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error); 
+	}
+	
 	@Test
 	public void testMockOfferingCreation() {
 		assertNotNull(offering);
