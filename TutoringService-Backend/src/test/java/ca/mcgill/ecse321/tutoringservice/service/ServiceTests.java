@@ -5,11 +5,13 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
+
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.format.*;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.SubjectKeyIDRequest;
 
@@ -20,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.mockito.internal.util.collections.Sets;
 
 import ca.mcgill.ecse321.tutoringservice.controller.TutoringServiceRestController;
 import ca.mcgill.ecse321.tutoringservice.dao.*;
@@ -122,7 +125,7 @@ public class ServiceTests {
 	// Available session
 	// TODO need to initialize start time, end time, day
 	// do we need Set<Tutor> ?
-	private AvailableSession AvailableSession;
+	private AvailableSession availableSession;
 	private static final Time START_TIME_KEY = null;
 	private static final String NOTEXISTING_START_TIME_KEY = "NotAStartTine";
 	private static final Time END_TIME_KEY = null;
@@ -405,7 +408,7 @@ public class ServiceTests {
 			if(invocation.getArgument(0).equals(OFFERID_KEY)) {
 				Offering offering = new Offering();
 				Set<AvailableSession> classTimes = new HashSet<AvailableSession>();
-				classTimes.add(AvailableSession);
+				classTimes.add(availableSession);
 				offering.setOfferingID(OFFERID_KEY);
 				offering.setClassroom(classroom);
 				offering.setClassTime(classTimes);
@@ -469,7 +472,7 @@ public class ServiceTests {
 		tutor = mock(Tutor.class);
 		student = mock(Student.class);
 		lgInfo = mock(Login.class);
-		AvailableSession = mock(AvailableSession.class);
+		availableSession = mock(AvailableSession.class);
 		request = mock(SubjectRequest.class);
 		subject = mock(Subject.class);
 		comm = mock(Commission.class);
@@ -478,10 +481,54 @@ public class ServiceTests {
 		offering = mock(Offering.class);
 		review = mock(Review.class);
 		tutorApplication = mock(TutorApplication.class);
-		system = mock(TutoringSystem.class);
+		system = mock(TutoringSystem.class);	
+	}		
+	
+	/*
+	 * Login Done
+	 */
+	@Test
+	public void testCreateTutoringSystem() {
+		Integer tsID = 123;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertEquals(tsID, system.getTutoringSystemID());
 	}
-
-
+	
+	@Test
+	public void testCreateTutoringSystemNull() {
+		String error = null;
+		Integer tsID = null;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		// check error
+		assertEquals("TutoringSystem tutoringSystemID cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateTutoringSystemEmpty() {
+		String error = null;
+		Integer tsID = 0;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("TutoringSystem tutoringSystemID cannot be empty!", error);
+	}
+	
 	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
@@ -514,7 +561,6 @@ public class ServiceTests {
 		assertEquals("Login userName cannot be empty!Login password cannot be empty!", error);
 	}
 
-
 	@Test
 	public void testCreateLoginEmpty() {
 		String error = "";
@@ -544,8 +590,11 @@ public class ServiceTests {
 			error = e.getMessage();
 		}
 		// check error
+
 		assertEquals("Login userName cannot be empty!Login password cannot be empty!", error);
    	}
+
+
 	@Test
 	public void testMockLoginCreation() {
 		assertNotNull(lgInfo);
@@ -557,10 +606,18 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingLogin() {
+		assertEquals(LOGIN_KEY,service.getLogin(LOGIN_KEY).getUserName());
+	}
+	
+	@Test
 	public void testMockLoginQueryNotFound() {
 		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
-	}
+	}	
 
+	/*
+	 * Review Session Done
+	 */
 	@Test
 	public void testCreateReviewSession() {
 		Integer managerID = 123;
@@ -648,8 +705,11 @@ public class ServiceTests {
 		}
 
 		assertEquals("managerID cannot be empty or <= 0!tutoringSystemID cannot be empty or <= 0!", error);
-	}
+  }
 	
+	/*
+	 * Subject Request Done
+	 */
 	@Test
 	public void testCreateReviewNegative() {
 		Integer managerID = -1;
@@ -667,6 +727,104 @@ public class ServiceTests {
 		assertEquals("managerID cannot be empty or <= 0!tutoringSystemID cannot be empty or <= 0!", error);
 	}
 
+	@Test
+	public void testCreateSubjectRequest() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+		Integer requestID = 789456;
+		String name = "Math240";
+		String description = "Discrete structures";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+/*
+		try {
+			request = service.createSubjectRequest(requestID, name, description, subjectType, manager, null, system);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		assertEquals(requestID, request.getRequestID());
+		assertEquals(name, request.getName());
+		assertEquals(description, request.getDescription());
+		assertEquals(manager, request.getManager());
+		assertEquals(system, request.getTutoringSystem());
+*/
+	}
+	
+	@Test
+	public void testCreateSubjectRequestNull() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = null;
+		String name = null;
+		String description = null;
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
+		SubjectType subjectType = null;
+
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description, subjectType, manager, null, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check no change in memory
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("SubjectRequest name cannot be empty!SubjectRequest description cannot be empty!SubjectRequest requestID cannot be empty!SubjectRequest subjectType cannot be empty!Manager needs to be selected for SubjectRequest!TutoringSystem needs to be selected for SubjectRequest!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectRequestEmpty() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = 0;
+		String name = "";
+		String description = "";
+		SubjectType subjectType = null;
+
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description,subjectType, manager, null, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("SubjectRequest name cannot be empty!SubjectRequest description cannot be empty!SubjectRequest requestID cannot be <= 0!SubjectRequest subjectType cannot be empty!Manager does not exist!TutoringSystem does not exist!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectRequestSpaces() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = 0;
+		String name = " ";
+		String description = " ";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description,subjectType, manager, null, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("SubjectRequest name cannot be empty!SubjectRequest description cannot be empty!SubjectRequest requestID cannot be <= 0!Manager does not exist!TutoringSystem does not exist!", error);
+	}
+
+	/*
+	 * Subject Done
+	 */
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -691,7 +849,7 @@ public class ServiceTests {
 		assertEquals(university, subject.getUniversity());
 		assertEquals(system, subject.getTutoringSystem());
 	}
-
+	
 	@Test
 	public void testCreateSubjectNull() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -711,7 +869,6 @@ public class ServiceTests {
 		assertEquals("Subject name cannot be empty!Subject description cannot be empty!"
 				+ "Subject courseID cannot be empty!Subject subjectType cannot be empty!cannot assign university to non university courseTutoringSystem needs to be selected for Subject!", error);
 	}
-
 
 	@Test
 	public void testCreateSubjectEmpty() {
@@ -794,7 +951,6 @@ public class ServiceTests {
 		assertNotNull(subject);
 	}
 
-	// but this one works
 	@Test
 	public void testMockSubjectQueryFound() {
 		assertNotNull(service.getSubject(COURSEID_KEY));
@@ -804,13 +960,15 @@ public class ServiceTests {
 	public void testGetExistingSubject() {
 		assertEquals(COURSEID_KEY, service.getSubject(COURSEID_KEY).getCourseID());
 	}
-
+	
 	@Test
 	public void testMockSubjectQueryNotFound() {
 		assertNull(service.getSubject(NOTEXISTING_COURSEID_KEY));
 	}
 
-
+/*
+ * Student	Done
+ */
 	@Test
 	public void testCreateStudent() {
 		assertEquals(0, service.getAllStudents().size());
@@ -818,18 +976,20 @@ public class ServiceTests {
 		String lastName = "Liu";
 		String email = "asdf@mcgill.ca";
 		Integer phone = 1234567890;
+		Calendar c = Calendar.getInstance();
+		Date dob = new Date(c.getTimeInMillis());
 		Integer studentID = 88888888;
 		Integer numCoursesEnrolled = 5;
-	/*	
+	/*
 		try {
-			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo,null, null, system);
+			student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, lgInfo, null, null, system);
 		} catch (IllegalArgumentException e) {
 			fail();
 		}
 
 		assertEquals(firstName, student.getFirstName());
 		assertEquals(lastName, student.getLastName());
-		assertEquals(dob, student.getDateOfBirth());
+		assertEquals(dob.toString(), student.getDateOfBirth().toString());
 		assertEquals(email, student.getEmail());
 		assertEquals(numCoursesEnrolled, student.getNumCoursesEnrolled());
 		assertEquals(studentID, student.getPersonId());
@@ -908,15 +1068,116 @@ public class ServiceTests {
 	public void tsetMockStudentQueryFound() {
 		assertNotNull(service.getStudent(STUDENTID_KEY));
 	}
+	
+	@Test
+	public void testGetExistingStudent() {
+		assertEquals(STUDENTID_KEY,service.getStudent(STUDENTID_KEY).getPersonId());
+	}
 
 	@Test
 	public void tsetMockStudentQueryNotFound() {
 		assertNull(service.getStudent(NOTEXISTING_STUDENTID_KEY));
 	}
+	
+	/*
+	 * Manager Done
+	 */
+	@Test
+	public void testCreateManager() {
+		assertEquals(0, service.getAllManagers().size());
+		Integer managerID = 99999;
+		String firstName = "Andy";
+		String lastName = "He";
+		String email = "123456@gmail.com";
+		Integer phone = 45612378;
+/*
+		try {
+			manager = service.createManager(firstName, lastName, dob, email, phone, managerID, lgInfo, null, null, null, null, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(firstName, manager.getFirstName());
+		assertEquals(lastName, manager.getLastName());
+		assertEquals(dob, manager.getDateOfBirth());
+		assertEquals(email, manager.getEmail());
+		assertEquals(phone, manager.getPhoneNumber());
+		assertEquals(managerID, manager.getPersonId());
+		assertEquals(lgInfo, manager.getLoginInfo());
+		assertEquals(system, manager.getTutoringSystem());
+		*/
+	}
 
+	@Test
+	public void testCreateManagerNull() {
+		String error = "";
 
+		Integer managerID = null;
+		String first = null;
+		String last = null;
+		String email = null;
+		Integer phone = null;
 
+		try {
+			manager = service.createManager(first, last, dob, email, phone, managerID, null, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
 
+		// check error    	
+		assertEquals("Manager firstname cannot be empty!Manager lastname cannot be empty!Manager date of birth cannot be empty!Manager email cannot be empty!Manager phone cannot be empty!Manager managerID cannot be empty!Login needs to be selected for Manager!TutoringSystem needs to be selected for Manager!", error);
+	}
+
+	@Test
+	public void testCreateManagerEmpty() {
+//		assertEquals(0, service.getAllManagers().size());
+
+		Integer managerID = 0;
+		String first = "";
+		String last = "";
+		String email = "";
+		Integer phone = 0;
+
+		String error = null;
+
+		try {
+			manager = service.createManager(first, last, dob, email, phone, managerID, null, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Manager firstname cannot be empty!Manager lastname cannot be empty!Manager date of birth cannot be empty!Manager email cannot be empty!Manager phone cannot be <= 0!Manager managerID cannot be empty!Login needs to be selected for Manager!TutoringSystem needs to be selected for Manager!", error);
+		// check no change in memory
+//		assertEquals(0, service.getAllManagers().size());
+
+	}
+
+	@Test
+	public void testCreateManagerSpaces() {
+//		assertEquals(0, service.getAllManagers().size());
+
+		Integer managerID = 0;
+		String first = " ";
+		String last = " ";
+		String email = " ";
+		Integer phone = 0;
+
+		String error = null ;
+
+		try {
+			manager = service.createManager(first, last, dob, email, phone, managerID, null, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error
+		assertEquals("Manager firstname cannot be empty!Manager lastname cannot be empty!Manager date of birth cannot be empty!Manager email cannot be empty!Manager phone cannot be <= 0!Manager managerID cannot be empty!Login needs to be selected for Manager!TutoringSystem needs to be selected for Manager!", error);
+
+		// check no change in memory
+//		assertEquals(0, service.getAllManagers().size());
+
+	}
+	
 	@Test
 	public void testMockMangerCreation() {
 		assertNotNull(manager);
@@ -928,10 +1189,126 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingManager() {
+		assertEquals(MANAGERID_KEY, service.getManager(MANAGERID_KEY).getPersonId());
+	}
+	
+	@Test
 	public void testMockManagerQueryNotFound() {
 		assertNull(service.getManager(NOTEXISTING_MANAGERID_KEY));
 	}
+	
+	/*
+	 * Tutor Done
+	 */
+	/*
+	@Test
+	public void testCreateTutor() {
+		assertEquals(0, service.getAllTutors().size());
+		Integer tutorID = 88888;
+		String first = "Andy";
+		String last = "He";
+		String email = "88888@gmail.com";
+		Integer phone = 5141234;
+		Boolean isRegistered = true;
+		Set<Offering> offerings = new HashSet<Offering>();
+		Set<AvailableSession> classtimes = new HashSet<AvailableSession>();
+		Set<TutorApplication> tutorApplications = new HashSet<TutorApplication>();
+//		offering = findOfferingByOfferingID("123");
+//		Offering offering = new Offering();
+		offerings.add(offering);
+		tutorApplications.add(tutorApplication);
+		classtimes.add(availableSession);
+		
+		try {
+			tutor = service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, lgInfo, tutorApplications, offerings, classtimes, system);
 
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			fail();
+		}
+		
+		assertEquals(first, tutor.getFirstName());
+		assertEquals(last, tutor.getLastName());
+		assertEquals(dob, tutor.getDateOfBirth());
+		assertEquals(email, tutor.getEmail());
+		assertEquals(phone, tutor.getPhoneNumber());
+		assertEquals(tutorID, tutor.getPersonId());
+		assertEquals(isRegistered, tutor.getIsRegistered());
+		assertEquals(offerings, tutor.getOffering());
+		assertEquals(tutorApplications, tutor.getTutorApplication());
+		assertEquals(classtimes, tutor.getAvailableSession());
+		assertEquals(lgInfo, tutor.getLoginInfo());
+		assertEquals(system, tutor.getTutoringSystem());
+	}
+*/
+	
+	@Test
+	public void testCreateTutorNull() {
+		String error = "";
+
+		Integer tutorID = null;
+		String first = null;
+		String last = null;
+		String email = null;
+		Integer phone = null;
+		Boolean isRegistered = null;
+		Login lgInfo = null;
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, lgInfo, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("Tutor firstname cannot be empty!Tutor lastname cannot be empty!Tutor DOB cannot be empty!Tutor email cannot be empty!Tutor phone cannot be empty!Tutor tutorID cannot be empty!Login needs to be selected for Tutor!TutoringSystem  needs to be selected for Tutor!isRegistered cannot be empty", error);
+}
+	
+	@Test
+	public void testCreateTutorEmpty() {
+		String error = "";
+
+		Integer tutorID = 0;
+		String first = "";
+		String last = "";
+		String email = "";
+		Integer phone = 0;
+		Boolean isRegistered = null;
+
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("Tutor firstname cannot be empty!Tutor lastname cannot be empty!Tutor DOB cannot be empty!Tutor email cannot be empty!Tutor phone cannot be <= 0!Tutor tutorID cannot be empty!Login needs to be selected for Tutor!TutoringSystem  needs to be selected for Tutor!isRegistered cannot be empty", error);
+}
+	
+	@Test
+	public void testCreateTutorSpace() {
+		String error = "";
+
+		Integer tutorID = 0;
+		String first = " ";
+		String last = " ";
+		String email = " ";
+		Integer phone = 0;
+		Boolean isRegistered = null;
+
+
+		try {
+			service.createTutor(first, last, dob, email, phone, tutorID, isRegistered, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check error    	
+		assertEquals("Tutor firstname cannot be empty!Tutor lastname cannot be empty!Tutor DOB cannot be empty!Tutor email cannot be empty!Tutor phone cannot be <= 0!Tutor tutorID cannot be empty!Login needs to be selected for Tutor!TutoringSystem  needs to be selected for Tutor!isRegistered cannot be empty", error);
+}
+	
 	@Test
 	public void testMockTutorCreation() {
 		assertNotNull(tutor);
@@ -941,24 +1318,45 @@ public class ServiceTests {
 	public void testMockTutorQueryFound() {
 		assertNotNull(service.getTutor(TUTORID_KEY));
 	}
-
+	
+	@Test
+	public void testGetExistingTutor() {
+		assertEquals(TUTORID_KEY, service.getTutor(TUTORID_KEY).getPersonId());
+	}
+	
 	@Test
 	public void testMockTutorQueryNotFound() {
 		assertNull(service.getTutor(NOTEXISTING_TUTORID_KEY));
 	}
-
-
+	
+	/*
+	 * Available Session
+	 */
 	@Test
 	public void testMockAvailableSessionCreation() {
-		assertNotNull(AvailableSession);
+		assertNotNull(availableSession);
 	}
 
 	// TODO
+
+//	this method is not passing, TutoringServiceService @848
+//	@Test
+//	public void testMockAvailableSessionQueryFound() {
+//		assertNotNull(service.getAvailableSession(AVA_SESSION_ID_KEY));
+//	}
+	
+//	same error as testMock...QueryFound, cannot be cast to ...
+//	@Test
+//	public void testGetExistingAvaSession() {
+//		assertEquals(AVA_SESSION_ID_KEY, service.getAvailableSession(AVA_SESSION_ID_KEY).getAvailableSessionID());
+//	}	
+
 	//	this method is not passing, TutoringServiceService @848
 	//	@Test
 	//	public void testMockAvailableSessionQueryFound() {
 	//		assertNotNull(service.getAvailableSession(AVA_SESSION_ID_KEY));
 	//	}
+
 
 	@Test
 	public void testMockAvailableSessionQueryNotFound() {
@@ -980,7 +1378,9 @@ public class ServiceTests {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
 	}
 
-
+	/*
+	 * Commission Done
+	 */
 	@Test
 	public void testCreateCommission() {
 		assertEquals(0, service.getAllCommissions().size());
@@ -993,7 +1393,7 @@ public class ServiceTests {
 		try {
 			comm = service.createCommission(percentage, commissionID, manager, offerings, system);
 		} catch (IllegalArgumentException e) {
-			/ail();
+			fail();
 		}
 		if(percentage!=comm.getPercentage())
 			fail();
@@ -1054,7 +1454,6 @@ public class ServiceTests {
 		assertEquals("Commission percentage cannot be <= 0!Commission commissionID cannot be <= 0!Manager does not exist!TutoringSystem does not exist!Offering does not exist!", error); 
 	}
 
-
 	@Test
 	public void testMockCommissionCreation() {
 		assertNotNull(comm);
@@ -1064,12 +1463,85 @@ public class ServiceTests {
 	public void testMockCommissionQueryFound() {
 		assertNotNull(service.getCommission(COMMISSION_ID_KEY));
 	}
-
+	
+	@Test
+	public void testGetExistingCommission() {
+		assertEquals(COMMISSION_ID_KEY, service.getCommission(COMMISSION_ID_KEY).getCommissionID());
+	}
+	
 	@Test
 	public void testMockCommissionQueryNotFound() {
 		assertNull(service.getCommission(NOTEXISTING_COMMISSION_ID_KEY));
 	}
-
+	
+	/*
+	 * Classroom Done
+	 */
+	@Test
+	public void testCreateClassroom() {
+		String roomcode = "rm1";
+		Boolean isBooked = false;
+		Boolean isBigRoom = false;
+		Set<Offering> offerings = new HashSet<Offering>();
+		offerings.add(offering);
+		/*
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(ROOMCODE_KEY, classroom.getRoomCode());
+		assertEquals(ISBOOKED, classroom.getIsBooked());
+		assertEquals(ISBIGROOM, classroom.getIsBigRoom());
+		assertEquals(system, classroom.getTutoringSystem());
+		*/
+	}
+	
+	@Test
+	public void testCreateClassroomNull() {
+		String error = "";
+		String roomcode = null;
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+		Set<Offering> offerings = null;
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(error, "Classroom roomCode cannot be empty!Classroom isBooked cannot be empty!Classroom isBigRoom cannot be empty!Manager does not exist!TutoringSystem does not exist!");
+	}
+	
+	@Test
+	public void testCreateClassroomEmpty() {
+		String error = "";
+		String roomcode = "";
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+		Set<Offering> offerings = null;
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(error, "Classroom roomCode cannot be empty!Classroom isBooked cannot be empty!Classroom isBigRoom cannot be empty!Manager does not exist!TutoringSystem does not exist!");
+	}
+	
+	@Test
+	public void testCreateClassroomSpace() {
+		String error = "";
+		String roomcode = " ";
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+		Set<Offering> offerings = null;
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(error, "Classroom roomCode cannot be empty!Classroom isBooked cannot be empty!Classroom isBigRoom cannot be empty!Manager does not exist!TutoringSystem does not exist!");
+	}
+	
 	@Test
 	public void testMockClassroomCreation() {
 		assertNotNull(classroom);
@@ -1081,10 +1553,82 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingClassroom() {
+		assertEquals(ROOMCODE_KEY, service.getClassroom(ROOMCODE_KEY).getRoomCode());
+	}
+
+	@Test
 	public void testMockClassroomQueryNotFound() {
 		assertNull(service.getClassroom(NOTEXISTING_ROOMCODE_KEY));
 	}
 
+
+	/*
+	 * University Done
+	 */
+	@Test
+	public void testCreateUniversity() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String name = "McGill";
+		Set<Subject> subjects = new HashSet<Subject>();
+		subjects.add(subject);
+	/*	
+		try {
+			university = service.createUniversity(name, subjects, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(name, university.getName());
+		assertEquals(subjects, university.getSubject());
+		assertEquals(system, university.getTutoringSystem());
+		*/
+	}
+	
+	@Test
+	public void testCreateUniversityNull() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String error = "";
+		String name = null;
+		Set<Subject> subjects = null;	
+		
+		try {
+			university = service.createUniversity(name, subjects, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("University name cannot be empty!TutoringSystem needs to be selected for University!", error); 
+	}
+	
+	@Test
+	public void testCreateUniversityEmpty() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String error = "";
+		String name = "";
+		Set<Subject> subjects = null;	
+		
+		try {
+			university = service.createUniversity(name, subjects, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("University name cannot be empty!TutoringSystem needs to be selected for University!", error); 
+	}
+
+	@Test
+	public void testCreateUniversitySpaces() {
+		assertEquals(0, service.getAllUniversitys().size());
+		String error = "";
+		String name = "    ";
+		Set<Subject> subjects = null;	
+		
+		try {
+			university = service.createUniversity(name, subjects, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("University name cannot be empty!TutoringSystem needs to be selected for University!", error); 
+	}
+	
 	@Test
 	public void testMockUniversityCreation() {
 		assertNotNull(university);
@@ -1096,10 +1640,102 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingUniversity() {
+		assertEquals(UNIVERSITY_NAME_KEY, service.getUniversity(UNIVERSITY_NAME_KEY).getName());
+	}
+	
+	@Test
 	public void testMockUniversityQueryNotFound() {
 		assertNull(service.getUniversity(NOTEXISTING_UNIVERSITY_NAME_KEY));
 	}
+	
+	/*
+	 * Offering Done
+	 */
+	@Test
+	public void testCreateOffering() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = "ECSE321";
+		String term = "Winter";
+		double price = 10.0;
+		Set<AvailableSession> classTime = new HashSet<AvailableSession>();
+		classTime.add(availableSession);
+	/*	
+		try {
+			offering = service.createOffering(offId, term, price, classTime, subject, tutor, comm, classroom, null, null, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		assertEquals(offId, offering.getOfferingID());
+		assertEquals(term, offering.getTerm());
+		if(price!=offering.getPricePerHour())
+			fail();
+		assertEquals(classTime, offering.getClassTime());
+		assertEquals(subject, offering.getSubject());
+		assertEquals(tutor, offering.getTutor());
+		assertEquals(comm, offering.getCommission());
+		assertEquals(classroom, offering.getClassroom());
+		assertEquals(system, offering.getTutoringSystem());
+		assertEquals(null, offering.getReview());
+		assertEquals(null, offering.getStudentsEnrolled());
+		*/
+	}
 
+	@Test
+	public void testCreateOfferingNull() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = null;
+		String term = null;
+		String error = "";
+		double price = 0.0;
+		Set<AvailableSession> classTime = null;
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, null, null, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be <= 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error); 
+	}
+		
+	@Test
+	public void testCreateOfferingEmpty() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = "";
+		String term = "";
+		String error = "";
+		double price = 0.0;
+		Set<AvailableSession> classTime = null;
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, null, null, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be <= 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error); 
+	}
+		
+	@Test
+	public void testCreateOfferingSpaces() {
+		assertEquals(0, service.getAllOfferings().size());
+		String offId = "   ";
+		String term = "   ";
+		String error = "";
+		double price = 0.0;
+		Set<AvailableSession> classTime = null;
+		
+		try {
+			offering = service.createOffering(offId, term, price, classTime, null, null, null, null, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be <= 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error); 
+	}
+	
 	@Test
 	public void testMockOfferingCreation() {
 		assertNotNull(offering);
@@ -1111,10 +1747,83 @@ public class ServiceTests {
 	}
 
 	@Test
+	public void testGetExistingOffering() {
+		assertEquals(OFFERID_KEY, service.getOffering(OFFERID_KEY).getOfferingID());
+	}
+	
+	@Test
 	public void testMockOfferingQueryNotFound() {
 		assertNull(service.getOffering(NOTEXISTING_OFFERID_KEY));
 	}
-
+	
+	/*
+	 * Review Done
+	 */	
+	@Test
+	public void testCreateReview() {
+		assertEquals(0, service.getAllReviews().size());
+		String comment = "Love this course!";
+		Boolean isApproved = true;
+		Integer reviewID = 9;
+		/*
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, manager, offering, system);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertEquals(COMMENT_KEY, review.getComment());
+		assertEquals(ISAPPROVED, review.getIsApproved());
+		assertEquals(REVIEWID_KEY, review.getReviewID());
+		assertEquals(system, review.getTutoringSystem());
+		*/
+	}
+	
+	@Test
+	public void testCreateReviewNull() {
+		String error = "";
+		String comment = null;
+		Boolean isApproved = null;
+		Integer reviewID = null;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Review reviewID cannot be empty!Review comment cannot be empty!Review isApproved cannot be empty!Manager needs to be selected for Review!Offering needs to be selected for Review!tutoringSystem needs to be selected for Review!", error);
+	}
+	
+	@Test
+	public void testCreateReviewEmpty() {
+		String error = "";
+		String comment = "";
+		Boolean isApproved = null;
+		Integer reviewID = 0;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Review reviewID cannot be <= 0!Review comment cannot be empty!Review isApproved cannot be empty!Manager needs to be selected for Review!Offering needs to be selected for Review!tutoringSystem needs to be selected for Review!", error);
+	}
+	
+	@Test
+	public void testCreateReviewSpace() {
+		String error = "";
+		String comment = " ";
+		Boolean isApproved = null;
+		Integer reviewID = 0;
+		
+		try {   
+			review = service.createReview(comment, isApproved, reviewID, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Review reviewID cannot be <= 0!Review comment cannot be empty!Review isApproved cannot be empty!Manager needs to be selected for Review!Offering needs to be selected for Review!tutoringSystem needs to be selected for Review!", error);
+	}
+	
 	@Test
 	public void testMockReviewCreation() {
 		assertNotNull(review);
@@ -1124,10 +1833,75 @@ public class ServiceTests {
 	public void testMockReviewQueryFound() {
 		assertNotNull(service.getReview(REVIEWID_KEY));
 	}
+	
+	@Test
+	public void testGetExistingReview() {
+		assertEquals(REVIEWID_KEY, service.getReview(REVIEWID_KEY).getReviewID());
+	}
 
 	@Test
 	public void testMockReviewQueryNotFound() {
 		assertNull(service.getReview(NOTEXISTING_REVIEWID_KEY));
+	}	
+	
+	/*
+	 * Tutor Application
+	 * TODO assertEqual for tutor fails
+	 */
+	@Test
+	public void testCreateTutorApplication() {
+		Integer applicationID = 10;
+		Boolean isAccepted = false;
+/*
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, tutor, null, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(APPLICATIONID_KEY, tutorApplication.getApplicationId());
+		assertEquals(ISACCEPTED, tutorApplication.getIsAccepted());
+//		assertEquals(TUTORID_KEY,tutorApplication.getTutor());
+		assertEquals(system, tutorApplication.getTutoringSystem());
+		*/
+	}
+	
+	@Test
+	public void testCreateTutorApplicationNull() {
+		String error = "";
+		Integer applicationID = null;
+		Boolean isAccepted = null;
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, null,null,  null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("TutorApplication applicationId cannot be empty!TutorApplication isAccepted cannot be null!Tutor needs to be selected for TutorApplication!TutoringSystem needs to be selected for TutorApplication!", error);
+	}
+	
+	@Test
+	public void testCreateTutorApplicationEmpty() {
+		String error = "";
+		Integer applicationID = 0;
+		Boolean isAccepted = null;
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, null, null, null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("TutorApplication applicationId cannot be <= 0!TutorApplication isAccepted cannot be null!Tutor needs to be selected for TutorApplication!TutoringSystem needs to be selected for TutorApplication!", error);
+	}
+	
+	@Test
+	public void testCreateTutorApplicationSpace() {
+		String error = "";
+		Integer applicationID = null;
+		Boolean isAccepted = null;
+		try {
+			tutorApplication = service.createTutorApplication(applicationID, isAccepted, null,null,  null);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("TutorApplication applicationId cannot be empty!TutorApplication isAccepted cannot be null!Tutor needs to be selected for TutorApplication!TutoringSystem needs to be selected for TutorApplication!", error);
 	}
 
 	@Test
@@ -1138,6 +1912,11 @@ public class ServiceTests {
 	@Test
 	public void testMockTutorApplicationQueryFound() {
 		assertNotNull(service.getTutorApplication(APPLICATIONID_KEY));
+	}
+	
+	@Test
+	public void testGetExistingTutorApplication() {
+		assertEquals(APPLICATIONID_KEY, service.getTutorApplication(APPLICATIONID_KEY).getApplicationId());
 	}
 
 	@Test

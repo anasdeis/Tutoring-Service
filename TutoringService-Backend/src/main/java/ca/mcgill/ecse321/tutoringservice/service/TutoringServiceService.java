@@ -499,7 +499,9 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		
 		Manager manager = managerRepository.findManagerByPersonId(managerID);
+
 		if (manager == null) {
 			manager = new Manager();
 			manager.setFirstName(first);
@@ -664,9 +666,11 @@ public class TutoringServiceService {
 		if (term == null || term.trim().length() == 0) {
 			error = error + "Offering term cannot be empty!";
 		}
-		if (price == 0.0) {
-			error = error + "Offering price per hour cannot be 0!";
+
+		if (price <= 0.0) {
+			error = error + "Offering price per hour cannot be <= 0!";
 		}
+			
 		if (classTime == null) {
 			error = error + "Offering class time cannot be empty!";
 		}
@@ -771,7 +775,7 @@ public class TutoringServiceService {
 	 * Tutor DONE
 	 */
 	@Transactional
-	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvailableSession> AvailableSessions, TutoringSystem tutoringSystem) {
+	public Tutor createTutor(String first, String last, Date dob, String email, Integer phone, Integer tutorID, Boolean isRegistered, Login loginInfo, Set<TutorApplication> tutorApplications, Set<Offering> offerings, Set<AvailableSession> availableSessions, TutoringSystem tutoringSystem) {
 		String error = ""; 
 
 		if (first == null || first.trim().length() == 0) {
@@ -780,9 +784,11 @@ public class TutoringServiceService {
 		if (last == null || last.trim().length() == 0) {
 			error = error + "Tutor lastname cannot be empty!";
 		}
+		
 		if (dob == null) {
 			error = error + "Tutor DOB cannot be empty!";
 		}
+
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Tutor email cannot be empty!";
 		}
@@ -831,9 +837,10 @@ public class TutoringServiceService {
 			}
 		}
 		//1..*->*
-		if (AvailableSessions != null)
+		if (availableSessions != null)
+
 		{
-			for (AvailableSession AvailableSession : AvailableSessions) {
+			for (AvailableSession AvailableSession : availableSessions) {
 				if (AvailableSession == null) {
 					error = error + "AvailableSession needs to be selected for tutor!";
 				} else if (!availableSessionRepository.existsByAvailableSessionID(AvailableSession.getAvailableSessionID())) {
@@ -841,6 +848,7 @@ public class TutoringServiceService {
 				}
 			}
 		}
+
 		
 		error = error.trim();
 		if (error.length() > 0) {
@@ -858,7 +866,7 @@ public class TutoringServiceService {
 			tutor.setIsRegistered(isRegistered);
 			tutor.setLoginInfo(loginInfo);
 		    tutor.setTutorApplication(tutorApplications);
-		    tutor.setAvailableSession(AvailableSessions);
+		    tutor.setAvailableSession(availableSessions);
 		    tutor.setOffering(offerings);
 			tutor.setTutoringSystem(tutoringSystem);
 			tutorRepository.save(tutor);

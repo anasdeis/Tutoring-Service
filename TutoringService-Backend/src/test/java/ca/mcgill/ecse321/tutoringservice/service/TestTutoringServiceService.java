@@ -543,6 +543,7 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
+
 		assertEquals("Tutor firstname cannot be empty!Tutor lastname cannot be empty!Tutor DOB cannot be empty!Tutor email cannot be empty!Tutor phone cannot be empty!"
 				+ "Tutor tutorID cannot be empty!Login needs to be selected for Tutor!TutoringSystem  needs to be selected for Tutor!isRegistered cannot be empty", error);
 
@@ -2003,8 +2004,8 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!"
-				+ "Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error);
+		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be <= 0!Offering class time cannot be empty!Subject needs to be selected for Offering!"
+				+ "Tutor needs to be selected for Offering!Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
@@ -2033,8 +2034,8 @@ public class TestTutoringServiceService {
 		}
 
 		// check error
-		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!"
-				+ "Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error);
+		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be <= 0!Offering class time cannot be empty!Subject needs to be selected for Offering!"
+				+ "Tutor needs to be selected for Offering!Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error);
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
 
@@ -2063,8 +2064,8 @@ public class TestTutoringServiceService {
 			error = e.getMessage();
 		}
 		// check error
-		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!"
-				+ "Commission needs to be selected for Offering!Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error);
+		assertEquals("Offering offeringID cannot be empty!Offering term cannot be empty!Offering price per hour cannot be <= 0!Offering class time cannot be empty!Subject needs to be selected for Offering!Tutor needs to be selected for Offering!Commission needs to be selected for Offering!"
+				+ "Classroom needs to be selected for Offering!TutoringSystem needs to be selected for Offering!", error);
 
 		// check no change in memory
 		assertEquals(0, service.getAllOfferings().size());
