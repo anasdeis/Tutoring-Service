@@ -1217,6 +1217,70 @@ public class ServiceTests {
 	 * Classroom
 	 */
 	@Test
+	public void testCreateClassroom() {
+		String roomcode = "rm1";
+		Boolean isBooked = false;
+		Boolean isBigRoom = false;
+		Set<Offering> offerings = new HashSet<Offering>();
+		offerings.add(offering);
+		
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(ROOMCODE_KEY, classroom.getRoomCode());
+		assertEquals(ISBOOKED, classroom.getIsBooked());
+		assertEquals(ISBIGROOM, classroom.getIsBigRoom());
+		assertEquals(system, classroom.getTutoringSystem());
+	}
+	
+	@Test
+	public void testCreateClassroomNull() {
+		String error = "";
+		String roomcode = null;
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+		Set<Offering> offerings = null;
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+	}
+	
+	@Test
+	public void testCreateClassroomEmpty() {
+		String error = "";
+		String roomcode = "";
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+		Set<Offering> offerings = null;
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+	}
+	
+	@Test
+	public void testCreateClassroomSpace() {
+		String error = "";
+		String roomcode = " ";
+		Boolean isBooked = null;
+		Boolean isBigRoom = null;
+		Set<Offering> offerings = null;
+		try {
+			classroom = service.createClassroom(roomcode, isBooked, isBigRoom, manager, offerings, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(error, "roomCode cannot be empty!isBooked cannot be empty!isBigRoom cannot be empty!");
+	}
+	
+	@Test
 	public void testMockClassroomCreation() {
 		assertNotNull(classroom);
 	}
