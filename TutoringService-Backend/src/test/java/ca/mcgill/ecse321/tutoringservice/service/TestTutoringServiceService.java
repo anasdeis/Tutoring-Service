@@ -2464,5 +2464,217 @@ public class TestTutoringServiceService {
 		// check no change in memory
 		assertEquals(0, service.getAllTutoringSystems().size());
 	}
+	
+	
+	@Test
+	public void testCreateReviewSession() {
+
+		TutoringSystem tutoringSystem = new TutoringSystem();
+		tutoringSystem.setTutoringSystemID(123);
+
+		String firstName = "Andy";
+		String lastName = "He";
+		Calendar c = Calendar.getInstance();
+		c.set(1999, Calendar.MARCH, 16, 9, 0, 0);
+		Date dob = new Date(c.getTimeInMillis());
+		String email = "123456@gmail.com";
+		Integer phoneNumber = 45612378;
+
+		Manager manager = new Manager();
+		manager.setFirstName(firstName);
+		manager.setLastName(lastName);
+		manager.setDateOfBirth(dob);
+		manager.setEmail(email);
+		manager.setPhoneNumber(phoneNumber);
+		manager.setPersonId(12345);		
+		Login loginInfo1 = new Login();
+		loginInfo1.setPassword("pass");
+		loginInfo1.setUserName("manager");
+		manager.setLoginInfo(loginInfo1);
+		manager.setTutoringSystem(tutoringSystem);
+
+		Tutor tutor = new Tutor();
+		tutor.setFirstName(firstName);
+		tutor.setLastName(lastName);
+		tutor.setDateOfBirth(dob);
+		tutor.setEmail(email);
+		tutor.setPhoneNumber(123);
+		tutor.setPersonId(54321);
+		tutor.setIsRegistered(true);
+		Login loginInfo2 = new Login();
+		loginInfo2.setPassword("pass");
+		loginInfo2.setUserName("tutor");
+		tutor.setLoginInfo(loginInfo2);
+		tutor.setTutoringSystem(tutoringSystem);
+
+		Classroom room = new Classroom();
+		room.setIsBigRoom(false);
+		room.setIsBooked(false);
+		room.setManager(manager);
+		room.setRoomCode("rm1");
+		room.setTutoringSystem(tutoringSystem);
+
+		Calendar c1 = Calendar.getInstance();
+		c1.set(2016, Calendar.OCTOBER, 16, 9, 00, 0);
+		Date offerDay = new Date(c1.getTimeInMillis());
+		Time startTime = new Time(c1.getTimeInMillis());
+		c1.set(2016, Calendar.OCTOBER, 16, 10, 30, 0);
+		Time endTime = new Time(c1.getTimeInMillis());
+
+		AvailableSession classTime = new AvailableSession();
+		classTime.setDay(offerDay);
+		classTime.setStartTime(startTime);
+		classTime.setEndTime(endTime);
+		classTime.setAvailableSessionID(123456);
+		classTime.setTutoringSystem(tutoringSystem);
+
+		Subject subject = new Subject();
+		subject.setCourseID("ECSE321");
+		subject.setName("Intro. to Software Engineering");
+		subject.setDescription("None");
+		subject.setTutoringSystem(tutoringSystem);
+
+		Commission com = new Commission();
+		com.setManager(manager);
+		com.setPercentage(12.0);
+		com.setCommissionID(123);
+		com.setTutoringSystem(tutoringSystem);
+		
+		Offering offering = new Offering();
+		Set<AvailableSession> time = new HashSet<AvailableSession>();
+		String offeringID = "FALL19";
+		String term = "fall";
+		Double price = 10.0;
+
+		offering.setClassTime(time);
+		offering.setOfferingID(offeringID);
+		offering.setSubject(subject);
+		offering.setTerm(term);
+		offering.setTutor(tutor);
+		offering.setCommission(com);
+		offering.setTutoringSystem(tutoringSystem);
+				
+		offering = new Offering();
+		offering.setOfferingID(offeringID);
+		offering.setTerm(term);
+		offering.setPricePerHour(price);
+		offering.setClassTime(time);
+		offering.setSubject(subject);
+		offering.setTutor(tutor);;
+		offering.setCommission(com);
+		offering.setClassroom(room);
+		offering.setTutoringSystem(tutoringSystem);
+
+		tutoringSystemRepository.save(tutoringSystem);
+		loginRepository.save(loginInfo1);
+		loginRepository.save(loginInfo2);
+		managerRepository.save(manager);
+		tutorRepository.save(tutor);
+		classroomRepository.save(room);
+		AvailableSessionRepository.save(classTime);
+		subjectRepository.save(subject);
+		commissionRepository.save(com);
+		offeringRepository.save(offering);
+
+		try {
+			service.createReviewSession(offeringID, manager.getPersonId(), room.getRoomCode(), tutoringSystem.getTutoringSystemID());
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+		
+		List<Classroom> allClassrooms = service.getAllClassrooms();
+		assertEquals(room.getRoomCode(), allClassrooms.get(0).getRoomCode());
+		assertEquals(manager.getPersonId(), allClassrooms.get(0).getManager().getPersonId());
+		assertEquals(tutoringSystem.getTutoringSystemID(), allClassrooms.get(0).getTutoringSystem().getTutoringSystemID());
+	}
+	
+	@Test
+	public void testCreateReviewSessionNull() {
+		Integer managerID = null;
+		String offeringID = null;
+		String roomCode = null;
+		Integer tutoringSystemID = null;
+
+		String error = "";
+		try {
+			service.createReviewSession(offeringID, managerID, roomCode, tutoringSystemID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		assertEquals("offeringID cannot be empty!managerID cannot be empty or <= 0!"
+				+ "roomCode cannot be empty!tutoringSystemID cannot be empty or <= 0!", error);
+	}
+	
+	@Test
+	public void testCreateReviewSessionEmpty() {
+		Integer managerID = 123;
+		String offeringID = "";
+		String roomCode = "";
+		Integer tutoringSystemID = 1;
+
+		String error = "";
+		try {
+			service.createReviewSession(offeringID, managerID, roomCode, tutoringSystemID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		assertEquals("offeringID cannot be empty!roomCode cannot be empty!", error);
+	}
+
+	@Test
+	public void testCreateReviewSessionSpaces() {
+		Integer managerID = 123;
+		String offeringID = " ";
+		String roomCode = " ";
+		Integer tutoringSystemID = 1;
+
+		String error = "";
+		try {
+			service.createReviewSession(offeringID, managerID, roomCode, tutoringSystemID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		assertEquals("offeringID cannot be empty!roomCode cannot be empty!", error);
+	}
+
+	@Test
+	public void testCreateReviewZero() {
+		Integer managerID = 0;
+		String offeringID = "ECSE321F19";
+		String roomCode = "rm1";
+		Integer tutoringSystemID = 0;
+
+		String error = "";
+		try {
+			service.createReviewSession(offeringID, managerID, roomCode, tutoringSystemID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		assertEquals("managerID cannot be empty or <= 0!tutoringSystemID cannot be empty or <= 0!", error);
+	}
+	
+	@Test
+	public void testCreateReviewNegative() {
+		Integer managerID = -1;
+		String offeringID = "ECSE321F19";
+		String roomCode = "rm1";
+		Integer tutoringSystemID = -1;
+
+		String error = "";
+		try {
+			service.createReviewSession(offeringID, managerID, roomCode, tutoringSystemID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		assertEquals("managerID cannot be empty or <= 0!tutoringSystemID cannot be empty or <= 0!", error);
+	}
+
+
+
 
 }
