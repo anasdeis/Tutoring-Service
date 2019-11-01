@@ -335,7 +335,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), convertToDto(tutorApplication.getTutor()), subjectsCourseIDs, convertToDto(tutorApplication.getTutoringSystem()));
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), tutorApplication.getTutor().getPersonId(), subjectsCourseIDs, tutorApplication.getTutoringSystem().getTutoringSystemID());
 		return tutorApplicationDto;
 	}
 	
@@ -479,7 +479,7 @@ public class TutoringServiceRestController {
 			@RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime,
 			@RequestParam("day") Date day, 
 			@RequestParam("tutorIDs") Set<Integer> tutorIDs,
-			@RequestParam("tutoringSystemID") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 		
 		Set<Tutor> tutors = null;
 		if(tutorIDs != null){
@@ -490,7 +490,7 @@ public class TutoringServiceRestController {
 			}
 		}
 
-		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemDto.getTutoringSystemID());
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		AvailableSession AvailableSession = service.createAvailableSession(Time.valueOf(startTime), Time.valueOf(endTime), availableSessionID, day, tutors, tutoringSystem);
 		
 		return convertToDto(AvailableSession);

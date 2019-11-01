@@ -5,11 +5,11 @@ import java.util.Set;
 public class TutorApplicationDto{
 private Integer applicationId;
 private Boolean isAccepted;
-private TutorDto tutor;
+private Integer tutorID;
 private Set<String> courseIDs;
-private TutoringSystemDto tutoringSystem;
+private Integer tutoringSystemID;
 
-public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  TutorDto tutor, Set<String> courseIDs, TutoringSystemDto tutoringSystem) {
+public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  Integer tutor, Set<String> courseIDs, Integer tutoringSystem) {
 	this.setApplicationId(applicationId);
 	this.setIsAccepted(isAccepted);
 	this.setTutor(tutor);
@@ -39,20 +39,20 @@ public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  TutorDto 
 		return this.isAccepted;
 	}
 	
-	public TutorDto getTutor() {
-		return this.tutor;
+	public Integer getTutor() {
+		return this.tutorID;
 	}
 
-	public void setTutor(TutorDto tutor) {
-		this.tutor = tutor;
+	public void setTutor(Integer tutorID) {
+		this.tutorID = tutorID;
 	}
 
-	public TutoringSystemDto getTutoringSystem() {
-		return this.tutoringSystem;
+	public Integer getTutoringSystem() {
+		return this.tutoringSystemID;
 	}
 
-	public void setTutoringSystem(TutoringSystemDto tutoringSystem) {
-		this.tutoringSystem = tutoringSystem;
+	public void setTutoringSystem(Integer tutoringSystemID) {
+		this.tutoringSystemID = tutoringSystemID;
 	}
 
 }
