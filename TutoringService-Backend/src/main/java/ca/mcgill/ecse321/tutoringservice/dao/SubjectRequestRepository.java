@@ -8,4 +8,6 @@ public interface SubjectRequestRepository extends CrudRepository<SubjectRequest,
     SubjectRequest findSubjectRequestByRequestID(Integer requestID);
 
     void deleteSubjectRequestByRequestID(Integer requestID);
+    
+    boolean existsByRequestID(Integer requestID);
 }

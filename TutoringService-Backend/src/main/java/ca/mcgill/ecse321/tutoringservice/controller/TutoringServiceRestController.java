@@ -471,14 +471,14 @@ public class TutoringServiceRestController {
 	 * @param tutors (optional)
 	 * @param tutoringSystem
 	 * @return create availableSession
-	 * @sample /availableSession/create/{availableSessionID}?startTime=<startTime>&endTime=<endTime>&day=<day>&tutoringSystemID=<tutoringSystemID>
+	 * @sample /availableSession/create/{availableSessionID}?startTime=<startTime>&endTime=<endTime>&day=<day>&tutorIDs=<tutorIDs>&tutoringSystemID=<tutoringSystemID>
 	 */
 	@PostMapping(value = {"/availableSession/create/{availableSessionID}", "/availableSession/create/{availableSessionID}/"})
 	public AvailableSessionDto createAvailableSession(@PathVariable("availableSessionID") Integer availableSessionID, 
 			@RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime startTime, 
 			@RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "HH:mm") LocalTime endTime,
 			@RequestParam("day") Date day, 
-			@RequestParam(name = "tutorIDs", required = false) Set<Integer> tutorIDs,
+			@RequestParam("tutorIDs") Set<Integer> tutorIDs,
 			@RequestParam("tutoringSystemID") TutoringSystemDto tutoringSystemDto) throws IllegalArgumentException {
 		
 		Set<Tutor> tutors = null;
@@ -645,7 +645,7 @@ public class TutoringServiceRestController {
 		Commission commission = service.getCommission(commissionID);
 		Classroom classroom = service.getClassroom(roomCode);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
-		Offering offering = service.createOffering(offeringID, term, price, AvailableSessions, subject, tutor, commission, classroom, tutoringSystem);
+		Offering offering = service.createOffering(offeringID, term, price, AvailableSessions, subject, tutor, commission, classroom, null, null, tutoringSystem);
 
 		return convertToDto(offering);
 	}
@@ -677,7 +677,7 @@ public class TutoringServiceRestController {
 		Login login = service.getLogin(username);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 
-		Manager manager = service.createManager(first, last, dob, email, phone, managerId, login, tutoringSystem);
+		Manager manager = service.createManager(first, last, dob, email, phone, managerId, login, null, null, null, null, tutoringSystem);
 
 		return convertToDto(manager);
 
@@ -790,7 +790,7 @@ public class TutoringServiceRestController {
 		Tutor tutor = service.getTutor(tutorID);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 
-		TutorApplication tutorApplication = service.createTutorApplication(tutorApplicationId, isAccepted, tutor,  tutoringSystem);
+		TutorApplication tutorApplication = service.createTutorApplication(tutorApplicationId, isAccepted, tutor, null, tutoringSystem);
 
 		return convertToDto(tutorApplication);
 
@@ -822,7 +822,7 @@ public class TutoringServiceRestController {
 		Login login = service.getLogin(username);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		
-		Student student = service.createStudent(first, last, dob, email, phone, studentID, numCoursesEnrolled, login, tutoringSystem);
+		Student student = service.createStudent(first, last, dob, email, phone, studentID, numCoursesEnrolled, login, null, null, tutoringSystem);
 
 		return convertToDto(student);
 
@@ -845,6 +845,8 @@ public class TutoringServiceRestController {
 			@RequestParam("description") String description, 
 			@RequestParam("subjectType") String subjectType,
 			@RequestParam(name = "university", required = false) String university,
+			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
+			@RequestParam(name = "tutorApplicationIDs", required = false) Set<Integer> tutorApplicationIDs,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		SubjectType sbType = null;
@@ -857,8 +859,26 @@ public class TutoringServiceRestController {
 		} else if(subjectType.equals("CGEP")) {
 			sbType = SubjectType.CGEP_COURSE;
 		}
+		
+		Set<Offering> offerings = null;
+		if(offeringIDs != null){
+			offerings = new HashSet<Offering>();
+			for (String offeringID : offeringIDs) {
+				Offering offering = service.getOffering(offeringID);
+				offerings.add(offering);
+			}
+		}
+		
+		Set<TutorApplication> tutorApplications = null;
+		if(tutorApplicationIDs != null){
+			tutorApplications = new HashSet<TutorApplication>();
+			for (Integer tutorApplicationID : tutorApplicationIDs) {
+				TutorApplication tutorApplication = service.getTutorApplication(tutorApplicationID);
+				tutorApplications.add(tutorApplication);
+			}
+		}
 
-		Subject subject = service.createSubject(name, courseID, description, sbType, uni, tutoringSystem);
+		Subject subject = service.createSubject(name, courseID, description, sbType, uni, offerings, tutorApplications, tutoringSystem);
 		return convertToDto(subject);
 	}	
 	
@@ -893,7 +913,7 @@ public class TutoringServiceRestController {
 		}
 		
 	
-		SubjectRequest subjectRequest = service.createSubjectRequest(requestID, name, description, subjectType1, manager, tutoringSystem);
+		SubjectRequest subjectRequest = service.createSubjectRequest(requestID, name, description, subjectType1, manager, null, tutoringSystem);
 		return convertToDto(subjectRequest);
 	}	
 	
