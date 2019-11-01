@@ -12,4 +12,6 @@ public interface ReviewRepository extends CrudRepository<Review, Integer> {
     List<Review> findByOffering(Offering offering);
     
     void deleteReviewByReviewID(Integer reviewID);
+    
+    boolean existsByReviewID(Integer reviewID);
 }

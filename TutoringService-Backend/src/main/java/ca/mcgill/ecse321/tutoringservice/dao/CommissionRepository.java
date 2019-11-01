@@ -8,4 +8,6 @@ public interface CommissionRepository extends CrudRepository<Commission, Integer
     Commission findCommissionBycommissionID(Integer commissionID);
 
     void deleteCommissionBycommissionID(Integer commissionID);
+    
+    boolean existsByCommissionID(Integer commissionID);
 }

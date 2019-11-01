@@ -83,13 +83,13 @@ public class AvailableSession{
       this.tutoringSystem = tutoringSystem;
    }
    
-   private Integer AvailableSessionID;
+   private Integer availableSessionID;
 
 public void setAvailableSessionID(Integer value) {
-    this.AvailableSessionID = value;
+    this.availableSessionID = value;
 }
 @Id
 public Integer getAvailableSessionID() {
-    return this.AvailableSessionID;
+    return this.availableSessionID;
 }
 }
