@@ -488,6 +488,48 @@ public class ServiceTests {
 	 * Login Done
 	 */
 	@Test
+	public void testCreateTutoringSystem() {
+		Integer tsID = 123;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+		assertEquals(tsID, system.getTutoringSystemID());
+	}
+	
+	@Test
+	public void testCreateTutoringSystemNull() {
+		String error = null;
+		Integer tsID = null;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateTutoringSystemEmpty() {
+		String error = null;
+		Integer tsID = 0;
+		
+		try {
+			system = service.createTutoringSystem(tsID);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		
+		// check error
+		assertEquals("Tutoring System ID cannot be empty!", error);
+	}
+	
+	@Test
 	public void testCreateLogin() {
 		assertEquals(0, service.getAllLogins().size());
 
@@ -571,6 +613,9 @@ public class ServiceTests {
 		assertNull(service.getLogin(NOTEXITING_LOGIN_KEY));
 	}	
 
+	/*
+	 * Review Session Done
+	 */
 	@Test
 	public void testCreateReviewSession() {
 		Integer managerID = 123;
@@ -660,7 +705,7 @@ public class ServiceTests {
   }
 	
 	/*
-	 * Subject Done
+	 * Subject Request Done
 	 */
 	@Test
 	public void testCreateReviewNegative() {
@@ -679,6 +724,104 @@ public class ServiceTests {
 		assertEquals("managerID cannot be empty or <= 0!tutoringSystemID cannot be empty or <= 0!", error);
 	}
 
+	@Test
+	public void testCreateSubjectRequest() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+		Integer requestID = 789456;
+		String name = "Math240";
+		String description = "Discrete structures";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description, subjectType, manager, system);
+		} catch (IllegalArgumentException e) {
+			// Check that no error occurred
+			fail();
+		}
+
+		assertEquals(requestID, request.getRequestID());
+		assertEquals(name, request.getName());
+		assertEquals(description, request.getDescription());
+		assertEquals(manager, request.getManager());
+		assertEquals(system, request.getTutoringSystem());
+
+	}
+	
+	@Test
+	public void testCreateSubjectRequestNull() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = null;
+		String name = null;
+		String description = null;
+		Manager manager = null;
+		TutoringSystem tutoringSystem = null;
+		SubjectType subjectType = null;
+
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description, subjectType, manager, tutoringSystem);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+
+		// check no change in memory
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!manager cannot be empty!Tutoring System cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectRequestEmpty() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = 0;
+		String name = "";
+		String description = "";
+		SubjectType subjectType = null;
+
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description,subjectType, manager, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!subjectType cannot be empty!", error);
+	}
+	
+	@Test
+	public void testCreateSubjectRequestSpaces() {
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		String error = null;
+		
+		Integer requestID = 0;
+		String name = " ";
+		String description = " ";
+		SubjectType subjectType = SubjectType.UNIVERSITY_COURSE;
+
+		try {
+			request = service.createSubjectRequest(requestID, name, description,subjectType, manager, system);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(0, service.getAllSubjectRequests().size());
+
+		// check error
+		assertEquals("name cannot be null!Description cannot be null!requestID cannot be empty!", error);
+	}
+
+	/*
+	 * Subject Done
+	 */
 	@Test
 	public void testCreateSubject() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -703,7 +846,7 @@ public class ServiceTests {
 		assertEquals(university, subject.getUniversity());
 		assertEquals(system, subject.getTutoringSystem());
 	}
-
+	
 	@Test
 	public void testCreateSubjectNull() {
 		assertEquals(0, service.getAllSubjects().size());
@@ -1049,10 +1192,8 @@ public class ServiceTests {
 		assertNull(service.getManager(NOTEXISTING_MANAGERID_KEY));
 	}
 	
-	
-	
 	/*
-	 * Tutor
+	 * Tutor Done
 	 */
 	/*
 	@Test
@@ -1233,6 +1374,7 @@ public class ServiceTests {
 	public void testMockSubjectRequestQueryNotFound() {
 		assertNull(service.getSubjectRequest(NOTEXISTING_REQUEST_ID_KEY));
 	}
+
 	/*
 	 * Commission Done
 	 */
@@ -1328,7 +1470,7 @@ public class ServiceTests {
 	}
 	
 	/*
-	 * Classroom
+	 * Classroom Done
 	 */
 	@Test
 	public void testCreateClassroom() {
@@ -1416,7 +1558,7 @@ public class ServiceTests {
 
 
 	/*
-	 * University
+	 * University Done
 	 */
 	@Test
 	public void testCreateUniversity() {
@@ -1450,7 +1592,6 @@ public class ServiceTests {
 		assertEquals("name cannot be empty!Tutoring System cannot be empty!", error); 
 	}
 	
-	
 	@Test
 	public void testCreateUniversityEmpty() {
 		assertEquals(0, service.getAllUniversitys().size());
@@ -1465,8 +1606,7 @@ public class ServiceTests {
 		}
 		assertEquals("name cannot be empty!Tutoring System cannot be empty!", error); 
 	}
-	
-	
+
 	@Test
 	public void testCreateUniversitySpaces() {
 		assertEquals(0, service.getAllUniversitys().size());
@@ -1503,7 +1643,7 @@ public class ServiceTests {
 	}
 	
 	/*
-	 * Offering
+	 * Offering Done
 	 */
 	@Test
 	public void testCreateOffering() {
@@ -1534,7 +1674,6 @@ public class ServiceTests {
 		assertEquals(null, offering.getStudentsEnrolled());
 	}
 
-
 	@Test
 	public void testCreateOfferingNull() {
 		assertEquals(0, service.getAllOfferings().size());
@@ -1552,8 +1691,7 @@ public class ServiceTests {
 		
 		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error); 
 	}
-	
-	
+		
 	@Test
 	public void testCreateOfferingEmpty() {
 		assertEquals(0, service.getAllOfferings().size());
@@ -1571,8 +1709,7 @@ public class ServiceTests {
 		
 		assertEquals("Offering ID cannot be empty!Offering term cannot be empty!Hourly rate cannot be empty!Class time cannot be empty!", error); 
 	}
-	
-	
+		
 	@Test
 	public void testCreateOfferingSpaces() {
 		assertEquals(0, service.getAllOfferings().size());
@@ -1697,6 +1834,7 @@ public class ServiceTests {
 	public void testMockReviewQueryNotFound() {
 		assertNull(service.getReview(NOTEXISTING_REVIEWID_KEY));
 	}	
+	
 	/*
 	 * Tutor Application
 	 * TODO assertEqual for tutor fails
