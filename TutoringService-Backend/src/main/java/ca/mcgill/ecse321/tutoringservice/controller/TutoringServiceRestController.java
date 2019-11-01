@@ -335,7 +335,7 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), convertToDto(tutorApplication.getTutor()), subjectsCourseIDs, convertToDto(tutorApplication.getTutoringSystem()));
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto(tutorApplication.getApplicationId(), tutorApplication.getIsAccepted(), tutorApplication.getTutor().getPersonId(), subjectsCourseIDs, tutorApplication.getTutoringSystem().getTutoringSystemID());
 		return tutorApplicationDto;
 	}
 	
