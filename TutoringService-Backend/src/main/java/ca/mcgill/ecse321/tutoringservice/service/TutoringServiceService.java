@@ -573,11 +573,13 @@ public class TutoringServiceService {
 		if (last == null || last.trim().length() == 0) {
 			error = error + "Last name cannot be empty!";
 		}
+		
 		/*
 		if (dob == null) {
 			error = error + "DOB cannot be empty!";
 		}
 		*/ 
+
 		if (email == null || email.trim().length() == 0) {
 			error = error + "Email cannot be empty!";
 		}
@@ -599,7 +601,7 @@ public class TutoringServiceService {
 		//		if (isRegistered = false) {
 		//			throw new IllegalArgumentException("valid input needed");
 		//		}
-
+/*
 		if (tutorApplications != null)
 		{
 			for (TutorApplication tutorApplication : tutorApplications) {
@@ -632,6 +634,7 @@ public class TutoringServiceService {
 				}
 			}
 		}
+		*/
 		
 		error = error.trim();
 		if (error.length() > 0) {
@@ -1026,16 +1029,16 @@ public class TutoringServiceService {
 			error = error + "name cannot be empty!";
 		}
 
-		if (subjects != null)
-		{
-			for (Subject subject : subjects) {
-				if (subject == null) {
-					error = error + "Subject needs to be selected for university!";
-				} else if (!subjectRepository.existsByCourseID(subject.getCourseID())) {
-					error = error + "Subject does not exist!";
-				}
-			}
-		}
+//		if (subjects != null)
+//		{
+//			for (Subject subject : subjects) {
+//				if (subject == null) {
+//					error = error + "Subject needs to be selected for university!";
+//				} else if (!subjectRepository.existsByCourseID(subject.getCourseID())) {
+//					error = error + "Subject does not exist!";
+//				}
+//			}
+//		}
 
 		if (tutoringSystem == null) {
 			error = error + "Tutoring System cannot be empty!";
