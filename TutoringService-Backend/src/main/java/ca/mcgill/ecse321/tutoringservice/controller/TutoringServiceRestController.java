@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -453,12 +452,12 @@ public class TutoringServiceRestController {
 	/**
 	 * @param tutoringSystemId
 	 * @return create tutoring system
-	 * @sample /tutoringSystem/create/{tutoringSystemId}
+	 * @sample /tutoringSystem/create/{tutoringSystemID}
 	 */
-	@PostMapping(value = { "/tutoringSystem/create/{tutoringSystemId}", "/tutoringSystem/create/{tutoringSystemId}/" })
-	public TutoringSystemDto createTutoringSystem(@PathVariable("tutoringSystemId") Integer tutoringSystemId) throws IllegalArgumentException {
-		// @formatter:on
-		TutoringSystem tutoringSystem = service.createTutoringSystem(tutoringSystemId);
+	@PostMapping(value = { "/tutoringSystem/create/{tutoringSystemID}", "/tutoringSystem/create/{tutoringSystemID}/" })
+	public TutoringSystemDto createTutoringSystem(@PathVariable("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+
+		TutoringSystem tutoringSystem = service.createTutoringSystem(tutoringSystemID);
 
 		return convertToDto(tutoringSystem);
 	}
@@ -468,10 +467,10 @@ public class TutoringServiceRestController {
 	 * @param startTime
 	 * @param endTime
 	 * @param day
-	 * @param tutors (optional)
-	 * @param tutoringSystem
+	 * @param tutorIDs (optional)
+	 * @param tutoringSystemID
 	 * @return create availableSession
-	 * @sample /availableSession/create/{availableSessionID}?startTime=<startTime>&endTime=<endTime>&day=<day>&tutorIDs=<tutorIDs>&tutoringSystemID=<tutoringSystemID>
+	 * @sample /availableSession/create/{availableSessionID}?startTime=<startTime>&endTime=<endTime>&day=<day>&tutorIDs=<tutorIDs..>&tutoringSystemID=<tutoringSystemID>
 	 */
 	@PostMapping(value = {"/availableSession/create/{availableSessionID}", "/availableSession/create/{availableSessionID}/"})
 	public AvailableSessionDto createAvailableSession(@PathVariable("availableSessionID") Integer availableSessionID, 
@@ -491,9 +490,9 @@ public class TutoringServiceRestController {
 		}
 
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
-		AvailableSession AvailableSession = service.createAvailableSession(Time.valueOf(startTime), Time.valueOf(endTime), availableSessionID, day, tutors, tutoringSystem);
+		AvailableSession availableSession = service.createAvailableSession(Time.valueOf(startTime), Time.valueOf(endTime), availableSessionID, day, tutors, tutoringSystem);
 		
-		return convertToDto(AvailableSession);
+		return convertToDto(availableSession);
 	}
 	
 
@@ -504,14 +503,14 @@ public class TutoringServiceRestController {
 	 * @param offeringID
 	 * @param tutoringSystem
 	 * @return create commission
-	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
+	 * @sample /commission/create/{commissionID}?percentage=<percentage>&managerID=<managerID>&tutoringSystemID=<tutoringSystemID>[&offeringIDs=<offeringIDs..>]
 	 */
 	@PostMapping(value = {"/commission/create/{commissionID}", "/commission/create/{commissionID}/"})
 	public CommissionDto createCommission(@PathVariable("commissionID") Integer commissionID, 
 			@RequestParam("percentage") double percentage, 
 			@RequestParam("managerID") Integer managerID, 
-			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
+			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs) throws IllegalArgumentException {
 		
 		Set<Offering> offerings = null;
 		if(offeringIDs != null){
@@ -542,7 +541,7 @@ public class TutoringServiceRestController {
 	}
 	
 	/**
-	 * @param tutorId
+	 * @param tutorID
 	 * @param first
 	 * @param last
 	 * @param dob
@@ -551,34 +550,33 @@ public class TutoringServiceRestController {
 	 * @param isRegistered
 	 * @param username 
 	 * @param tutoringSystemID
-	 * @param applicationIds (optional)
+	 * @param applicationIDs (optional)
 	 * @param offeringIDs (optional)
 	 * @param AvailableSessionIDs (optional)
 	 * @return create tutor
-	 * @sample /tutor/create/5?firstName=anas&lastName=deis&dob=1996-03-19&email=anas.deis@mail.mcgill.ca&phone=911&isRegistered=true&username=adeis&tutoringSystemId=1
+	 * @sample /tutor/create/5?firstName=<firstName>&lastName=<lastName>&dob=<dob>&email=<email>&phone=<phone>&isRegistered=<isRegistered>&userName=<userName>&tutoringSystemID=<tutoringSystemID>[&applicationIDs=<applicationIDs..>&offeringIDs=<offeringIDs..>&availableSessionIDs=<availableSessionIDs..>]
 	 */
-	@PostMapping(value = { "/tutor/create/{tutorId}", "/tutor/create/{tutorId}/" })
-	public TutorDto createTutor(@PathVariable("tutorId") Integer tutorId, 
+	@PostMapping(value = { "/tutor/create/{tutorID}", "/tutor/create/{tutorID}/" })
+	public TutorDto createTutor(@PathVariable("tutorID") Integer tutorID, 
 			@RequestParam("firstName") String firstName, 
 			@RequestParam("lastName") String lastName, 
 			@RequestParam("dob") Date dob, 
 			@RequestParam("email") String email, 
 			@RequestParam("phone") Integer phone,
 			@RequestParam("isRegistered") Boolean isRegistered, 
-			@RequestParam("username") String username,
-			@RequestParam("tutoringSystemId") Integer tutoringSystemId,
-			@RequestParam(name = "applicationIds", required = false) Set<Integer> applicationIds,
+			@RequestParam("userName") String userName,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
+			@RequestParam(name = "applicationIDs", required = false) Set<Integer> applicationIDs,
 			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
 			@RequestParam(name = "availableSessionIDs", required = false) Set<Integer> availableSessionIDs) throws IllegalArgumentException {
-		// @formatter:on
 
-		Login login = service.getLogin(username);
-		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemId);
+		Login login = service.getLogin(userName);
+		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 
 		Set<TutorApplication> tutorApplications = null;
-		if(applicationIds != null) {
+		if(applicationIDs != null) {
 			tutorApplications = new HashSet<TutorApplication>();
-			for (Integer applicationId : applicationIds) {
+			for (Integer applicationId : applicationIDs) {
 				TutorApplication tutorApplication = service.getTutorApplication(applicationId);
 				tutorApplications.add(tutorApplication);
 			}
@@ -602,7 +600,7 @@ public class TutoringServiceRestController {
 			}
 		}
 
-		Tutor tutor = service.createTutor(firstName, lastName, dob, email, phone, tutorId, isRegistered, login, tutorApplications, offerings, availableSessions, tutoringSystem);
+		Tutor tutor = service.createTutor(firstName, lastName, dob, email, phone, tutorID, isRegistered, login, tutorApplications, offerings, availableSessions, tutoringSystem);
 
 		return convertToDto(tutor);
 	}
@@ -617,8 +615,10 @@ public class TutoringServiceRestController {
 	 * @param tutorID
 	 * @param roomCode
 	 * @param tutoringSystemID
+	 * @param studentIDs (optional)
+	 * @param reviewIDs (optional)
 	 * @return create offering
-	 * @sample /offering/create/{offeringID}?term=<term>&price=<price>&classTime=<classTime1,classTime2,..>&courseID=<courseID>&tutorID=<tutorID>&commissionID=<commissionID>&roomCode=<roomCode>&tutoringSystemId=<tutoringSystemId>
+	 * @sample /offering/create/{offeringID}?term=<term>&price=<price>&classTimes=<classTimes..>&courseID=<courseID>&tutorID=<tutorID>&commissionID=<commissionID>&roomCode=<roomCode>&tutoringSystemID=<tutoringSystemID>[&studentIDs=<studentIDs..>&reviewIDs=<reviewIDs..>]
 	 */
 	@PostMapping(value = { "/offering/create/{offeringID}", "/offering/create/{offeringID}/" })
 	public OfferingDto createOffering(@PathVariable("offeringID") String offeringID,
@@ -629,10 +629,9 @@ public class TutoringServiceRestController {
 			@RequestParam("tutorID") Integer tutorID,
 			@RequestParam("commissionID") Integer commissionID,
 			@RequestParam("roomCode") String roomCode,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
 			@RequestParam(name = "studentIDs", required = false) Set<Integer> studentIDs,
-			@RequestParam(name = "reviewIDs", required = false) Set<Integer> reviewIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
-		// @formatter:on
+			@RequestParam(name = "reviewIDs", required = false) Set<Integer> reviewIDs) throws IllegalArgumentException {
 
 		Set<AvailableSession> AvailableSessions = null;
 		if(classTimes != null){
@@ -672,7 +671,7 @@ public class TutoringServiceRestController {
 	}
 
 	/**
-	 * @param managerId
+	 * @param managerID
 	 * @param first
 	 * @param last
 	 * @param dob
@@ -680,23 +679,27 @@ public class TutoringServiceRestController {
 	 * @param phone
 	 * @param username 
 	 * @param tutoringSystemID
+	 * @param reviewIDs (optional)
+	 * @param requestIDs (optional)
+	 * @param commissionIDs (optional)
+	 * @param roomCodes (optional)
 	 * @return create manager
-	 * @sample /manager/create/{managerId}?first=<first>&last=<last>&dob=<dob>&email=<email>&phone=<phone>&username=<username>&tutoringSystemId=<tutoringSystemID>
+	 * @sample /manager/create/{managerID}?first=<first>&last=<last>&dob=<dob>&email=<email>&phone=<phone>&userName=<userName>&tutoringSystemID=<tutoringSystemID>[&reviewIDs=<reviewIDs>&requestIDs=<requestIDs>&commissionIDs=<commissionIDs>&roomCodes=<roomCodes>]
 	 * 
 	 */
-	@PostMapping(value = { "/manager/create/{managerId}","/manager/create/{managerId}/" })
-	public ManagerDto createManager(@PathVariable("managerId") Integer managerId, 
+	@PostMapping(value = { "/manager/create/{managerID}","/manager/create/{managerID}/" })
+	public ManagerDto createManager(@PathVariable("managerID") Integer managerID, 
 			@RequestParam("first") String first, 
 			@RequestParam("last") String last, 
 			@RequestParam ("dob") Date dob, 
 			@RequestParam("email") String email, 
 			@RequestParam("phone") Integer phone,
-			@RequestParam("username") String username, 
+			@RequestParam("userName") String userName, 
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
 			@RequestParam(name = "reviewIDs", required = false) Set<Integer> reviewIDs,
 			@RequestParam(name = "requestIDs", required = false) Set<Integer> requestIDs,
 			@RequestParam(name = "commissionIDs", required = false) Set<Integer> commissionIDs,
-			@RequestParam(name = "roomCodes", required = false) Set<String> roomCodes,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam(name = "roomCodes", required = false) Set<String> roomCodes) throws IllegalArgumentException {
 		
 		Set<Review> reviews = null;
 		if(reviewIDs != null){
@@ -734,10 +737,10 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		Login login = service.getLogin(username);
+		Login login = service.getLogin(userName);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 
-		Manager manager = service.createManager(first, last, dob, email, phone, managerId, login, requests, reviews, commissions, classrooms, tutoringSystem);
+		Manager manager = service.createManager(first, last, dob, email, phone, managerID, login, requests, reviews, commissions, classrooms, tutoringSystem);
 
 		return convertToDto(manager);
 
@@ -751,7 +754,7 @@ public class TutoringServiceRestController {
 	 * @param managerID 
 	 * @param offeringID
 	 * @return create review
-	 * @sample /tutor/create/{reviewID}?comment=<comment>&isApproved=<isApproved>&managerID=<managerID>&offering=<offering>&tutoringSystemId=<tutoringSystemId>
+	 * @sample /tutor/create/{reviewID}?comment=<comment>&isApproved=<isApproved>&managerID=<managerID>&offering=<offering>&tutoringSystemID=<tutoringSystemID>
 	 */
 	@PostMapping(value = { "/review/create/{reviewID}", "/review/create/{reviewID}/" })
 	public ReviewDto createReview(@PathVariable("reviewID") Integer reviewID,
@@ -760,7 +763,7 @@ public class TutoringServiceRestController {
 			@RequestParam("managerID") Integer managerID,
 			@RequestParam("offeringID") String offeringID,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
-		// @formatter:on
+	
 		Manager manager = service.getManager(managerID);
 		Offering offering = service.getOffering(offeringID);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
@@ -776,18 +779,17 @@ public class TutoringServiceRestController {
 	 * @param isBooked
 	 * @param isBigRoom
 	 * @param managerID
-	 * @param offeringIds (optional)
-	 * @param tutoringSystem
-	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRoom=<isBigRm>&managerID=<managerID>&offeringIDs=<offeringIDs>&tutoringSystemID=<tutoringSystemID>
+	 * @param tutoringSystemID
+	 * @param offeringIDs (optional)
+	 * @sample /classroom/create/{roomCode}?isBooked=<isBooked>&isBigRoom=<isBigRoom>&managerID=<managerID>&tutoringSystemID=<tutoringSystemID>[&offeringIDs=<offeringIDs..>]
 	 */
 	@PostMapping(value = { "/classroom/create/{roomCode}", "/classroom/create/{roomCode}/" })
 	public ClassroomDto createClassroom(@PathVariable("roomCode") String roomCode,
 			@RequestParam("isBooked") Boolean isBooked,
 			@RequestParam("isBigRoom") Boolean isBigRoom,
 			@RequestParam("managerID") Integer managerID,
-			@RequestParam(name = "offeringID", required = false) Set<String> offeringIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
-		// @formatter:on
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
+			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs) throws IllegalArgumentException {
 
 		Set<Offering> offerings = null;
 		if(offeringIDs != null){
@@ -808,14 +810,14 @@ public class TutoringServiceRestController {
 	/** 
 	 * @return create university
 	 * @param name
-	 * @param subjects (optional)
-	 * @param tutoringSystem
-	 * @sample /classroom/create/{name}?subjects=<subjects>&tutoringSystemID=<tutoringSystemID>
+	 * @param tutoringSystemID
+	 * @param courseIDs (optional)
+	 * @sample /university/create/{name}?tutoringSystemID=<tutoringSystemID>[&courseIDs=<courseIDs..>]
 	 */
 	@PostMapping(value = { "/university/create/{name}", "/university/create/{name}/" })
 	public UniversityDto createUniversity(@PathVariable("name") String name,
-			@RequestParam(name = "subjects", required = false) Set<String> courseIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
+			@RequestParam(name = "courseIDs", required = false) Set<String> courseIDs) throws IllegalArgumentException {
 		// @formatter:on
 		
 		Set<Subject> subjects = null;
@@ -834,19 +836,20 @@ public class TutoringServiceRestController {
 	}
 
 	/**
-	 * @param tutorApplicationId
+	 * @param tutorApplicationID
 	 * @param isAccepted
 	 * @param tutorID
 	 * @param tutorSystemID
+	 * @param courseIDs (optional)
 	 * @return create Tutor Application
-	 * @sample /tutorApplication/create/{tutorApplicationId}?IsAccepted=<isAccepted>&&tutorID=<tutorID>&tutoringSystemID=<tutoringSystemID>
+	 * @sample /tutorApplication/create/{tutorApplicationID}?IsAccepted=<isAccepted>&tutorID=<tutorID>&tutoringSystemID=<tutoringSystemID>[&courseIDs=<courseIDs..>]
 	 */
-	@PostMapping(value = { "/tutorApplication/create/{tutorApplicationId}","/tutorApplication/create/{tutorApplication}/" })
-	public TutorApplicationDto createTutorApplication(@PathVariable("tutorApplicationId") Integer tutorApplicationId, 
+	@PostMapping(value = { "/tutorApplication/create/{tutorApplicationID}","/tutorApplication/create/{tutorApplicationID}/" })
+	public TutorApplicationDto createTutorApplication(@PathVariable("tutorApplicationID") Integer tutorApplicationID, 
 			@RequestParam("isAccepted") Boolean isAccepted, 
 			@RequestParam("tutorID") Integer tutorID, 
-			@RequestParam(name = "subjects", required = false) Set<String> courseIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
+			@RequestParam(name = "courseIDs", required = false) Set<String> courseIDs) throws IllegalArgumentException {
 		
 		Set<Subject> subjects = null;
 		if(courseIDs != null){
@@ -860,7 +863,7 @@ public class TutoringServiceRestController {
 		Tutor tutor = service.getTutor(tutorID);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 
-		TutorApplication tutorApplication = service.createTutorApplication(tutorApplicationId, isAccepted, tutor, subjects, tutoringSystem);
+		TutorApplication tutorApplication = service.createTutorApplication(tutorApplicationID, isAccepted, tutor, subjects, tutoringSystem);
 
 		return convertToDto(tutorApplication);
 
@@ -868,28 +871,30 @@ public class TutoringServiceRestController {
 
 	/**
 	 * Student: create student with parameters
-	 * @param first
-	 * @param last
+	 * @param firstName
+	 * @param lastName
 	 * @param dob
 	 * @param email
 	 * @param phone
-	 * @param studentID
-	 * @param login
-	 * @param tutoringSystem
- 	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dateOfBirth=<dateOfBirth>&email=<email>&phoneNumber=<phoneNumber>&tutoringSystem=<tutoringSystem>&numCoursesEnrolled=<numCoursesEnrolled>
+	 * @param numCoursesEnrolled
+	 * @param userName
+	 * @param tutoringSystemID
+	 * @param offeringIDs (optional)
+	 * @param requestIDs (optional)
+ 	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dob=<dob>&email=<email>&phone=<phone>&numCoursesEnrolled=<numCoursesEnrolled>&tutoringSystemID=<tutoringSystemID>[&offeringIDs=<offeringIDs..>&requestIDs=<requestIDs..>]
 	 */
 	@PostMapping(value = {"/student/create/{studentID}", "/student/create/{studentID}/"})
 	public StudentDto createStudent(@PathVariable("studentID") Integer studentID,
-			@RequestParam("first") String first,
-			@RequestParam("last") String last,
+			@RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName,
 			@RequestParam("dob") Date dob,
 			@RequestParam("email") String email,
 			@RequestParam("phone") Integer phone,
 			@RequestParam("numCoursesEnrolled") Integer numCoursesEnrolled,
-			@RequestParam("username") String username,
+			@RequestParam("userName") String userName,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
 			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
-			@RequestParam(name = "requestIDs", required = false) Set<Integer> requestIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam(name = "requestIDs", required = false) Set<Integer> requestIDs) throws IllegalArgumentException {
 
 		Set<SubjectRequest> requests = null;
 		if(requestIDs != null){
@@ -909,10 +914,10 @@ public class TutoringServiceRestController {
 			}
 		}
 		
-		Login login = service.getLogin(username);
+		Login login = service.getLogin(userName);
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		
-		Student student = service.createStudent(first, last, dob, email, phone, studentID, numCoursesEnrolled, login, requests, offerings, tutoringSystem);
+		Student student = service.createStudent(firstName, lastName, dob, email, phone, studentID, numCoursesEnrolled, login, requests, offerings, tutoringSystem);
 
 		return convertToDto(student);
 
@@ -923,31 +928,39 @@ public class TutoringServiceRestController {
 	 * @param courseID
 	 * @param description
 	 * @param subjectType: University/HighSchool/CGEP
-	 * @param university
 	 * @param tutoringSystemID
+	 * @param university (optional)
+	 * @param offeringIDs (optional)
+	 * @param tutorApplicationIDs (optional)
 	 * @return subject added
 	 * @throws IllegalArgumentException
-	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&university=<universityName>&tutoringSystemID=<tutoringSystemID>
+	 * sample: /subject/create/{name}?courseID=<courseID>&description=<description>&subjectType=<subjectType>&tutoringSystemID=<tutoringSystemID>[&university=<university>&offeringIDs=<offeringIDs..>&tutorApplicationIDs=<tutorApplicationIDs..>]
 	 */
 	@PostMapping(value = { "/subject/create/{name}", "/subject/create/{name}/" })
 	public SubjectDto createSubject(@PathVariable("name") String name, 
 			@RequestParam("courseID") String courseID, 
 			@RequestParam("description") String description, 
 			@RequestParam("subjectType") String subjectType,
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
 			@RequestParam(name = "university", required = false) String university,
 			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
-			@RequestParam(name = "tutorApplicationIDs", required = false) Set<Integer> tutorApplicationIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam(name = "tutorApplicationIDs", required = false) Set<Integer> tutorApplicationIDs) throws IllegalArgumentException {
+		
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		SubjectType sbType = null;
 		University uni = null;
-		if (subjectType.equals("University")) {
-			sbType = SubjectType.UNIVERSITY_COURSE;
-			uni = service.getUniversity(university);
-		}else if(subjectType.equals("HighSchool")) {
-			sbType = SubjectType.HIGH_SCHOOL_COURSE;
-		} else if(subjectType.equals("CGEP")) {
-			sbType = SubjectType.CGEP_COURSE;
+		if(subjectType != null)
+		{
+			if (subjectType.equals("University") && university != null) {
+				sbType = SubjectType.UNIVERSITY_COURSE;
+				uni = service.getUniversity(university);
+			}else if(subjectType.equals("HighSchool")) {
+				sbType = SubjectType.HIGH_SCHOOL_COURSE;
+			} else if(subjectType.equals("CGEP")) {
+				sbType = SubjectType.CGEP_COURSE;
+			} else {
+				sbType = null;
+			}
 		}
 		
 		Set<Offering> offerings = null;
@@ -979,8 +992,9 @@ public class TutoringServiceRestController {
 	 * @param subjectType: University/HighSchool/CGEP
 	 * @param manager	
 	 * @param tutoringSystemID
+	 * @param studentIDs (optional)
 	 * @return subjectRequest is added
-	 * sample: /subjectRequest/create/{name}?requestID=<requestID>&description=<description>&subjectType=<subjectType>&manager=<managerID>&tutoringSystemID=<tutoringSystemID>
+	 * sample: /subjectRequest/create/{name}?requestID=<requestID>&description=<description>&subjectType=<subjectType>&manager=<managerID>&tutoringSystemID=<tutoringSystemID>[&studentIDs=<studentIDs..>]
 	 */
 	@PostMapping(value = { "/subjectRequest/create/{name}", "/subjectRequest/create/{name}/" })
 	public SubjectRequestDto createSubjectRequest(@PathVariable("name") String name, 
@@ -988,8 +1002,8 @@ public class TutoringServiceRestController {
 			@RequestParam("description") String description, 
 			@RequestParam("subjectType") String subjectType,
 			@RequestParam("managerID") Integer managerID,
-			@RequestParam(name = "studentIDs", required = false) Set<Integer> studentIDs,
-			@RequestParam("tutoringSystemID") Integer tutoringSystemID) throws IllegalArgumentException {
+			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
+			@RequestParam(name = "studentIDs", required = false) Set<Integer> studentIDs) throws IllegalArgumentException {
 
 		TutoringSystem tutoringSystem = service.getTutoringSystem(tutoringSystemID);
 		Manager manager = service.getManager(managerID);
@@ -1022,16 +1036,16 @@ public class TutoringServiceRestController {
 	 */
 	
 	/**
-	 * @return list all AvailableSessions
-	 * @sample /AvailableSession/list
+	 * @return list all availableSessions
+	 * @sample /availableSession/list
 	 */
-	@GetMapping(value = { "/AvailableSession/list", "/AvailableSession/list/" })
+	@GetMapping(value = { "/availableSession/list", "/availableSession/list/" })
 	public List<AvailableSessionDto> getAllAvailableSessions() {
-		List<AvailableSessionDto> AvailableSessionsDtos = new ArrayList<>();
-		for (AvailableSession AvailableSession : service.getAllAvailableSessions()) {
-			AvailableSessionsDtos.add(convertToDto(AvailableSession));
+		List<AvailableSessionDto> availableSessionsDtos = new ArrayList<>();
+		for (AvailableSession availableSession : service.getAllAvailableSessions()) {
+			availableSessionsDtos.add(convertToDto(availableSession));
 		}
-		return AvailableSessionsDtos;
+		return availableSessionsDtos;
 	}
 	
 	/**
@@ -1253,7 +1267,7 @@ public class TutoringServiceRestController {
 	
 	/**
 	 * @return Update tutor Application to isAccepted
-	 * @sample /tutorApplication/update/{tutorApplicationID}?boolean=<isAccepted>
+	 * @sample /tutorApplication/update/{tutorApplicationID}?isAccepted=<isAccepted>
 	 */
 	@PatchMapping(value = { "/tutorApplication/update/{tutorApplicationID}", "/tutorApplication/update/{tutorApplicationID}/" })
 	public TutorApplicationDto updateTutorApplicationisAccepted(@PathVariable("tutorApplicationID") Integer tutorApplicationID,
@@ -1324,14 +1338,14 @@ public class TutoringServiceRestController {
 
 
 	/**
-	 * @return booked classroom
-	 * @sample /classroom/smallRoom/booked/<roomcode>?isBooked=<isBooked>
+	 * @return list of booked/non-booked and bigroom/smallroom classroom
+	 * @sample /classroom/isBigRoom/{isBigRoom}/isBooked/{isBooked}
 	 */
-	@GetMapping(value = { "/classroom/smallRoom/booked/{roomcode}", "/classroom/smallRoom/booked/{roomcode}/" })
-	public List<ClassroomDto> getBookedRooms(@PathVariable("roomcode") String roomcode, @RequestParam("isBooked") Boolean isBooked){
+	@GetMapping(value = { "/classroom/isBigRoom/{isBigRoom}/isBooked/{isBooked}", "/classroom/isBigRoom/{isBigRoom}/isBooked/{isBooked}/" })
+	public List<ClassroomDto> getBookedRooms(@PathVariable("isBigRoom") Boolean isBigRoom, @PathVariable("isBooked") Boolean isBooked){
 		List<ClassroomDto> classroomDtos = new ArrayList<>();
 		for (Classroom classroom : service.getAllClassrooms()) {
-			if(classroom.getIsBooked().booleanValue() == isBooked) {
+			if(classroom.getIsBooked().booleanValue() == isBooked && classroom.getIsBigRoom().booleanValue() == isBigRoom) {
 				classroomDtos.add(convertToDto(classroom));
 			}
 		}
