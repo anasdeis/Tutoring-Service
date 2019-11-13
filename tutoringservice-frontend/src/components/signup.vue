@@ -7,15 +7,16 @@
         </div>
 
         <b-container fluid>
-            <input class="signupField" type="text" id="first" v-model="first" placeholder="Enter first name">
-            <input class="signupField" type="text" id="last" v-model="last" placeholder="Enter last name">
-            <input class="signupField" type="text" id="email" v-model="email" placeholder="Enter email">
-            <input class="signupField" type="text" id="phone" v-model="phone" placeholder="Enter phone number">
-            <input class="signupField" type="text" id="managerID" v-model="managerID" placeholder="Enter manager ID (all number)">
-
-            <input class="signupField" type="date" id="dob" v-model="PersonDob" placeholder="YYYY-MM-DD">
-
-            <button type="button" v-on:click="Create(first,last,email,phone,managerID)" v-bind:class="buttonClass" v-b-tooltip.hover title="Click to create an account!">Create</button>
+            <form> First name: <input class="signupField" type="text" id="first" v-model="first" placeholder="Enter first name"> </form>
+            <form> Last name: <input class="signupField" type="text" id="last" v-model="last" placeholder="Enter last name"></form>
+            <form> Date of Birth: <input class="signupField" type="date" id="dob" v-model="PersonDob" placeholder="YYYY-MM-DD"></form>
+            <form> Email: <input class="signupField" type="text" id="email" v-model="email" placeholder="Enter email"></form>
+            <form> Phone number: <input class="signupField" type="text" id="phone" v-model="phone" placeholder="Enter phone number"></form>
+            <form> Manager ID (all numbers): <input class="signupField" type="text" id="managerID" v-model="managerID" placeholder="Enter manager ID"></form>
+            <form>Username: <input class="signupField" type="text" id="username" v-model="username" placeholder="Enter username"></form>
+            <form>Password: <input class="signupField" type="password" id="password" v-model="pw" placeholder="Enter password"></form>
+            <button type="button" id=myButton v-on:click="signup(first,last,email,phone,managerID)" class="btn btn-primary btn-lg signupField button" v-bind:class="buttonClass" v-b-tooltip.hover title="Click to create an account!">Create</button>
+            <!-- <button type="button" v-on:click="login(username,pw)" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Login">Login</button> -->
         </b-container>
     </div>    
 </template>
@@ -68,9 +69,10 @@ export default {
     },
     methods: {
         // send get request to fetch manager
-        create: function(first,last,email,phone,managerID) {
+        signup: function(first,last,email,phone,managerID) {
             AXIOS.post(
-               // '/manager/create?email=' + 
+               '/manager/create?managerID=' + managerID + '&first' + first + '&last' + last + '&email' + email
+               + "&phone" + phone
             )
             .then(response => {
                 this.manager=response.data;
@@ -81,18 +83,18 @@ export default {
                 document.getElementById("title1").innerText = "Please enter missing information!";
             });
         },
-        goToHomePage: function() {
-            Router.push({
-                path: "/home",
-                name: "Home"
-            });
-        },
-        goToSignupPage: function() {
-            Router.push({
-                path: "/signup",
-                name: "SignupPage"
-            });
-        },
+        // goToHomePage: function() {
+        //     Router.push({
+        //         path: "/home",
+        //         name: "home"
+        //     });
+        // },
+        // goToSignupPage: function() {
+        //     Router.push({
+        //         path: "/signup",
+        //         name: "signup"
+        //     });
+        // },
         setDarkMode: function() {
             var darkModeOn = localStorage.getItem("DarkModeOn");
             if (darkModeOn === "true") {
@@ -144,6 +146,10 @@ export default {
   padding: 15px;
   text-align: left;
 }
+/* #myButton{
+    justify-content: center;
+    align-self: center;
+} */
 .loginField {
   width: 98%;
   border-radius: 4px;
@@ -151,5 +157,9 @@ export default {
   padding: 2%;
   margin: auto;
   margin-top: 15px;
+}
+.button {
+    color: white;
+    /* align-self: auto; */
 }
 </style>

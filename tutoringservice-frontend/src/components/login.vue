@@ -11,6 +11,8 @@
             <button type="button" v-on:click="login(username,pw)" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Login">Login</button>
             <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button>
         </b-container>
+        <p> Do not have an account yet? Click Sign Up!</p>
+
     </div>
 </template>
 
@@ -32,7 +34,7 @@ var AXIOS = axios.create({
 export default {
     data() {
         return {
-            admin:{
+            login:{
                 type: Object
             },
             bgColor:"",
@@ -56,9 +58,9 @@ export default {
     },
     methods: {
         login: function (username,pw) {
-            AXIOS.get('/admin/' + username).then(response => {
-                this.admin = response.data;
-                if(this.admin.password == pw) {
+            AXIOS.get('/login/' + username).then(response => {
+                this.lgInfo = response.data;
+                if(this.lgInfo.password == pw) {
                     this.goToHomePage();
                     localStorage.setItem("isLoggedIn", "true");
                     this.$loggedInEvent.$emit("setLoggedInState", true);
@@ -74,13 +76,13 @@ export default {
         goToHomePage: function() {
             Router.push( {
                 path: "/home",
-                name:"Home"
+                name:"home"
             });
         },
        goToSignupPage: function() {
             Router.push({
                 path: "/signup",
-                name: "SiguupPage"
+                name: "signup"
          });
         },
         setDarkMode: function() {

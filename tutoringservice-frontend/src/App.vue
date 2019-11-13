@@ -9,7 +9,7 @@
     <div id = "description">
       <body>
         <hr />
-        <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p>
+        <!-- <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p> -->
 
         <p> What we can provide</p>
         <ul>
@@ -74,7 +74,7 @@ html {
 }
 #description {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 55px;
+  font-size: 45px;
 
 }
 #app {

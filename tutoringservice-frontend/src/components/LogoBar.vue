@@ -1,7 +1,7 @@
 <template>
     <nav v-bind:class="navBar" id="container">
         <a class="navbar-brand mb-0 h1" v-b-tooltip.hover title="Get back to home page" v-bind:style="{Color: titleColor}"
-        @click="goToHomePage()">Tutor4All</a>
+        @click="goToHomePage()">Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.</a>
         <span style="float:left;">
             <button type = "button" v-bind:class="buttonClass" @click="logOut" v-show="isLoggedIn">Log Out</button>
             <button type = "button" v-bind:class="buttonClass" @click="toggleDarkMode">{{ buttonText}}</button>
