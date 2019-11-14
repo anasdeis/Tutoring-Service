@@ -11,7 +11,7 @@
             <button type="button" v-on:click="login(username,pw)" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Login">Login</button>
             <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button>
         </b-container>
-        <p> Do not have an account yet? Click Sign Up!</p>
+        <p> Do not have an account yet? Sign Up Now!</p>
 
     </div>
 </template>
@@ -120,6 +120,9 @@ export default {
         padding-left: 15px;
     }
 
+    p {
+        text-align: center;
+    }
     #send {
         align-content: right;
     }

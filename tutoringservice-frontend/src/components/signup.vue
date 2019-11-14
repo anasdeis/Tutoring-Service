@@ -1,7 +1,7 @@
 <!--- This component acts as a page to signup --->
 <template>
    <div id="signup" class="card" v-bind:style="{ backgroundColor : bgColor }">
-        <span id = "title" v-bind:style="{color : textColor}">Create an account</span>
+        <span id = "title" v-bind:style="{color : textColor}"><center>Create an account</center></span>
         <div>
             <span id = "title1"></span>
         </div>
@@ -15,7 +15,7 @@
             <form> Manager ID (all numbers): <input class="signupField" type="text" id="managerID" v-model="managerID" placeholder="Enter manager ID"></form>
             <form>Username: <input class="signupField" type="text" id="username" v-model="username" placeholder="Enter username"></form>
             <form>Password: <input class="signupField" type="password" id="password" v-model="pw" placeholder="Enter password"></form>
-            <button type="button" id=myButton v-on:click="signup(first,last,email,phone,managerID)" class="btn btn-primary btn-lg signupField button" v-bind:class="buttonClass" v-b-tooltip.hover title="Click to create an account!">Create</button>
+            <center><button type="button" id=myButton v-on:click="signup(first,last,email,phone,managerID)" class="btn btn-primary btn-lg signupField button" v-bind:class="buttonClass" v-b-tooltip.hover title="Click to create an account!">Create</button></center>
             <!-- <button type="button" v-on:click="login(username,pw)" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Login">Login</button> -->
         </b-container>
     </div>    
@@ -48,9 +48,11 @@ export default {
             error:"",
             first:"",
             last:"",
+            dob:"",
             email:"",
             phone:"",
-            managerID:""
+            managerID:"",
+            // login = login(username,pw)
         };
     },
     created: function() {
@@ -68,11 +70,15 @@ export default {
         }
     },
     methods: {
+        login: function(username,pw) {
+            this.username = username;
+            this.pw = pw;
+        },
         // send get request to fetch manager
-        signup: function(first,last,email,phone,managerID) {
+        signup: function(first,last,email, phone, managerID) {
             AXIOS.post(
                '/manager/create?managerID=' + managerID + '&first' + first + '&last' + last + '&email' + email
-               + "&phone" + phone
+               + "&phone" + phone 
             )
             .then(response => {
                 this.manager=response.data;
@@ -100,11 +106,11 @@ export default {
             if (darkModeOn === "true") {
                 this.bgColor = "rgb(53, 58, 62)";
                 this.textColor = "white";
-                this.buttonClass = "btn btn-dark btn-lg loginField";
+                this.buttonClass = "btn btn-dark btn-lg signupField";
             } else {
                 this.bgColor = "rgb(250,250,250)";
                 this.textColor = "black";
-                this.buttonClass = "btn btn-white btn-lg loginField";
+                this.buttonClass = "btn btn-white btn-lg signupField";
             }
         }
     },
@@ -139,27 +145,35 @@ export default {
 }
 #signup {
   width: 30%;
-  max-height: 480px;
+  max-height: auto;
   min-width: 550px;
   margin: auto;
-  margin-top: 15px;
+  margin-top: auto;
   padding: 15px;
-  text-align: left;
+  text-align: center;
+  margin-bottom: auto;
+}
+b-container {
+    height: 100%;
 }
 /* #myButton{
     justify-content: center;
     align-self: center;
 } */
-.loginField {
-  width: 98%;
+.signupField {
+  width: 30%;
+  height: auto;
   border-radius: 4px;
   border: 0px;
   padding: 2%;
   margin: auto;
-  margin-top: 15px;
+  margin-top: 5px;
 }
 .button {
     color: white;
     /* align-self: auto; */
+}
+#btn1 {
+    align-self: center;
 }
 </style>

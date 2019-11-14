@@ -2,8 +2,8 @@
 <template>
     <div>
         <div id = "home-container" class="card" v-bind:style="{ backgroundColor: bgColor}">
-            <div class="col-md-4" v-b-tooltip.hover title="Select your view points: Manager, Student and/or Tutor ">
-            </div>
+            <span id = "title" v-bind:style="{color: textColor}"> Home Page </span>
+            <div><span id = "title1"></span></div>
         </div>
     </div> 
 </template>

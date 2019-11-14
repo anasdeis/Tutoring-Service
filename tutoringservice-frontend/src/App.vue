@@ -9,15 +9,13 @@
     <div id = "description">
       <body>
         <hr />
-        <!-- <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p> -->
-
-        <p> What we can provide</p>
+        <center><p> What we can provide</p></center>
         <ul>
-          <li> High Shcool Courses: Math, Sciences, History, Religion Studies</li>
-          <li> Cegep Courses: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
-          <li><a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University</a></li>
-          <li><a href="https://www.concordia.ca/artsci/academics/undergraduate.html">Concordia University</a></li> 
-          <li><a href="https://admission.umontreal.ca/repertoire-des-cours/filtres/matiere_kin/">University of Montreal</a></li> 
+          <li><b> High Shcool Courses</b>: Math, Sciences, History, Religion Studies</li>
+          <li> <b> Cegep Courses</b>: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
+          <li><b> University Course</b>: <a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University,</a>
+          <a href="https://www.concordia.ca/artsci/academics/undergraduate.html">Concordia University,</a> 
+          <a href="https://admission.umontreal.ca/repertoire-des-cours/filtres/matiere_kin/">University of Montreal,</a></li> 
           <li>and more!</li>
         </ul>
       </body>
@@ -72,11 +70,21 @@ html {
   font-family: Arial, Helvetica, sans-serif;
   /* font-size: 55px; */
 }
-#description {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 45px;
+p{
+  font-size: 15px;
+  font-family: fantasy;
 
 }
+ul{
+  font-family: fantasy;
+  font-size: 12px;
+  text-align: center;
+  list-style-type: none;
+}
+/* #description {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 45px;
+} */
 #app {
   /* background-color: rgb(88, 96, 102) !important; */
   height: 100%;
