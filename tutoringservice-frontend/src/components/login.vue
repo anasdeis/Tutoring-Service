@@ -31,13 +31,14 @@
       >Login</button>
       <button
         type="button"
+        @click="createLogin(username,password)"
         v-on:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
       >Sign up</button>
     </b-container>
-    <p>Do not have an account yet? Sign Up Now!</p>
+    <p>Do not have an account yet? Fill in the information and Sign Up Now!</p>
   </div>
 </template>
 
@@ -106,6 +107,11 @@ export default {
           document.getElementById("title1").innerText =
             "Account does not exist, please try again";
         });
+    },
+    createLogin: function(username,password) {
+       AXIOS.post('/login/create?username' + username + '&password' + password).then(response => {
+        this.login = response.data;
+      })
     },
     goToHomePage: function() {
       Router.push({

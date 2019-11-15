@@ -120,6 +120,11 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
+// function LoginDto (username, password) {
+//   this.username = username
+//   this.password = password
+// }
+
 export default {
   data() {
     return {
@@ -159,6 +164,9 @@ export default {
       // this.bgColor = "rgb(248, 249, 251)";
       this.buttonClass = "btn btn-white btn-lg signupField";
     }
+    AXIOS.get('/logins').then(response => {
+      this.login = response.data
+    })
   },
   methods: {
     // login: function(username,pw) {
@@ -185,29 +193,29 @@ export default {
       system
     ) {
       AXIOS.post(
-        "/manager/create?managerID=" +
+        '/manager/create?managerID=' +
           managerID +
-          "&first" +
+          '&first' +
           first +
-          "&last" +
+          '&last' +
           last +
-          "&dob" +
+          '&dob' +
           dob +
-          "&email" +
+          '&email' +
           email +
-          "&phone" +
+          '&phone' +
           phone +
-          "&login" +
+          '&login' +
           login +
-          "&request" +
+          '&request' +
           request +
-          "&review" +
+          '&review' +
           review +
-          "&commission" +
+          '&commission' +
           commission +
-          "&classroom" +
+          '&classroom' +
           classroom +
-          "&system" +
+          '&system' +
           system
       )
         .then(response => {
