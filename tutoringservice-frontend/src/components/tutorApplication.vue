@@ -1,37 +1,37 @@
-<!--- This component acts as a page for tutor, including add/fire tutor --->
+<!--- This component acts as a page for tutor application, including accept/decline tutor --->
 <template>
-  <div id="tutor" class="card" v-bind:style="{ backgroundColor : bgColor}">
+  <div id="tutorApplication" class="card" v-bind:style="{ backgroundColor : bgColor}">
     <span id="title" v-bind:style="{color : textColor}"></span>
     <div>
       <span id="title1"></span>
     </div>
 
     <b-container fluid>
-      <b-col id="tutorlist">
-        <p>View tutor list</p>
-        <p>TODO get the list from backend and implement the two buttons</p>
-        <select class="tutorField"></select>
+      <b-col id="tutorApplicationlist">
+        <p>View tutor application list</p>
+        <p>TODO get the list from backend and implement the corresponding buttons</p>
+        <select class="tutorApplicationField"></select>
       </b-col>
 
-      <b-row id="myButton">
+      <b-row id="tutorApplication">
         <b-col>
           <button
             type="button"
-            @click="addTutor()"
-            class="btn btn-primary btn-lg tutorField button"
+            @click="acceptTutor()"
+            class="btn btn-primary btn-lg tutorApplicationField button"
             v-b-tooltip.hove
-            title="Add a tutor!"
-          >Add Tutor</button>
+            title="Accept a tutor!"
+          >Accept Tutor</button>
         </b-col>
 
         <b-col>
           <button
             type="button"
-            @click="removeTutor()"
-            class="btn btn-primary btn-lg tutorField button"
+            @click="declineTutor()"
+            class="btn btn-primary btn-lg tutorApplicationField button"
             v-b-tooltip.hove
-            title="Remove a tutor!"
-          >Remove Tutor</button>
+            title="Decline a tutor!"
+          >Decline Tutor</button>
         </b-col>
       </b-row>
     </b-container>
@@ -107,6 +107,10 @@ export default {
   margin: auto;
 }
 b-container {
+  height: auto;
+}
+#tutorApplication {
+  align-content: center;
   height: auto;
 }
 </style>

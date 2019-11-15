@@ -21,6 +21,15 @@
         <b-col>
           <button
             type="button"
+            @click="goToTutorApplicationPage()"
+            class="btn btn-primary btn-lg home button"
+            v-b-tooltip.hover
+            title="View Tutor Application"
+          >View Tutor Application</button>
+        </b-col>
+        <b-col>
+          <button
+            type="button"
             @click="goToTutorPage()"
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
@@ -174,6 +183,12 @@ export default {
       Router.push({
         path: "/tutor",
         name: "tutor"
+      });
+    },
+    goToTutorApplicationPage: function() {
+      Router.push({
+        path: "/tutorApplication",
+        name: "tutorApplication"
       });
     },
     goToStudentPage: function() {

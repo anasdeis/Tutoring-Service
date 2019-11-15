@@ -1,38 +1,63 @@
 <template>
-  <div class="hello">
-    <b-container fluid class="home-row">
-      <!-- <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button> -->
+<div class="hello">
+  <b-container fluid class="home-row">
+    <!-- <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button> -->
 
-      <b-row>
-        <b-col>
-          <button type="button" v-on:click="goToLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Manager portal">Manager</button>
-        </b-col>
-        <b-col>
-          <button type="button" v-on:click="goToTutorLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Tutor portal">Tutor</button>
-        </b-col>
-        <b-col>
-          <button type="button" v-on:click="goToStudentLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Student portal">Student</button>
-          </b-col>
-      </b-row>
-    </b-container>
+    <b-row>
+      <b-col>
+        <button
+          type="button"
+          v-on:click="goToLoginPage()"
+          class="btn btn-primary btn-lg home-row button"
+          v-b-tooltip.hove
+          title="Go to Manager portal"
+        >Manager</button>
+      </b-col>
+      <b-col>
+        <button
+          type="button"
+          v-on:click="goToTutorLoginPage()"
+          class="btn btn-primary btn-lg home-row button"
+          v-b-tooltip.hove
+          title="Go to Tutor portal"
+        >Tutor</button>
+      </b-col>
+      <b-col>
+        <button
+          type="button"
+          v-on:click="goToStudentLoginPage()"
+          class="btn btn-primary btn-lg home-row button"
+          v-b-tooltip.hove
+          title="Go to Student portal"
+        >Student</button>
+      </b-col>
+    </b-row>
+  </b-container>
 
-    <div id = "description">
-      <body>
-        <hr />
-        <!-- <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p> -->
+  <div id="description">
+    <body>
+      <hr />
+      <!-- <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p> -->
 
-        <p> What we can provide</p>
-        <ul>
-          <li> High Shcool Courses: Math, Sciences, History, Religion Studies</li>
-          <li> Cegep Courses: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
-          <li> University Courses: <a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University</a>,
-          <a href="https://www.concordia.ca/artsci/academics/undergraduate.html">Concordia University</a>,
-          <a href="https://admission.umontreal.ca/repertoire-des-cours/filtres/matiere_kin/">University of Montreal</a></li> 
-          <li>and more!</li>
-        </ul>
-      </body>
-    </div>
+      <p>What we can provide</p>
+      <ul>
+        <li>High Shcool Courses: Math, Sciences, History, Religion Studies</li>
+        <li>Cegep Courses: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
+        <li>
+          University Courses:
+          <a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University</a>,
+          <a
+            href="https://www.concordia.ca/artsci/academics/undergraduate.html"
+          >Concordia University</a>,
+          <a
+            href="https://admission.umontreal.ca/repertoire-des-cours/filtres/matiere_kin/"
+          >University of Montreal</a>
+        </li>
+        <li>and more!</li>
+      </ul>
+    </body>
   </div>
+</div>
 </template>
 
 <script>
@@ -41,18 +66,19 @@ var config = require("../../config");
 
 // axios config
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl = "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl =
+  "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // var AXIOS = axios.create({
-//     baseURL: backendUrl, 
+//     baseURL: backendUrl,
 //     headers: {"Access-Control-Allow-Origin": frontendUrl}
 // });
 export default {
-  name: 'hello',
-  data () {
+  name: "hello",
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+      msg: "Welcome to Your Vue.js App"
+    };
   },
   methods: {
     goToLoginPage: function() {
@@ -60,14 +86,14 @@ export default {
         path: "/login",
         name: "login"
       });
-    },
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-p{
+p {
   font-family: fantasy;
   text-align: center;
   font-size: 30px;

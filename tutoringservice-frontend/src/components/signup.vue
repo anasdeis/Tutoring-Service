@@ -41,7 +41,13 @@
       </form>
       <form>
         Email:
-        <input class="signupField" type="text" id="email" v-model="email" placeholder="Enter email" />
+        <input
+          class="signupField"
+          type="text"
+          id="email"
+          v-model="email"
+          placeholder="Enter email"
+        />
       </form>
       <form>
         Phone number:
@@ -254,7 +260,7 @@ b-container {
     align-self: center;
 } */
 .signupField {
-  width: 30%;
+  width: auto;
   height: auto;
   border-radius: 4px;
   border: 0px;

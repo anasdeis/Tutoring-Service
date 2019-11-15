@@ -7,6 +7,7 @@ import signup from "@/components/signup";
 import LogoBar from "@/components/LogoBar";
 import room from "@/components/room";
 import tutor from "@/components/tutor";
+import tutorApplication from "@/components/tutorApplication";
 import commission from "@/components/commission";
 import review from "@/components/review";
 import student from "@/components/student";
@@ -50,6 +51,11 @@ export default new Router({
       path: "/tutor",
       name: "tutor",
       component: tutor
+    },
+    {
+      path: "/tutorApplication",
+      name: "tutorApplication",
+      component: tutorApplication
     },
     {
       path: "/commission",
