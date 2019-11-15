@@ -4,9 +4,15 @@
       <!-- <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button> -->
 
       <b-row>
-        <b-col><button type="button" v-on:click="goToLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Manager portal">Manager</button></b-col>
-        <b-col><button type="button" v-on:click="goToTutorLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Tutor portal">Tutor</button></b-col>
-        <b-col><button type="button" v-on:click="goToStudentLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Student portal">Student</button></b-col>
+        <b-col>
+          <button type="button" v-on:click="goToLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Manager portal">Manager</button>
+        </b-col>
+        <b-col>
+          <button type="button" v-on:click="goToTutorLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Tutor portal">Tutor</button>
+        </b-col>
+        <b-col>
+          <button type="button" v-on:click="goToStudentLoginPage()" class="btn btn-primary btn-lg home-row button" v-b-tooltip.hove title="Go to Student portal">Student</button>
+          </b-col>
       </b-row>
     </b-container>
 
