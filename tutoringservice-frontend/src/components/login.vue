@@ -12,19 +12,19 @@
         id="username"
         v-model="username"
         placeholder="Enter username"
-        v-on:keyup.enter="login(username, pw)"
+        v-on:keyup.enter="login(username, password)"
       />
       <input
         class="loginField"
         type="password"
         id="password"
-        v-model="pw"
+        v-model="password"
         placeholder="Enter password"
-        v-on:keyup.enter="login(username, pw)"
+        v-on:keyup.enter="login(username, password)"
       />
       <button
         type="button"
-        v-on:click="login(username,pw)"
+        v-on:click="login(username,password)"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
@@ -47,6 +47,11 @@ import Router from "../router";
 
 var config = require("../../config");
 
+// var mockLogin = {
+//   "username": "manager",
+//   "password":"password"
+// }
+
 // axios config
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl =
@@ -66,13 +71,13 @@ export default {
       bgColor: "",
       textColor: "",
       error: "",
-      pw: "",
-      username: ""
+      username:"",
+      password: ""
     };
   },
   created: function() {
     var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn == "true") {
+    if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
       // this.buttonClass="btn btn-dark btn-lg loginField";
@@ -83,11 +88,11 @@ export default {
     }
   },
   methods: {
-    login: function(username, pw) {
-      AXIOS.get("/login/" + username)
+    login: function(username, password) {
+      AXIOS.get('/login/' + username)
         .then(response => {
-          this.lgInfo = response.data;
-          if (this.lgInfo.password == pw) {
+          this.login = response.data;
+          if (this.login.password === password) {
             this.goToHomePage();
             localStorage.setItem("isLoggedIn", "true");
             this.$loggedInEvent.$emit("setLoggedInState", true);

@@ -93,14 +93,13 @@
         <button
           type="button"
           id="myButton"
-          v-on:click="signup(first,last,email,phone,managerID)"
+          @click="signup(first,last,dob,email,phone,managerID,login,request,review,commission,classroom,system)"
           class="btn btn-primary btn-lg signupField button"
           v-bind:class="buttonClass"
           v-b-tooltip.hover
           title="Click to create an account!"
         >Create</button>
       </center>
-      <!-- <button type="button" v-on:click="login(username,pw)" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Login">Login</button> -->
     </b-container>
   </div>
 </template>
@@ -136,15 +135,21 @@ export default {
       dob: "",
       email: "",
       phone: "",
-      managerID: ""
-      // null for set
-      // login = login(username,pw)
+      managerID: "",
+      login: "",
+      request: null,
+      review: null,
+      commission: null,
+      classroom: null,
+      system: ""
+
+      // first,last,dob,email,phone,managerID,login,request,review,commission,classroom,system
     };
   },
   created: function() {
     // fetch the user's selected UI mode from brower local storage
     var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn == "true") {
+    if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
       this.buttonClass = "btn btn-dark btn-lg signupField";
@@ -165,7 +170,20 @@ export default {
     //     "password" : "pw",
     // },
     // send get request to fetch manager
-    signup: function(first, last, email, phone, managerID, login) {
+    signup: function(
+      first,
+      last,
+      dob,
+      email,
+      phone,
+      managerID,
+      login,
+      request,
+      review,
+      commission,
+      classroom,
+      system
+    ) {
       AXIOS.post(
         "/manager/create?managerID=" +
           managerID +
@@ -173,10 +191,24 @@ export default {
           first +
           "&last" +
           last +
+          "&dob" +
+          dob +
           "&email" +
           email +
           "&phone" +
-          phone
+          phone +
+          "&login" +
+          login +
+          "&request" +
+          request +
+          "&review" +
+          review +
+          "&commission" +
+          commission +
+          "&classroom" +
+          classroom +
+          "&system" +
+          system
       )
         .then(response => {
           this.manager = response.data;
@@ -188,12 +220,12 @@ export default {
             "Please enter missing information!";
         });
     },
-    // goToHomePage: function() {
-    //     Router.push({
-    //         path: "/home",
-    //         name: "home"
-    //     });
-    // },
+    goToHomePage: function() {
+      Router.push({
+        path: "/home",
+        name: "home"
+      });
+    },
     // goToSignupPage: function() {
     //     Router.push({
     //         path: "/signup",

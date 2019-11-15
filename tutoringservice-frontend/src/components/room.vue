@@ -80,7 +80,7 @@ export default {
   },
   created: function() {
     var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn == "true") {
+    if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58.62)";
       this.textColor = "white";
     } else {
