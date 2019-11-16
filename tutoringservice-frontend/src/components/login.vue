@@ -9,10 +9,10 @@
       <input
         class="loginField"
         type="text"
-        id="username"
-        v-model="username"
-        placeholder="Enter username"
-        v-on:keyup.enter="login(username, password)"
+        id="userName"
+        v-model="userName"
+        placeholder="Enter userName"
+        v-on:keyup.enter="login(userName, password)"
       />
       <input
         class="loginField"
@@ -20,19 +20,19 @@
         id="password"
         v-model="password"
         placeholder="Enter password"
-        v-on:keyup.enter="login(username, password)"
+        v-on:keyup.enter="login(userName, password)"
       />
       <button
         type="button"
-        v-on:click="login(username,password)"
+        v-on:click="login(userName,password)"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
       >Login</button>
       <button
         type="button"
-        @click="createLogin(username,password)"
-        v-on:click="goToSignupPage()"
+        v-on:click="createLogin(userName,password)"
+        @:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
@@ -49,7 +49,7 @@ import Router from "../router";
 var config = require("../../config");
 
 // var mockLogin = {
-//   "username": "manager",
+//   "userName": "manager",
 //   "password":"password"
 // }
 
@@ -66,14 +66,16 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      login: {
-        type: Object
-      },
+      // login: {
+      //   type: Object
+      // },
       bgColor: "",
       textColor: "",
       error: "",
-      username:"",
-      password: ""
+      // userName: this.$cookie.get("userName") || ' ',
+      // password: this.$cookie.get("password") || ' ',
+      userName:"",
+      password:""
     };
   },
   created: function() {
@@ -89,8 +91,8 @@ export default {
     }
   },
   methods: {
-    login: function(username, password) {
-      AXIOS.get('/login/' + username)
+    login: function(userName, password) {
+      AXIOS.get('/login/' + userName)
         .then(response => {
           this.login = response.data;
           if (this.login.password === password) {
@@ -108,9 +110,11 @@ export default {
             "Account does not exist, please try again";
         });
     },
-    createLogin: function(username,password) {
-       AXIOS.post('/login/create?username' + username + '&password' + password).then(response => {
+    createLogin: function(userName,password) {
+       AXIOS.post('/login/=' + userName + '?password=' + password).then(response => {
         this.login = response.data;
+        // this.$cookie.set('userName', userName);
+        // this.$cookie.set("passwor", password);
       })
     },
     goToHomePage: function() {

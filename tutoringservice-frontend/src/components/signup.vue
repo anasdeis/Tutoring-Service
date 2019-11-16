@@ -69,7 +69,7 @@
           placeholder="Enter manager ID"
         />
       </form>
-      <form>
+      <!-- <form>
         Username:
         <input
           class="signupField"
@@ -88,7 +88,7 @@
           v-model="pw"
           placeholder="Enter password"
         />
-      </form>
+      </form>-->
       <center>
         <button
           type="button"
@@ -164,9 +164,6 @@ export default {
       // this.bgColor = "rgb(248, 249, 251)";
       this.buttonClass = "btn btn-white btn-lg signupField";
     }
-    AXIOS.get('/logins').then(response => {
-      this.login = response.data
-    })
   },
   methods: {
     // login: function(username,pw) {
@@ -192,30 +189,33 @@ export default {
       classroom,
       system
     ) {
+      AXIOS.get("/logins").then(response => {
+        var login = response.data;
+      });
       AXIOS.post(
-        '/manager/create?managerID=' +
+        "/manager/create?managerID=" +
           managerID +
-          '&first' +
+          "&first" +
           first +
-          '&last' +
+          "&last" +
           last +
-          '&dob' +
+          "&dob" +
           dob +
-          '&email' +
+          "&email" +
           email +
-          '&phone' +
+          "&phone" +
           phone +
-          '&login' +
+          "&login" +
           login +
-          '&request' +
+          "&request" +
           request +
-          '&review' +
+          "&review" +
           review +
-          '&commission' +
+          "&commission" +
           commission +
-          '&classroom' +
+          "&classroom" +
           classroom +
-          '&system' +
+          "&system" +
           system
       )
         .then(response => {
@@ -224,6 +224,7 @@ export default {
         })
         .catch(e => {
           console.log(e.message);
+          // this.error = error
           document.getElementById("title1").innerText =
             "Please enter missing information!";
         });
