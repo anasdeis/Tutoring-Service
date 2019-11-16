@@ -1,4 +1,5 @@
-<!--- this component is the home page --->
+<!--- this component is the home page without login check, go to this page can jump to the functionalities associated
+with the manager view point, can be used as a demo page --->
 <template>
   <div id="home-container" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <span id="title" v-bind:style="{color: textColor}">Home Page</span>
@@ -8,7 +9,6 @@
     <p>Check out our functionality for you!</p>
     <b-container fluid>
       <b-row id="functionality">
-        <p>test</p>
         <b-col>
           <button
             type="button"
@@ -75,7 +75,6 @@
         </b-col>
       </b-row>
     </b-container>
-    <p>test 2</p>
   </div>
 </template>
 
@@ -108,13 +107,13 @@ export default {
     };
   },
   created: function() {
-    var isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "false") {
-      Router.push({
-        path: "/login",
-        name: "LoginPage"
-      });
-    }
+    // var isLoggedIn = localStorage.getItem("isLoggedIn");
+    // if (isLoggedIn === "false") {
+    //   Router.push({
+    //     path: "/login",
+    //     name: "LoginPage"
+    //   });
+    // }
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {

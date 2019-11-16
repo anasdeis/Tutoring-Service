@@ -9,35 +9,36 @@
       <input
         class="loginField"
         type="text"
-        id="username"
-        v-model="username"
-        placeholder="Enter username"
-        v-on:keyup.enter="login(username, pw)"
+        id="userName"
+        v-model="userName"
+        placeholder="Enter userName"
+        v-on:keyup.enter="login(userName, password)"
       />
       <input
         class="loginField"
         type="password"
         id="password"
-        v-model="pw"
+        v-model="password"
         placeholder="Enter password"
-        v-on:keyup.enter="login(username, pw)"
+        v-on:keyup.enter="login(userName, password)"
       />
       <button
         type="button"
-        v-on:click="login(username,pw)"
+        v-on:click="login(userName,password)"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
       >Login</button>
       <button
         type="button"
-        v-on:click="goToSignupPage()"
+        v-on:click="createLogin(userName,password)"
+        @:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
       >Sign up</button>
     </b-container>
-    <p>Do not have an account yet? Sign Up Now!</p>
+    <p>Do not have an account yet? Fill in the information and Sign Up Now!</p>
   </div>
 </template>
 
@@ -46,6 +47,11 @@ import axios from "axios";
 import Router from "../router";
 
 var config = require("../../config");
+
+// var mockLogin = {
+//   "userName": "manager",
+//   "password":"password"
+// }
 
 // axios config
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
@@ -60,19 +66,21 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      login: {
-        type: Object
-      },
+      // login: {
+      //   type: Object
+      // },
       bgColor: "",
       textColor: "",
       error: "",
-      pw: "",
-      username: ""
+      // userName: this.$cookie.get("userName") || ' ',
+      // password: this.$cookie.get("password") || ' ',
+      userName:"",
+      password:""
     };
   },
   created: function() {
     var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn == "true") {
+    if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
       // this.buttonClass="btn btn-dark btn-lg loginField";
@@ -83,11 +91,11 @@ export default {
     }
   },
   methods: {
-    login: function(username, pw) {
-      AXIOS.get("/login/" + username)
+    login: function(userName, password) {
+      AXIOS.get('/login/' + userName)
         .then(response => {
-          this.lgInfo = response.data;
-          if (this.lgInfo.password == pw) {
+          this.login = response.data;
+          if (this.login.password === password) {
             this.goToHomePage();
             localStorage.setItem("isLoggedIn", "true");
             this.$loggedInEvent.$emit("setLoggedInState", true);
@@ -101,6 +109,13 @@ export default {
           document.getElementById("title1").innerText =
             "Account does not exist, please try again";
         });
+    },
+    createLogin: function(userName,password) {
+       AXIOS.post('/login/=' + userName + '?password=' + password).then(response => {
+        this.login = response.data;
+        // this.$cookie.set('userName', userName);
+        // this.$cookie.set("passwor", password);
+      })
     },
     goToHomePage: function() {
       Router.push({
