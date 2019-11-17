@@ -6,7 +6,7 @@
       <span id="title1"></span>
     </div>
 
-    <b-container fluid>
+    <!-- <b-container fluid>
       <b-col id="tutorApplicationlist">
         <p>View tutor application list</p>
         <p>TODO get the list from backend and implement the corresponding buttons</p>
@@ -34,6 +34,76 @@
           >Decline Tutor</button>
         </b-col>
       </b-row>
+    </b-container>-->
+    <b-container fluid>
+      <b-row>
+        <b-col id="tutprApplicationTable">
+          <p>View all the tutor applications</p>
+          <table id="tAppTable">
+            <tr>
+              <th>Tutor Id</th>
+              <th>Tutor Application ID</th>
+            </tr>
+            <tr>
+              <td>{{tutorID}}</td>
+              <td>{{tutorApplicationID}}</td>
+            </tr>
+          </table>
+          <form>
+            Enter tutor application ID:
+            <input
+              class="tAppField"
+              text="number"
+              id="tAppID"
+              v-model="tAppID"
+              placeholder="Enter tutor application ID"
+            />
+          </form>
+          <button
+            type="button"
+            @click="getTutorApplication(tAppID)"
+            class="btn btn-primary btn-lg viewTApp button"
+            v-b-tooltip.hover
+            title="Dispaly selected tutor application"
+          >View detail</button>
+        </b-col>
+
+        <b-col id="detailofTApp">
+          <p>Here is the detail of the tutor application you select</p>
+          <!-- <table id="tAppDetail">
+            <tr>
+              <th>Tutor Id</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email address</th>
+              <th>Phone number</th>
+              <th>Tutor Application ID</th>
+            </tr>
+            <tr>
+              <td>{{firstName}}</td>
+              <td>{{lastName}}</td>
+              <td>{{email}}</td>
+              <td>{{phone}}</td>
+              <td>{{tutorApplicationID}}</td>
+            </tr>
+          </table>-->
+          <b-col id="detailofTApp">{{detailofTApp}}</b-col>
+          <button
+            type="button"
+            @click="updateTutorApplicationisAccepted(tAppID,isAccept)"
+            class="btn btn-primary btn-lg viewTApp button"
+            v-b-tooltip.hover
+            title="Approve"
+          >Approve</button>
+          <button
+            type="button"
+            @click="updateTutorApplicationisAccepted(tAppID,isAccept)"
+            class="btn btn-primary btn-lg viewTApp button"
+            v-b-tooltip.hover
+            title="Decline"
+          >Decline</button>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -54,6 +124,14 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
+var tAppTable = {
+  // GET YOUR TABLE FROM THE BACKEND- all tutor applications
+};
+
+var detailofTApp = {
+  // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
+};
+// detailofTApp.displayObject("detailofTApp", detailofTApp); // we might need this line to display
 export default {
   data() {
     return {
@@ -61,7 +139,9 @@ export default {
         type: Object
       },
       bgColor: "",
-      textColor: ""
+      textColor: "",
+      tAppID: "",
+      isAccept: ""
     };
   },
   created: function() {
@@ -89,6 +169,12 @@ export default {
         this.textColor = "black";
         this.buttonClass = "btn btn-white btn-lg signupField";
       }
+    },
+    getTutorApplication: function(tAppID) {
+      // TODO: AXIOS METHODS GOES HERE TO GET A TUTOR APPLICATION RELATED WITH THE ENTERED TUTPR APPLICATION ID
+    },
+    updateTutorApplicationisAccepted: function(tAppID, isAccept) {
+      // TODO: AXIOS METHODS GOES HERE TO ACCEPT/DELINE A TUTOR APPLICATION
     }
   },
   mounted() {
@@ -99,6 +185,9 @@ export default {
 </script>
 
 <style>
+p {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
 #myButton {
   color: royalblue;
   border: 0px;
@@ -108,9 +197,22 @@ export default {
 }
 b-container {
   height: auto;
+  width: auto;
 }
 #tutorApplication {
   align-content: center;
   height: auto;
+}
+#tAppTable {
+  margin-left: auto;
+  margin-right: auto;
+  border: 4px;
+  border: 1px solid black;
+}
+#tAppDetail {
+  margin-left: auto;
+  margin-right: auto;
+  border: 4px;
+  border: 1px solid black;
 }
 </style>
