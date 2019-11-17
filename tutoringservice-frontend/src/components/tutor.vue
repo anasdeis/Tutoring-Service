@@ -6,7 +6,7 @@
       <span id="title1"></span>
     </div>
 
-    <b-container fluid>
+    <!-- <b-container fluid>
       <b-col id="tutorlist">
         <p>View tutor list</p>
         <p>TODO get the list from backend and implement the two buttons</p>
@@ -34,6 +34,56 @@
           >Remove Tutor</button>
         </b-col>
       </b-row>
+    </b-container>-->
+
+    <b-container fluid>
+      <b-row>
+        <b-col id="tutorTable">
+          <p>View all the tutors</p>
+          <table id="tutorTable">
+            <tr>
+              <th>Tutor Id</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+            </tr>
+            <tr>
+              <td>{{tutorID}}</td>
+              <td>{{firstName}}</td>
+              <td>{{lastName}}</td>
+              <td>{{email}}</td>
+            </tr>
+          </table>
+          <form>
+            Enter tutor ID:
+            <input
+              class="tutorField"
+              text="number"
+              id="tutorID"
+              v-model="tutorID"
+              placeholder="Enter tutor ID"
+            />
+          </form>
+          <button
+            type="button"
+            @click="getTutor(tutorID)"
+            class="btn btn-primary btn-lg viewTutor button"
+            v-b-tooltip.hover
+            title="Dispaly selected tutor"
+          >View detail</button>
+        </b-col>
+
+        <b-col id="detailOfTutor">
+          <p>Here is the detail of the tutor you select</p>
+          <button
+            type="button"
+            @click="deleteTutor(tutorID)"
+            class="btn btn-primary btn-lg viewTutor button"
+            v-b-tooltip.hover
+            title="Remove"
+          >Remove</button>
+        </b-col>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -54,6 +104,14 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
+var tutorTable = {
+  // GET YOUR TABLE FROM THE BACKEND- all tutor applications
+};
+
+var detailOfTutor = {
+  // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
+};
+
 export default {
   data() {
     return {
@@ -61,7 +119,8 @@ export default {
         type: Object
       },
       bgColor: "",
-      textColor: ""
+      textColor: "",
+      tutorID: ""
     };
   },
   created: function() {
@@ -89,6 +148,14 @@ export default {
         this.textColor = "black";
         this.buttonClass = "btn btn-white btn-lg signupField";
       }
+    },
+    getTutor: function(tutorID) {
+      AXIOS.get("/tutor/=" + tutorID).then(response => {
+        this.getTutor = response.data;
+      });
+    },
+    deleteTutor: function(tutorID) {
+      AXIOS.delete("/tutor/delete/=" + tutorID);
     }
   },
   mounted() {
@@ -99,6 +166,9 @@ export default {
 </script>
 
 <style>
+p {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
 #myButton {
   color: royalblue;
   border: 0px;
@@ -108,5 +178,9 @@ export default {
 }
 b-container {
   height: auto;
+}
+#tutorTable {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

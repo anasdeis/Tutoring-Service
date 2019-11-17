@@ -56,10 +56,10 @@ export default {
   },
   methods: {
     goToHomePage: function() {
-      //   Router.push({
-      //     path: "/home",
-      //     name: "home"
-      //   });
+        // Router.push({
+        //   path: "/home",
+        //   name: "home"
+        // });
 
       var isLoggedIn = localStorage.getItem("isLoggedIn");
       if (isLoggedIn === "true") {
