@@ -5,11 +5,12 @@ module.exports = {
   build: {
 //
 //    port: 8087,
-//  
+//
+  
     env: require('./prod.env'),
     host: 'tutoringservice-frontend-123.herokuapp.com',
     port: 443,
-    backendHost: 'tutoringservice-frontend-123.herokuapp.com',
+    backendHost: 'tutoringservice-backend-123.herokuapp.com',
     backendPort: 443,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
