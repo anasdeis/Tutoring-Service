@@ -9,3 +9,4 @@ Scope of the project: implement a website and an Android application for a tutor
 
 * Deliverable 1 report can be found [here](https://github.com/McGill-ECSE321-Fall2019/project-group-12/wiki/Deliverable-1---Report) 
 * Deliverable 2 report can be found [here](https://github.com/McGill-ECSE321-Fall2019/project-group-12/wiki/Deliverable-2---Report)
+* Deliverable 3 report can be found [here](https://github.com/McGill-ECSE321-Fall2019/project-group-12/wiki/Deliverable-3-Report)

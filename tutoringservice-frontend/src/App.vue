@@ -11,7 +11,7 @@
         <hr />
         <center><p> What we can provide</p></center>
         <ul>
-          <li><b> High Shcool Courses</b>: Math, Sciences, History, Religion Studies</li>
+          <li><b> High School Courses</b>: Math, Sciences, History, Religion Studies</li>
           <li> <b> Cegep Courses</b>: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
           <li><b> University Course</b>: <a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University,</a>
           <a href="https://www.concordia.ca/artsci/academics/undergraduate.html">Concordia University,</a> 

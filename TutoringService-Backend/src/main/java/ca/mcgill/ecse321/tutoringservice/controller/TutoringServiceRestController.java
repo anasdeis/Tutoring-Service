@@ -1178,7 +1178,16 @@ public class TutoringServiceRestController {
 		}
 		return tutorDtos;
 	}
-
+	
+	@GetMapping(value = { "/tutor/{tutorID}", "/tutor/{tutorID}/" })
+	public TutorDto getTutor(Integer tutorID) {
+		TutorDto tutorDto = new TutorDto();
+		Tutor tutor = service.getTutor(tutorID);
+		tutorDto = convertToDto(tutor);
+		return tutorDto;
+		
+	}
+ 
 	/**
 	 * @return list offering
 	 * @sample /offering/list
@@ -1240,6 +1249,14 @@ public class TutoringServiceRestController {
 			tutorApplicationDtos.add(convertToDto(tutorApplication));
 		}
 		return tutorApplicationDtos;
+	}
+	
+	@GetMapping(value = { "/tutorApplication/{tutorApplicationID}", "/tutorApplication/{tutorApplicationID}/" })
+	public TutorApplicationDto getTutorApplication(Integer tutorApplicationID) {
+		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto();
+		TutorApplication tutorApplication = service.getTutorApplication(tutorApplicationID);
+		tutorApplicationDto = convertToDto(tutorApplication);
+		return tutorApplicationDto;
 	}
 	
 	/**

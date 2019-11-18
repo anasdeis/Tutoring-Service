@@ -1,5 +1,5 @@
 <template>
-  <div id="tutorApplication" class="card" v-bind:style="{ backgroundColor : bgColor}">
+  <div id="studentReview" class="card" v-bind:style="{ backgroundColor : bgColor}">
     <span id="title" v-bind:style="{color : textColor}"></span>
     <div>
       <span id="title1"></span>
@@ -24,30 +24,48 @@
           <option value="all">--Select Review--</option>
         </select>
 
+        <!-- 
+        <table id="reviewTable">
+          <tr>
+            <th>Review ID</th>
+            <th>Comment</th>
+            <th>Offering</th>
+            <th>Approved</th>
+          </tr>
+          <tr w3-repeat="reviews">
+            <td>{{reviewID}}</td>
+            <td>{{comment}}</td>
+            <td>{{offeringID}}</td>
+            <td>{{isApproved}}</td>
+          </tr>
+        </table>
+        -->
+
         <b-row id="myButton">
-          <b-col>
+          <center>
             <button
+              id="approve"
               type="button"
               @click="acceptReview()"
-              class="btn btn-primary btn-lg tutorField button"
+              class="btn btn-primary btn-lg subjectField button"
               v-b-tooltip.hove
               title="Approve this review!"
             >Approve</button>
-          </b-col>
-          <b-col>
             <button
+              id="decline"
               type="button"
               @click="declineReview()"
               class="btn btn-primary btn-lg tutorField button"
               v-b-tooltip.hove
               title="Decline this review!"
             >Decline</button>
-          </b-col>
+          </center>
         </b-row>
       </b-col>
     </b-container>
   </div>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -70,6 +88,32 @@ function ReviewDto(reviewId, comment, isApproved) {
   this.comment = comment;
   this.isApproved = isApproved;
 }
+/*
+script src="https://www.w3schools.com/lib/w3.js"
+var reviewTable = {
+  reviews: [
+    {
+      reviewID: "1000",
+      comment: "Amazing Course",
+      offeringID: "ECSE321F",
+      isApproved: true
+    },
+    {
+      reviewID: "1001",
+      comment: "So hard",
+      offeringID: "ECSE321F",
+      isApproved: true
+    },
+    {
+      reviewID: "1002",
+      comment: "I don't like this",
+      offeringID: "ECSE321F",
+      isApproved: false
+    }
+  ]
+};
+*/
+// studentReview.displayObject("reviewTable", reviewTable);
 
 export default {
   name: "reviews",
@@ -241,9 +285,32 @@ export default {
 </script>
 
 <style>
-#reviewList {
+#reviewTable {
   margin-top: 20px;
   border-width: 5px;
   border-style: groove;
+  margin-left: auto;
+  margin-right: auto;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+}
+form {
+  color: black;
+}
+#myButton {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+}
+#approve {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+#decline {
+  margin-right: 5px;
+  margin-left: 5px;
 }
 </style>

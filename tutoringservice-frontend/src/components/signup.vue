@@ -69,7 +69,7 @@
           placeholder="Enter manager ID"
         />
       </form>
-      <!-- <form>
+      <form>
         Username:
         <input
           class="signupField"
@@ -79,7 +79,7 @@
           placeholder="Enter username"
         />
       </form>
-      <form>
+      <!-- <form>
         Password:
         <input
           class="signupField"
@@ -88,7 +88,7 @@
           v-model="pw"
           placeholder="Enter password"
         />
-      </form>-->
+      </form> -->
       <center>
         <button
           type="button"

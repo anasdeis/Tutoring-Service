@@ -1,3 +1,32 @@
-langauge: java
-script:
-- ./gradlew build
+matrix:
+  include:
+    - language: java
+      install: true
+      jdk:
+        - oraclejdk8
+      script:
+        - ./gradlew build
+
+    - language: node_js
+      node_js:
+        - 10.15
+      before_install:
+        - cd tutoringservice-frontend
+      install:
+        - npm install
+      script:
+        - npm run build
+
+    - stage: deploy to backend app
+      script: skip
+      deploy:
+        provider: heroku
+        api_key: tutoringservice-backend
+        app: ecse321-group17
+
+    - stage: deploy to frontend app
+      script: skip
+      deploy:
+        provider: heroku
+        api_key: af394372-fe4b-4a2c-a1fc-d74d710d3d31
+        app: tutoringservice-frontend

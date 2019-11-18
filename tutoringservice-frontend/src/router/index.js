@@ -77,7 +77,8 @@ export default new Router({
       path: "/subjectRequest",
       name: "subjectRequest",
       component: subjectRequest
-    },{
+    },
+    {
       path: "/home1",
       name: "home1",
       component: home1

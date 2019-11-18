@@ -7,22 +7,19 @@
     <div>
       <span id="title1"></span>
     </div>
-    <b-container>
+    <!-- <b-container>
       <b-row>
         <b-col id="smallroom">
           <p>View Small Rooms 1-10</p>
           <select>
             <option value="RM01">RM01</option>
-            <option value="RM02">RM02</option>
-            <option value="RM03">RM03</option>
-            <option value="RM04">RM04</option>
-            <option value="RM05">RM05</option>
-            <option value="RM06">RM06</option>
-            <option value="RM07">RM07</option>
-            <option value="RM08">RM08</option>
-            <option value="RM09">RM09</option>
-            <option value="RM10">RM10</option>
           </select>
+          <p>
+            The room you select is: <span class="output"></span></p>
+            <button onClick="getOpinion()">Select Room</button>
+          
+          <p>
+            The romm you select is: <span class="status"></span></p>
           <button
             type="button"
             @click="viewRoomStatus()"
@@ -30,13 +27,12 @@
             v-b-tooltip.hover
             title="View status"
           >View Status</button>
+          
         </b-col>
         <b-col id="bigroom">
           <p>View Big Rooms 11-13 for group review</p>
           <select>
             <option value="RM11">RM11</option>
-            <option value="RM12">RM12</option>
-            <option value="RM13">RM13</option>
           </select>
           <button
             type="button"
@@ -45,6 +41,62 @@
             v-b-tooltip.hover
             title="View status"
           >View Status</button>
+        </b-col>
+      </b-row>
+    </b-container>-->
+    <b-container fluid>
+      <b-row>
+        <b-col id="room">
+          <p>View all the rooms, room 1-10 are small room and 11-13 are big room</p>
+          <center><table id="roomTable">
+            <tr>
+              <th>Room Code</th>
+              <th>Big Room</th>
+              <th>Room Avaliability</th>
+            </tr>
+            <tr>
+              <td>{{roomCode}}</td>
+              <td>{{isBigRoom}}</td>
+              <td>{{isAvaliable}}</td>
+            </tr>
+          </table></center>
+          <button id="myButton"
+            type="button"
+            @click="getAllRoomSchedules()"
+            class="btn btn-primary btn-lg room button"
+            v-b-tooltip.hover
+            title="View status"
+          >View Status</button>
+        </b-col>
+
+        <b-col id="reviewSession">
+          <form>
+            Enter Big Room Code (RM11-RM13) to schedule a group review:
+            <input
+              class="reviewField"
+              text="text"
+              id="roomCode"
+              v-model="roomCode"
+              placeholder="Enter Room Code"
+            />
+          </form>
+          <form>
+            Enter Offering ID:
+            <input
+              class="reviewField"
+              text="text"
+              id="offeringID"
+              v-model="offeringID"
+              placeholder="Enter offering ID"
+            />
+          </form>
+          <button id="myButton"
+            type="button"
+            @click="createReviewSession(offeringID, managerID, roomCode, tutoringSystemID)"
+            class="btn btn-primary btn-lg createReview button"
+            v-b-tooltip.hover
+            title="Create Review Session"
+          >Create Review Session</button>
         </b-col>
       </b-row>
     </b-container>
@@ -67,6 +119,9 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
+var roomTable = {
+  // GET YOUR ROOM SCHEDULES FROM THE BACKEND THEN REFLECT TO THE TABLE
+};
 export default {
   data() {
     return {
@@ -75,7 +130,12 @@ export default {
       },
       bgColor: "",
       textColor: "",
-      error: ""
+      error: "",
+      output: "",
+      offeringID:"",
+      managerID:"", 
+      roomCode:"", 
+      tutoringSystemID:""
     };
   },
   created: function() {
@@ -100,6 +160,28 @@ export default {
         this.textColor = "black";
         // this.buttonClass = "btn btn-white btn-lg loginField";
       }
+    },
+    getOpinion: function() {
+      selectElement = document.querySelector("#select1");
+      output = selectElement.value;
+      document.querySelector(".output").textContent = output;
+    },
+    getAllRoomSchedules: function() {
+      AXIOS.get("/classroom/list");
+    },
+    createReviewSession: function(offeringID, managerID, roomCode, tutoringSystemID) {
+      AXIOS.post(
+        "/classroom/review/create/=" +
+          offeringID +
+          "&managerID" +
+          managerID +
+          "&roomCode" +
+          roomCode +
+          "&tutoringSystemID" +
+          tutoringSystemID
+      ).then(response => {
+        this.createReviewSession = response.data;
+      });
     }
   },
   mounted() {
@@ -109,4 +191,25 @@ export default {
 </script>
 
 <style>
+b-container {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#reviewSession {
+  width: auto;
+  height: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#roomTable {
+  margin: auto;
+  border: 2px;
+  border: 1px solid black;
+}
+#myButton {
+  border: 0px;
+  border-radius: 4px;
+  padding: 2px;
+  margin-top: 5px;
+}
 </style>

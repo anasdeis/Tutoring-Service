@@ -7,27 +7,27 @@
 
     <b-container fluid>
       <center>
-        <b-row id="findTutor">
+        <!-- <b-row id="findTutor">
           <form>
-            Tutor ID:
+            Offering ID:
             <input
               class="commissionField"
               type="number"
-              id="tutprID"
-              v-model="tutprID"
-              placeholder="Enter tutor ID"
+              id="offeringID"
+              v-model="offeringID"
+              placeholder="Enter offering ID"
             />
           </form>
           <button
             type="button"
             id="myButton"
-            @click="findTutor()"
+            @click="findOffering()"
             class="btn btn-primary btn-lg commissionField button"
             :class="buttonClass"
             title="Find the tutor"
-          >Find Tutor</button>
-        </b-row>
-        <p>Tutor information</p>
+          >Find Offering</button>
+        </b-row>-->
+        <!-- <p>Tutor information</p>
         <b-row id="findTutor">
           <form>
             Commission percentage:
@@ -48,7 +48,46 @@
             :class="buttonClass"
             title="Setup commission"
           >Setup commission</button>
-        </b-row>
+        </b-row>-->
+        <form>
+          Commission ID:
+          <input
+            class="commissionField"
+            type="number"
+            id="commissionID"
+            v-model="commissionID"
+            placeholder="Enter Commission ID"
+          />
+        </form>
+        <form>
+            Commission percentage:
+            <input
+              class="commissionField"
+              type="number"
+              step="0.01"
+              id="percentage"
+              v-model="percentage"
+              placeholder="Enter percentage"
+            />
+          </form>
+          <form>
+          Offering ID:
+          <input
+            class="commissionField"
+            type="number"
+            id="offeringID"
+            v-model="offeringID"
+            placeholder="Enter Offering ID"
+          />
+        </form>
+        <button
+            type="button"
+            id="myButton"
+            @click="createCommission(percentage,commissionID, manager, offeringID, tutoringSystem)"
+            class="btn btn-primary btn-lg commissionField button"
+            :class="buttonClass"
+            title="Setup commission"
+          >Setup commission</button>
       </center>
     </b-container>
   </div>
@@ -77,7 +116,13 @@ export default {
         type: Object
       },
       bgColor: "",
-      textColor: ""
+      textColor: "",
+      commissionID:"",
+      percentage:"",
+      manager:"",
+      offeringID:"",
+      system:"1",
+      error:""
     };
   },
 
@@ -106,6 +151,11 @@ export default {
         this.textColor = "black";
         this.buttonClass = "btn btn-white btn-lg signupField";
       }
+    },
+    createCommission: function(percentage,commissionID, manager, offeringID, tutoringSystem) {
+      AXIOS.post('/commission/create=' + commissionID + '?percentage=' + percentage + '?manager=' + manager + '?offeringID=' + offeringID + '?tutoringSystem' + system).then(response => {
+        this.commission = response.data;
+      })
     }
   },
   mounted() {
@@ -116,14 +166,20 @@ export default {
 </script>
 
 <style>
-.button {
+#myButton {
   color: white;
+  margin-top: 20px;
 }
 
-#findTutor {
-  align-self: auto;
-}
 #b-container {
   vertical-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: auto;
+}
+
+.commissionField {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 </style>
