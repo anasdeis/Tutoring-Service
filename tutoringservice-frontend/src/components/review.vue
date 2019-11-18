@@ -6,8 +6,25 @@
     </div>
 
     <b-container fluid>
-      <b-col id="reviewList">
-        <p>View student reviews</p>
+      <b-col id="reviewlist">
+        <p>View student review</p>
+        <select
+          class="reviewField"
+          id="selectList"
+          name="selectList"
+          @click="PopulateDropDownList()"
+        >
+          <option value="select">--Select Review Status--</option>
+          <option value="Approved">Approved</option>
+          <option value="Declined">Declined</option>
+          <option value="Pending">Pending</option>
+          <option value="All">All</option>
+        </select>
+        <select class="reviewField" id="reviewList" name="reviewList">
+          <option value="all">--Select Review--</option>
+        </select>
+
+        <!-- 
         <table id="reviewTable">
           <tr>
             <th>Review ID</th>
@@ -22,40 +39,33 @@
             <td>{{isApproved}}</td>
           </tr>
         </table>
+        -->
 
-        <b-row id="myButton"><center>
-            <form>
-              Enter review ID:
-              <input
-                class="reviewField"
-                type="text"
-                id="reviewID"
-                v-model="reviewID"
-                placeholder="Enter review ID"
-              />
-            </form>
-            <button id="approve"
+        <b-row id="myButton">
+          <center>
+            <button
+              id="approve"
               type="button"
-              @click="updateReviewIsApproved()"
-              class="btn btn-primary btn-lg tutorField button"
+              @click="acceptReview()"
+              class="btn btn-primary btn-lg subjectField button"
               v-b-tooltip.hove
               title="Approve this review!"
             >Approve</button>
-            <button id="decline"
+            <button
+              id="decline"
               type="button"
               @click="declineReview()"
               class="btn btn-primary btn-lg tutorField button"
               v-b-tooltip.hove
               title="Decline this review!"
             >Decline</button>
-        </center></b-row>
+          </center>
+        </b-row>
       </b-col>
     </b-container>
   </div>
 </template>
 
-
-<script src="https://www.w3schools.com/lib/w3.js"></script>
 
 <script>
 import axios from "axios";
@@ -73,6 +83,13 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
+function ReviewDto(reviewId, comment, isApproved) {
+  this.reviewId = reviewId;
+  this.comment = comment;
+  this.isApproved = isApproved;
+}
+/*
+script src="https://www.w3schools.com/lib/w3.js"
 var reviewTable = {
   reviews: [
     {
@@ -95,21 +112,42 @@ var reviewTable = {
     }
   ]
 };
-
+*/
 // studentReview.displayObject("reviewTable", reviewTable);
 
 export default {
+  name: "reviews",
   data() {
     return {
-      tutor: {
-        type: Object
-      },
+      reviews: [],
+      reviewId: "",
+      comment: "",
+      isApproved: null,
+      errorReview: "",
+      response: [],
       bgColor: "",
       textColor: ""
     };
   },
 
   created: function() {
+    /* // Initializing reviews from backend
+    AXIOS.get(`/review/list`).then(response => {
+      // JSON responses are automatically parsed.
+      this.reviews = response.data
+    })
+    .catch(e => {
+      this.errorReview = e;
+    });*/
+
+    // Test data
+    const r1 = new ReviewDto("1", "I loved the tutor!", false);
+    const r2 = new ReviewDto("2", "Great!", false);
+    const r3 = new ReviewDto("3", "Amazing course!", null);
+    const r4 = new ReviewDto("4", "Easy tutorial!", true);
+    // Sample initial content
+    this.reviews = [r1, r2, r3, r4];
+
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
@@ -123,6 +161,109 @@ export default {
     }
   },
   methods: {
+    getAllReviews: function() {
+      /*
+     AXIOS.get(`/review/list`).then(response => {
+      // JSON responses are automatically parsed.
+      this.reviews = response.data
+    })
+    .catch(e => {
+      this.errorReview = e;
+    });*/
+    },
+    acceptReview: function() {
+      /*  AXIOS.patch(`/review/update/approved/${reviewId}?$isApproved=true`).then(response => {
+      // JSON responses are automatically parsed.
+      this.reviews = response.data
+    })
+    .catch(e => {
+      this.errorReview = e;
+    });*/
+      if (reviewList.options.length > 1 && reviewList.selectedIndex > 0) {
+        var index = -1;
+        for (var i = 0; i < this.reviews.length; i++) {
+          if (
+            this.reviews[i].reviewId ===
+            reviewList.options[reviewList.selectedIndex].text
+          ) {
+            index = i;
+            break;
+          }
+        }
+        window.alert(
+          "ReviewID: " +
+            reviewList.options[reviewList.selectedIndex].text +
+            " Approval status: " +
+            reviewList.options[reviewList.selectedIndex].value +
+            " is approved!"
+        );
+        this.reviews[index].isApproved = true;
+      } else {
+        window.alert("Select a review to approve!");
+      }
+    },
+    declineReview: function() {
+      /*  AXIOS.patch(`/review/update/approved/${reviewId}?$isApproved=true`).then(response => {
+      // JSON responses are automatically parsed.
+      this.reviews = response.data
+    })
+    .catch(e => {
+      this.errorReview = e;
+    });*/
+      if (reviewList.options.length > 1 && reviewList.selectedIndex > 0) {
+        var index = -1;
+        for (var i = 0; i < this.reviews.length; i++) {
+          if (
+            this.reviews[i].reviewId ===
+            reviewList.options[reviewList.selectedIndex].text
+          ) {
+            index = i;
+            break;
+          }
+        }
+        window.alert(
+          "ReviewID: " +
+            reviewList.options[reviewList.selectedIndex].text +
+            " Approval status: " +
+            reviewList.options[reviewList.selectedIndex].value +
+            " is declined!" +
+            index
+        );
+        this.reviews[index].isApproved = false;
+      } else {
+        window.alert("Select a review to decline!");
+      }
+    },
+    PopulateDropDownList: function() {
+      //this.getAllReviews()
+
+      var selectList = document.getElementById("selectList");
+      var reviewList = document.getElementById("reviewList");
+      var list1SelectedValue =
+        selectList.options[selectList.selectedIndex].value;
+      if (list1SelectedValue === "select") {
+        window.alert("Select a review status to populate review list!");
+      } else {
+        reviewList.options.length = 1;
+        for (var i = 0; i < this.reviews.length; i++) {
+          if (
+            (list1SelectedValue === "Approved" &&
+              this.reviews[i].isApproved === true) ||
+            (list1SelectedValue == "Declined" &&
+              this.reviews[i].isApproved === false) ||
+            (list1SelectedValue === "Pending" &&
+              this.reviews[i].isApproved == null) ||
+            list1SelectedValue === "All"
+          ) {
+            var option = document.createElement("OPTION");
+            option.innerHTML = this.reviews[i].reviewId;
+            option.value = this.reviews[i].isApproved;
+            reviewList.options.add(option);
+          }
+        }
+      }
+    },
+
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
       if (darkModeOn === "true") {
@@ -151,22 +292,24 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
 }
-form{
-  color:black;
+form {
+  color: black;
 }
 #myButton {
   margin-left: auto;
   margin-right: auto;
   margin-top: 5px;
 }
-#approve{
+#approve {
   margin-right: 5px;
   margin-left: 5px;
 }
-#decline{
+#decline {
   margin-right: 5px;
   margin-left: 5px;
 }
