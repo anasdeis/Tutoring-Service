@@ -34,7 +34,7 @@
     </b-container>-->
     <b-container fluid>
       <b-row>
-        <b-col id="tutorTable">
+        <b-col id="tutor">
           <p>View all the tutors</p>
           <b-table striped hover :items="items"></b-table>
           <!--          <table id="tutorTable">-->
