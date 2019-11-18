@@ -162,6 +162,7 @@
             v-b-tooltip.hover
             title="Accept"
           >Accept</button>
+
           <button
             type="button"
             @click="updateTutorApplicationisDeclined(tAppID)"
@@ -324,14 +325,14 @@ export default {
                   if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
                       this.detailedTutorApplications[i].isAccepted = true;
                       document.getElementById("isAccepted").innerHTML = this.detailedTutorApplications[i].isAccepted;
-                      document.getElementById("title1").innerHTML = "Successful!"
+                      document.getElementById("title1").innerHTML = "Accept Successful!"
                       break;
                   }
               }
           }
       }
   },
-    updateTutorApplicationisAccepted: function (tAppID) {
+    updateTutorApplicationisDeclined: function (tAppID) {
         if (this.isFound == false) {
             document.getElementById("title1").innerHTML = "Error :  Invalid Tutor Application! "
         } else {
@@ -341,6 +342,8 @@ export default {
                 console.log(this.detailedTutorApplications[i]);
                 if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
                     this.detailedTutorApplications.splice(i, 1);
+                    document.getElementById("title1").innerHTML = "Decline Successful!"
+                    break;
                 }
 
 
