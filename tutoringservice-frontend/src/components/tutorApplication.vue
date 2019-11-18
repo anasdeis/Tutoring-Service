@@ -70,6 +70,11 @@
               <td>{{tutorID}}<td>             <td>{{utoAplicationID}}</td>
             </tr>
           </table>-->
+          
+        </b-col>
+
+        <b-col id="detailofTApp">
+
           <form>
             Enter tutor application ID:
             <input
@@ -87,9 +92,6 @@
             v-b-tooltip.hover
             title="Dispaly selected tutor application"
           >View detail</button>
-        </b-col>
-
-        <b-col id="detailofTApp">
           <p>Here is the detail of the tutor application you select</p>
           <!-- <table id="tAppDetail">
             <tr>
@@ -229,6 +231,7 @@ export default {
 <style>
 p {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  margin-top: 10px;
 }
 #myButton {
   color: royalblue;
@@ -268,12 +271,16 @@ table {
 
 table th {
   text-transform: uppercase;
-  text-align: left;
+  text-align: center;
   background: #44475C;
   color: #FFF;
-  padding: 8px;
-  min-width: 10px;
+  /* padding: 8px; */
+  /* min-width: 5px; */
+  table-layout: auto;
+  height: auto;
+  width: 50%;
 }
+
 
 table td {
   text-align: left;
