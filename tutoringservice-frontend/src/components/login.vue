@@ -171,19 +171,19 @@ export default {
   },
   //...
  
-   created: function () {
-      // Test data
-       const p1 = new LoginDto('Omar', 'abc')
-       // const p2 = new LoginDto('Noor','cba')
+  //  created: function () {
+  //     // Test data
+  //      const p1 = new LoginDto('Omar', 'abc')
+  //      // const p2 = new LoginDto('Noor','cba')
         
-        // Sample initial content
+  //       // Sample initial content
     
-      this.login = [p1]
-       //   this.login.push(p1);
-      //   this.login.push(p2);
+  //     this.login = [p1]
+  //      //   this.login.push(p1);
+  //     //   this.login.push(p2);
 
     
-     }, //end of created
+  //    }, //end of created
 
 
       methods: {
@@ -220,27 +220,36 @@ export default {
 //------------------------------------------------------------------
 
         logIntoSystem: function (username,password) {
-        var message, x;
+        var message, x, y;
     
         message = document.getElementById("title1");
         message.innerHTML = "";
         x = document.getElementById("userName").value;
+        y = document.getElementById("password").value;
         try {
           if (x == "") throw "Username or password empty";
         }
         catch(err) {
           message.innerHTML = "Error :  " + err;
         }
+
+         try {
+          if (y == "") throw "Username or password empty";
+        }
+        catch(err) {
+          message.innerHTML = "Error :  " + err;
+        }
         
-     //   var p = new LoginDto(username,password);
-      //  this.login.push(p);
+        var p = new LoginDto(username,password);
       // const p1 = new LoginDto('Omar', 'abc')
      //  this.login = [p1]
      // const p2 = new LoginDto('Noor','cba')
      // this.login = [p2] 
         
-        if (this.login.includes(p1) && x != "") {
+      
+        if (this.login.includes(p) && x != "" && y != "") {
         this.goToSignupPage();
+       
           }  
       
       }, //end of login
