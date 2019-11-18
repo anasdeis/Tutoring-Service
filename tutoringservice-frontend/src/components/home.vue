@@ -42,8 +42,8 @@
             @click="goToStudentPage()"
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
-            title="View Studnet Reviews"
-          >View Student Reviews</button>
+            title="View Studnet"
+          >View Student</button>
         </b-col>
 
         <b-col>

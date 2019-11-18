@@ -166,7 +166,7 @@ export default {
 </script>
 
 <style>
-.button {
+#myButton {
   color: white;
   margin-top: 20px;
 }

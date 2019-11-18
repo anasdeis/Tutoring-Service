@@ -42,10 +42,11 @@ with the manager view point, can be used as a demo page --->
             @click="goToStudentPage()"
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
-            title="View Studnet Reviews"
-          >View Student Reviews</button>
+            title="View Studnet"
+          >View Student</button>
         </b-col>
-
+      </b-row>
+      <b-row id="functionality">
         <b-col>
           <button
             type="button"
@@ -232,5 +233,8 @@ b-container {
   color: black;
   font-size: 25px;
   padding-left: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-self: auto;
 }
 </style>
