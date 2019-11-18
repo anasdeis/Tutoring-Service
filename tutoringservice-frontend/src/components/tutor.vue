@@ -5,14 +5,12 @@
     <div>
       <span id="title1"></span>
     </div>
-
     <!-- <b-container fluid>
       <b-col id="tutorlist">
         <p>View tutor list</p>
         <p>TODO get the list from backend and implement the two buttons</p>
         <select class="tutorField"></select>
       </b-col>
-
       <b-row id="myButton">
         <b-col>
           <button
@@ -23,7 +21,6 @@
             title="Add a tutor!"
           >Add Tutor</button>
         </b-col>
-
         <b-col>
           <button
             type="button"
@@ -35,25 +32,28 @@
         </b-col>
       </b-row>
     </b-container>-->
-
     <b-container fluid>
       <b-row>
         <b-col id="tutor">
           <p>View all the tutors</p>
-          <table id="tutorTable">
-            <tr>
-              <th>Tutor Id</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-            </tr>
-            <tr>
-              <td>{{tutorID}}</td>
-              <td>{{firstName}}</td>
-              <td>{{lastName}}</td>
-              <td>{{email}}</td>
-            </tr>
-          </table>
+          <b-table striped hover :items="items"></b-table>
+          <!--          <table id="tutorTable">-->
+          <!--            <tr>-->
+          <!--              <th>Tutor Id</th>-->
+          <!--              <th>First Name</th>-->
+          <!--              <th>Last Name</th>-->
+          <!--              <th>Email</th>-->
+          <!--            </tr>-->
+          <!--            <tr>-->
+          <!--              <td>{{tutorID}}</td>-->
+          <!--              <td>{{ firstName}}</tutortd>-->
+          <!--              <t@gamil.comd>{{lastName}}</Lasttd>-->
+          <!--              <td>{{email}}</td>-->
+          <!--            </tr>-->
+          <!--          </table>-->
+          
+        </b-col>
+        <b-col id="detailOfTutor">
           <form>
             Enter tutor ID:
             <input
@@ -71,9 +71,6 @@
             v-b-tooltip.hover
             title="Dispaly selected tutor"
           >View detail</button>
-        </b-col>
-
-        <b-col id="detailOfTutor">
           <p>Here is the detail of the tutor you select</p>
           <button
             type="button"
@@ -87,31 +84,24 @@
     </b-container>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import Router from "../router";
-
 var config = require("../../config");
-
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl =
   "http://" + config.build.backendHost + ":" + config.build.backendPort;
-
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
-
 var tutorTable = {
   // GET YOUR TABLE FROM THE BACKEND- all tutor applications
 };
-
 var detailOfTutor = {
   // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
 };
-
 export default {
   data() {
     return {
@@ -120,7 +110,111 @@ export default {
       },
       bgColor: "",
       textColor: "",
-      tutorID: ""
+      tutorID: "",
+      items: [
+        {
+          tutorID: 1001,
+          firstName: "tutor1",
+          lastName: "Last",
+          email: "1001@gamil.com"
+        },
+        {
+          tutorID: 1002,
+          firstName: "tutor2",
+          lastName: "Last",
+          email: "1002@gamil.com"
+        },
+        {
+          tutorID: 1003,
+          firstName: "tutor3",
+          lastName: "Last",
+          email: "1003@gamil.com"
+        },
+        {
+          tutorID: 1004,
+          firstName: "tutor4",
+          lastName: "Last",
+          email: "1004@gamil.com"
+        },
+        {
+          tutorID: 1005,
+          firstName: "tutor5",
+          lastName: "Last",
+          email: "1005@gamil.com"
+        },
+        {
+          tutorID: 1006,
+          firstName: "tutor6",
+          lastName: "Last",
+          email: "1006@gamil.com"
+        },
+        {
+          tutorID: 1007,
+          firstName: "tutor7",
+          lastName: "Last",
+          email: "1007@gamil.com"
+        },
+        {
+          tutorID: 1008,
+          firstName: "tutor8",
+          lastName: "Last",
+          email: "1008@gamil.com"
+        },
+        {
+          tutorID: 1009,
+          firstName: "tutor9",
+          lastName: "Last",
+          email: "1009@gamil.com"
+        },
+        {
+          tutorID: 1010,
+          firstName: "tutor10",
+          lastName: "Last",
+          email: "1010@gamil.com"
+        },
+        {
+          tutorID: 1011,
+          firstName: "tutor11",
+          lastName: "Last",
+          email: "1011@gamil.com"
+        },
+        {
+          tutorID: 1012,
+          firstName: "tutor12",
+          lastName: "Last",
+          email: "1012@gamil.com"
+        },
+        {
+          tutorID: 1013,
+          firstName: "tutor13",
+          lastName: "Last",
+          email: "1013@gamil.com"
+        },
+        {
+          tutorID: 1014,
+          firstName: "tutor14",
+          lastName: "Last",
+          email: "1014@gamil.com"
+        },
+        {
+          tutorID: 1015,
+          firstName: "tutor15",
+          lastName: "Last",
+          email: "1015@gamil.com"
+        },
+        {
+          tutorID: 1016,
+          firstName: "tutor16",
+          lastName: "Last",
+          email: "1016@gamil.com"
+        },
+        {
+          tutorID: 1017,
+          firstName: "tutor17",
+          lastName: "Last",
+          email: "1017@gamil.com"
+        }
+      ]
     };
   },
   created: function() {
@@ -164,7 +258,6 @@ export default {
   }
 };
 </script>
-
 <style>
 p {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -175,6 +268,7 @@ p {
   border-radius: 4px;
   padding: 2px;
   margin: auto;
+  margin-top: 5px;
 }
 b-container {
   height: auto;
@@ -182,5 +276,34 @@ b-container {
 #tutorTable {
   margin-left: auto;
   margin-right: auto;
+}
+table {
+  font-family: "Open Sans", sans-serif;
+  width: 300px;
+  border-collapse: collapse;
+  border: 3px solid #44475c;
+  margin: 5px 5px 0 5px;
+}
+table th {
+  text-transform: uppercase;
+  text-align: left;
+  background: #44475c;
+  color: #fff;
+  padding: 8px;
+  min-width: 10px;
+}
+table td {
+  text-align: left;
+  padding: 8px;
+  border-right: 2px solid #7d82a8;
+}
+table td:last-child {
+  border-right: none;
+}
+table tbody tr:nth-child(2n) td {
+  background: #d4d8f9;
+}
+.tutorField{
+  margin-top: 20px;
 }
 </style>
