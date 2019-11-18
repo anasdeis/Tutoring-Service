@@ -3,7 +3,7 @@
   <div id="tutorApplication" class="card" v-bind:style="{ backgroundColor : bgColor}">
     <span id="title" v-bind:style="{color : textColor}"></span>
     <div>
-      <span id="title1"></span>
+      <span id="title1" style="color:red"></span>
     </div>
 
     <!-- <b-container fluid>
@@ -51,7 +51,7 @@
 <!--            <tbody>-->
 <!--            <tr v-for="row in rows">-->
 <!--              <td>{{row.tutorID}}<td>-->
-<!--              <td>{{row.tutorApplicationID}}</td>-->
+<!--              <td>{{row.firstName: "Tutor1", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key,, courseID: "ECSE 321 "tu{Name: "DPM: Just Kill Met, courseID: "ECSE 211orApplicationID}}</td>-->
 <!--            </tr>-->
 <!--            </tbody>-->
 <!--          </table>-->
@@ -80,6 +80,9 @@
               placeholder="Enter tutor application ID"
             />
           </form>
+
+
+
           <button
             type="button"
             @click="getTutorApplication(tAppID)"
@@ -87,10 +90,53 @@
             v-b-tooltip.hover
             title="Dispaly selected tutor application"
           >View detail</button>
+
+
+
+
         </b-col>
 
         <b-col id="detailofTApp">
           <p>Here is the detail of the tutor application you select</p>
+          <div class="detailedApplication">
+            <form action="#">
+              <div>
+                <label>Tutor ID: </label>
+                <a id="tutorID"></a>
+              </div>
+              <div>
+                <label>First Name: </label>
+                <a id="firstName"></a>
+              </div>
+              <div>
+                <label>Last Name: </label>
+                <a id="lastName"></a>
+              </div>
+              <div>
+                <label>Is Tutor Accepted? </label>
+                <a id="isAccepted"></a>
+              </div>
+              <div>
+                <br>
+                <label>Subjects</label>
+                <ul>
+                  <li>
+                    <label>Course Name: </label>
+                    <a id="Name1"></a>
+                    <label>Course ID: </label>
+                    <a id="courseID1"></a>
+                  </li>
+                  <li>
+                    <label>Course Name: </label>
+                    <a id="Name2"></a>
+                    <label>Course ID: </label>
+                    <a id="courseID2"></a>
+                  </li>
+                </ul>
+
+              </div>
+            </form>
+          </div>
           <!-- <table id="tAppDetail">
             <tr>
               <th>Tutor Id</th>
@@ -102,10 +148,10 @@
             </tr>
             <tr>
               <td>{{firstName}}</td>
-              <td>{{lastName}}</td>
+              <td>{{isAccepted: false, lastName}}</td>
               <td>{{email}}</td>
               <td>{{phone}}</td>
-              <td>{{tutorApplicationID}}</td>
+              <td>{{firstName: "Tutor1", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key,, courseID: "ECSE 321 "tu{Name: "DPM: Just Kill Met, courseID: "ECSE 211orApplicationID}}</td>
             </tr>
           </table>-->
           <b-col id="detailofTApp2">{{detailofTApp}}</b-col>
@@ -165,6 +211,24 @@ export default {
       textColor: "",
       tAppID: "",
       isAccept: "",
+        detailedTutorApplications: [
+            {tutorID : 1001,firstName: "Tutor1", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 1},
+            {tutorID : 1002,firstName: "Tutor2", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 2},
+            {tutorID : 1003,firstName: "Tutor3", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 3},
+            {tutorID : 1004,firstName: "Tutor4", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 4},
+            {tutorID : 1005,firstName: "Tutor5", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 5},
+            {tutorID : 1006,firstName: "Tutor6", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 6},
+            {tutorID : 1007,firstName: "Tutor7", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 7},
+            {tutorID : 1008,firstName: "Tutor8", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 8},
+            {tutorID : 1009,firstName: "Tutor9", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 9},
+            {tutorID : 1010,firstName: "Tutor10", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 10},
+            {tutorID : 1011,firstName: "Tutor11", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 11},
+            {tutorID : 1012,firstName: "Tutor12", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 12},
+            {tutorID : 1013,firstName: "Tutor13", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 13},
+            {tutorID : 1014,firstName: "Tutor14", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 14},
+            {tutorID : 1015,firstName: "Tutor15", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 15},
+       ],
+
         items: [
             {tutorID : 1001,tutorApplicationID : 1},
             {tutorID : 1002,tutorApplicationID : 2},
@@ -181,8 +245,6 @@ export default {
             {tutorID : 1013,tutorApplicationID : 13},
             {tutorID : 1014,tutorApplicationID : 14},
             {tutorID : 1015,tutorApplicationID : 15},
-            {tutorID : 1016,tutorApplicationID : 16},
-            {tutorID : 1017,tutorApplicationID : 17}
         ]
     };
   },
@@ -213,7 +275,41 @@ export default {
       }
     },
     getTutorApplication: function(tAppID) {
-      // TODO: AXIOS METHODS GOES HERE TO GET A TUTOR APPLICATION RELATED WITH THE ENTERED TUTPR APPLICATION ID
+        var message, x, found=false;
+        message = document.getElementById("title1");
+        message.innerHTML = "";
+        x = document.getElementById("tAppID").value;
+
+        if (x == "") {
+            message.innerHTML = "Error :  " + "Input fields cannot be empty";
+        }
+        // try {
+        //     if (x == "") throw "Input fields cannot be empty";
+        // }
+        // catch(err) {
+        //     message.innerHTML = "Error :  " + err;
+        // }
+      else {
+            let arrayLength = this.detailedTutorApplications.length;
+            for (let i=0; i<arrayLength; i++) {
+                console.log(this.detailedTutorApplications[i]);
+                if (this.detailedTutorApplications[i].tutorApplicationID==tAppID) {
+                    found=true;
+                    document.getElementById("tutorID").innerHTML = this.detailedTutorApplications[i].tutorID;
+                    document.getElementById("firstName").innerHTML = this.detailedTutorApplications[i].firstName;
+                    document.getElementById("lastName").innerHTML = this.detailedTutorApplications[i].lastName;
+                    document.getElementById("isAccepted").innerHTML = this.detailedTutorApplications[i].isAccepted;
+                    document.getElementById("Name1").innerHTML = this.detailedTutorApplications[i].subjects[0].Name;
+                    document.getElementById("courseID1").innerHTML = this.detailedTutorApplications[i].subjects[0].courseID;
+                    document.getElementById("Name2").innerHTML = this.detailedTutorApplications[i].subjects[1].Name;
+                    document.getElementById("courseID2").innerHTML = this.detailedTutorApplications[i].subjects[1].courseID;
+                    break;
+                }
+            }
+            if(found==false) {
+                message.innerHTML = "Error :  " + "Cannot find this Tutor Application";
+            }
+        }
     },
     updateTutorApplicationisAccepted: function(tAppID, isAccept) {
       // TODO: AXIOS METHODS GOES HERE TO ACCEPT/DELINE A TUTOR APPLICATION
@@ -229,6 +325,9 @@ export default {
 <style>
 p {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
+li {
+  font-size: 20px;
 }
 #myButton {
   color: royalblue;
@@ -286,4 +385,5 @@ table td:last-child {
 table tbody tr:nth-child(2n) td {
   background: #D4D8F9;
 }
+
 </style>
