@@ -161,6 +161,7 @@ export default {
   },
   //...
 
+
   created: function() {
     // Test data
     const p1 = new LoginDto("Omar", "abc");
@@ -216,12 +217,68 @@ export default {
         message.innerHTML = "Error :  " + err;
       }
 
-      //   var p = new LoginDto(username,password);
-      //  this.login.push(p);
+ 
+        logIntoSystem: function (username,password) {
+        var message, x, y;
+    
+        message = document.getElementById("title1");
+        message.innerHTML = "";
+        x = document.getElementById("userName").value;
+        y = document.getElementById("password").value;
+        try {
+          if (x == "") throw "Username or password empty";
+        }
+        catch(err) {
+          message.innerHTML = "Error :  " + err;
+        }
+
+         try {
+          if (y == "") throw "Username or password empty";
+        }
+        catch(err) {
+          message.innerHTML = "Error :  " + err;
+        }
+        
+        var p = new LoginDto(username,password);
       // const p1 = new LoginDto('Omar', 'abc')
-      //  this.login = [p1]
-      // const p2 = new LoginDto('Noor','cba')
-      // this.login = [p2]
+     //  this.login = [p1]
+     // const p2 = new LoginDto('Noor','cba')
+     // this.login = [p2] 
+        
+      
+        if (this.login.includes(p) && x != "" && y != "") {
+        this.goToSignupPage();
+       
+          }  
+      
+      }, //end of login
+//----------------------------------------------------------------------- 
+        goToSignupPage: function() {
+        Router.push({
+         path: "/signup",
+          name: "signup"
+       });
+    
+        },  //end of goToSignupPage
+
+        goToHomePage: function() {
+         Router.push({
+           path: "/home1",
+            name: "home1"
+       });
+       }, //end of gotoHomePage
+    
+
+
+    } //end of methods
+
+
+  }   //end of export default
+
+
+
+
+
 
       if (this.login.includes(p1) && x != "") {
         this.goToSignupPage();
