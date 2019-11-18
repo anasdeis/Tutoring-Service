@@ -1,53 +1,117 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+<div class="hello">
+  <b-container fluid class="home-row">
+    <!-- <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button> -->
+
+    <b-row>
+      <b-col>
+        <button
+          type="button"
+          v-on:click="goToLoginPage()"
+          class="btn btn-primary btn-lg home-row button"
+          v-b-tooltip.hove
+          title="Go to Manager portal"
+        >Manager</button>
+      </b-col>
+      <b-col>
+        <button
+          type="button"
+          v-on:click="goToTutorLoginPage()"
+          class="btn btn-primary btn-lg home-row button"
+          v-b-tooltip.hove
+          title="Go to Tutor portal"
+        >Tutor</button>
+      </b-col>
+      <b-col>
+        <button
+          type="button"
+          v-on:click="goToStudentLoginPage()"
+          class="btn btn-primary btn-lg home-row button"
+          v-b-tooltip.hove
+          title="Go to Student portal"
+        >Student</button>
+      </b-col>
+    </b-row>
+  </b-container>
+
+  <div id="description">
+    <body>
+      <hr />
+      <!-- <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p> -->
+
+      <p>What we can provide</p>
+      <ul>
+        <li>High Shcool Courses: Math, Sciences, History, Religion Studies</li>
+        <li>Cegep Courses: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
+        <li>
+          University Courses:
+          <a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University</a>,
+          <a
+            href="https://www.concordia.ca/artsci/academics/undergraduate.html"
+          >Concordia University</a>,
+          <a
+            href="https://admission.umontreal.ca/repertoire-des-cours/filtres/matiere_kin/"
+          >University of Montreal</a>
+        </li>
+        <li>and more!</li>
+      </ul>
+    </body>
   </div>
+</div>
 </template>
 
 <script>
+import Router from "../router";
+var config = require("../../config");
+
+// axios config
+var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
+var backendUrl =
+  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+
+// var AXIOS = axios.create({
+//     baseURL: backendUrl,
+//     headers: {"Access-Control-Allow-Origin": frontendUrl}
+// });
 export default {
-  name: 'hello',
-  data () {
+  name: "hello",
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: "Welcome to Your Vue.js App"
+    };
+  },
+  methods: {
+    goToLoginPage: function() {
+      Router.push({
+        path: "/login",
+        name: "login"
+      });
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+p {
+  font-family: fantasy;
+  text-align: center;
+  font-size: 30px;
 }
-
 ul {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   list-style-type: none;
-  padding: 0;
+  text-align: center;
+  font-size: 20px;
 }
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+#description {
+  /* background-color: rgb(88, 96, 102) !important; */
+  height: 100%;
+  overflow: auto;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 </style>
