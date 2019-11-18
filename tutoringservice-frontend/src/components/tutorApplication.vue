@@ -157,14 +157,14 @@
           <b-col id="detailofTApp2">{{detailofTApp}}</b-col>
           <button
             type="button"
-            @click="updateTutorApplicationisAccepted(tAppID,isAccept)"
+            @click="updateTutorApplicationisAccepted(tAppID)"
             class="btn btn-primary btn-lg viewTApp button"
             v-b-tooltip.hover
-            title="Approve"
-          >Approve</button>
+            title="Accept"
+          >Accept</button>
           <button
             type="button"
-            @click="updateTutorApplicationisAccepted(tAppID,isAccept)"
+            @click="updateTutorApplicationisDeclined(tAppID)"
             class="btn btn-primary btn-lg viewTApp button"
             v-b-tooltip.hover
             title="Decline"
@@ -210,6 +210,7 @@ export default {
       bgColor: "",
       textColor: "",
       tAppID: "",
+        isFound: false,
       isAccept: "",
         detailedTutorApplications: [
             {tutorID : 1001,firstName: "Tutor1", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 1},
@@ -262,59 +263,91 @@ export default {
     }
   },
   methods: {
-    setDarkMode: function() {
-      var darkModeOn = localStorage.getItem("DarkModeOn");
-      if (darkModeOn === "true") {
-        this.bgColor = "rgb(53, 58, 62)";
-        this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
-      } else {
-        this.bgColor = "rgb(250,250,250)";
-        this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
-      }
-    },
-    getTutorApplication: function(tAppID) {
-        var message, x, found=false;
-        message = document.getElementById("title1");
-        message.innerHTML = "";
-        x = document.getElementById("tAppID").value;
+      setDarkMode: function () {
+          var darkModeOn = localStorage.getItem("DarkModeOn");
+          if (darkModeOn === "true") {
+              this.bgColor = "rgb(53, 58, 62)";
+              this.textColor = "white";
+              this.buttonClass = "btn btn-dark btn-lg signupField";
+          } else {
+              this.bgColor = "rgb(250,250,250)";
+              this.textColor = "black";
+              this.buttonClass = "btn btn-white btn-lg signupField";
+          }
+      },
+      getTutorApplication: function (tAppID) {
+          this.isFound = false;
+          var message, x;
+          message = document.getElementById("title1");
+          message.innerHTML = "";
+          x = document.getElementById("tAppID").value;
 
-        if (x == "") {
-            message.innerHTML = "Error :  " + "Input fields cannot be empty";
-        }
-        // try {
-        //     if (x == "") throw "Input fields cannot be empty";
-        // }
-        // catch(err) {
-        //     message.innerHTML = "Error :  " + err;
-        // }
-      else {
+          if (x == "") {
+              message.innerHTML = "Error :  " + "Input fields cannot be empty";
+          }
+          // try {
+          //     if (x == "") throw "Input fields cannot be empty";
+          // }
+          // catch(err) {
+          //     message.innerHTML = "Error :  " + err;
+          // }
+          else {
+              let arrayLength = this.detailedTutorApplications.length;
+              for (let i = 0; i < arrayLength; i++) {
+                  console.log(this.detailedTutorApplications[i]);
+                  if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
+                      this.isFound = true;
+                      document.getElementById("tutorID").innerHTML = this.detailedTutorApplications[i].tutorID;
+                      document.getElementById("firstName").innerHTML = this.detailedTutorApplications[i].firstName;
+                      document.getElementById("lastName").innerHTML = this.detailedTutorApplications[i].lastName;
+                      document.getElementById("isAccepted").innerHTML = this.detailedTutorApplications[i].isAccepted;
+                      document.getElementById("Name1").innerHTML = this.detailedTutorApplications[i].subjects[0].Name;
+                      document.getElementById("courseID1").innerHTML = this.detailedTutorApplications[i].subjects[0].courseID;
+                      document.getElementById("Name2").innerHTML = this.detailedTutorApplications[i].subjects[1].Name;
+                      document.getElementById("courseID2").innerHTML = this.detailedTutorApplications[i].subjects[1].courseID;
+                      break;
+                  }
+              }
+              if (this.isFound == false) {
+                  message.innerHTML = "Error :  " + "Cannot find this Tutor Application";
+              }
+          }
+      },
+      updateTutorApplicationisAccepted: function (tAppID) {
+          if (this.isFound == false) {
+              document.getElementById("title1").innerHTML = "Error :  Invalid Tutor Application! "
+          } else {
+              this.isFound = false;
+              let arrayLength = this.detailedTutorApplications.length;
+              for (let i = 0; i < arrayLength; i++) {
+                  console.log(this.detailedTutorApplications[i]);
+                  if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
+                      this.detailedTutorApplications[i].isAccepted = true;
+                      document.getElementById("isAccepted").innerHTML = this.detailedTutorApplications[i].isAccepted;
+                      document.getElementById("title1").innerHTML = "Successful!"
+                      break;
+                  }
+              }
+          }
+      }
+  },
+    updateTutorApplicationisAccepted: function (tAppID) {
+        if (this.isFound == false) {
+            document.getElementById("title1").innerHTML = "Error :  Invalid Tutor Application! "
+        } else {
+            this.isFound = false;
             let arrayLength = this.detailedTutorApplications.length;
-            for (let i=0; i<arrayLength; i++) {
+            for (let i = 0; i < arrayLength; i++) {
                 console.log(this.detailedTutorApplications[i]);
-                if (this.detailedTutorApplications[i].tutorApplicationID==tAppID) {
-                    found=true;
-                    document.getElementById("tutorID").innerHTML = this.detailedTutorApplications[i].tutorID;
-                    document.getElementById("firstName").innerHTML = this.detailedTutorApplications[i].firstName;
-                    document.getElementById("lastName").innerHTML = this.detailedTutorApplications[i].lastName;
-                    document.getElementById("isAccepted").innerHTML = this.detailedTutorApplications[i].isAccepted;
-                    document.getElementById("Name1").innerHTML = this.detailedTutorApplications[i].subjects[0].Name;
-                    document.getElementById("courseID1").innerHTML = this.detailedTutorApplications[i].subjects[0].courseID;
-                    document.getElementById("Name2").innerHTML = this.detailedTutorApplications[i].subjects[1].Name;
-                    document.getElementById("courseID2").innerHTML = this.detailedTutorApplications[i].subjects[1].courseID;
-                    break;
+                if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
+                    this.detailedTutorApplications.splice(i, 1);
                 }
-            }
-            if(found==false) {
-                message.innerHTML = "Error :  " + "Cannot find this Tutor Application";
+
+
+
             }
         }
     },
-    updateTutorApplicationisAccepted: function(tAppID, isAccept) {
-      // TODO: AXIOS METHODS GOES HERE TO ACCEPT/DELINE A TUTOR APPLICATION
-    }
-  },
   mounted() {
     // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
