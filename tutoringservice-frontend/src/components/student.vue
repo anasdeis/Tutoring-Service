@@ -198,14 +198,8 @@ export default {
       studentList.options.length = 1;
       for (var i = 0; i < this.students.length; i++) {
         var option = document.createElement("OPTION");
-
-        //Set Customer Name in Text part.
         option.innerHTML = this.students[i].name;
-
-        //Set CustomerId in Value part.
         option.value = this.students[i].studentId;
-
-        //Add the Option element to DropDownList.
         studentList.options.add(option);
       }
     }
