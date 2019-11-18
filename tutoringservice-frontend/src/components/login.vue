@@ -23,7 +23,7 @@
       />
       <button
         type="button"
-        v-on:click="logIntoSystem(userName,password)"
+        v-on:click="logIntoSystem(userName,password);"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
@@ -159,41 +159,52 @@ function LoginDto (username,password) {
 
 
 export default {
-  name: 'form content',
+  name: 'login',
   data () {
     return {
       login: [],
-      newusername: '',
-      newpassword: '',
-      response: [],
+      newUsername: '',
+      newPassword: '',
+      response: []
 
     }
   },
   //...
  
-  created: function () {
-    // Test data
-
-      const p1 = new LoginDto(Omar,abc)
-      const p2 = new LoginDto(Noor,cba)
-      this.login = [p1, p2]
-   //this.login.push(p1);
-   // this.login.push(p2);
-    // Sample initial content
+   created: function () {
+      // Test data
+       const p1 = new LoginDto('Omar', 'abc')
+       // const p2 = new LoginDto('Noor','cba')
+        
+        // Sample initial content
     
-    }, //end of created
+      this.login = [p1]
+       //   this.login.push(p1);
+      //   this.login.push(p2);
+
+    
+     }, //end of created
 
 
       methods: {
+
        createLogin: function (username,password) {
         // Create a new login and add it to the list of logins
-        var message, x;
+        var message, x, y;
 
         message = document.getElementById("title1");
         message.innerHTML = "";
         x = document.getElementById("userName").value;
+        y = document.getElementById("password").value;
         try {
-          if (x == "") throw "Input fields cannot be empty";
+          if (x == "") throw "Username or password empty";
+        }
+        catch(err) {
+          message.innerHTML = "Error :  " + err;
+        }
+
+          try {
+          if (y == "") throw "Username or password empty";
         }
         catch(err) {
           message.innerHTML = "Error :  " + err;
@@ -201,7 +212,7 @@ export default {
        
        var p = new LoginDto(username,password);
         this.login.push(p);
-        if (x != "") {                 //if username is not empty
+        if (x != "" && y != "") {                 //if username is not empty
           this.goToSignupPage();
         }
         }, //end of createLogin
@@ -215,15 +226,20 @@ export default {
         message.innerHTML = "";
         x = document.getElementById("userName").value;
         try {
-          if (x == "") throw "Input fields cannot be empty";
+          if (x == "") throw "Username or password empty";
         }
         catch(err) {
           message.innerHTML = "Error :  " + err;
         }
         
-        var p = new LoginDto(username,password);
-        this.login.push(p1);
-        if(this.login.includes(p) && x != "") {
+     //   var p = new LoginDto(username,password);
+      //  this.login.push(p);
+      // const p1 = new LoginDto('Omar', 'abc')
+     //  this.login = [p1]
+     // const p2 = new LoginDto('Noor','cba')
+     // this.login = [p2] 
+        
+        if (this.login.includes(p1) && x != "") {
         this.goToSignupPage();
           }  
       
