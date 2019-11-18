@@ -12,7 +12,6 @@
         id="userName"
         v-model="userName"
         placeholder="Enter userName"
-        v-on:keyup.enter="login(userName, password)"
       />
       <input
         class="loginField"
@@ -20,19 +19,18 @@
         id="password"
         v-model="password"
         placeholder="Enter password"
-        v-on:keyup.enter="login(userName, password)"
       />
       <button
         type="button"
-        v-on:click="login(userName,password)"
+        v-on:click="logIntoSystem(userName,password);"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
       >Login</button>
       <button
         type="button"
-        v-on:click="createLogin(userName,password)"
-        @:click="goToSignupPage()"
+        @:click="createLogin(userName,password)"
+        v-on:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
@@ -47,11 +45,6 @@ import axios from "axios";
 import Router from "../router";
 
 var config = require("../../config");
-
-// var mockLogin = {
-//   "userName": "manager",
-//   "password":"password"
-// }
 
 // axios config
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
@@ -140,13 +133,128 @@ export default {
         this.textColor = "black";
         // this.buttonClass = "btn btn-white btn-lg loginField";
       }
-    }
-  },
-  mounted() {
-    // Listens to the setDarkModeState event emitted from the LogoBar component
-    this.$root.$on("setDarkModeState", this.setDarkMode);
+     }
+    },
+    mounted() {
+      // Listens to the setDarkModeState event emitted from the LogoBar component
+      this.$root.$on("setDarkModeState", this.setDarkMode);
   }
 };
+
+//----------------------------------------------------------------------------
+
+// function LoginDto(username, password) {
+//   // var user = {"username": username, "password": password}
+//   // return user;
+//   this.username = username;
+//   this.password = password;
+// }
+
+// export default {
+//   name: "login",
+//   data() {
+//     return {
+//       login: [],
+//       newUsername: "",
+//       newPassword: "",
+//       response: []
+//     };
+//   },
+
+//   created: function() {
+//     // Test data
+//     const p1 = new LoginDto("Omar", "abc");
+//     // const p2 = new LoginDto('Noor','cba')
+
+//     // Sample initial content
+
+//     this.login = [p1];
+//     //   this.login.push(p1);
+//     //   this.login.push(p2);
+//   }, //end of created
+
+//   methods: {
+//     createLogin: function(username, password) {
+//       // Create a new login and add it to the list of logins
+//       var message, x, y;
+//       message = document.getElementById("title1");
+//       message.innerHTML = "";
+//       x = document.getElementById("userName").value;
+//       y = document.getElementById("password").value;
+//       try {
+//         if (x == "") throw "Username or password empty";
+//       } catch (err) {
+//         message.innerHTML = "Error :  " + err;
+//       }
+
+//       try {
+//         if (y == "") throw "Username or password empty";
+//       } catch (err) {
+//         message.innerHTML = "Error :  " + err;
+//       }
+
+//       var p = new LoginDto(username, password);
+//       this.login.push(p);
+//       if (x != "" && y != "") {
+//         this.goToSignupPage();
+//       }
+//     }, 
+
+//     // logIntoSystem: function(username, password) {
+//     //   var message, x;
+
+//     //   message = document.getElementById("title1");
+//     //   message.innerHTML = "";
+//     //   x = document.getElementById("userName").value;
+//     //   try {
+//     //     if (x == "") throw "Username or password empty";
+//     //   } catch (err) {
+//     //     message.innerHTML = "Error :  " + err;
+//     //   }
+//     logIntoSystem: function (username,password) {
+//       var message, x, y;
+    
+//       message = document.getElementById("title1");
+//       message.innerHTML = "";
+//       x = document.getElementById("userName").value;
+//       y = document.getElementById("password").value;
+//       try {
+//         if (x == "") throw "Username or password empty";
+//       }
+//       catch(err) {
+//         message.innerHTML = "Error :  " + err;
+//       }
+
+//       try {
+//         if (y == "") throw "Username or password empty";
+//       }
+//       catch(err) {
+//         message.innerHTML = "Error :  " + err;
+//       }      
+//       var p = new LoginDto(username,password);   
+//       if (this.login.includes(p) && x != "" && y != "") {
+//         this.goToSignupPage(); 
+//       }  
+    
+//       if (this.login.includes(p1) && x != "") {
+//         this.goToSignupPage();
+//       }
+//     }, //end of login
+//     goToSignupPage: function() {
+//       Router.push({
+//         path: "/signup",
+//         name: "signup"
+//       });
+//     }, //end of goToSignupPage
+
+//     goToHomePage: function() {
+//       Router.push({
+//         path: "/home1",
+//         name: "home1"
+//       });
+//     },
+// };
+
 </script>
 
 <style>
@@ -156,28 +264,24 @@ export default {
   font-size: 30px;
   padding-left: 15px;
 }
-
 #title1 {
   text-align: left;
   color: red;
   font-size: 15px;
   padding-left: 15px;
 }
-
 p {
   text-align: center;
 }
 #send {
   align-content: right;
 }
-
 #name {
   text-align: left;
   color: white;
   font-size: 25px;
   padding-left: 15px;
 }
-
 #login {
   width: 30%;
   max-height: 480px;
@@ -187,7 +291,6 @@ p {
   padding: 15px;
   text-align: left;
 }
-
 .loginField {
   width: 98%;
   border-radius: 5px;
@@ -196,7 +299,6 @@ p {
   margin: auto;
   margin-top: 15px;
 }
-
 .button {
   color: white;
 }

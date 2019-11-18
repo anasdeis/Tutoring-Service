@@ -5,71 +5,15 @@
     <div>
       <span id="title1" style="color:red"></span>
     </div>
-
-    <!-- <b-container fluid>
-      <b-col id="tutorApplicationlist">
-        <p>View tutor application list</p>
-        <p>TODO get the list from backend and implement the corresponding buttons</p>
-        <select class="tutorApplicationField"></select>
-      </b-col>
-
-      <b-row id="tutorApplication">
-        <b-col>
-          <button
-            type="button"
-            @click="acceptTutor()"
-            class="btn btn-primary btn-lg tutorApplicationField button"
-            v-b-tooltip.hove
-            title="Accept a tutor!"
-          >Accept Tutor</button>
-        </b-col>
-
-        <b-col>
-          <button
-            type="button"
-            @click="declineTutor()"
-            class="btn btn-primary btn-lg tutorApplicationField button"
-            v-b-tooltip.hove
-            title="Decline a tutor!"
-          >Decline Tutor</button>
-        </b-col>
-      </b-row>
-    </b-container>-->
     <b-container fluid>
       <b-row>
         <b-col id="tutprApplicationTable">
           <p>View all the tutor applications</p>
 
-<!--          <table id="TutorApplicationList">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--              <th>Tutor ID</th>-->
-<!--              <th>Tutor Application ID</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-
-<!--            <tbody>-->
-<!--            <tr v-for="row in rows">-->
-<!--              <td>{{row.tutorID}}<td>-->
-<!--              <td>{{row.firstName: "Tutor1", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key,, courseID: "ECSE 321 "tu{Name: "DPM: Just Kill Met, courseID: "ECSE 211orApplicationID}}</td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--          </table>-->
-
           <b-table striped hover :items="items"></b-table>
+        </b-col>
 
-
-
-
-          <!--<table id="tAppTable">
-            <tr>
-              <th>Tutor Id</th>
-              <th>Tutor Application ID</th>
-            </tr>
-            <tr>
-              <td>{{tutorID}}<td>             <td>{{utoAplicationID}}</td>
-            </tr>
-          </table>-->
+        <b-col id="detailofTApp">
           <form>
             Enter tutor application ID:
             <input
@@ -80,9 +24,6 @@
               placeholder="Enter tutor application ID"
             />
           </form>
-
-
-
           <button
             type="button"
             @click="getTutorApplication(tAppID)"
@@ -91,49 +32,42 @@
             title="Dispaly selected tutor application"
           >View detail</button>
 
-
-
-
-        </b-col>
-
-        <b-col id="detailofTApp">
           <p>Here is the detail of the tutor application you select</p>
           <div class="detailedApplication">
             <form action="#">
               <div>
-                <label>Tutor ID: </label>
+                <label>Tutor ID:</label>
                 <a id="tutorID"></a>
               </div>
               <div>
-                <label>First Name: </label>
+                <label>First Name:</label>
                 <a id="firstName"></a>
               </div>
               <div>
-                <label>Last Name: </label>
+                <label>Last Name:</label>
                 <a id="lastName"></a>
               </div>
               <div>
-                <label>Is Tutor Accepted? </label>
+                <label>Is Tutor Accepted?</label>
                 <a id="isAccepted"></a>
               </div>
               <div>
-                <br>
+                <br />
                 <label>Subjects</label>
                 <ul>
                   <li>
-                    <label>Course Name: </label>
+                    <label>Course Name:</label>
                     <a id="Name1"></a>
-                    <label>Course ID: </label>
+                    <label>Course ID:</label>
                     <a id="courseID1"></a>
                   </li>
                   <li>
-                    <label>Course Name: </label>
+                    <label>Course Name:</label>
                     <a id="Name2"></a>
-                    <label>Course ID: </label>
+                    <label>Course ID:</label>
                     <a id="courseID2"></a>
                   </li>
                 </ul>
-
               </div>
             </form>
           </div>
@@ -201,8 +135,6 @@ var detailofTApp = {
 };
 // detailofTApp.displayObject("detailofTApp", detailofTApp); // we might need this line to display
 export default {
-
-
   data() {
     return {
       tutor: {
@@ -213,41 +145,236 @@ export default {
       tAppID: "",
         isFound: false,
       isAccept: "",
-        detailedTutorApplications: [
-            {tutorID : 1001,firstName: "Tutor1", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 1},
-            {tutorID : 1002,firstName: "Tutor2", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 2},
-            {tutorID : 1003,firstName: "Tutor3", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 3},
-            {tutorID : 1004,firstName: "Tutor4", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 4},
-            {tutorID : 1005,firstName: "Tutor5", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 5},
-            {tutorID : 1006,firstName: "Tutor6", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 6},
-            {tutorID : 1007,firstName: "Tutor7", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 7},
-            {tutorID : 1008,firstName: "Tutor8", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 8},
-            {tutorID : 1009,firstName: "Tutor9", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 9},
-            {tutorID : 1010,firstName: "Tutor10", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 10},
-            {tutorID : 1011,firstName: "Tutor11", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 11},
-            {tutorID : 1012,firstName: "Tutor12", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 12},
-            {tutorID : 1013,firstName: "Tutor13", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 13},
-            {tutorID : 1014,firstName: "Tutor14", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 14},
-            {tutorID : 1015,firstName: "Tutor15", isAccepted: false, lastName: "Last", subjects: [{Name: "Software Engineering: Sleeping is the Key", courseID: "ECSE 321"}, {Name: "DPM: Just Kill Me", courseID: "ECSE 211"}], tutorApplicationID : 15},
-       ],
+      detailedTutorApplications: [
+        {
+          tutorID: 1001,
+          firstName: "Tutor1",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 1
+        },
+        {
+          tutorID: 1002,
+          firstName: "Tutor2",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 2
+        },
+        {
+          tutorID: 1003,
+          firstName: "Tutor3",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 3
+        },
+        {
+          tutorID: 1004,
+          firstName: "Tutor4",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 4
+        },
+        {
+          tutorID: 1005,
+          firstName: "Tutor5",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 5
+        },
+        {
+          tutorID: 1006,
+          firstName: "Tutor6",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 6
+        },
+        {
+          tutorID: 1007,
+          firstName: "Tutor7",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 7
+        },
+        {
+          tutorID: 1008,
+          firstName: "Tutor8",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 8
+        },
+        {
+          tutorID: 1009,
+          firstName: "Tutor9",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 9
+        },
+        {
+          tutorID: 1010,
+          firstName: "Tutor10",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 10
+        },
+        {
+          tutorID: 1011,
+          firstName: "Tutor11",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 11
+        },
+        {
+          tutorID: 1012,
+          firstName: "Tutor12",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 12
+        },
+        {
+          tutorID: 1013,
+          firstName: "Tutor13",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 13
+        },
+        {
+          tutorID: 1014,
+          firstName: "Tutor14",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 14
+        },
+        {
+          tutorID: 1015,
+          firstName: "Tutor15",
+          isAccepted: false,
+          lastName: "Last",
+          subjects: [
+            {
+              Name: "Software Engineering: Sleeping is the Key",
+              courseID: "ECSE 321"
+            },
+            { Name: "DPM: Just Kill Me", courseID: "ECSE 211" }
+          ],
+          tutorApplicationID: 15
+        }
+      ],
 
-        items: [
-            {tutorID : 1001,tutorApplicationID : 1},
-            {tutorID : 1002,tutorApplicationID : 2},
-            {tutorID : 1003,tutorApplicationID : 3},
-            {tutorID : 1004,tutorApplicationID : 4},
-            {tutorID : 1005,tutorApplicationID : 5},
-            {tutorID : 1006,tutorApplicationID : 6},
-            {tutorID : 1007,tutorApplicationID : 7},
-            {tutorID : 1008,tutorApplicationID : 8},
-            {tutorID : 1009,tutorApplicationID : 9},
-            {tutorID : 1010,tutorApplicationID : 10},
-            {tutorID : 1011,tutorApplicationID : 11},
-            {tutorID : 1012,tutorApplicationID : 12},
-            {tutorID : 1013,tutorApplicationID : 13},
-            {tutorID : 1014,tutorApplicationID : 14},
-            {tutorID : 1015,tutorApplicationID : 15},
-        ]
+      items: [
+        { tutorID: 1001, tutorApplicationID: 1 },
+        { tutorID: 1002, tutorApplicationID: 2 },
+        { tutorID: 1003, tutorApplicationID: 3 },
+        { tutorID: 1004, tutorApplicationID: 4 },
+        { tutorID: 1005, tutorApplicationID: 5 },
+        { tutorID: 1006, tutorApplicationID: 6 },
+        { tutorID: 1007, tutorApplicationID: 7 },
+        { tutorID: 1008, tutorApplicationID: 8 },
+        { tutorID: 1009, tutorApplicationID: 9 },
+        { tutorID: 1010, tutorApplicationID: 10 },
+        { tutorID: 1011, tutorApplicationID: 11 },
+        { tutorID: 1012, tutorApplicationID: 12 },
+        { tutorID: 1013, tutorApplicationID: 13 },
+        { tutorID: 1014, tutorApplicationID: 14 },
+        { tutorID: 1015, tutorApplicationID: 15 }
+      ]
     };
   },
   created: function() {
@@ -263,6 +390,7 @@ export default {
       this.buttonClass = "btn btn-white btn-lg signupField";
     }
   },
+
   methods: {
       setDarkMode: function () {
           var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -314,6 +442,23 @@ export default {
               }
           }
       },
+      updateTutorApplicationisDeclined: function (tAppID) {
+          if (this.isFound == false) {
+              document.getElementById("title1").innerHTML = "Error :  Invalid Tutor Application! "
+          } else {
+              this.isFound = false;
+              let arrayLength = this.detailedTutorApplications.length;
+              for (let i = 0; i < arrayLength; i++) {
+                  console.log(this.detailedTutorApplications[i]);
+                  if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
+                      this.detailedTutorApplications.splice(i, 1);
+                      document.getElementById("title1").innerHTML = "Decline Successful!";
+                      this.$refs.table.refresh();
+                      break;
+                  }
+              }
+          }
+      },
       updateTutorApplicationisAccepted: function (tAppID) {
           if (this.isFound == false) {
               document.getElementById("title1").innerHTML = "Error :  Invalid Tutor Application! "
@@ -325,32 +470,14 @@ export default {
                   if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
                       this.detailedTutorApplications[i].isAccepted = true;
                       document.getElementById("isAccepted").innerHTML = this.detailedTutorApplications[i].isAccepted;
-                      document.getElementById("title1").innerHTML = "Accept Successful!"
+                      document.getElementById("title1").innerHTML = "Accept Successful!";
                       break;
                   }
               }
           }
       }
   },
-    updateTutorApplicationisDeclined: function (tAppID) {
-        if (this.isFound == false) {
-            document.getElementById("title1").innerHTML = "Error :  Invalid Tutor Application! "
-        } else {
-            this.isFound = false;
-            let arrayLength = this.detailedTutorApplications.length;
-            for (let i = 0; i < arrayLength; i++) {
-                console.log(this.detailedTutorApplications[i]);
-                if (this.detailedTutorApplications[i].tutorApplicationID == tAppID) {
-                    this.detailedTutorApplications.splice(i, 1);
-                    document.getElementById("title1").innerHTML = "Decline Successful!"
-                    break;
-                }
 
-
-
-            }
-        }
-    },
   mounted() {
     // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
@@ -361,6 +488,7 @@ export default {
 <style>
 p {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  margin-top: 10px;
 }
 li {
   font-size: 20px;
@@ -394,32 +522,37 @@ b-container {
 }
 
 table {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   width: 300px;
   border-collapse: collapse;
-  border: 3px solid #44475C;
+  border: 3px solid #44475c;
   margin: 5px 5px 0 5px;
 }
 
 table th {
   text-transform: uppercase;
-  text-align: left;
-  background: #44475C;
-  color: #FFF;
-  padding: 8px;
-  min-width: 10px;
+  text-align: center;
+  background: #44475c;
+  color: #fff;
+  /* padding: 8px; */
+  /* min-width: 5px; */
+  table-layout: auto;
+  height: auto;
+  width: 50%;
 }
 
 table td {
   text-align: left;
   padding: 8px;
-  border-right: 2px solid #7D82A8;
+  border-right: 2px solid #7d82a8;
 }
 table td:last-child {
   border-right: none;
 }
 table tbody tr:nth-child(2n) td {
-  background: #D4D8F9;
+  background: #d4d8f9;
 }
-
+.tAppField {
+  margin-top: 40px;
+}
 </style>
