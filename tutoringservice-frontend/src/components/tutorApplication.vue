@@ -39,16 +39,37 @@
       <b-row>
         <b-col id="tutprApplicationTable">
           <p>View all the tutor applications</p>
-          <table id="tAppTable">
+
+<!--          <table id="TutorApplicationList">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th>Tutor ID</th>-->
+<!--              <th>Tutor Application ID</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+
+<!--            <tbody>-->
+<!--            <tr v-for="row in rows">-->
+<!--              <td>{{row.tutorID}}<td>-->
+<!--              <td>{{row.tutorApplicationID}}</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </table>-->
+
+          <b-table striped hover :items="items"></b-table>
+
+
+
+
+          <!--<table id="tAppTable">
             <tr>
               <th>Tutor Id</th>
               <th>Tutor Application ID</th>
             </tr>
             <tr>
-              <td>{{tutorID}}</td>
-              <td>{{tutorApplicationID}}</td>
+              <td>{{tutorID}}<td>             <td>{{utoAplicationID}}</td>
             </tr>
-          </table>
+          </table>-->
           <form>
             Enter tutor application ID:
             <input
@@ -87,7 +108,7 @@
               <td>{{tutorApplicationID}}</td>
             </tr>
           </table>-->
-          <b-col id="detailofTApp">{{detailofTApp}}</b-col>
+          <b-col id="detailofTApp2">{{detailofTApp}}</b-col>
           <button
             type="button"
             @click="updateTutorApplicationisAccepted(tAppID,isAccept)"
@@ -133,6 +154,8 @@ var detailofTApp = {
 };
 // detailofTApp.displayObject("detailofTApp", detailofTApp); // we might need this line to display
 export default {
+
+
   data() {
     return {
       tutor: {
@@ -141,7 +164,26 @@ export default {
       bgColor: "",
       textColor: "",
       tAppID: "",
-      isAccept: ""
+      isAccept: "",
+        items: [
+            {tutorID : 1001,tutorApplicationID : 1},
+            {tutorID : 1002,tutorApplicationID : 2},
+            {tutorID : 1003,tutorApplicationID : 3},
+            {tutorID : 1004,tutorApplicationID : 4},
+            {tutorID : 1005,tutorApplicationID : 5},
+            {tutorID : 1006,tutorApplicationID : 6},
+            {tutorID : 1007,tutorApplicationID : 7},
+            {tutorID : 1008,tutorApplicationID : 8},
+            {tutorID : 1009,tutorApplicationID : 9},
+            {tutorID : 1010,tutorApplicationID : 10},
+            {tutorID : 1011,tutorApplicationID : 11},
+            {tutorID : 1012,tutorApplicationID : 12},
+            {tutorID : 1013,tutorApplicationID : 13},
+            {tutorID : 1014,tutorApplicationID : 14},
+            {tutorID : 1015,tutorApplicationID : 15},
+            {tutorID : 1016,tutorApplicationID : 16},
+            {tutorID : 1017,tutorApplicationID : 17}
+        ]
     };
   },
   created: function() {
@@ -214,5 +256,34 @@ b-container {
   margin-right: auto;
   border: 4px;
   border: 1px solid black;
+}
+
+table {
+  font-family: 'Open Sans', sans-serif;
+  width: 300px;
+  border-collapse: collapse;
+  border: 3px solid #44475C;
+  margin: 5px 5px 0 5px;
+}
+
+table th {
+  text-transform: uppercase;
+  text-align: left;
+  background: #44475C;
+  color: #FFF;
+  padding: 8px;
+  min-width: 10px;
+}
+
+table td {
+  text-align: left;
+  padding: 8px;
+  border-right: 2px solid #7D82A8;
+}
+table td:last-child {
+  border-right: none;
+}
+table tbody tr:nth-child(2n) td {
+  background: #D4D8F9;
 }
 </style>
