@@ -38,7 +38,7 @@
 
     <b-container fluid>
       <b-row>
-        <b-col id="tutorTable">
+        <b-col id="tutor">
           <p>View all the tutors</p>
           <table id="tutorTable">
             <tr>

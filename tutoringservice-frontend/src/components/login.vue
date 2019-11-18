@@ -31,8 +31,8 @@
       >Login</button>
       <button
         type="button"
-        v-on:click="createLogin(userName,password)"
-        @:click="goToSignupPage()"
+        @:click="createLogin(userName,password)"
+        v-on:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
