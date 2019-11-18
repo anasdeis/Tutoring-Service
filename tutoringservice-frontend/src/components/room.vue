@@ -22,7 +22,14 @@
             <option value="RM08">RM08</option>
             <option value="RM09">RM09</option>
             <option value="RM10">RM10</option>
+            <!-- <option selected="selected">Select</option> -->
           </select>
+          <p>
+            The room you select is: <span class="output"></span></p>
+            <button onClick="getOpinion()">Select Room</button>
+          
+          <p>
+            The romm you select is: <span class="status"></span></p>
           <button
             type="button"
             @click="viewRoomStatus()"
@@ -30,6 +37,7 @@
             v-b-tooltip.hover
             title="View status"
           >View Status</button>
+          
         </b-col>
         <b-col id="bigroom">
           <p>View Big Rooms 11-13 for group review</p>
@@ -75,7 +83,8 @@ export default {
       },
       bgColor: "",
       textColor: "",
-      error: ""
+      error: "",
+      output:""
     };
   },
   created: function() {
@@ -100,6 +109,14 @@ export default {
         this.textColor = "black";
         // this.buttonClass = "btn btn-white btn-lg loginField";
       }
+    },
+    getOpinion: function() {
+      selectElement=document.querySelector('#select1');
+      output = selectElement.value;
+      document.querySelector('.output').textContent = output;
+    },
+    viewRoomStatus: function(roomID) {
+      AXIOS.get('')
     }
   },
   mounted() {
