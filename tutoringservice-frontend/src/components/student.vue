@@ -48,9 +48,7 @@ import Router from "../router";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
-//"https://tutoringservice-backend-12.herokuapp.com/";
+var backendUrl = "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -75,14 +73,8 @@ export default {
   data() {
     return {
       students: [],
-      newStudent: "",
-      customers: [
-        { CustomerId: 1, Name: "John Hammond", Country: "United States" },
-        { CustomerId: 2, Name: "Mudassar Khan", Country: "India" },
-        { CustomerId: 3, Name: "Suzanne Mathews", Country: "France" },
-        { CustomerId: 4, Name: "Robert Schidner", Country: "Russia" }
-      ],
-      studentId: "",
+      newStudent: '',
+      studentId: '',
       /*firstName:'',
       lastName:'',
       dateOfBirth:'',
