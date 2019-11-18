@@ -9,6 +9,10 @@ private Integer tutorID;
 private Set<String> courseIDs;
 private Integer tutoringSystemID;
 
+public TutorApplicationDto() {
+	
+}
+
 public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  Integer tutor, Set<String> courseIDs, Integer tutoringSystem) {
 	this.setApplicationId(applicationId);
 	this.setIsAccepted(isAccepted);
