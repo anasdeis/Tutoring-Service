@@ -3,7 +3,7 @@ matrix:
     - language: java
       install: true
       jdk:
-        - oraclejdk8
+        - oraclejdk9
       script:
         - ./gradlew build
 
