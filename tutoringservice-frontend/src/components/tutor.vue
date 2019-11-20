@@ -32,9 +32,10 @@
         </b-col>
       </b-row>
     </b-container>-->
+
     <b-container fluid>
       <b-row>
-        <b-col id="tutor">
+        <b-col id="tutorTable">
           <p>View all the tutors</p>
           <b-table striped hover :items="items"></b-table>
           <!--          <table id="tutorTable">-->
@@ -51,7 +52,7 @@
           <!--              <td>{{email}}</td>-->
           <!--            </tr>-->
           <!--          </table>-->
-          
+
         </b-col>
         <b-col id="detailOfTutor">
           <form>
@@ -71,6 +72,9 @@
             v-b-tooltip.hover
             title="Dispaly selected tutor"
           >View detail</button>
+        </b-col>
+
+        <b-col id="detailOfTutor2">
           <p>Here is the detail of the tutor you select</p>
           <button
             type="button"
@@ -84,24 +88,30 @@
     </b-container>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 import Router from "../router";
+
 var config = require("../../config");
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl =
   "http://" + config.build.backendHost + ":" + config.build.backendPort;
+
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
+
 var tutorTable = {
   // GET YOUR TABLE FROM THE BACKEND- all tutor applications
 };
+
 var detailOfTutor = {
   // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
 };
+
 export default {
   data() {
     return {
@@ -110,111 +120,46 @@ export default {
       },
       bgColor: "",
       textColor: "",
+        isFound: false,
       tutorID: "",
-      items: [
-        {
-          tutorID: 1001,
-          firstName: "tutor1",
-          lastName: "Last",
-          email: "1001@gamil.com"
-        },
-        {
-          tutorID: 1002,
-          firstName: "tutor2",
-          lastName: "Last",
-          email: "1002@gamil.com"
-        },
-        {
-          tutorID: 1003,
-          firstName: "tutor3",
-          lastName: "Last",
-          email: "1003@gamil.com"
-        },
-        {
-          tutorID: 1004,
-          firstName: "tutor4",
-          lastName: "Last",
-          email: "1004@gamil.com"
-        },
-        {
-          tutorID: 1005,
-          firstName: "tutor5",
-          lastName: "Last",
-          email: "1005@gamil.com"
-        },
-        {
-          tutorID: 1006,
-          firstName: "tutor6",
-          lastName: "Last",
-          email: "1006@gamil.com"
-        },
-        {
-          tutorID: 1007,
-          firstName: "tutor7",
-          lastName: "Last",
-          email: "1007@gamil.com"
-        },
-        {
-          tutorID: 1008,
-          firstName: "tutor8",
-          lastName: "Last",
-          email: "1008@gamil.com"
-        },
-        {
-          tutorID: 1009,
-          firstName: "tutor9",
-          lastName: "Last",
-          email: "1009@gamil.com"
-        },
-        {
-          tutorID: 1010,
-          firstName: "tutor10",
-          lastName: "Last",
-          email: "1010@gamil.com"
-        },
-        {
-          tutorID: 1011,
-          firstName: "tutor11",
-          lastName: "Last",
-          email: "1011@gamil.com"
-        },
-        {
-          tutorID: 1012,
-          firstName: "tutor12",
-          lastName: "Last",
-          email: "1012@gamil.com"
-        },
-        {
-          tutorID: 1013,
-          firstName: "tutor13",
-          lastName: "Last",
-          email: "1013@gamil.com"
-        },
-        {
-          tutorID: 1014,
-          firstName: "tutor14",
-          lastName: "Last",
-          email: "1014@gamil.com"
-        },
-        {
-          tutorID: 1015,
-          firstName: "tutor15",
-          lastName: "Last",
-          email: "1015@gamil.com"
-        },
-        {
-          tutorID: 1016,
-          firstName: "tutor16",
-          lastName: "Last",
-          email: "1016@gamil.com"
-        },
-        {
-          tutorID: 1017,
-          firstName: "tutor17",
-          lastName: "Last",
-          email: "1017@gamil.com"
-        }
-      ]
+        detailedTutor: [
+            {tutorID : 1001, firstName : "tutor1", lastName : "Last", email : "1001@gamil.com"},
+            {tutorID : 1002, firstName : "tutor2", lastName : "Last", email : "1002@gamil.com"},
+            {tutorID : 1003, firstName : "tutor3", lastName : "Last", email : "1003@gamil.com"},
+            {tutorID : 1004, firstName : "tutor4", lastName : "Last", email : "1004@gamil.com"},
+            {tutorID : 1005, firstName : "tutor5", lastName : "Last", email : "1005@gamil.com"},
+            {tutorID : 1006, firstName : "tutor6", lastName : "Last", email : "1006@gamil.com"},
+            {tutorID : 1007, firstName : "tutor7", lastName : "Last", email : "1007@gamil.com"},
+            {tutorID : 1008, firstName : "tutor8", lastName : "Last", email : "1008@gamil.com"},
+            {tutorID : 1009, firstName : "tutor9", lastName : "Last", email : "1009@gamil.com"},
+            {tutorID : 1010, firstName : "tutor10", lastName : "Last", email : "1010@gamil.com"},
+            {tutorID : 1011, firstName : "tutor11", lastName : "Last", email : "1011@gamil.com"},
+            {tutorID : 1012, firstName : "tutor12", lastName : "Last", email : "1012@gamil.com"},
+            {tutorID : 1013, firstName : "tutor13", lastName : "Last", email : "1013@gamil.com"},
+            {tutorID : 1014, firstName : "tutor14", lastName : "Last", email : "1014@gamil.com"},
+            {tutorID : 1015, firstName : "tutor15", lastName : "Last", email : "1015@gamil.com"},
+            {tutorID : 1016, firstName : "tutor16", lastName : "Last", email : "1016@gamil.com"},
+            {tutorID : 1017, firstName : "tutor17", lastName : "Last", email : "1017@gamil.com"}
+        ],
+        items: [
+            {tutorID : 1001, firstName : "tutor1", lastName : "Last", email : "1001@gamil.com"},
+            {tutorID : 1002, firstName : "tutor2", lastName : "Last", email : "1002@gamil.com"},
+            {tutorID : 1003, firstName : "tutor3", lastName : "Last", email : "1003@gamil.com"},
+            {tutorID : 1004, firstName : "tutor4", lastName : "Last", email : "1004@gamil.com"},
+            {tutorID : 1005, firstName : "tutor5", lastName : "Last", email : "1005@gamil.com"},
+            {tutorID : 1006, firstName : "tutor6", lastName : "Last", email : "1006@gamil.com"},
+            {tutorID : 1007, firstName : "tutor7", lastName : "Last", email : "1007@gamil.com"},
+            {tutorID : 1008, firstName : "tutor8", lastName : "Last", email : "1008@gamil.com"},
+            {tutorID : 1009, firstName : "tutor9", lastName : "Last", email : "1009@gamil.com"},
+            {tutorID : 1010, firstName : "tutor10", lastName : "Last", email : "1010@gamil.com"},
+            {tutorID : 1011, firstName : "tutor11", lastName : "Last", email : "1011@gamil.com"},
+            {tutorID : 1012, firstName : "tutor12", lastName : "Last", email : "1012@gamil.com"},
+            {tutorID : 1013, firstName : "tutor13", lastName : "Last", email : "1013@gamil.com"},
+            {tutorID : 1014, firstName : "tutor14", lastName : "Last", email : "1014@gamil.com"},
+            {tutorID : 1015, firstName : "tutor15", lastName : "Last", email : "1015@gamil.com"},
+            {tutorID : 1016, firstName : "tutor16", lastName : "Last", email : "1016@gamil.com"},
+            {tutorID : 1017, firstName : "tutor17", lastName : "Last", email : "1017@gamil.com"}
+        ]
     };
   },
   created: function() {
@@ -247,6 +192,32 @@ export default {
       AXIOS.get("/tutor/=" + tutorID).then(response => {
         this.getTutor = response.data;
       });
+
+        //I'm just gonna write some silly code without the backend, may be a reference in the future.
+      /*  this.isFound = false;
+      var message, x;
+      message = document.getElementById("title1");
+      message.innerHTML = "";
+      x = document.getElementById("tutorID").value;
+
+      if (x == "") {
+          message.innerHTML = "Error :  " + "Input fields cannot be empty";
+      }
+      else {
+          let arrayLength = this.detailedTutor.length;
+          for (let i = 0; i < arrayLength; i++) {
+              console.log(this.detailedTutorApplications[i]);
+              if (this.detailedTutor[i].tutorID == tutorID) {
+                  this.isFound = true;
+                 //TODO: display the data, see tutorApplication for more details
+                  break;
+              }
+          }
+          if (this.isFound == false) {
+              message.innerHTML = "Error :  " + "Cannot find this Tutor! ";
+          }
+      }*/
+
     },
     deleteTutor: function(tutorID) {
       AXIOS.delete("/tutor/delete/=" + tutorID);
@@ -258,6 +229,7 @@ export default {
   }
 };
 </script>
+
 <style>
 p {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
