@@ -16,8 +16,8 @@ matrix:
     script: skip
     deploy:
       provider: heroku
-      api_key: tutoringservice-backend
-      app: ecse321-group17
+      api_key: af394372-fe4b-4a2c-a1fc-d74d710d3d31
+      app: tutoringservice-backend
   - stage: deploy to frontend app
     script: skip
     deploy:
