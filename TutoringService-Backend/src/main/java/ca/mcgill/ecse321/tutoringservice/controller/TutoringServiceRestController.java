@@ -1157,7 +1157,7 @@ public class TutoringServiceRestController {
 	 * @sample /login/list
 	 */
 
-	@GetMapping(value = { "/login/list", "/login/list/" })
+	@GetMapping(value = { "/login/list/{username}", "/login/list/{username}/" })
 	public List<LoginDto> getAllLoginSystems() {
 		List<LoginDto> loginsDtos = new ArrayList<>();
 		for (Login login : service.getAllLogins()) {
@@ -1165,6 +1165,14 @@ public class TutoringServiceRestController {
 		}
 		return loginsDtos;
 	}
+	
+//	@GetMapping(value= { "/login/{userName}", "/login/{userName}/"})
+//	public LoginDto getLogin(String userName) {
+//		LoginDto loginDto = new LoginDto();
+//		Login login = service.getLogin(userName);
+//		loginDto = convertToDto(login);
+//		return loginDto;
+//	}
 	
 	/**
 	 * @return a list of all Tutors
