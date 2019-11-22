@@ -10,6 +10,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
+// var Vue = require('vue');
+var VueResource = require('vue-resource');
+Vue.use(VueResource);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -35,7 +35,7 @@
           class="signupField"
           type="date"
           id="dob"
-          v-model="PersonDob"
+          v-model="dob"
           placeholder="YYYY-MM-DD"
         />
       </form>
@@ -141,12 +141,13 @@ export default {
       email: "",
       phone: "",
       managerID: "",
+      username:"",
       login: "",
       request: null,
       review: null,
       commission: null,
       classroom: null,
-      system: ""
+      system: "1"
 
       // first,last,dob,email,phone,managerID,login,request,review,commission,classroom,system
     };
@@ -189,33 +190,33 @@ export default {
       classroom,
       system
     ) {
-      AXIOS.get("/logins").then(response => {
+      AXIOS.get("/login/list/" + username).then(response => {
         var login = response.data;
       });
       AXIOS.post(
-        "/manager/create?managerID=" +
+        "/manager/create/" +
           managerID +
-          "&first" +
+          "?first=" +
           first +
-          "&last" +
+          "&last=" +
           last +
-          "&dob" +
+          "&dob=" +
           dob +
-          "&email" +
+          "&email=" +
           email +
-          "&phone" +
+          "&phone=" +
           phone +
-          "&login" +
+          "&login=" +
           login +
-          "&request" +
+          "&request=" +
           request +
-          "&review" +
+          "&review=" +
           review +
-          "&commission" +
+          "&commission=" +
           commission +
-          "&classroom" +
+          "&classroom=" +
           classroom +
-          "&system" +
+          "&system=" +
           system
       )
         .then(response => {

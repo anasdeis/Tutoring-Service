@@ -9,9 +9,9 @@
       <input
         class="loginField"
         type="text"
-        id="userName"
-        v-model="userName"
-        placeholder="Enter userName"
+        id="username"
+        v-model="username"
+        placeholder="Enter username"
       />
       <input
         class="loginField"
@@ -22,14 +22,14 @@
       />
       <button
         type="button"
-        v-on:click="logIntoSystem(userName,password);"
+        v-on:click="getLogin(username,password);"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
       >Login</button>
       <button
         type="button"
-        @:click="createLogin(userName,password)"
+        @:click="createLogin(username,password)"
         v-on:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
@@ -56,6 +56,11 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
+// axios.post('/login', {
+//   username: 'mhe',
+//   password: 'pass'
+// });
+
 export default {
   data() {
     return {
@@ -65,9 +70,7 @@ export default {
       bgColor: "",
       textColor: "",
       error: "",
-      // userName: this.$cookie.get("userName") || ' ',
-      // password: this.$cookie.get("password") || ' ',
-      userName:"",
+      username:"",
       password:""
     };
   },
@@ -84,8 +87,8 @@ export default {
     }
   },
   methods: {
-    login: function(userName, password) {
-      AXIOS.get('/login/' + userName)
+    getLogin: function(username, password) {
+      AXIOS.get('/login/list/'+username)
         .then(response => {
           this.login = response.data;
           if (this.login.password === password) {
@@ -103,10 +106,10 @@ export default {
             "Account does not exist, please try again";
         });
     },
-    createLogin: function(userName,password) {
-       AXIOS.post('/login/=' + userName + '?password=' + password).then(response => {
+    createLogin: function(username,password) {
+       AXIOS.post('/login/' + username + '?password=' + password).then(response => {
         this.login = response.data;
-        // this.$cookie.set('userName', userName);
+        // this.$cookie.set('username', username);
         // this.$cookie.set("passwor", password);
       })
     },
@@ -179,7 +182,7 @@ export default {
 //       var message, x, y;
 //       message = document.getElementById("title1");
 //       message.innerHTML = "";
-//       x = document.getElementById("userName").value;
+//       x = document.getElementById("username").value;
 //       y = document.getElementById("password").value;
 //       try {
 //         if (x == "") throw "Username or password empty";
@@ -205,7 +208,7 @@ export default {
 
 //     //   message = document.getElementById("title1");
 //     //   message.innerHTML = "";
-//     //   x = document.getElementById("userName").value;
+//     //   x = document.getElementById("username").value;
 //     //   try {
 //     //     if (x == "") throw "Username or password empty";
 //     //   } catch (err) {
@@ -216,7 +219,7 @@ export default {
     
 //       message = document.getElementById("title1");
 //       message.innerHTML = "";
-//       x = document.getElementById("userName").value;
+//       x = document.getElementById("username").value;
 //       y = document.getElementById("password").value;
 //       try {
 //         if (x == "") throw "Username or password empty";
