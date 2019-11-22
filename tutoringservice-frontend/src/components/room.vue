@@ -110,8 +110,8 @@ import Router from "../router";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -135,7 +135,7 @@ export default {
       offeringID:"",
       managerID:"", 
       roomCode:"", 
-      tutoringSystemID:""
+      tutoringSystemID:"1"
     };
   },
   created: function() {
@@ -171,13 +171,13 @@ export default {
     },
     createReviewSession: function(offeringID, managerID, roomCode, tutoringSystemID) {
       AXIOS.post(
-        "/classroom/review/create/=" +
+        "/classroom/review/create/" +
           offeringID +
-          "&managerID" +
+          "?managerID=" +
           managerID +
-          "&roomCode" +
+          "?roomCode=" +
           roomCode +
-          "&tutoringSystemID" +
+          "?tutoringSystemID=" +
           tutoringSystemID
       ).then(response => {
         this.createReviewSession = response.data;

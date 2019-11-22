@@ -85,8 +85,8 @@ import Router from "../router";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({

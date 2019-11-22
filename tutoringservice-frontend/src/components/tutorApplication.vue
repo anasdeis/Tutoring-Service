@@ -98,7 +98,7 @@
           >Approve</button>
           <button
             type="button"
-            @click="updateTutorApplicationisAccepted(tAppID,isAccept)"
+            @click="updateTutorApplicationisDecline(tAppID,isAccept)"
             class="btn btn-primary btn-lg viewTApp button"
             v-b-tooltip.hover
             title="Decline"
@@ -116,8 +116,8 @@ import Router from "../router";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -462,7 +462,10 @@ export default {
       }
     },
     updateTutorApplicationisAccepted: function(tAppID, isAccept) {
-      // TODO: AXIOS METHODS GOES HERE TO ACCEPT/DELINE A TUTOR APPLICATION
+      AXIOS.patch(
+        '/tutorApplication/update/' + tAppID + '?isAccepted' + isAccept
+      )
+        this.tutorApplucation = response.data;
     }
   },
   mounted() {

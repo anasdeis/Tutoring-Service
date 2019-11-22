@@ -89,8 +89,8 @@ import axios from "axios";
 import Router from "../router";
 var config = require("../../config");
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -244,12 +244,12 @@ export default {
       }
     },
     getTutor: function(tutorID) {
-      AXIOS.get("/tutor/=" + tutorID).then(response => {
+      AXIOS.get("/tutor/" + tutorID).then(response => {
         this.getTutor = response.data;
       });
     },
     deleteTutor: function(tutorID) {
-      AXIOS.delete("/tutor/delete/=" + tutorID);
+      AXIOS.delete("/tutor/delete/" + tutorID);
     }
   },
   mounted() {

@@ -46,7 +46,7 @@
             <button
               id="approve"
               type="button"
-              @click="acceptReview()"
+              @click="updateReviewIsApproved()"
               class="btn btn-primary btn-lg subjectField button"
               v-b-tooltip.hove
               title="Approve this review!"
@@ -74,8 +74,8 @@ import Router from "../router";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -131,15 +131,6 @@ export default {
   },
 
   created: function() {
-    /* // Initializing reviews from backend
-    AXIOS.get(`/review/list`).then(response => {
-      // JSON responses are automatically parsed.
-      this.reviews = response.data
-    })
-    .catch(e => {
-      this.errorReview = e;
-    });*/
-
     // Test data
     const r1 = new ReviewDto("1", "I loved the tutor!", false);
     const r2 = new ReviewDto("2", "Great!", false);
@@ -171,7 +162,7 @@ export default {
       this.errorReview = e;
     });*/
     },
-    acceptReview: function() {
+    updateReviewIsApproved: function() {
       /*  AXIOS.patch(`/review/update/approved/${reviewId}?$isApproved=true`).then(response => {
       // JSON responses are automatically parsed.
       this.reviews = response.data
