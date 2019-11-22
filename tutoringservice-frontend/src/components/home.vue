@@ -8,7 +8,6 @@
     <p>Check out our functionality for you!</p>
     <b-container fluid>
       <b-row id="functionality">
-        <p>test</p>
         <b-col>
           <button
             type="button"
@@ -75,7 +74,6 @@
         </b-col>
       </b-row>
     </b-container>
-    <p>test 2</p>
   </div>
 </template>
 

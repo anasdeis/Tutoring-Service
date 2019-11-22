@@ -111,8 +111,8 @@ import Router from "../router";
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl ="http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -176,6 +176,17 @@ export default {
     //     "password" : "pw",
     // },
     // send get request to fetch manager
+    getLogin: function(username, password) {
+      AXIOS.get('/login/list/'+username)
+        .then(response => {
+          this.login = response.data;
+        })
+        .catch(e => {
+          console.log(e.message);
+          document.getElementById("title1").innerText =
+            "Account does not exist, please try again";
+        });
+    },
     signup: function(
       first,
       last,
@@ -183,16 +194,14 @@ export default {
       email,
       phone,
       managerID,
-      login,
+      login = this.login,
       request,
       review,
       commission,
       classroom,
       system
     ) {
-      AXIOS.get("/login/list/" + username).then(response => {
-        var login = response.data;
-      });
+      
       AXIOS.post(
         "/manager/create/" +
           managerID +
@@ -207,7 +216,7 @@ export default {
           "&phone=" +
           phone +
           "&login=" +
-          login +
+          username +
           "&request=" +
           request +
           "&review=" +
