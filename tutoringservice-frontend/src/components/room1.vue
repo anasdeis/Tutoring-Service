@@ -1,9 +1,9 @@
 <template>
-  <div id="student" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="room" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid>
-      <b-col id="studentList">
+      <b-col id="roomList">
         <h6>
-          <strong>VIEW STUDENTS</strong>
+          <strong>VIEW ROOM SCHEDULE</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -25,7 +25,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
-                  title="Remove a student!"
+                  title="Remove a room!"
                   @click="deleteRow(props.rowData)"
                 >
                   <i class="fa fa-trash"></i>
@@ -35,6 +35,7 @@
           </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
+
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
           </div>
         </div>
@@ -56,7 +57,7 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDrop
 import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
 import _ from "lodash";
 import Vue from "vue";
-import FilterBar from "./FilterBar";
+import FilterBar from "./FilterBarRoom";
 import VueEvents from "vue-events";
 Vue.use(VueEvents);
 
@@ -72,26 +73,8 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
-// function StudentDto(
-//   personId,
-//   firstName,
-//   lastName,
-//   dateOfBirth,
-//   email,
-//   phoneNumber,
-//   numCoursesEnrolled
-// ) {
-//   this.personId = personId;
-//   this.firstName = firstName;
-//   this.lastName = lastName;
-//   this.dateOfBirth = dateOfBirth;
-//   this.email = email;
-//   this.phoneNumber = phoneNumber;
-//   this.numCoursesEnrolled = numCoursesEnrolled;
-// }
-
 export default {
-  name: "students",
+  name: "rooms",
   components: {
     Vuetable,
     VuetablePagination,
@@ -111,55 +94,35 @@ export default {
       },
       sortOrder: [
         {
-          field: "personId",
-          sortField: "personId",
+          field: "roomID",
+          sortField: "roomId",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "personId",
-          title: "Student ID",
-          sortField: "personId"
+          name: "roomCode",
+          title: "Room ID",
+          sortField: "roomId"
         },
         {
-          name: "firstName",
-          title: `<span class="icon orange"><i class="fa fa-user"></i></span> First Name`,
-          sortField: "firstName"
+          name: "isBooked",
+          title: "isBooked",
+          sortField: "isBooked"
         },
         {
-          name: "lastName",
-          title: "Last Name",
-          sortField: "lastName"
-        },
-        {
-          name: "dateOfBirth",
-          title: '<i class="fa fa-birthday-cake"></i> Birthdate',
-          sortField: "dateOfBirth",
-          callback: "formatDate"
-        },
-        {
-          name: "email",
-          title: '<i class="fa fa-envelope"></i> Email',
-          sortField: "email"
-        },
-        {
-          name: "phoneNumber",
-          title: '<i class="fa fa-phone"></i> Phone',
-          sortField: "phoneNumber"
-        },
-        {
-          name: "numCoursesEnrolled",
-          title: "Courses",
-          sortField: "numCoursesEnrolled"
-        },
-        {
-          name: "actions",
-          title: "Actions"
+          name: "isBigRoom",
+          title: "isBigRoom",
+          sortField: "isBigRoom"
         }
+        // {
+        //   name: "actions",
+        //   title: "Actions"
+        // }
       ],
-      students: [],
-      errorStudent: "",
+    //  filterText: "",
+      rooms: [],
+      errorRoom: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -167,20 +130,21 @@ export default {
   },
 
   watch: {
-    students(newVal, oldVal) {
+    rooms(newVal, oldVal) {
       this.$refs.vuetable.refresh();
+  
     }
   },
 
   created: function() {
-    // Initializing students from backend
-    AXIOS.get(`http://localhost:8080/student/list`)
+    // Initializing rooms from backend
+    AXIOS.get(`http://localhost:8080/classroom/list`)
       .then(response => {
         // JSON responses are automatically parsed.
-        this.students = response.data;
+        this.rooms = response.data;
       })
       .catch(e => {
-        this.errorStudent = e;
+        this.errorRoom = e;
       });
    
   },
@@ -195,34 +159,34 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    updateStudents() {
-      // Initializing students from backend
-      AXIOS.get(`http://localhost:8080/student/list`)
+    updateRooms() {
+      // Initializing rooms from backend
+      AXIOS.get(`http://localhost:8080/classroom/list`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.students = response.data;
+          this.rooms = response.data;
         })
         .catch(e => {
-          this.errorStudent = e;
+          this.errorRoom = e;
         });
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/student/delete/${rowData.personId}`)
+      AXIOS.delete(`http://localhost:8080/classroom/delete/${rowData.personId}`)
         .then(response => {
-          this.errorStudent = "";
+          this.errorRoom = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          this.errorStudent = errorMsg;
+          this.errorRoom = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateStudents();
+      this.updateRooms()
     },
     dataManager(sortOrder, pagination) {
-      if (this.students.length < 1) return;
+      if (this.rooms.length < 1) return;
 
-      let local = this.students;
+      let local = this.rooms;
 
       // sortOrder can be empty, so we have to check for that as well
       if (sortOrder.length > 0) {
@@ -244,23 +208,27 @@ export default {
 
       return {
         pagination: pagination,
-        data: local.slice(from, to)
+        data: _.slice(local, from, to)
       };
     },
     onFilterSet(filterText) {
-      let student = this.students[0];
-
-      let data = this.students.filter(student => {
+    //  this.moreParams = {
+      // 'filter': filterText
+     // };
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
+      let room = this.rooms[0];
+      let data = this.rooms.filter(room => {
         return (
-          student.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
-          student.lastName.toLowerCase().includes(filterText.toLowerCase())
+          room.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
+          room.lastName.toLowerCase().includes(filterText.toLowerCase())
         );
       });
-
       this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
+    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -314,7 +282,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#studentList {
+#roomList {
   /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
