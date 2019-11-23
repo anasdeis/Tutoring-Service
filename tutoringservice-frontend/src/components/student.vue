@@ -72,24 +72,6 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
-// function StudentDto(
-//   personId,
-//   firstName,
-//   lastName,
-//   dateOfBirth,
-//   email,
-//   phoneNumber,
-//   numCoursesEnrolled
-// ) {
-//   this.personId = personId;
-//   this.firstName = firstName;
-//   this.lastName = lastName;
-//   this.dateOfBirth = dateOfBirth;
-//   this.email = email;
-//   this.phoneNumber = phoneNumber;
-//   this.numCoursesEnrolled = numCoursesEnrolled;
-// }
-
 export default {
   name: "students",
   components: {
@@ -136,7 +118,6 @@ export default {
           name: "dateOfBirth",
           title: '<i class="fa fa-birthday-cake"></i> Birthdate',
           sortField: "dateOfBirth",
-          callback: "formatDate"
         },
         {
           name: "email",
@@ -173,16 +154,20 @@ export default {
   },
 
   created: function() {
-    // Initializing students from backend
-    AXIOS.get(`http://localhost:8080/student/list`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.students = response.data;
-      })
-      .catch(e => {
-        this.errorStudent = e;
-      });
-   
+    this.updateStudents();
+    
+    /*
+    var darkModeOn = localStorage.getItem("DarkModeOn");
+    if (darkModeOn === "true") {
+      this.bgColor = "rgb(53,58,62)";
+      this.textColor = "white";
+      this.buttonClass = "btn btn-dark btn-lg studentField";
+    } else {
+      this.bgColor = "rgb(250,250,250)";
+      this.textColor = "black";
+      // this.bgColor = "rgb(248, 249, 251)";
+      this.buttonClass = "btn btn-white btn-lg studentField";
+    }*/
   },
   methods: {
     renderIcon(classes, options) {
@@ -280,26 +265,10 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
+    document.getElementsByName("search")[0].placeholder = "Search first/last name.."
   }
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style>
 b-container {

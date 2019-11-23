@@ -9,7 +9,8 @@
           v-model="filterText"
           class="form-control"
           @keyup.enter="doFilter"
-          placeholder="Search first/last name.."
+          name="search"
+          placeholder=""
         />
         &nbsp;
         <button class="btn btn-primary" @click="doFilter">Go</button>

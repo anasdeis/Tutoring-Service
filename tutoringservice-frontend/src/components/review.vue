@@ -1,75 +1,66 @@
 <template>
-  <div id="studentReview" class="card" v-bind:style="{ backgroundColor : bgColor}">
-    <span id="title" v-bind:style="{color : textColor}"></span>
-    <div>
-      <span id="title1"></span>
-    </div>
-
+  <div id="student" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid>
-      <b-col id="reviewlist">
-        <p>View student review</p>
-        <select
-          class="reviewField"
-          id="selectList"
-          name="selectList"
-          @click="PopulateDropDownList()"
-        >
-          <option value="select">--Select Review Status--</option>
-          <option value="Approved">Approved</option>
-          <option value="Declined">Declined</option>
-          <option value="Pending">Pending</option>
-          <option value="All">All</option>
-        </select>
-        <select class="reviewField" id="reviewList" name="reviewList">
-          <option value="all">--Select Review--</option>
-        </select>
+      <b-col id="studentList">
+        <h6>
+          <strong>VIEW REVIEWS</strong>
+        </h6>
 
-        <!-- 
-        <table id="reviewTable">
-          <tr>
-            <th>Review ID</th>
-            <th>Comment</th>
-            <th>Offering</th>
-            <th>Approved</th>
-          </tr>
-          <tr w3-repeat="reviews">
-            <td>{{reviewID}}</td>
-            <td>{{comment}}</td>
-            <td>{{offeringID}}</td>
-            <td>{{isApproved}}</td>
-          </tr>
-        </table>
-        -->
-
-        <b-row id="myButton">
-          <center>
-            <button
-              id="approve"
-              type="button"
-              @click="acceptReview()"
-              class="btn btn-primary btn-lg subjectField button"
-              v-b-tooltip.hove
-              title="Approve this review!"
-            >Approve</button>
-            <button
-              id="decline"
-              type="button"
-              @click="declineReview()"
-              class="btn btn-primary btn-lg tutorField button"
-              v-b-tooltip.hove
-              title="Decline this review!"
-            >Decline</button>
-          </center>
-        </b-row>
+        <div id="table-wrapper" class="container">
+          <filter-bar></filter-bar>
+          <vuetable
+            ref="vuetable"
+            :fields="fields"
+            :api-mode="false"
+            pagination-path="pagination"
+            :per-page="perPage"
+            :sort-order="sortOrder"
+            :multi-sort="true"
+            :css="css"
+            :data-manager="dataManager"
+            :render-icon="renderIcon"
+            @vuetable:pagination-data="onPaginationData"
+          >
+            <template slot="actions" slot-scope="props">
+              <div class="table-button-container">
+                <button
+                  class="btn btn-success btn-sm"
+                  title="Approve review!"
+                  @click="approveRow(props.rowData)"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  class="btn btn-danger btn-sm"
+                  title="Decline Review!"
+                  @click="declineRow(props.rowData)"
+                >
+                  <i class="fa fa-ban"></i>
+                </button>
+              </div>
+            </template>
+          </vuetable>
+          <div>
+            <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
+            <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+          </div>
+        </div>
       </b-col>
     </b-container>
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 import Router from "../router";
+import Vuetable from "vuetable-2/src/components/Vuetable";
+import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDropdown";
+import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
+import _ from "lodash";
+import Vue from "vue";
+import FilterBar from "./FilterBar";
+import VueEvents from "vue-events";
+Vue.use(VueEvents);
 
 var config = require("../../config");
 
@@ -83,46 +74,59 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
-function ReviewDto(reviewId, comment, isApproved) {
-  this.reviewId = reviewId;
-  this.comment = comment;
-  this.isApproved = isApproved;
-}
-/*
-script src="https://www.w3schools.com/lib/w3.js"
-var reviewTable = {
-  reviews: [
-    {
-      reviewID: "1000",
-      comment: "Amazing Course",
-      offeringID: "ECSE321F",
-      isApproved: true
-    },
-    {
-      reviewID: "1001",
-      comment: "So hard",
-      offeringID: "ECSE321F",
-      isApproved: true
-    },
-    {
-      reviewID: "1002",
-      comment: "I don't like this",
-      offeringID: "ECSE321F",
-      isApproved: false
-    }
-  ]
-};
-*/
-// studentReview.displayObject("reviewTable", reviewTable);
-
 export default {
   name: "reviews",
+  components: {
+    Vuetable,
+    VuetablePagination,
+    VuetablePaginationInfo,
+    FilterBar
+  },
   data() {
     return {
+      perPage: 10,
+      css: {
+        tableClass: "table table-bordered table-hover",
+        ascendingIcon: "fa fa-chevron-up",
+        descendingIcon: "fa fa-chevron-down",
+        loadingClass: "loading",
+        ascendingClass: "sorted-asc",
+        descendingClass: "sorted-desc"
+      },
+      sortOrder: [
+        {
+          field: "reviewID",
+          sortField: "reviewID",
+          direction: "asc"
+        }
+      ],
+      fields: [
+        {
+          name: "reviewID",
+          title: "Review ID",
+          sortField: "reviewID"
+        },
+        {
+          name: "offering",
+          title: "Offering",
+          sortField: "offering"
+        },
+        {
+          name: "comment",
+           title: `<span class="icon orange"><i class="fa fa-comment"></i></span> Comment`,
+          sortField: "comment"
+        },
+        {
+          name: "isApproved",
+          title: '<i class="fa fa-thumbs-up"></i> Approval',
+          sortField: "isApproved",
+        },
+        {
+          name: "actions",
+          title: "Actions"
+        }
+      ],
       reviews: [],
-      reviewId: "",
-      comment: "",
-      isApproved: null,
       errorReview: "",
       response: [],
       bgColor: "",
@@ -130,140 +134,118 @@ export default {
     };
   },
 
+  watch: {
+    reviews(newVal, oldVal) {
+      this.$refs.vuetable.refresh();
+    }
+  },
+
   created: function() {
-    /* // Initializing reviews from backend
-    AXIOS.get(`/review/list`).then(response => {
-      // JSON responses are automatically parsed.
-      this.reviews = response.data
-    })
-    .catch(e => {
-      this.errorReview = e;
-    });*/
+    this.updateReviews()
 
-    // Test data
-    const r1 = new ReviewDto("1", "I loved the tutor!", false);
-    const r2 = new ReviewDto("2", "Great!", false);
-    const r3 = new ReviewDto("3", "Amazing course!", null);
-    const r4 = new ReviewDto("4", "Easy tutorial!", true);
-    // Sample initial content
-    this.reviews = [r1, r2, r3, r4];
-
+    /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg signupField";
+      this.buttonClass = "btn btn-dark btn-lg studentField";
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg signupField";
-    }
+      this.buttonClass = "btn btn-white btn-lg studentField";
+    }*/
   },
   methods: {
-    getAllReviews: function() {
-      /*
-     AXIOS.get(`/review/list`).then(response => {
-      // JSON responses are automatically parsed.
-      this.reviews = response.data
-    })
-    .catch(e => {
-      this.errorReview = e;
-    });*/
+    renderIcon(classes, options) {
+      return `<span class="${classes.join(" ")}"></span>`;
     },
-    acceptReview: function() {
-      /*  AXIOS.patch(`/review/update/approved/${reviewId}?$isApproved=true`).then(response => {
-      // JSON responses are automatically parsed.
-      this.reviews = response.data
-    })
-    .catch(e => {
-      this.errorReview = e;
-    });*/
-      if (reviewList.options.length > 1 && reviewList.selectedIndex > 0) {
-        var index = -1;
-        for (var i = 0; i < this.reviews.length; i++) {
-          if (
-            this.reviews[i].reviewId ===
-            reviewList.options[reviewList.selectedIndex].text
-          ) {
-            index = i;
-            break;
-          }
-        }
-        window.alert(
-          "ReviewID: " +
-            reviewList.options[reviewList.selectedIndex].text +
-            " Approval status: " +
-            reviewList.options[reviewList.selectedIndex].value +
-            " is approved!"
-        );
-        this.reviews[index].isApproved = true;
-      } else {
-        window.alert("Select a review to approve!");
-      }
+    onPaginationData(paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData);
+      this.$refs.paginationInfo.setPaginationData(paginationData);
     },
-    declineReview: function() {
-      /*  AXIOS.patch(`/review/update/approved/${reviewId}?$isApproved=true`).then(response => {
-      // JSON responses are automatically parsed.
-      this.reviews = response.data
-    })
-    .catch(e => {
-      this.errorReview = e;
-    });*/
-      if (reviewList.options.length > 1 && reviewList.selectedIndex > 0) {
-        var index = -1;
-        for (var i = 0; i < this.reviews.length; i++) {
-          if (
-            this.reviews[i].reviewId ===
-            reviewList.options[reviewList.selectedIndex].text
-          ) {
-            index = i;
-            break;
-          }
-        }
-        window.alert(
-          "ReviewID: " +
-            reviewList.options[reviewList.selectedIndex].text +
-            " Approval status: " +
-            reviewList.options[reviewList.selectedIndex].value +
-            " is declined!" +
-            index
-        );
-        this.reviews[index].isApproved = false;
-      } else {
-        window.alert("Select a review to decline!");
-      }
+    onChangePage(page) {
+      this.$refs.vuetable.changePage(page);
     },
-    PopulateDropDownList: function() {
-      //this.getAllReviews()
+    updateReviews() {
+      // Initializing reviews from backend
+      AXIOS.get(`http://localhost:8080/review/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.reviews = response.data;
+        })
+        .catch(e => {
+          this.errorReview = e;
+        });
+    },
+    approveRow(rowData) {
+      AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=true`)
+        .then(response => {
+          this.errorStudent = "";
+        })
+        .catch(e => {
+          var errorMsg = e.message;
+          console.log(errorMsg);
+          this.errorReview = errorMsg;
+        });
+      alert("You clicked approve on: " + JSON.stringify(rowData));
+      this.updateReviews();
+    },
+    declineRow(rowData) {
+      AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=false`)
+        .then(response => {
+          this.errorStudent = "";
+        })
+        .catch(e => {
+          var errorMsg = e.message;
+          console.log(errorMsg);
+          this.errorReview = errorMsg;
+        });
+      alert("You clicked decline on: " + JSON.stringify(rowData));
+      this.updateReviews();
+    },
+    dataManager(sortOrder, pagination) {
+      if (this.reviews.length < 1) return;
 
-      var selectList = document.getElementById("selectList");
-      var reviewList = document.getElementById("reviewList");
-      var list1SelectedValue =
-        selectList.options[selectList.selectedIndex].value;
-      if (list1SelectedValue === "select") {
-        window.alert("Select a review status to populate review list!");
-      } else {
-        reviewList.options.length = 1;
-        for (var i = 0; i < this.reviews.length; i++) {
-          if (
-            (list1SelectedValue === "Approved" &&
-              this.reviews[i].isApproved === true) ||
-            (list1SelectedValue == "Declined" &&
-              this.reviews[i].isApproved === false) ||
-            (list1SelectedValue === "Pending" &&
-              this.reviews[i].isApproved == null) ||
-            list1SelectedValue === "All"
-          ) {
-            var option = document.createElement("OPTION");
-            option.innerHTML = this.reviews[i].reviewId;
-            option.value = this.reviews[i].isApproved;
-            reviewList.options.add(option);
-          }
-        }
-      }
-    },
+      let local = this.reviews;
 
+      // sortOrder can be empty, so we have to check for that as well
+      if (sortOrder.length > 0) {
+        console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
+        local = _.orderBy(
+          local,
+          sortOrder[0].sortField,
+          sortOrder[0].direction
+        );
+      }
+
+      pagination = this.$refs.vuetable.makePagination(
+        local.length,
+        this.perPage
+      );
+      console.log("pagination:", pagination);
+      let from = pagination.from - 1;
+      let to = from + this.perPage;
+
+      return {
+        pagination: pagination,
+        data: local.slice(from, to)
+      };
+    },
+    onFilterSet(filterText) {
+      let review = this.reviews[0];
+
+      let data = this.reviews.filter(review => {
+        return (
+          review.offering.toLowerCase().includes(filterText.toLowerCase())
+        );
+      });
+
+      this.$refs.vuetable.setData(data);
+    },
+    onFilterReset() {
+      this.$refs.vuetable.refresh();
+    },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
       if (darkModeOn === "true") {
@@ -280,37 +262,29 @@ export default {
   mounted() {
     // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
+    this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
+    this.$events.$on("filter-reset", e => this.onFilterReset());
+     document.getElementsByName("search")[0].placeholder = "Search offering.."
   }
 };
 </script>
 
 <style>
-#reviewTable {
-  margin-top: 20px;
+b-container {
+  height: auto;
+}
+
+.orange {
+  color: orange;
+}
+
+.pagination {
+  margin-bottom: 10px;
+}
+
+#studentList {
+  /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
-  margin-left: auto;
-  margin-right: auto;
-}
-table,
-th,
-td {
-  border: 1px solid black;
-}
-form {
-  color: black;
-}
-#myButton {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5px;
-}
-#approve {
-  margin-right: 5px;
-  margin-left: 5px;
-}
-#decline {
-  margin-right: 5px;
-  margin-left: 5px;
 }
 </style>
