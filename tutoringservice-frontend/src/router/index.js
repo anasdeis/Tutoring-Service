@@ -6,6 +6,7 @@ import login from "@/components/login";
 import signup from "@/components/signup";
 import LogoBar from "@/components/LogoBar";
 import room from "@/components/room";
+import room1 from "@/components/room1";
 import tutor from "@/components/tutor";
 import tutorApplication from "@/components/tutorApplication";
 import commission from "@/components/commission";
@@ -47,6 +48,11 @@ export default new Router({
       path: "/room",
       name: "room",
       component: room
+    },
+    {
+      path: "/room1",
+      name: "room1",
+      component: room1
     },
     {
       path: "/tutor",
