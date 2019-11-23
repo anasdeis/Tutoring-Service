@@ -304,6 +304,11 @@ b-container {
 
 
 
+
+
+
+
+
 <!--- This component acts as a page for tutor, including add/fire tutor --->
 <!--- <template>
   <div id="tutor" class="card" v-bind:style="{ backgroundColor : bgColor}">

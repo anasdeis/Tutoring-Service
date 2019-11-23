@@ -175,8 +175,8 @@ export default {
     },
     goToRoomPage: function() {
       Router.push({
-        path: "/room",
-        name: "room"
+        path: "/room1",
+        name: "room1"
       });
     },
     goToTutorPage: function() {
