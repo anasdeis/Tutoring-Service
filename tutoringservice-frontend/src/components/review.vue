@@ -237,8 +237,7 @@ export default {
 
       let data = this.reviews.filter(review => {
         return (
-          review.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
-          review.lastName.toLowerCase().includes(filterText.toLowerCase())
+          review.offeringID.toLowerCase().includes(filterText.toLowerCase())
         );
       });
 
@@ -265,7 +264,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-     document.getElementsByName("search")[0].placeholder = "Search first/last name.."
+     document.getElementsByName("search")[0].placeholder = "Search offering.."
   }
 };
 </script>
