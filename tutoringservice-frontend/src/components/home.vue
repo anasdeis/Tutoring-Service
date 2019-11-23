@@ -5,7 +5,7 @@
     <div>
       <span id="title1"></span>
     </div>
-    <p>Check out our functionality for you!</p>
+    <p v-bind:style="{color: textColor}">Check out our functionality for you!</p>
     <b-container fluid>
       <b-row id="functionality">
         <b-col>
@@ -72,6 +72,13 @@
             title="View Student Review"
           >View Student Reviews</button>
         </b-col>
+        <button
+          type="button"
+          @click="goToSignupPage()"
+          class="btn btn-primary btn-lg home button"
+          v-b-tooltip.hover
+          title="Create a manager account!"
+        >Create Manager Account</button>
       </b-row>
     </b-container>
   </div>
@@ -80,13 +87,12 @@
 <script>
 import axios from "axios";
 import Router from "../router";
-// import func from '../../vue-temp/vue-editor-bridge';
 
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -101,7 +107,7 @@ export default {
         type: Object
       },
       bgColor: "",
-      textColor: "",
+      textColor: ""
       // error: ""
     };
   },
@@ -123,43 +129,6 @@ export default {
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
     }
-
-    // since we will only have one manager, I don't think the following 4 blocks of code are necessary
-    // get all managers from backend
-    // AXIOS.get('/managers').then(response => {
-    //     this.managers = response.data;
-    //     this.managersLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
-
-    // // get all managers from manager database
-    // AXIOS_Manager.get("/getAllManagers").then(response => {
-    //     this.externalManagers = response.data;
-    //     this.externalManagersLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
-
-    // // get all logins from backend
-    // AXIOS.get('/logins').then(response => {
-    //     this.logins = response.data;
-    //     this.loginsLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
-
-    // // get all logins from database
-    // AXIOS_Logins.get("getAllLogins").then(response => {
-    //     this.externalLogins = response.data;
-    //     this.externalLoginsLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
   },
   methods: {
     setDarkMode: function(darkModeOn) {
@@ -212,10 +181,15 @@ export default {
         path: "/review",
         name: "review"
       });
+    },
+    goToSignupPage: function() {
+      Router.push({
+        path: "/signup",
+        name: "signup"
+      });
     }
   },
   mounted() {
-    // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
   }
 };
@@ -226,6 +200,10 @@ b-container {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   height: auto;
   width: auto;
+}
+button {
+  width: 150px;
+  height: auto;
 }
 #functionality {
   color: black;

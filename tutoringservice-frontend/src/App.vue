@@ -6,7 +6,7 @@
      tied to the different routes, think of it as a placeholder -->
     <router-view></router-view>   
 
-    <div id = "description">
+    <div id = "description" v-bind:style="{color: textColor}">
       <body>
         <hr />
         <center><p> What we can provide</p></center>

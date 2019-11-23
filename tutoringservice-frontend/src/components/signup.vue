@@ -79,7 +79,7 @@
           placeholder="Enter username"
         />
       </form>
-      <!-- <form>
+      <form>
         Password:
         <input
           class="signupField"
@@ -88,7 +88,7 @@
           v-model="pw"
           placeholder="Enter password"
         />
-      </form> -->
+      </form>
       <center>
         <button
           type="button"
@@ -107,12 +107,13 @@
 <script>
 import axios from "axios";
 import Router from "../router";
+import Axios from "axios";
 
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl ="http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -124,6 +125,9 @@ var AXIOS = axios.create({
 //   this.username = username
 //   this.password = password
 // }
+//  var username=document.getElementById("username");
+//       var password=document.getElementById("password");
+//       var login = {"username":"username", "password":"password"};
 
 export default {
   data() {
@@ -141,19 +145,17 @@ export default {
       email: "",
       phone: "",
       managerID: "",
-      username:"",
+      username: "",
+      password: "",
       login: "",
       request: null,
       review: null,
       commission: null,
       classroom: null,
       system: "1"
-
-      // first,last,dob,email,phone,managerID,login,request,review,commission,classroom,system
     };
   },
   created: function() {
-    // fetch the user's selected UI mode from brower local storage
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
@@ -167,26 +169,23 @@ export default {
     }
   },
   methods: {
-    // login: function(username,pw) {
-    //     this.username = username;
-    //     this.pw = pw;
-    // },
-    // var : login = {
-    //     "username" : "username",
-    //     "password" : "pw",
-    // },
     // send get request to fetch manager
-    getLogin: function(username, password) {
-      AXIOS.get('/login/list/'+username)
-        .then(response => {
-          this.login = response.data;
-        })
-        .catch(e => {
-          console.log(e.message);
-          document.getElementById("title1").innerText =
-            "Account does not exist, please try again";
-        });
-    },
+    // getLogin: function(username, password) {
+    //   AXIOS.get('/login/list/'+username)
+    //     .then(response => {
+    //       // this.login = response.data;
+    //       var login = ;
+    //     })
+    //     // .catch(e => {
+    //     //   console.log(e.message);
+    //     //   document.getElementById("title1").innerText =
+    //     //     "Account does not exist, please try again";
+    //     // });
+    // },
+    // myLogin: function (username, password) {
+    //   var username=document.getElementById("username");
+    //   var password=document.getElementById("password");
+    // },
     signup: function(
       first,
       last,
@@ -194,14 +193,14 @@ export default {
       email,
       phone,
       managerID,
-      login = this.login,
+      login,
       request,
       review,
       commission,
       classroom,
       system
     ) {
-      
+      AXIOS.post("");
       AXIOS.post(
         "/manager/create/" +
           managerID +
@@ -216,7 +215,7 @@ export default {
           "&phone=" +
           phone +
           "&login=" +
-          username +
+          login +
           "&request=" +
           request +
           "&review=" +

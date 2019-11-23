@@ -9,45 +9,26 @@
       <center>
         <!-- <b-row id="findTutor">
           <form>
-            Offering ID:
+            Tutor ID:
             <input
               class="commissionField"
               type="number"
-              id="offeringID"
-              v-model="offeringID"
-              placeholder="Enter offering ID"
+              id="tutorID"
+              v-model="tutorID"
+              placeholder="Enter tutor ID"
             />
           </form>
           <button
             type="button"
             id="myButton"
-            @click="findOffering()"
+            @click="getTutor(tutorID)"
             class="btn btn-primary btn-lg commissionField button"
             :class="buttonClass"
             title="Find the tutor"
-          >Find Offering</button>
+          >Find tutor</button>
         </b-row>-->
         <!-- <p>Tutor information</p>
         <b-row id="findTutor">
-          <form>
-            Commission percentage:
-            <input
-              class="commissionField"
-              type="number"
-              step="0.01"
-              id="percentage"
-              v-model="percentage"
-              placeholder="Enter percentage"
-            />
-          </form>
-          <button
-            type="button"
-            id="myButton"
-            @click="setupCommission()"
-            class="btn btn-primary btn-lg commissionField button"
-            :class="buttonClass"
-            title="Setup commission"
-          >Setup commission</button>
         </b-row>-->
         <form>
           Commission ID:
@@ -60,17 +41,17 @@
           />
         </form>
         <form>
-            Commission percentage:
-            <input
-              class="commissionField"
-              type="number"
-              step="0.01"
-              id="percentage"
-              v-model="percentage"
-              placeholder="Enter percentage"
-            />
-          </form>
-          <form>
+          Commission percentage:
+          <input
+            class="commissionField"
+            type="number"
+            step="0.01"
+            id="percentage"
+            v-model="percentage"
+            placeholder="Enter percentage"
+          />
+        </form>
+        <form>
           Offering ID:
           <input
             class="commissionField"
@@ -80,14 +61,24 @@
             placeholder="Enter Offering ID"
           />
         </form>
+        <form>
+          Confirm your manager ID:
+          <input
+            class="commissionField"
+            type="number"
+            id="managerID"
+            v-model="managerID"
+            placeholder="Enter managerID"
+          />
+        </form>
         <button
-            type="button"
-            id="myButton"
-            @click="createCommission(percentage,commissionID, manager, offeringID, tutoringSystem)"
-            class="btn btn-primary btn-lg commissionField button"
-            :class="buttonClass"
-            title="Setup commission"
-          >Setup commission</button>
+          type="button"
+          id="myButton"
+          @click="createCommission(percentage,commissionID, manager, offeringID, system)"
+          class="btn btn-primary btn-lg commissionField button"
+          :class="buttonClass"
+          title="Setup commission"
+        >Setup commission</button>
       </center>
     </b-container>
   </div>
@@ -101,7 +92,7 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -112,17 +103,14 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      tutor: {
-        type: Object
-      },
       bgColor: "",
       textColor: "",
-      commissionID:"",
-      percentage:"",
-      manager:"",
-      offeringID:"",
-      system:"1",
-      error:""
+      commissionID: "",
+      percentage: "",
+      manager: "",
+      offeringID: "",
+      error: "",
+      system: "1"
     };
   },
 
@@ -152,14 +140,30 @@ export default {
         this.buttonClass = "btn btn-white btn-lg signupField";
       }
     },
-    createCommission: function(percentage,commissionID, manager, offeringID, tutoringSystem) {
-      AXIOS.post('/commission/create/' + commissionID + '?percentage=' + percentage + '?manager=' + manager + '?offeringID=' + offeringID + '?tutoringSystem' + system).then(response => {
+    createCommission: function(
+      percentage,
+      commissionID,
+      manager,
+      offeringID,
+      system
+    ) {
+      AXIOS.post(
+        "/commission/create/" +
+          commissionID +
+          "?percentage=" +
+          percentage +
+          "&manager=" +
+          manager +
+          "&offeringID=" +
+          offeringID +
+          "&system=" +
+          system
+      ).then(response => {
         this.commission = response.data;
-      })
+      });
     }
   },
   mounted() {
-    // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
   }
 };

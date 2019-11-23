@@ -17,7 +17,6 @@
           <p>
             The room you select is: <span class="output"></span></p>
             <button onClick="getOpinion()">Select Room</button>
-          
           <p>
             The romm you select is: <span class="status"></span></p>
           <button
@@ -48,19 +47,22 @@
       <b-row>
         <b-col id="room">
           <p>View all the rooms, room 1-10 are small room and 11-13 are big room</p>
-          <center><table id="roomTable">
-            <tr>
-              <th>Room Code</th>
-              <th>Big Room</th>
-              <th>Room Avaliability</th>
-            </tr>
-            <tr>
-              <td>{{roomCode}}</td>
-              <td>{{isBigRoom}}</td>
-              <td>{{isAvaliable}}</td>
-            </tr>
-          </table></center>
-          <button id="myButton"
+          <center>
+            <table id="roomTable">
+              <tr>
+                <th>Room Code</th>
+                <th>Big Room</th>
+                <th>Room Avaliability</th>
+              </tr>
+              <tr>
+                <td>{{roomCode}}</td>
+                <td>{{isBigRoom}}</td>
+                <td>{{isAvaliable}}</td>
+              </tr>
+            </table>
+          </center>
+          <button
+            id="myButton"
             type="button"
             @click="getAllRoomSchedules()"
             class="btn btn-primary btn-lg room button"
@@ -70,8 +72,9 @@
         </b-col>
 
         <b-col id="reviewSession">
+          <p>Schedule Group Review with RM11-RM13</p>
           <form>
-            Enter Big Room Code (RM11-RM13) to schedule a group review:
+            Enter Room code (RM11-RM13):
             <input
               class="reviewField"
               text="text"
@@ -90,9 +93,20 @@
               placeholder="Enter offering ID"
             />
           </form>
-          <button id="myButton"
+          <form>
+            Enter Manager ID:
+            <input
+              class="reviewField"
+              text="text"
+              id="managerID"
+              v-model="managerID"
+              placeholder="Enter manager ID"
+            />
+          </form>
+          <button
+            id="myButton"
             type="button"
-            @click="createReviewSession(offeringID, managerID, roomCode, tutoringSystemID)"
+            @click="createReviewSession(offeringID, managerID, roomCode, systemID)"
             class="btn btn-primary btn-lg createReview button"
             v-b-tooltip.hover
             title="Create Review Session"
@@ -111,7 +125,7 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -132,10 +146,10 @@ export default {
       textColor: "",
       error: "",
       output: "",
-      offeringID:"",
-      managerID:"", 
-      roomCode:"", 
-      tutoringSystemID:"1"
+      offeringID: "",
+      managerID: "",
+      roomCode: "",
+      systemID: "1"
     };
   },
   created: function() {
@@ -154,11 +168,9 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        // this.buttonClass = "btn btn-dark btn-lg loginField";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        // this.buttonClass = "btn btn-white btn-lg loginField";
       }
     },
     getOpinion: function() {
@@ -167,18 +179,20 @@ export default {
       document.querySelector(".output").textContent = output;
     },
     getAllRoomSchedules: function() {
-      AXIOS.get("/classroom/list");
+      AXIOS.get("/classroom/list/").then(response => {
+        this.roomSchedules = response.data;
+      });
     },
-    createReviewSession: function(offeringID, managerID, roomCode, tutoringSystemID) {
+    createReviewSession: function(offeringID, managerID, roomCode, systemID) {
       AXIOS.post(
         "/classroom/review/create/" +
           offeringID +
           "?managerID=" +
           managerID +
-          "?roomCode=" +
+          "&roomCode=" +
           roomCode +
-          "?tutoringSystemID=" +
-          tutoringSystemID
+          "&systemID=" +
+          systemID
       ).then(response => {
         this.createReviewSession = response.data;
       });
@@ -195,11 +209,15 @@ b-container {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+form {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 #reviewSession {
   width: auto;
   height: auto;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 #roomTable {
   margin: auto;

@@ -29,7 +29,7 @@
       >Login</button>
       <button
         type="button"
-        @:click="createLogin(username,password)" v-on:click="goToSignupPage()"
+        v-on:click="createLogin(username,password)"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
@@ -59,14 +59,11 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      // login: {
-      //   type: Object
-      // },
       bgColor: "",
       textColor: "",
       error: "",
-      username:"",
-      password:""
+      username: "",
+      password: ""
     };
   },
   created: function() {
@@ -74,38 +71,36 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      // this.buttonClass="btn btn-dark btn-lg loginField";
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
-      // this.buttonClass="btn btn-white btn-lg loginField";
     }
   },
   methods: {
     getLogin: function(username, password) {
-      AXIOS.get('/login/list/'+username)
+      AXIOS.get("/login/list/" + username)
         .then(response => {
           this.login = response.data;
-          this.goToHomePage();
-          // if (this.login.password == password) {
-          //   this.goToHomePage();
-          //   localStorage.setItem("isLoggedIn", "true");
-          //   this.$loggedInEvent.$emit("setLoggedInState", true);
-          // } else {
-          //   document.getElementById("title1").innerText =
-          //     "Password is not correct, please try again";
-          // }
+          if (this.password == password) {
+            this.goToHomePage();
+            localStorage.setItem("isLoggedIn", "true");
+            this.$loggedInEvent.$emit("setLoggedInState", true);
+          } else {
+            document.getElementById("title1").innerText =
+              "Password is not correct, please try again";
+          }
         })
         .catch(e => {
           console.log(e.message);
-          document.getElementById("title1").innerText =
-            "Account does not exist, please try again";
+          document.getElementById("title1").innerText = "";
         });
     },
-    createLogin: function(username,password) {
-       AXIOS.post('/login/' + username + '?password=' + password).then(response => {
-        this.login = response.data;
-      })
+    createLogin: function(username, password) {
+      AXIOS.post("/login/" + username + "?password=" + password).then(
+        response => {
+          this.login = response.data;
+        }
+      );
     },
     goToHomePage: function() {
       Router.push({
@@ -124,17 +119,14 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        // this.buttonClass = "btn btn-dark btn-lg loginField";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        // this.buttonClass = "btn btn-white btn-lg loginField";
       }
-     }
-    },
-    mounted() {
-      // Listens to the setDarkModeState event emitted from the LogoBar component
-      this.$root.$on("setDarkModeState", this.setDarkMode);
+    }
+  },
+  mounted() {
+    this.$root.$on("setDarkModeState", this.setDarkMode);
   }
 };
 </script>
