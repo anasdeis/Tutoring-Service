@@ -94,14 +94,14 @@ export default {
       },
       sortOrder: [
         {
-          field: "tutorId",
+          field: "tutorID",
           sortField: "tutorId",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "tutorId",
+          name: "personId",
           title: "Tutor ID",
           sortField: "tutorId"
         },
@@ -116,12 +116,6 @@ export default {
           sortField: "lastName"
         },
         {
-          name: "dateOfBirth",
-          title: '<i class="fa fa-birthday-cake"></i> Birthdate',
-          sortField: "dateOfBirth",
-          callback: 'formatDate'
-        },
-        {
           name: "email",
           title: '<i class="fa fa-envelope"></i> Email',
           sortField: "email"
@@ -132,17 +126,12 @@ export default {
           sortField: "phoneNumber"
         },
         {
-          name: "numCoursesEnrolled",
-          title: "Courses",
-          sortField: "numCoursesEnrolled"
-        },
-        {
           name: "actions",
           title: "Actions"
         }
       ],
-      filterText: "",
-      tutorss: [],
+    //  filterText: "",
+      tutors: [],
       errorTutor: "",
       response: [],
       bgColor: "",
@@ -153,13 +142,13 @@ export default {
   watch: {
     tutors(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-     // this.$refs.vuetable.setData(this.students)
+  
     }
   },
 
   created: function() {
     // Initializing students from backend
-    AXIOS.get(`http://localhost:8080/tutor/list`)
+    AXIOS.get(`http://localhost:8080/tutor/list/true`)
       .then(response => {
         // JSON responses are automatically parsed.
         this.tutors = response.data;
@@ -181,8 +170,8 @@ export default {
       this.$refs.vuetable.changePage(page);
     },
     updateTutors() {
-      // Initializing students from backend
-      AXIOS.get(`http://localhost:8080/tutor/list`)
+      // Initializing tutors from backend
+      AXIOS.get(`http://localhost:8080/tutor/list/true`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.tutors = response.data;
@@ -233,15 +222,23 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      this.moreParams = {
-       'filter': filterText
-      };
-      Vue.nextTick(() => this.$refs.vuetable.refresh());
+    //  this.moreParams = {
+      // 'filter': filterText
+     // };
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
+      let tutor = this.tutors[0];
+      let data = this.tutors.filter(student => {
+        return (
+          tutor.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
+          tutor.lastName.toLowerCase().includes(filterText.toLowerCase())
+        );
+      });
+      this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
-      this.moreParams = {};
+    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
-      Vue.nextTick(() => this.$refs.vuetable.refresh());
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -260,7 +257,7 @@ export default {
     // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
-    this.$events.$on("filter-reset", e => this.onFilterReset())
+    this.$events.$on("filter-reset", e => this.onFilterReset());
   }
 };
 </script>
