@@ -35,7 +35,6 @@
           </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
-
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
           </div>
         </div>
@@ -132,7 +131,7 @@ export default {
           name: "dateOfBirth",
           title: '<i class="fa fa-birthday-cake"></i> Birthdate',
           sortField: "dateOfBirth",
-          callback: 'formatDate'
+          callback: "formatDate"
         },
         {
           name: "email",
@@ -154,7 +153,6 @@ export default {
           title: "Actions"
         }
       ],
-      filterText: "",
       students: [],
       errorStudent: "",
       response: [],
@@ -166,7 +164,6 @@ export default {
   watch: {
     students(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-     // this.$refs.vuetable.setData(this.students)
     }
   },
 
@@ -247,7 +244,7 @@ export default {
           this.errorStudent = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateStudents()
+      this.updateStudents();
     },
     dataManager(sortOrder, pagination) {
       if (this.students.length < 1) return;
@@ -274,19 +271,23 @@ export default {
 
       return {
         pagination: pagination,
-        data: _.slice(local, from, to)
+        data: local.slice(from, to)
       };
     },
     onFilterSet(filterText) {
-      this.moreParams = {
-       'filter': filterText
-      };
-      Vue.nextTick(() => this.$refs.vuetable.refresh());
+      let student = this.students[0];
+
+      let data = this.students.filter(student => {
+        return (
+          student.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
+          student.lastName.toLowerCase().includes(filterText.toLowerCase())
+        );
+      });
+
+      this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
-      this.moreParams = {};
       this.$refs.vuetable.refresh();
-      Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -305,7 +306,7 @@ export default {
     // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
-    this.$events.$on("filter-reset", e => this.onFilterReset())
+    this.$events.$on("filter-reset", e => this.onFilterReset());
   }
 };
 </script>

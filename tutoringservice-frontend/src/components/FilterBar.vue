@@ -9,7 +9,7 @@
           v-model="filterText"
           class="form-control"
           @keyup.enter="doFilter"
-          placeholder="Search student ID.."
+          placeholder="Search first/last name.."
         />
         &nbsp;
         <button class="btn btn-primary" @click="doFilter">Go</button>
@@ -19,8 +19,6 @@
     </div>
   </div>
 </template>
-
-
 
 <script>
 export default {
@@ -37,7 +35,6 @@ export default {
 
     resetFilter() {
       this.filterText = ""; // clear the text in text input
-
       this.$events.fire("filter-reset");
     }
   }
