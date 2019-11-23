@@ -147,8 +147,8 @@ export default {
   },
 
   created: function() {
-    // Initializing students from backend
-    AXIOS.get(`http://localhost:8080/tutor/list/true`)
+    // Initializing tutors from backend
+    AXIOS.get(`http://localhost:8080/tutor/list`)
       .then(response => {
         // JSON responses are automatically parsed.
         this.tutors = response.data;
@@ -171,7 +171,7 @@ export default {
     },
     updateTutors() {
       // Initializing tutors from backend
-      AXIOS.get(`http://localhost:8080/tutor/list/true`)
+      AXIOS.get(`http://localhost:8080/tutor/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.tutors = response.data;
@@ -227,7 +227,7 @@ export default {
      // };
      // Vue.nextTick(() => this.$refs.vuetable.refresh());
       let tutor = this.tutors[0];
-      let data = this.tutors.filter(student => {
+      let data = this.tutors.filter(tutor => {
         return (
           tutor.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
           tutor.lastName.toLowerCase().includes(filterText.toLowerCase())

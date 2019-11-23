@@ -9,12 +9,14 @@
           v-model="filterText"
           class="form-control"
           @keyup.enter="doFilter"
-          placeholder="Search Tutor ID.."
+          placeholder="Input First/Last name"
         />
         &nbsp;
-        <button class="btn btn-primary" @click="doFilter">Go</button>
+        <button class="btn btn-primary" @click="doFilter">Find</button>
         &nbsp;
-        <button class="btn btn-default" @click="resetFilter">View Tutor Details</button>
+        <button class="btn btn-primary" @click="resetFilter">Reset Table</button>
+        &nbsp;
+          <button class="btn btn-primary"  @click="resetFilter"> View Tutor Details</button>
       </div>
     </div>
   </div>
