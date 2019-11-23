@@ -107,9 +107,9 @@ export default {
           sortField: "reviewID"
         },
         {
-          name: "offeringID",
+          name: "offering",
           title: "Offering",
-          sortField: "offeringID"
+          sortField: "offering"
         },
         {
           name: "comment",
@@ -237,7 +237,7 @@ export default {
 
       let data = this.reviews.filter(review => {
         return (
-          review.offeringID.toLowerCase().includes(filterText.toLowerCase())
+          review.offering.toLowerCase().includes(filterText.toLowerCase())
         );
       });
 
