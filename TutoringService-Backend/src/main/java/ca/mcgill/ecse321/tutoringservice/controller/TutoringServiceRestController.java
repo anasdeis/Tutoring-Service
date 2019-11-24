@@ -1277,6 +1277,13 @@ public class TutoringServiceRestController {
 		service.deleteTutor(tutorID);
 		return tutorDto;
 	}
+	
+	@DeleteMapping(value = {"/tutorApplication/delete/{tutorApplicationID}", "/tutorApplication/delete/{tutorApplicationID}"})
+	public TutorApplicationDto deleteTutorApplication(@PathVariable("tutorApplicationID") Integer tutorApplicationID) {
+		TutorApplicationDto tutorApplicationDto = convertToDto(service.getTutorApplication(tutorApplicationID));
+		service.deleteTutorApplication(tutorApplicationID);
+		return tutorApplicationDto;
+	}
 
 	/**
 	 * @return update tutor as isRegistered
@@ -1375,6 +1382,28 @@ public class TutoringServiceRestController {
 			}
 		}
 		return classroomDtos;
+	}
+	
+	/**
+	 * @return Remove subject request
+	 * @sample /subjectRequest/delete/<requestID>
+	 */
+	@DeleteMapping(value = {"/subjectRequest/delete/{requestID}", "/subjectRequest/delete/{requestID}/"})
+	public SubjectRequestDto deleteSubjectRequest(@PathVariable("requestID") Integer requestID) {
+		SubjectRequestDto subjectRequestDto = convertToDto(service.getSubjectRequest(requestID));
+		service.deleteSubjectRequest(requestID);
+		return subjectRequestDto;
+	}
+	
+	/**
+	 * @return Remove subject 
+	 * @sample /subject/delete/<courseID>
+	 */
+	@DeleteMapping(value = {"/subject/delete/{courseID}", "/subject/delete/{courseID}/"})
+	public SubjectDto deleteSubject(@PathVariable("courseID") String courseID) {
+		SubjectDto subjectDto = convertToDto(service.getSubject(courseID));
+		service.deleteSubject(courseID);
+		return subjectDto;
 	}
 }
 
