@@ -172,20 +172,32 @@
             onChangePage(page) {
                 this.$refs.vuetable.changePage(page);
             },
-            /*I have to think about this*/
-            // deleteRow(rowData) {
-            //     AXIOS.delete(`http://localhost:8080/tutorApplication/delete/${rowData.tutorApplicationId}`)
-            //         .then(response => {
-            //             this.errorStudent = "";
-            //         })
-            //         .catch(e => {
-            //             var errorMsg = e.message;
-            //             console.log(errorMsg);
-            //             this.errorStudent = errorMsg;
-            //         });
-            //     alert("You clicked delete on: " + JSON.stringify(rowData));
-            //     this.updateStudents();
-            // },
+            approveRow(rowData) {
+                AXIOS.patch(`http://localhost:8080/tutorApplication/update/${rowData.tutorApplicationID}?isAccepted=true`)
+                    .then(response => {
+                        this.errorTutorApplication = "";
+                    })
+                    .catch(e => {
+                        var errorMsg = e.message;
+                        console.log(errorMsg);
+                        this.errorTutorApplication = errorMsg;
+                    });
+                alert("You clicked approve on: " + JSON.stringify(rowData));
+                this.updateReviews();
+            },
+            declineRow(rowData) {
+                AXIOS.patch(`http://localhost:8080/tutorApplication/update/${rowData.tutorApplicationID}?isAccepted=false`)
+                    .then(response => {
+                        this.errorTutorApplication = "";
+                    })
+                    .catch(e => {
+                        var errorMsg = e.message;
+                        console.log(errorMsg);
+                        this.errorTutorApplication = errorMsg;
+                    });
+                alert("You clicked decline on: " + JSON.stringify(rowData));
+                this.updateReviews();
+            },
             dataManager(sortOrder, pagination) {
                 if (this.tutorApplications.length < 1) return;
 
