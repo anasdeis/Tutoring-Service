@@ -113,13 +113,13 @@ export default {
         },
         {
           name: "comment",
-           title: `<span class="icon orange"><i class="fa fa-comment"></i></span> Comment`,
+          title: `<span class="icon orange"><i class="fa fa-comment"></i></span> Comment`,
           sortField: "comment"
         },
         {
           name: "isApproved",
           title: '<i class="fa fa-thumbs-up"></i> Approval',
-          sortField: "isApproved",
+          sortField: "isApproved"
         },
         {
           name: "actions",
@@ -136,12 +136,13 @@ export default {
 
   watch: {
     reviews(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.subjectRequests);
+      this.$refs.vuetable.setData(this.reviews);
+      this.$refs.vuetable.refresh();
     }
   },
 
   created: function() {
-    this.updateReviews()
+    this.updateReviews();
 
     /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -179,28 +180,32 @@ export default {
         });
     },
     approveRow(rowData) {
-      AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=true`)
+      AXIOS.patch(
+        `http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=true`
+      )
         .then(response => {
           this.errorReview = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          alert(errorMsg)
+          alert(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked approve on: " + JSON.stringify(rowData));
       this.updateReviews();
     },
     declineRow(rowData) {
-      AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=false`)
+      AXIOS.patch(
+        `http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=false`
+      )
         .then(response => {
           this.errorReview = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          alert(errorMsg)
+          alert(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked decline on: " + JSON.stringify(rowData));
@@ -238,9 +243,7 @@ export default {
       let review = this.reviews[0];
 
       let data = this.reviews.filter(review => {
-        return (
-          review.offering.toLowerCase().includes(filterText.toLowerCase())
-        );
+        return review.offering.toLowerCase().includes(filterText.toLowerCase());
       });
 
       this.$refs.vuetable.setData(data);
@@ -266,7 +269,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-     document.getElementsByName("search")[0].placeholder = "Search offering.."
+    document.getElementsByName("search")[0].placeholder = "Search offering..";
   }
 };
 </script>
@@ -285,7 +288,6 @@ b-container {
 }
 
 #reviewList {
-  /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
 }

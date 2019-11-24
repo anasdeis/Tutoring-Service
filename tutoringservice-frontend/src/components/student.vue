@@ -42,12 +42,6 @@
     </b-container>
   </div>
 </template>
-
-
-
-
-
-
 <script>
 import axios from "axios";
 import Router from "../router";
@@ -117,7 +111,7 @@ export default {
         {
           name: "dateOfBirth",
           title: '<i class="fa fa-birthday-cake"></i> Birthdate',
-          sortField: "dateOfBirth",
+          sortField: "dateOfBirth"
         },
         {
           name: "email",
@@ -149,13 +143,14 @@ export default {
 
   watch: {
     students(newVal, oldVal) {
+      this.$refs.vuetable.setData(this.students);
       this.$refs.vuetable.refresh();
     }
   },
 
   created: function() {
     this.updateStudents();
-    
+
     /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -199,7 +194,7 @@ export default {
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          alert(errorMsg)
+          alert(errorMsg);
           this.errorStudent = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
@@ -266,7 +261,8 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder = "Search first/last name.."
+    document.getElementsByName("search")[0].placeholder =
+      "Search first/last name..";
   }
 };
 </script>
@@ -285,7 +281,6 @@ b-container {
 }
 
 #studentList {
-  /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
 }

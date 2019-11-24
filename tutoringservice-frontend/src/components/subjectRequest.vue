@@ -164,6 +164,7 @@ export default {
   watch: {
     subjectRequests(newVal, oldVal) {
       this.$refs.vuetable.setData(this.subjectRequests);
+      this.$refs.vuetable.refresh();
     }
   },
 
@@ -308,9 +309,8 @@ export default {
     },
     onFilterSet(filterText) {
       let subjectRequest = this.subjectRequests[0];
-
       let data = this.subjectRequests.filter(subjectRequest => {
-        return subjectRequests.name
+        return subjectRequest.name
           .toLowerCase()
           .includes(filterText.toLowerCase());
       });
@@ -357,7 +357,6 @@ b-container {
 }
 
 #subjectRequestsList {
-  /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
 }

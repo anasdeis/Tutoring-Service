@@ -57,7 +57,7 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDrop
 import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
 import _ from "lodash";
 import Vue from "vue";
-import FilterBar from "./FilterBarRoom";
+import FilterBar from "./FilterBar";
 import VueEvents from "vue-events";
 Vue.use(VueEvents);
 
