@@ -1,7 +1,6 @@
 <template>
 <div class="hello">
   <b-container fluid class="home-row">
-    <!-- <button type="button" v-on:click="goToSignupPage()" class="btn btn-primary btn-lg loginField button" v-b-tooltip.hover title="Create an account">Sign up</button> -->
 
     <b-row>
       <b-col>
@@ -34,7 +33,7 @@
     </b-row>
   </b-container>
 
-  <div id="description">
+  <div id="description" v-bind:style="{color: textColor}">
     <body>
       <hr />
       <!-- <p>Welcome to our company, <b>Tutor4All</b>. We open from 9-9, 7 days a week.<br/></p> -->

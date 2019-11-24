@@ -1,5 +1,7 @@
 <template>
   <div id="room" class="card" v-bind:style="{ backgroundColor: bgColor}">
+    <span id="title" v-bind:style="{color : textColor}"></span>
+
     <b-container fluid>
       <b-col id="roomList">
         <h6>
@@ -7,6 +9,7 @@
         </h6>
 
         <div id="table-wrapper" class="container">
+
           <filter-bar></filter-bar>
           <vuetable
             ref="vuetable"
@@ -24,11 +27,11 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-danger btn-sm"
-                  title="Remove a room!"
-                  @click="deleteRow(props.rowData)"
+                  class="btn btn-success btn-sm"
+                  title="Book a review session!"
+                  @click="createReviewSession(props.rowData)"
                 >
-                  <i class="fa fa-trash"></i>
+                  <i class="fa fa-plus"></i>
                 </button>
               </div>
             </template>
@@ -41,13 +44,53 @@
         </div>
       </b-col>
     </b-container>
+    <b-container>
+      <b-col id="reviewSession">
+        <!-- <p>Schedule Group Review with RM11-RM13</p> -->
+        <!-- <form>
+          Enter Room code (RM11-RM13):
+          <input
+            class="reviewField"
+            text="text"
+            id="roomCode"
+            v-model="roomCode"
+            placeholder="Enter Room Code"
+          />
+        </form> -->
+        <!-- <form>
+          Enter Offering ID:
+          <input
+            class="reviewField"
+            text="text"
+            id="offeringID"
+            v-model="offeringID"
+            placeholder="Enter offering ID"
+          />
+        </form>-->
+        <div class="col-auto my-1">
+          <select
+            class="custom-select mr-sm-2"
+            id="inlineFormCustomSelect"
+            name="inlineFormCustomSelect"
+          >
+            <option selected>Choose Offering...</option>
+          </select>
+          <button class="btn btn-primary" title="Populate list!" @click="populateOfferingList">List</button>
+        </div>
+        <form>
+          Confirm Your Manager ID:
+          <input
+            class="reviewField"
+            text="text"
+            id="managerID"
+            v-model="managerID"
+            placeholder="Enter manager ID"
+          />
+        </form>
+      </b-col>
+    </b-container>
   </div>
 </template>
-
-
-
-
-
 
 <script>
 import axios from "axios";
@@ -64,8 +107,8 @@ Vue.use(VueEvents);
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -94,8 +137,8 @@ export default {
       },
       sortOrder: [
         {
-          field: "roomID",
-          sortField: "roomId",
+          field: "roomCode",
+          sortField: "roomCode",
           direction: "asc"
         }
       ],
@@ -103,52 +146,69 @@ export default {
         {
           name: "roomCode",
           title: "Room ID",
-          sortField: "roomId"
+          sortField: "roomCode"
         },
         {
           name: "isBooked",
-          title: "isBooked",
+          title: "Booked",
           sortField: "isBooked"
         },
         {
           name: "isBigRoom",
-          title: "isBigRoom",
+          title: "Big Room",
           sortField: "isBigRoom"
+        },
+        {
+          name: "actions",
+          title: "Actions"
         }
-        // {
-        //   name: "actions",
-        //   title: "Actions"
-        // }
       ],
-    //  filterText: "",
+      //  filterText: "",
       rooms: [],
       errorRoom: "",
       response: [],
       bgColor: "",
-      textColor: ""
+      textColor: "",
+      offerings: [],
+      offeringID: "",
+      managerID: "",
+      errorOffering: "",
+      errorRoom: ""
     };
   },
 
   watch: {
     rooms(newVal, oldVal) {
+      this.$refs.vuetable.setData(this.rooms);
       this.$refs.vuetable.refresh();
-  
     }
   },
 
   created: function() {
     // Initializing rooms from backend
-    AXIOS.get(`http://localhost:8080/classroom/list`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.rooms = response.data;
-      })
-      .catch(e => {
-        this.errorRoom = e;
-      });
-   
+    this.updateRooms()
+    this.populateOfferingList()
+
+    var darkModeOn = localStorage.getItem("DarkModeOn");
+    if (darkModeOn === "true") {
+      this.bgColor = "rgb(53,58.62)";
+      this.textColor = "white";
+    } else {
+      this.bgColor = "rgb(250,250,250)";
+      this.textColor = "black";
+    }
   },
   methods: {
+    setDarkMode: function() {
+      var darkModeOn = localStorage.getItem("DarkModeOn");
+      if (darkModeOn === "true") {
+        this.bgColor = "rgb(53, 58, 62)";
+        this.textColor = "white";
+      } else {
+        this.bgColor = "rgb(250,250,250)";
+        this.textColor = "black";
+      }
+    },
     renderIcon(classes, options) {
       return `<span class="${classes.join(" ")}"></span>`;
     },
@@ -169,19 +229,6 @@ export default {
         .catch(e => {
           this.errorRoom = e;
         });
-    },
-    deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/classroom/delete/${rowData.personId}`)
-        .then(response => {
-          this.errorRoom = "";
-        })
-        .catch(e => {
-          var errorMsg = e.message;
-          console.log(errorMsg);
-          this.errorRoom = errorMsg;
-        });
-      alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateRooms()
     },
     dataManager(sortOrder, pagination) {
       if (this.rooms.length < 1) return;
@@ -212,23 +259,16 @@ export default {
       };
     },
     onFilterSet(filterText) {
-    //  this.moreParams = {
-      // 'filter': filterText
-     // };
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
       let room = this.rooms[0];
       let data = this.rooms.filter(room => {
         return (
-          room.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
-          room.lastName.toLowerCase().includes(filterText.toLowerCase())
+          room.roomCode.toLowerCase().includes(filterText.toLowerCase())
         );
       });
       this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
-    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -241,6 +281,61 @@ export default {
         this.textColor = "black";
         this.buttonClass = "btn btn-white btn-lg signupField";
       }
+    },
+    createReviewSession(rowData) {
+      var offeringList = document.getElementById("inlineFormCustomSelect")
+      if((offeringList.selectedIndex > 0) && (offeringList.options[offeringList.selectedIndex].text)){
+        this.offeringID = offeringList.options[offeringList.selectedIndex].text
+      }
+      if(this.offeringID == ''){
+        alert("ERROR: Enter offering ID to add a review session!")
+        return -1
+      }
+      if(this.managerID == ''){
+        alert("ERROR: Enter manager ID to add a review session!")
+        return -1
+      }
+      AXIOS.post(
+        "/classroom/review/create/" +
+          this.offeringID +
+          "?managerID=" +
+          this.managerID +
+          "&roomCode=" +
+          rowData.roomCode +
+          "&tutoringSystemID=1"
+      ).then(response => {
+        this.errorRoom = ''
+        this.rooms = response.data;
+      })
+      .catch(e => {
+        var errorMsg = e.message
+        console.log(errorMsg)
+        alert(errorMsg)
+        this.errorRoom = errorMsg;
+      });
+      alert("You clicked add on: " + JSON.stringify(rowData))
+      this.offeringID = ''
+      this.managerID = ''
+    },
+    populateOfferingList() {
+      AXIOS.get(`http://localhost:8080/offering/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.offerings = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e;
+        });
+      var inlineFormCustomSelect = document.getElementById(
+        "inlineFormCustomSelect"
+      );
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.offerings.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.offerings[i].offeringID;
+        option.value = this.offerings[i].offeringID;
+        inlineFormCustomSelect.options.add(option);
+      }
     }
   },
   mounted() {
@@ -251,23 +346,6 @@ export default {
   }
 };
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <style>
 b-container {
@@ -286,5 +364,19 @@ b-container {
   /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
+}
+#reviewSession {
+  width: auto;
+  height: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-style: groove;
+}
+#myButton {
+  margin-top: 10px;
+}
+form {
+  margin-top: 10px;
+  margin-bottom: 10 px;
 }
 </style>

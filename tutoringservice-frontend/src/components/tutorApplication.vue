@@ -45,6 +45,9 @@
 
 
 
+var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
+var backendUrl = "http://localhost:8080/";
+  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 
 
