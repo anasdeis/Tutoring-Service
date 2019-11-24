@@ -13,6 +13,7 @@ import commission from "@/components/commission";
 import review from "@/components/review";
 import student from "@/components/student";
 import subjectRequest from "@/components/subjectRequest";
+import subject from "@/components/subject";
 import home1 from "@/components/home1";
 
 Vue.use(Router)
@@ -83,6 +84,11 @@ export default new Router({
       path: "/subjectRequest",
       name: "subjectRequest",
       component: subjectRequest
+    },
+    {
+      path: "/subject",
+      name: "subject",
+      component: subject
     },
     {
       path: "/home1",

@@ -1379,5 +1379,16 @@ public class TutoringServiceRestController {
 		service.deleteSubjectRequest(requestID);
 		return subjectRequestDto;
 	}
+	
+	/**
+	 * @return Remove subject 
+	 * @sample /subject/delete/<courseID>
+	 */
+	@DeleteMapping(value = {"/subject/delete/{courseID}", "/subject/delete/{courseID}/"})
+	public SubjectDto deleteSubject(@PathVariable("courseID") String courseID) {
+		SubjectDto subjectDto = convertToDto(service.getSubject(courseID));
+		service.deleteSubject(courseID);
+		return subjectDto;
+	}
 }
 
