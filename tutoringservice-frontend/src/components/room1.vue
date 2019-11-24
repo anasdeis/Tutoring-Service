@@ -1,9 +1,9 @@
 <template>
-  <div id="student" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="room" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid>
-      <b-col id="studentList">
+      <b-col id="roomList">
         <h6>
-          <strong>VIEW REVIEWS</strong>
+          <strong>VIEW ROOM SCHEDULE</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -24,24 +24,18 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-success btn-sm"
-                  title="Approve review!"
-                  @click="approveRow(props.rowData)"
-                >
-                  <i class="fa fa-check"></i>
-                </button>
-                <button
                   class="btn btn-danger btn-sm"
-                  title="Decline Review!"
-                  @click="declineRow(props.rowData)"
+                  title="Remove a room!"
+                  @click="deleteRow(props.rowData)"
                 >
-                  <i class="fa fa-ban"></i>
+                  <i class="fa fa-trash"></i>
                 </button>
               </div>
             </template>
           </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
+
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
           </div>
         </div>
@@ -58,15 +52,15 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDrop
 import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
 import _ from "lodash";
 import Vue from "vue";
-import FilterBar from "./FilterBar";
+import FilterBar from "./FilterBarRoom";
 import VueEvents from "vue-events";
 Vue.use(VueEvents);
 
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl =
+  "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -75,7 +69,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "reviews",
+  name: "rooms",
   components: {
     Vuetable,
     VuetablePagination,
@@ -95,39 +89,31 @@ export default {
       },
       sortOrder: [
         {
-          field: "reviewID",
-          sortField: "reviewID",
+          field: "roomID",
+          sortField: "roomId",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "reviewID",
-          title: "Review ID",
-          sortField: "reviewID"
+          name: "roomCode",
+          title: "Room ID",
+          sortField: "roomId"
         },
         {
-          name: "offering",
-          title: "Offering",
-          sortField: "offering"
+          name: "isBooked",
+          title: "isBooked",
+          sortField: "isBooked"
         },
         {
-          name: "comment",
-           title: `<span class="icon orange"><i class="fa fa-comment"></i></span> Comment`,
-          sortField: "comment"
-        },
-        {
-          name: "isApproved",
-          title: '<i class="fa fa-thumbs-up"></i> Approval',
-          sortField: "isApproved",
-        },
-        {
-          name: "actions",
-          title: "Actions"
+          name: "isBigRoom",
+          title: "isBigRoom",
+          sortField: "isBigRoom"
         }
       ],
-      reviews: [],
-      errorReview: "",
+    //  filterText: "",
+      rooms: [],
+      errorRoom: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -135,25 +121,23 @@ export default {
   },
 
   watch: {
-    reviews(newVal, oldVal) {
+    rooms(newVal, oldVal) {
       this.$refs.vuetable.refresh();
+  
     }
   },
 
   created: function() {
-    this.updateReviews()
-    
-    var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn === "true") {
-      this.bgColor = "rgb(53,58,62)";
-      this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg studentField";
-    } else {
-      this.bgColor = "rgb(250,250,250)";
-      this.textColor = "black";
-      // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg studentField";
-    }
+    // Initializing rooms from backend
+    AXIOS.get(`http://localhost:8080/classroom/list`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.rooms = response.data;
+      })
+      .catch(e => {
+        this.errorRoom = e;
+      });
+   
   },
   methods: {
     renderIcon(classes, options) {
@@ -166,47 +150,34 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    updateReviews() {
-      // Initializing reviews from backend
-      AXIOS.get(`http://localhost:8080/review/list`)
+    updateRooms() {
+      // Initializing rooms from backend
+      AXIOS.get(`http://localhost:8080/classroom/list`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.reviews = response.data;
+          this.rooms = response.data;
         })
         .catch(e => {
-          this.errorReview = e;
+          this.errorRoom = e;
         });
     },
-    approveRow(rowData) {
-      AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=true`)
+    deleteRow(rowData) {
+      AXIOS.delete(`http://localhost:8080/classroom/delete/${rowData.personId}`)
         .then(response => {
-          this.errorStudent = "";
+          this.errorRoom = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          this.errorReview = errorMsg;
+          this.errorRoom = errorMsg;
         });
-      alert("You clicked approve on: " + JSON.stringify(rowData));
-      this.updateReviews();
-    },
-    declineRow(rowData) {
-      AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=false`)
-        .then(response => {
-          this.errorStudent = "";
-        })
-        .catch(e => {
-          var errorMsg = e.message;
-          console.log(errorMsg);
-          this.errorReview = errorMsg;
-        });
-      alert("You clicked decline on: " + JSON.stringify(rowData));
-      this.updateReviews();
+      alert("You clicked delete on: " + JSON.stringify(rowData));
+      this.updateRooms()
     },
     dataManager(sortOrder, pagination) {
-      if (this.reviews.length < 1) return;
+      if (this.rooms.length < 1) return;
 
-      let local = this.reviews;
+      let local = this.rooms;
 
       // sortOrder can be empty, so we have to check for that as well
       if (sortOrder.length > 0) {
@@ -228,22 +199,27 @@ export default {
 
       return {
         pagination: pagination,
-        data: local.slice(from, to)
+        data: _.slice(local, from, to)
       };
     },
     onFilterSet(filterText) {
-      let review = this.reviews[0];
-
-      let data = this.reviews.filter(review => {
+    //  this.moreParams = {
+      // 'filter': filterText
+     // };
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
+      let room = this.rooms[0];
+      let data = this.rooms.filter(room => {
         return (
-          review.offering.toLowerCase().includes(filterText.toLowerCase())
+          room.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
+          room.lastName.toLowerCase().includes(filterText.toLowerCase())
         );
       });
-
       this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
+    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -263,7 +239,6 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-     document.getElementsByName("search")[0].placeholder = "Search offering.."
   }
 };
 </script>
@@ -281,7 +256,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#studentList {
+#roomList {
   /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;

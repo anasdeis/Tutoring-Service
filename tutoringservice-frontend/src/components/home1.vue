@@ -125,43 +125,6 @@ export default {
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
     }
-
-    // since we will only have one manager, I don't think the following 4 blocks of code are necessary
-    // get all managers from backend
-    // AXIOS.get('/managers').then(response => {
-    //     this.managers = response.data;
-    //     this.managersLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
-
-    // // get all managers from manager database
-    // AXIOS_Manager.get("/getAllManagers").then(response => {
-    //     this.externalManagers = response.data;
-    //     this.externalManagersLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
-
-    // // get all logins from backend
-    // AXIOS.get('/logins').then(response => {
-    //     this.logins = response.data;
-    //     this.loginsLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
-
-    // // get all logins from database
-    // AXIOS_Logins.get("getAllLogins").then(response => {
-    //     this.externalLogins = response.data;
-    //     this.externalLoginsLoaded = true;
-    // })
-    // .catch(e => {
-    //     this.error = e;
-    // });
   },
   methods: {
     setDarkMode: function(darkModeOn) {
@@ -175,8 +138,8 @@ export default {
     },
     goToRoomPage: function() {
       Router.push({
-        path: "/room",
-        name: "room"
+        path: "/room1",
+        name: "room1"
       });
     },
     goToTutorPage: function() {

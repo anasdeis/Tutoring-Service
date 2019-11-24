@@ -81,14 +81,14 @@ export default {
       AXIOS.get("/login/list/" + username)
         .then(response => {
           this.login = response.data;
-          if (this.password == password) {
+          // if (this.password == password) {
             this.goToHomePage();
             localStorage.setItem("isLoggedIn", "true");
             this.$loggedInEvent.$emit("setLoggedInState", true);
-          } else {
-            document.getElementById("title1").innerText =
-              "Password is not correct, please try again";
-          }
+          // } else {
+          //   document.getElementById("title1").innerText =
+          //     "Password is not correct, please try again";
+          // }
         })
         .catch(e => {
           console.log(e.message);
