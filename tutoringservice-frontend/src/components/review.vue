@@ -1,7 +1,7 @@
 <template>
-  <div id="student" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="review" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid>
-      <b-col id="studentList">
+      <b-col id="reviewList">
         <h6>
           <strong>VIEW REVIEWS</strong>
         </h6>
@@ -136,7 +136,7 @@ export default {
 
   watch: {
     reviews(newVal, oldVal) {
-      this.$refs.vuetable.refresh();
+      this.$refs.vuetable.setData(this.subjectRequests);
     }
   },
 
@@ -181,11 +181,12 @@ export default {
     approveRow(rowData) {
       AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=true`)
         .then(response => {
-          this.errorStudent = "";
+          this.errorReview = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
+          alert(errorMsg)
           this.errorReview = errorMsg;
         });
       alert("You clicked approve on: " + JSON.stringify(rowData));
@@ -194,11 +195,12 @@ export default {
     declineRow(rowData) {
       AXIOS.patch(`http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=false`)
         .then(response => {
-          this.errorStudent = "";
+          this.errorReview = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
+          alert(errorMsg)
           this.errorReview = errorMsg;
         });
       alert("You clicked decline on: " + JSON.stringify(rowData));
@@ -282,7 +284,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#studentList {
+#reviewList {
   /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;

@@ -96,7 +96,7 @@ export default {
       fields: [
         {
           name: "personId",
-          title: "Student ID",
+          title: "ID",
           sortField: "personId"
         },
         {
@@ -194,6 +194,7 @@ export default {
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
+          alert(errorMsg)
           this.errorStudent = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
