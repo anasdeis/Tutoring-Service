@@ -1269,6 +1269,13 @@ public class TutoringServiceRestController {
 		service.deleteTutor(tutorID);
 		return tutorDto;
 	}
+	
+	@DeleteMapping(value = {"/tutorApplication/delete/{tutorApplicationID}", "/tutorApplication/delete/{tutorApplicationID}"})
+	public TutorApplicationDto deleteTutorApplication(@PathVariable("tutorApplicationID") Integer tutorApplicationID) {
+		TutorApplicationDto tutorApplicationDto = convertToDto(service.getTutorApplication(tutorApplicationID));
+		service.deleteTutorApplication(tutorApplicationID);
+		return tutorApplicationDto;
+	}
 
 	/**
 	 * @return update tutor as isRegistered
