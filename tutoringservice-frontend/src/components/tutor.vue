@@ -1,57 +1,326 @@
-<!--- This component acts as a page for tutor, including add/fire tutor --->
 <template>
+  <div id="tutor" class="card" v-bind:style="{ backgroundColor: bgColor}">
+    <b-container fluid>
+      <b-col id="tutorList">
+        <h6>
+          <strong>VIEW REGISTERED TUTORS</strong>
+        </h6>
+
+        <div id="table-wrapper" class="container">
+          <filter-bar></filter-bar>
+          <vuetable
+            ref="vuetable"
+            :fields="fields"
+            :api-mode="false"
+            pagination-path="pagination"
+            :per-page="perPage"
+            :sort-order="sortOrder"
+            :multi-sort="true"
+            :css="css"
+            :data-manager="dataManager"
+            :render-icon="renderIcon"
+            @vuetable:pagination-data="onPaginationData"
+          >
+            <template slot="actions" slot-scope="props">
+              <div class="table-button-container">
+                <button
+                  class="btn btn-danger btn-sm"
+                  title="Remove a tutor!"
+                  @click="deleteRow(props.rowData)"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </template>
+          </vuetable>
+          <div>
+            <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
+
+            <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+          </div>
+        </div>
+      </b-col>
+    </b-container>
+  </div>
+</template>
+
+
+
+
+
+
+<script>
+import axios from "axios";
+import Router from "../router";
+import Vuetable from "vuetable-2/src/components/Vuetable";
+import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDropdown";
+import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
+import _ from "lodash";
+import Vue from "vue";
+import FilterBar from "./FilterBar2";
+import VueEvents from "vue-events";
+Vue.use(VueEvents);
+
+var config = require("../../config");
+
+var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
+var backendUrl =
+  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+
+// axios config
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl }
+});
+
+export default {
+  name: "tutors",
+  components: {
+    Vuetable,
+    VuetablePagination,
+    VuetablePaginationInfo,
+    FilterBar
+  },
+  data() {
+    return {
+      perPage: 10,
+      css: {
+        tableClass: "table table-bordered table-hover",
+        ascendingIcon: "fa fa-chevron-up",
+        descendingIcon: "fa fa-chevron-down",
+        loadingClass: "loading",
+        ascendingClass: "sorted-asc",
+        descendingClass: "sorted-desc"
+      },
+      sortOrder: [
+        {
+          field: "tutorID",
+          sortField: "tutorId",
+          direction: "asc"
+        }
+      ],
+      fields: [
+        {
+          name: "personId",
+          title: "Tutor ID",
+          sortField: "tutorId"
+        },
+        {
+          name: "firstName",
+          title: `<span class="icon orange"><i class="fa fa-user"></i></span> First Name`,
+          sortField: "firstName"
+        },
+        {
+          name: "lastName",
+          title: "Last Name",
+          sortField: "lastName"
+        },
+        {
+          name: "email",
+          title: '<i class="fa fa-envelope"></i> Email',
+          sortField: "email"
+        },
+        {
+          name: "phoneNumber",
+          title: '<i class="fa fa-phone"></i> Phone',
+          sortField: "phoneNumber"
+        },
+        {
+          name: "actions",
+          title: "Actions"
+        }
+      ],
+    //  filterText: "",
+      tutors: [],
+      errorTutor: "",
+      response: [],
+      bgColor: "",
+      textColor: ""
+    };
+  },
+
+  watch: {
+    tutors(newVal, oldVal) {
+      this.$refs.vuetable.refresh();
+  
+    }
+  },
+
+  created: function() {
+    // Initializing tutors from backend
+    AXIOS.get(`http://localhost:8080/tutor/list`)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        this.tutors = response.data;
+      })
+      .catch(e => {
+        this.errorTutor = e;
+      });
+   
+  },
+  methods: {
+    renderIcon(classes, options) {
+      return `<span class="${classes.join(" ")}"></span>`;
+    },
+    onPaginationData(paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData);
+      this.$refs.paginationInfo.setPaginationData(paginationData);
+    },
+    onChangePage(page) {
+      this.$refs.vuetable.changePage(page);
+    },
+    updateTutors() {
+      // Initializing tutors from backend
+      AXIOS.get(`http://localhost:8080/tutor/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.tutors = response.data;
+        })
+        .catch(e => {
+          this.errorTutor = e;
+        });
+    },
+    deleteRow(rowData) {
+      AXIOS.delete(`http://localhost:8080/tutor/delete/${rowData.personId}`)
+        .then(response => {
+          this.errorTutor = "";
+        })
+        .catch(e => {
+          var errorMsg = e.message;
+          console.log(errorMsg);
+          this.errorTutor = errorMsg;
+        });
+      alert("You clicked delete on: " + JSON.stringify(rowData));
+      this.updateTutors()
+    },
+    dataManager(sortOrder, pagination) {
+      if (this.tutors.length < 1) return;
+
+      let local = this.tutors;
+
+      // sortOrder can be empty, so we have to check for that as well
+      if (sortOrder.length > 0) {
+        console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
+        local = _.orderBy(
+          local,
+          sortOrder[0].sortField,
+          sortOrder[0].direction
+        );
+      }
+
+      pagination = this.$refs.vuetable.makePagination(
+        local.length,
+        this.perPage
+      );
+      console.log("pagination:", pagination);
+      let from = pagination.from - 1;
+      let to = from + this.perPage;
+
+      return {
+        pagination: pagination,
+        data: _.slice(local, from, to)
+      };
+    },
+    onFilterSet(filterText) {
+    //  this.moreParams = {
+      // 'filter': filterText
+     // };
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
+      let tutor = this.tutors[0];
+      let data = this.tutors.filter(tutor => {
+        return (
+          tutor.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
+          tutor.lastName.toLowerCase().includes(filterText.toLowerCase())
+        );
+      });
+      this.$refs.vuetable.setData(data);
+    },
+    onFilterReset() {
+    //  this.moreParams = {};
+      this.$refs.vuetable.refresh();
+     // Vue.nextTick(() => this.$refs.vuetable.refresh());
+    },
+    setDarkMode: function() {
+      var darkModeOn = localStorage.getItem("DarkModeOn");
+      if (darkModeOn === "true") {
+        this.bgColor = "rgb(53, 58, 62)";
+        this.textColor = "white";
+        this.buttonClass = "btn btn-dark btn-lg signupField";
+      } else {
+        this.bgColor = "rgb(250,250,250)";
+        this.textColor = "black";
+        this.buttonClass = "btn btn-white btn-lg signupField";
+      }
+    }
+  },
+  mounted() {
+    // Listens to the setDarkModeState event emitted from the LogoBar component
+    this.$root.$on("setDarkModeState", this.setDarkMode);
+    this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
+    this.$events.$on("filter-reset", e => this.onFilterReset());
+  }
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+b-container {
+  height: auto;
+}
+
+.orange {
+  color: orange;
+}
+
+.pagination {
+  margin-bottom: 10px;
+}
+
+#tutorList {
+  /*margin-bottom: 20px;*/
+  border-width: 5px;
+  border-style: groove;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+<!--- This component acts as a page for tutor, including add/fire tutor --->
+<!--- <template>
   <div id="tutor" class="card" v-bind:style="{ backgroundColor : bgColor}">
     <span id="title" v-bind:style="{color : textColor}"></span>
     <div>
       <span id="title1"></span>
     </div>
-    <!-- <b-container fluid>
-      <b-col id="tutorlist">
-        <p>View tutor list</p>
-        <p>TODO get the list from backend and implement the two buttons</p>
-        <select class="tutorField"></select>
-      </b-col>
-      <b-row id="myButton">
-        <b-col>
-          <button
-            type="button"
-            @click="addTutor()"
-            class="btn btn-primary btn-lg tutorField button"
-            v-b-tooltip.hove
-            title="Add a tutor!"
-          >Add Tutor</button>
-        </b-col>
-        <b-col>
-          <button
-            type="button"
-            @click="removeTutor()"
-            class="btn btn-primary btn-lg tutorField button"
-            v-b-tooltip.hove
-            title="Remove a tutor!"
-          >Remove Tutor</button>
-        </b-col>
-      </b-row>
-    </b-container>-->
     <b-container fluid>
       <b-row>
         <b-col id="tutor">
           <p>View all the tutors</p>
           <b-table striped hover :items="items"></b-table>
-          <!--          <table id="tutorTable">-->
-          <!--            <tr>-->
-          <!--              <th>Tutor Id</th>-->
-          <!--              <th>First Name</th>-->
-          <!--              <th>Last Name</th>-->
-          <!--              <th>Email</th>-->
-          <!--            </tr>-->
-          <!--            <tr>-->
-          <!--              <td>{{tutorID}}</td>-->
-          <!--              <td>{{ firstName}}</tutortd>-->
-          <!--              <t@gamil.comd>{{lastName}}</Lasttd>-->
-          <!--              <td>{{email}}</td>-->
-          <!--            </tr>-->
-          <!--          </table>-->
-          
         </b-col>
         <b-col id="detailOfTutor">
           <form>
@@ -69,9 +338,9 @@
             @click="getTutor(tutorID)"
             class="btn btn-primary btn-lg viewTutor button"
             v-b-tooltip.hover
-            title="Dispaly selected tutor"
+            title="Display selected tutor"
           >View detail</button>
-          <p>Here is the detail of the tutor you select</p>
+          <p>Here is the detail of the tutor you selected</p>
           <button
             type="button"
             @click="deleteTutor(tutorID)"
@@ -84,180 +353,113 @@
     </b-container>
   </div>
 </template>
-<script>
-import axios from "axios";
-import Router from "../router";
-var config = require("../../config");
-var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
-// axios config
-var AXIOS = axios.create({
-  baseURL: backendUrl,
-  headers: { "Access-Control-Allow-Origin": frontendUrl }
-});
-var tutorTable = {
-  // GET YOUR TABLE FROM THE BACKEND- all tutor applications
-};
-var detailOfTutor = {
-  // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
-};
-export default {
-  data() {
-    return {
-      tutor: {
-        type: Object
-      },
-      bgColor: "",
-      textColor: "",
-      tutorID: "",
-      items: [
-        {
-          tutorID: 1001,
-          firstName: "tutor1",
-          lastName: "Last",
-          email: "1001@gamil.com"
-        },
-        {
-          tutorID: 1002,
-          firstName: "tutor2",
-          lastName: "Last",
-          email: "1002@gamil.com"
-        },
-        {
-          tutorID: 1003,
-          firstName: "tutor3",
-          lastName: "Last",
-          email: "1003@gamil.com"
-        },
-        {
-          tutorID: 1004,
-          firstName: "tutor4",
-          lastName: "Last",
-          email: "1004@gamil.com"
-        },
-        {
-          tutorID: 1005,
-          firstName: "tutor5",
-          lastName: "Last",
-          email: "1005@gamil.com"
-        },
-        {
-          tutorID: 1006,
-          firstName: "tutor6",
-          lastName: "Last",
-          email: "1006@gamil.com"
-        },
-        {
-          tutorID: 1007,
-          firstName: "tutor7",
-          lastName: "Last",
-          email: "1007@gamil.com"
-        },
-        {
-          tutorID: 1008,
-          firstName: "tutor8",
-          lastName: "Last",
-          email: "1008@gamil.com"
-        },
-        {
-          tutorID: 1009,
-          firstName: "tutor9",
-          lastName: "Last",
-          email: "1009@gamil.com"
-        },
-        {
-          tutorID: 1010,
-          firstName: "tutor10",
-          lastName: "Last",
-          email: "1010@gamil.com"
-        },
-        {
-          tutorID: 1011,
-          firstName: "tutor11",
-          lastName: "Last",
-          email: "1011@gamil.com"
-        },
-        {
-          tutorID: 1012,
-          firstName: "tutor12",
-          lastName: "Last",
-          email: "1012@gamil.com"
-        },
-        {
-          tutorID: 1013,
-          firstName: "tutor13",
-          lastName: "Last",
-          email: "1013@gamil.com"
-        },
-        {
-          tutorID: 1014,
-          firstName: "tutor14",
-          lastName: "Last",
-          email: "1014@gamil.com"
-        },
-        {
-          tutorID: 1015,
-          firstName: "tutor15",
-          lastName: "Last",
-          email: "1015@gamil.com"
-        },
-        {
-          tutorID: 1016,
-          firstName: "tutor16",
-          lastName: "Last",
-          email: "1016@gamil.com"
-        },
-        {
-          tutorID: 1017,
-          firstName: "tutor17",
-          lastName: "Last",
-          email: "1017@gamil.com"
-        }
-      ]
-    };
-  },
-  created: function() {
-    var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn === "true") {
-      this.bgColor = "rgb(53,58,62)";
-      this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg signupField";
-    } else {
-      this.bgColor = "rgb(250,250,250)";
-      this.textColor = "black";
-      // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg signupField";
-    }
-  },
-  methods: {
-    setDarkMode: function() {
-      var darkModeOn = localStorage.getItem("DarkModeOn");
-      if (darkModeOn === "true") {
-        this.bgColor = "rgb(53, 58, 62)";
-        this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
-      } else {
-        this.bgColor = "rgb(250,250,250)";
-        this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
-      }
-    },
-    getTutor: function(tutorID) {
-      AXIOS.get("/tutor/=" + tutorID).then(response => {
-        this.getTutor = response.data;
-      });
-    },
-    deleteTutor: function(tutorID) {
-      AXIOS.delete("/tutor/delete/=" + tutorID);
-    }
-  },
-  mounted() {
-    // Listens to the setDarkModeState event emitted from the LogoBar component
-    this.$root.$on("setDarkModeState", this.setDarkMode);
-  }
-};
-</script>
+--->
+
+
+
+
+
+
+
+
+<!---  <script> 
+// import axios from "axios";
+// import Router from "../router";
+
+// var config = require("../../config");
+// var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
+// var backendUrl =
+//   "http://" + config.build.backendHost + ":" + config.build.backendPort;
+
+
+// // axios config
+// var AXIOS = axios.create({
+//   baseURL: backendUrl,
+//   headers: { "Access-Control-Allow-Origin": frontendUrl }
+// });
+
+
+// var tutorTable = {
+//   // GET YOUR TABLE FROM THE BACKEND- all tutor applications
+// };
+// var detailOfTutor = {
+//   // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
+// };
+// export default {
+//   data() {
+//     return {
+//       tutor: {
+//         type: Object
+//       },
+//       bgColor: "",
+//       textColor: "",
+//       tutorID: "",
+//       items: [
+//         {
+//           tutorID: 1001,
+//           firstName: "tutor1",
+//           lastName: "Last",
+//           email: "1001@gamil.com"
+//         }
+//       ]
+//     };
+//   },
+//   created: function() {
+//     var darkModeOn = localStorage.getItem("DarkModeOn");
+//     if (darkModeOn === "true") {
+//       this.bgColor = "rgb(53,58,62)";
+//       this.textColor = "white";
+//       this.buttonClass = "btn btn-dark btn-lg signupField";
+//     } else {
+//       this.bgColor = "rgb(250,250,250)";
+//       this.textColor = "black";
+//       // this.bgColor = "rgb(248, 249, 251)";
+//       this.buttonClass = "btn btn-white btn-lg signupField";
+//     }
+//   },
+//   methods: {
+
+
+//     setDarkMode: function() {
+//       var darkModeOn = localStorage.getItem("DarkModeOn");
+//       if (darkModeOn === "true") {
+//         this.bgColor = "rgb(53, 58, 62)";
+//         this.textColor = "white";
+//         this.buttonClass = "btn btn-dark btn-lg signupField";
+//       } else {
+//         this.bgColor = "rgb(250,250,250)";
+//         this.textColor = "black";
+//         this.buttonClass = "btn btn-white btn-lg signupField";
+//       }
+//     },
+//     getTutor: function(tutorID) {
+//       AXIOS.get("/tutor/=" + tutorID).then(response => {
+//         this.getTutor = response.data;
+//       });
+//     },
+//     deleteTutor: function(tutorID) {
+//       AXIOS.delete("/tutor/delete/=" + tutorID);
+//     }
+//   },
+//   mounted() {
+//     // Listens to the setDarkModeState event emitted from the LogoBar component
+//     this.$root.$on("setDarkModeState", this.setDarkMode);
+//   }
+// };
+// </script>
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 <style>
 p {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -307,3 +509,4 @@ table tbody tr:nth-child(2n) td {
   margin-top: 20px;
 }
 </style>
+*/
