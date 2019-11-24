@@ -229,7 +229,7 @@
             onFilterSet(filterText) {
                 let tutorApplication = this.tutorApplications[0];
 
-                let data = this.tutorApplications.filter(student => {
+                let data = this.tutorApplications.filter(tutorApplication => {
                     return (
                         tutorApplication.subject.toLowerCase().includes(filterText.toLowerCase())
                     );
