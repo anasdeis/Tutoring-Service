@@ -1,9 +1,9 @@
 <template>
-  <div id="student" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="subject" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid>
-      <b-col id="studentList">
+      <b-col id="subjectList">
         <h6>
-          <strong>VIEW STUDENTS</strong>
+          <strong>VIEW SUBJECTS</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -25,7 +25,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
-                  title="Remove a student!"
+                  title="Remove a subject!"
                   @click="deleteRow(props.rowData)"
                 >
                   <i class="fa fa-trash"></i>
@@ -68,7 +68,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "students",
+  name: "subjects",
   components: {
     Vuetable,
     VuetablePagination,
@@ -88,54 +88,45 @@ export default {
       },
       sortOrder: [
         {
-          field: "personId",
-          sortField: "personId",
+          field: "courseID",
+          sortField: "courseID",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "personId",
+          name: "courseID",
           title: "ID",
-          sortField: "personId"
+          sortField: "courseID"
         },
         {
-          name: "firstName",
-          title: `<span class="icon orange"><i class="fa fa-user"></i></span> First Name`,
-          sortField: "firstName"
+          name: "name",
+          title: "Name",
+          sortField: "name"
         },
         {
-          name: "lastName",
-          title: "Last Name",
-          sortField: "lastName"
+          name: "description",
+          title: `<span class="icon orange"><i class="fa fa-file-alt"></i></span> Description`,
+          sortField: "description"
         },
         {
-          name: "dateOfBirth",
-          title: '<i class="fa fa-birthday-cake"></i> Birthdate',
-          sortField: "dateOfBirth"
+          name: "subjectType",
+          title: '<i class="fas fa-school"></i> School Type',
+          sortField: "subjectType"
         },
         {
-          name: "email",
-          title: '<i class="fa fa-envelope"></i> Email',
-          sortField: "email"
-        },
-        {
-          name: "phoneNumber",
-          title: '<i class="fa fa-phone"></i> Phone',
-          sortField: "phoneNumber"
-        },
-        {
-          name: "numCoursesEnrolled",
-          title: "Courses",
-          sortField: "numCoursesEnrolled"
+          name: "university",
+          title: '<i class="fas fa-university"></i> University',
+          sortField: "university"
         },
         {
           name: "actions",
           title: "Actions"
         }
       ],
-      students: [],
-      errorStudent: "",
+      subjects: [],
+      errorSubject: "",
+      errorUniversity: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -143,14 +134,14 @@ export default {
   },
 
   watch: {
-    students(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.students);
+    subjects(newVal, oldVal) {
+      this.$refs.vuetable.setData(this.subjects);
       this.$refs.vuetable.refresh();
     }
   },
 
   created: function() {
-    this.updateStudents();
+    this.updateSubjects();
 
     /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -176,35 +167,39 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    updateStudents() {
-      // Initializing students from backend
-      AXIOS.get(`http://localhost:8080/student/list`)
+    updateSubjects() {
+      // Initializing reviews from backend
+      AXIOS.get(`http://localhost:8080/subject/list`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.students = response.data;
+          this.subjects = response.data;
         })
         .catch(e => {
-          this.errorStudent = e;
+          this.errorSubject = e;
         });
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/student/delete/${rowData.personId}`)
+      if (rowData.offering.length > 0) {
+        alert("ERROR: You can't delete a subject that has active offerings");
+        return -1;
+      }
+      AXIOS.delete(`http://localhost:8080/subject/delete/${rowData.courseID}`)
         .then(response => {
-          this.errorStudent = "";
+          this.errorSubject = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
           alert(errorMsg);
-          this.errorStudent = errorMsg;
+          this.errorSubject = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateStudents();
+      this.updateSubjects();
     },
     dataManager(sortOrder, pagination) {
-      if (this.students.length < 1) return;
+      if (this.subjects.length < 1) return;
 
-      let local = this.students;
+      let local = this.subjects;
 
       // sortOrder can be empty, so we have to check for that as well
       if (sortOrder.length > 0) {
@@ -230,13 +225,9 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let student = this.students[0];
-
-      let data = this.students.filter(student => {
-        return (
-          student.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
-          student.lastName.toLowerCase().includes(filterText.toLowerCase())
-        );
+      let subject = this.subjects[0];
+      let data = this.subjects.filter(subject => {
+        return subject.name.toLowerCase().includes(filterText.toLowerCase());
       });
 
       this.$refs.vuetable.setData(data);
@@ -262,8 +253,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder =
-      "Search first/last name..";
+    document.getElementsByName("search")[0].placeholder = "Search name..";
   }
 };
 </script>
@@ -281,7 +271,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#studentList {
+#subjectList {
   border-width: 5px;
   border-style: groove;
 }

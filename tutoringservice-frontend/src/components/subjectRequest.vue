@@ -141,7 +141,7 @@ export default {
         },
         {
           name: "subjectType",
-          title: '<i class="fa fa-school"></i> School Type',
+          title: '<i class="fas fa-school"></i> School Type',
           sortField: "subjectType"
         },
         {
