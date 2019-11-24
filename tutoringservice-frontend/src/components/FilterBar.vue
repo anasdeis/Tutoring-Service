@@ -13,9 +13,9 @@
           placeholder=""
         />
         &nbsp;
-        <button class="btn btn-primary" @click="doFilter">Go</button>
+        <button class="btn btn-primary" @click="doFilter" title="Filter Table!">Go</button>
         &nbsp;
-        <button class="btn btn-default" @click="resetFilter">Reset</button>
+        <button class="btn btn-default" @click="resetFilter" title="Reset Table!">Reset</button>
       </div>
     </div>
   </div>
