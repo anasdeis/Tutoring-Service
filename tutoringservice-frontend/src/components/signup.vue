@@ -79,7 +79,7 @@
           placeholder="Enter username"
         />
       </form>
-      <form>
+      <!-- <form>
         Password:
         <input
           class="signupField"
@@ -88,7 +88,7 @@
           v-model="pw"
           placeholder="Enter password"
         />
-      </form>
+      </form> -->
       <center>
         <button
           type="button"
@@ -193,7 +193,7 @@ export default {
       email,
       phone,
       managerID,
-      login,
+      username,
       request,
       review,
       commission,
@@ -215,7 +215,7 @@ export default {
           "&phone=" +
           phone +
           "&login=" +
-          login +
+          username +
           "&request=" +
           request +
           "&review=" +

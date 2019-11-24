@@ -51,7 +51,7 @@
             placeholder="Enter percentage"
           />
         </form>
-        <form>
+        <!-- <form>
           Offering ID:
           <input
             class="commissionField"
@@ -60,7 +60,14 @@
             v-model="offeringID"
             placeholder="Enter Offering ID"
           />
-        </form>
+        </form> -->
+ <div class="col-auto my-1">
+                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="inlineFormCustomSelect">
+                    <option selected>Choose Offering...</option>
+                  </select>
+                  <button class="btn btn-primary" title="Populate list!" @click="populateOfferingList">List</button>
+                </div>
+
         <form>
           Confirm your manager ID:
           <input
@@ -110,7 +117,8 @@ export default {
       manager: "",
       offeringID: "",
       error: "",
-      system: "1"
+      system: "1",
+      offerings:[]
     };
   },
 
@@ -138,6 +146,24 @@ export default {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
         this.buttonClass = "btn btn-white btn-lg signupField";
+      }
+    },
+    populateOfferingList(){
+      AXIOS.get(`http://localhost:8080/offering/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.offerings = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e;
+        });
+      var inlineFormCustomSelect = document.getElementById("inlineFormCustomSelect");
+      inlineFormCustomSelect.options.length = 1
+      for (var i = 0; i < this.offerings.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.offerings[i].offeringID;
+        option.value = this.offerings[i].offeringID;
+        inlineFormCustomSelect.options.add(option);
       }
     },
     createCommission: function(

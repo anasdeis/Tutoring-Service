@@ -7,42 +7,7 @@
     <div>
       <span id="title1"></span>
     </div>
-    <!-- <b-container>
-      <b-row>
-        <b-col id="smallroom">
-          <p>View Small Rooms 1-10</p>
-          <select>
-            <option value="RM01">RM01</option>
-          </select>
-          <p>
-            The room you select is: <span class="output"></span></p>
-            <button onClick="getOpinion()">Select Room</button>
-          <p>
-            The romm you select is: <span class="status"></span></p>
-          <button
-            type="button"
-            @click="viewRoomStatus()"
-            class="btn btn-primary btn-lg room button"
-            v-b-tooltip.hover
-            title="View status"
-          >View Status</button>
-          
-        </b-col>
-        <b-col id="bigroom">
-          <p>View Big Rooms 11-13 for group review</p>
-          <select>
-            <option value="RM11">RM11</option>
-          </select>
-          <button
-            type="button"
-            @click="viewRoomStatus()"
-            class="btn btn-primary brn-lg room button"
-            v-b-tooltip.hover
-            title="View status"
-          >View Status</button>
-        </b-col>
-      </b-row>
-    </b-container>-->
+    
     <b-container fluid>
       <b-row>
         <b-col id="room">
