@@ -1,83 +1,58 @@
-<!--- This component acts as a page to view rooms--->
 <template>
-  <div id="room" class="card" v-bind:style="{ backgroundColor : bgColor }">
-    <span id="title" v-bind:style="{color : textColor}">
-      <center>View Rooms</center>
-    </span>
-    <div>
-      <span id="title1"></span>
-    </div>
+  <div id="room" class="card" v-bind:style="{ backgroundColor: bgColor}">
+    <b-container fluid :style="{color: textColor}">
+      <b-col id="roomList">
+        <h6>
+          <strong>VIEW CLASSROOMS</strong>
+        </h6>
 
-    <b-container fluid>
-      <b-row>
-        <b-col id="room">
-          <p>View all the rooms, room 1-10 are small room and 11-13 are big room</p>
-          <center>
-            <table id="roomTable">
-              <tr>
-                <th>Room Code</th>
-                <th>Big Room</th>
-                <th>Room Avaliability</th>
-              </tr>
-              <tr>
-                <td>{{roomCode}}</td>
-                <td>{{isBigRoom}}</td>
-                <td>{{isAvaliable}}</td>
-              </tr>
-            </table>
-          </center>
-          <button
-            id="myButton"
-            type="button"
-            @click="getAllRoomSchedules()"
-            class="btn btn-primary btn-lg room button"
-            v-b-tooltip.hover
-            title="View status"
-          >View Status</button>
-        </b-col>
+        <div id="table-wrapper" class="container">
+          <filter-bar></filter-bar>
+          <vuetable
+            ref="vuetable"
+            :fields="fields"
+            :api-mode="false"
+            pagination-path="pagination"
+            :per-page="perPage"
+            :sort-order="sortOrder"
+            :multi-sort="true"
+            :css="css"
+            :data-manager="dataManager"
+            :render-icon="renderIcon"
+            @vuetable:pagination-data="onPaginationData"
+          >
+            <template slot="actions" slot-scope="props">
+              <div class="table-button-container">
+                <button
+                  class="btn btn-success btn-sm"
+                  title="Book review session!"
+                  @click="createReviewSession(props.rowData)"
+                >
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </template>
+          </vuetable>
+          <div>
+            <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
 
-        <b-col id="reviewSession">
-          <p>Schedule Group Review with RM11-RM13</p>
-          <form>
-            Enter Room code (RM11-RM13):
-            <input
-              class="reviewField"
-              text="text"
-              id="roomCode"
-              v-model="roomCode"
-              placeholder="Enter Room Code"
-            />
-          </form>
-          <form>
-            Enter Offering ID:
-            <input
-              class="reviewField"
-              text="text"
-              id="offeringID"
-              v-model="offeringID"
-              placeholder="Enter offering ID"
-            />
-          </form>
-          <form>
-            Enter Manager ID:
-            <input
-              class="reviewField"
-              text="text"
-              id="managerID"
-              v-model="managerID"
-              placeholder="Enter manager ID"
-            />
-          </form>
-          <button
-            id="myButton"
-            type="button"
-            @click="createReviewSession(offeringID, managerID, roomCode, systemID)"
-            class="btn btn-primary btn-lg createReview button"
-            v-b-tooltip.hover
-            title="Create Review Session"
-          >Create Review Session</button>
-        </b-col>
-      </b-row>
+            <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
+          </div>
+        </div>
+      </b-col>
+
+      <b-col>
+        <div class="col-auto my-1">
+          <select
+            class="custom-select mr-sm-2"
+            id="inlineFormCustomSelect"
+            name="inlineFormCustomSelect"
+          >
+            <option selected>Choose Offering...</option>
+          </select>
+          <button class="btn btn-primary" title="Populate list!" @click="populateOfferingList">List</button>
+        </div>
+      </b-col>
     </b-container>
   </div>
 </template>
@@ -85,6 +60,14 @@
 <script>
 import axios from "axios";
 import Router from "../router";
+import Vuetable from "vuetable-2/src/components/Vuetable";
+import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDropdown";
+import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
+import _ from "lodash";
+import Vue from "vue";
+import FilterBar from "./FilterBar";
+import VueEvents from "vue-events";
+Vue.use(VueEvents);
 
 var config = require("../../config");
 
@@ -98,101 +81,262 @@ var AXIOS = axios.create({
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
 
-var roomTable = {
-  // GET YOUR ROOM SCHEDULES FROM THE BACKEND THEN REFLECT TO THE TABLE
-};
 export default {
+  name: "rooms",
+  components: {
+    Vuetable,
+    VuetablePagination,
+    VuetablePaginationInfo,
+    FilterBar
+  },
   data() {
     return {
-      room: {
-        type: Object
+      perPage: 10,
+      css: {
+        tableClass: "table table-bordered table-hover",
+        ascendingIcon: "fa fa-chevron-up",
+        descendingIcon: "fa fa-chevron-down",
+        loadingClass: "loading",
+        ascendingClass: "sorted-asc",
+        descendingClass: "sorted-desc"
       },
+      sortOrder: [
+        {
+          field: "roomCode",
+          sortField: "roomCode",
+          direction: "asc"
+        }
+      ],
+      fields: [
+        {
+          name: "roomCode",
+          title: "Room Code",
+          sortField: "roomCode"
+        },
+        {
+          name: "isBooked",
+          title: "Booked",
+          sortField: "isBooked"
+        },
+        {
+          name: "isBigRoom",
+          title: "Big Room",
+          sortField: "isBigRoom"
+        },
+        {
+          name: "offering",
+          title: `<span class="icon orange"><i class="fas fa-book-open"></i></span> Offerings`,
+          sortField: "offerings"
+        },
+        {
+          name: "actions",
+          title: "Actions"
+        }
+      ],
+      rooms: [],
+      errorRoom: "",
+      response: [],
       bgColor: "",
       textColor: "",
-      error: "",
-      output: "",
+      offerings: [],
       offeringID: "",
-      managerID: "",
-      roomCode: "",
-      systemID: "1"
+      errorOffering: "",
+      errorRoom: ""
     };
   },
+
+  watch: {
+    rooms(newVal, oldVal) {
+      this.$refs.vuetable.refresh();
+    }
+  },
+
   created: function() {
+    this.updateRooms();
+    this.populateOfferingList();
+
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58.62)";
       this.textColor = "white";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
+      this.buttonClass = "btn btn-white btn-lg container";
     }
   },
   methods: {
+    renderIcon(classes, options) {
+      return `<span class="${classes.join(" ")}"></span>`;
+    },
+    onPaginationData(paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData);
+      this.$refs.paginationInfo.setPaginationData(paginationData);
+    },
+    onChangePage(page) {
+      this.$refs.vuetable.changePage(page);
+    },
+    updateRooms() {
+      // Initializing rooms from backend
+      AXIOS.get(`classroom/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.rooms = response.data;
+        })
+        .catch(e => {
+          this.errorRoom = e;
+        });
+    },
+    dataManager(sortOrder, pagination) {
+      let local = this.rooms;
+
+      // sortOrder can be empty, so we have to check for that as well
+      if (sortOrder.length > 0) {
+        console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
+        local = _.orderBy(
+          local,
+          sortOrder[0].sortField,
+          sortOrder[0].direction
+        );
+      }
+
+      pagination = this.$refs.vuetable.makePagination(
+        local.length,
+        this.perPage
+      );
+      console.log("pagination:", pagination);
+      let from = pagination.from - 1;
+      let to = from + this.perPage;
+
+      return {
+        pagination: pagination,
+        data: _.slice(local, from, to)
+      };
+    },
+    onFilterSet(filterText) {
+      let room = this.rooms[0];
+      let data = this.rooms.filter(room => {
+        return room.roomCode.toLowerCase().includes(filterText.toLowerCase());
+      });
+      this.$refs.vuetable.setData(data);
+    },
+    onFilterReset() {
+      this.$refs.vuetable.refresh();
+    },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     },
-    getOpinion: function() {
-      selectElement = document.querySelector("#select1");
-      output = selectElement.value;
-      document.querySelector(".output").textContent = output;
+    createReviewSession(rowData) {
+      var offeringList = document.getElementById("inlineFormCustomSelect");
+      if (
+        offeringList.selectedIndex > 0 &&
+        offeringList.options[offeringList.selectedIndex].text
+      ) {
+        this.offeringID = offeringList.options[offeringList.selectedIndex].text;
+      }
+
+      AXIOS.patch(
+        "/classroom/review/" +
+          rowData.roomCode +
+          "?offeringID=" +
+          this.offeringID
+      )
+        .then(response => {
+          this.errorRoom = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorRoom = errorMsg;
+        });
+      alert("You clicked add on: " + JSON.stringify(rowData));
+      this.updateRooms();
+      this.offeringID = "";
+      if (this.errorRoom != "") {
+        alert(this.errorRoom);
+      }
     },
-    getAllRoomSchedules: function() {
-      AXIOS.get("/classroom/list/").then(response => {
-        this.roomSchedules = response.data;
-      });
-    },
-    createReviewSession: function(offeringID, managerID, roomCode, systemID) {
-      AXIOS.post(
-        "/classroom/review/create/" +
-          offeringID +
-          "?managerID=" +
-          managerID +
-          "&roomCode=" +
-          roomCode +
-          "&systemID=" +
-          systemID
-      ).then(response => {
-        this.createReviewSession = response.data;
-      });
+    populateOfferingList() {
+      AXIOS.get(`offering/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.offerings = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e;
+        });
+      var inlineFormCustomSelect = document.getElementById(
+        "inlineFormCustomSelect"
+      );
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.offerings.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.offerings[i].offeringID;
+        option.value = this.offerings[i].offeringID;
+        inlineFormCustomSelect.options.add(option);
+      }
     }
   },
   mounted() {
+    // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
+    this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
+    this.$events.$on("filter-reset", e => this.onFilterReset());
+    document.getElementsByName("search")[0].placeholder = "Search room code..";
   }
 };
 </script>
 
 <style>
 b-container {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  height: auto;
 }
-form {
-  margin-top: 5px;
-  margin-bottom: 5px;
+
+.orange {
+  color: orange;
+}
+
+.white {
+  color: white;
+}
+
+.pagination {
+  margin-bottom: 10px;
+}
+
+#roomList {
+  /*margin-bottom: 20px;*/
+  border-width: 5px;
+  border-style: groove;
 }
 #reviewSession {
   width: auto;
   height: auto;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-#roomTable {
-  margin: auto;
-  border: 2px;
-  border: 1px solid black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-style: groove;
 }
 #myButton {
-  border: 0px;
-  border-radius: 4px;
-  padding: 2px;
-  margin-top: 5px;
+  margin-top: 10px;
+}
+form {
+  margin-top: 10px;
+  margin-bottom: 10 px;
 }
 </style>

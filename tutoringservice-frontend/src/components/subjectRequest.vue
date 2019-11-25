@@ -150,7 +150,8 @@ export default {
         },
         {
           name: "subjectType",
-          title: '<i class="fas fa-school"></i> School Type',
+          title:
+            '<span class="icon orange"><i class="fas fa-school"></i></span> School Type',
           sortField: "subjectType"
         },
         {
@@ -205,7 +206,7 @@ export default {
       this.$refs.vuetable.changePage(page);
     },
     populateUniversityList() {
-      AXIOS.get(`http://localhost:8080/university/list`)
+      AXIOS.get(`university/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.universities = response.data;
@@ -227,7 +228,7 @@ export default {
     },
     updateSubjectRequests() {
       // Initializing reviews from backend
-      AXIOS.get(`http://localhost:8080/subjectRequest/list`)
+      AXIOS.get(`subjectRequest/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.subjectRequests = response.data;
@@ -246,52 +247,52 @@ export default {
           universityList.options[universityList.selectedIndex].text;
       }
 
-      /*
-      let link = ""
-      if(rowData.subjectType === "University"){
-        link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`
-      }
-      else{
-        link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}`
-      }*/
-      AXIOS.post(`http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`)
+      AXIOS.post(
+        `subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`
+      )
         .then(response => {
           this.errorSubjectRequest = "";
           this.university = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorSubjectRequest = errorMsg;
         });
-      alert("You clicked add on: "+ JSON.stringify(rowData));
-      this.university = ''
-      this.courseID = ''
-      if(this.errorSubjectRequest != ''){
-        alert(this.errorSubjectRequest)
+      alert("You clicked add on: " + JSON.stringify(rowData));
+      this.university = "";
+      this.courseID = "";
+      if (this.errorSubjectRequest != "") {
+        alert(this.errorSubjectRequest);
       }
     },
     deleteRow(rowData) {
-      AXIOS.delete(
-        `http://localhost:8080/subjectRequest/delete/${rowData.requestID}`
-      )
+      AXIOS.delete(`subjectRequest/delete/${rowData.requestID}`)
         .then(response => {
           this.errorSubjectRequest = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorSubjectRequest = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateSubjectRequests();
-      if(this.errorSubjectRequest != ''){
-        alert(this.errorSubjectRequest)
+      if (this.errorSubjectRequest != "") {
+        alert(this.errorSubjectRequest);
       }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.subjectRequests.length < 1) return;
-
       let local = this.subjectRequests;
 
       // sortOrder can be empty, so we have to check for that as well

@@ -45,29 +45,6 @@
         </div>
       </b-col>
       <center>
-        <!-- <b-row id="findTutor">
-          <form>
-            Tutor ID:
-            <input
-              class="commissionField"
-              type="number"
-              id="tutorID"
-              v-model="tutorID"
-              placeholder="Enter tutor ID"
-            />
-          </form>
-          <button
-            type="button"
-            id="myButton"
-            @click="getTutor(tutorID)"
-            class="btn btn-primary btn-lg commissionField button"
-            :class="buttonClass"
-            title="Find the tutor"
-          >Find tutor</button>
-        </b-row>-->
-        <!-- <p>Tutor information</p>
-        <b-row id="findTutor">
-        </b-row>-->
         <form>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commission ID:
           <input
@@ -99,17 +76,6 @@
             placeholder="Enter managerID"
           />
         </form>
-        <!-- <form>
-          Offering ID:
-          <input
-            class="commissionField"
-            type="number"
-            id="offeringID"
-            v-model="offeringID"
-            placeholder="Enter Offering ID"
-          />
-        </form>-->
-
         <button
           type="button"
           id="myButton"
@@ -119,7 +85,6 @@
           title="Setup commission"
         >Create commission</button>
       </center>
-
     </b-container>
   </div>
 </template>
@@ -149,7 +114,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-    name: "commissions",
+  name: "commissions",
   components: {
     Vuetable,
     VuetablePagination,
@@ -187,7 +152,7 @@ export default {
         },
         {
           name: "offering",
-          title: `<i class="fas fa-book-open"></i></span> Offering`,
+          title: `<span class="icon orange"><i class="fas fa-book-open"></i></span> Offerings`,
           sortField: "offering"
         },
         {
@@ -214,7 +179,7 @@ export default {
     }
   },
   created: function() {
-    this.updateCommissions()
+    this.updateCommissions();
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -241,7 +206,7 @@ export default {
       this.$refs.vuetable.changePage(page);
     },
     updateCommissions() {
-      // Initializing students from backend
+      // Initializing commissions from backend
       AXIOS.get(`commission/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -257,19 +222,22 @@ export default {
           this.error = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.error = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateCommissions();
-      if(this.error != ''){
-        alert(this.error)
+      if (this.error != "") {
+        alert(this.error);
       }
     },
     dataManager(sortOrder, pagination) {
-      if (this.commissions.length < 1) return;
-
       let local = this.commissions;
 
       // sortOrder can be empty, so we have to check for that as well
@@ -299,9 +267,7 @@ export default {
       let student = this.commissions[0];
 
       let data = this.commissions.filter(commission => {
-        return (
-          commission.percentage.toString().includes(filterText.toString())
-        );
+        return commission.percentage.toString().includes(filterText.toString());
       });
 
       this.$refs.vuetable.setData(data);
@@ -321,11 +287,7 @@ export default {
         this.buttonClass = "btn btn-white btn-lg container";
       }
     },
-    createCommission: function(
-      percentage,
-      commissionID,
-      managerID,
-    ) {
+    createCommission: function(percentage, commissionID, managerID) {
       AXIOS.post(
         "/commission/create/" +
           commissionID +
@@ -340,17 +302,24 @@ export default {
           error = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.error = errorMsg;
         });
-        alert("You clicked setup commission for: " + this.response.data.commissionID);
-        this.updateCommissions()
-        this.commissionID = ''
-        this.percentage = ''
-        this.managerID = ''
-        if(this.error != ''){
-          alert(this.error)
+      alert(
+        "You clicked setup commission for: " + this.response.data.commissionID
+      );
+      this.updateCommissions();
+      this.commissionID = "";
+      this.percentage = "";
+      this.managerID = "";
+      if (this.error != "") {
+        alert(this.error);
       }
     }
   },
@@ -358,8 +327,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder =
-      "Search percentage..";
+    document.getElementsByName("search")[0].placeholder = "Search percentage..";
   }
 };
 </script>

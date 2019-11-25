@@ -115,7 +115,7 @@ export default {
         },
         {
           name: "offering",
-          title: "Offering",
+          title: `<span class="icon orange"><i class="fas fa-book-open"></i></span> Offering`,
           sortField: "offering"
         },
         {
@@ -125,7 +125,8 @@ export default {
         },
         {
           name: "isApproved",
-          title: '<i class="fa fa-thumbs-up"></i> Approval',
+          title:
+            '<span class="icon orange"><i class="fa fa-thumbs-up"></i></span> Approval',
           sortField: "isApproved"
         },
         {
@@ -176,7 +177,7 @@ export default {
     },
     updateReviews() {
       // Initializing reviews from backend
-      AXIOS.get(`http://localhost:8080/review/list`)
+      AXIOS.get(`review/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.reviews = response.data;
@@ -186,60 +187,69 @@ export default {
         });
     },
     approveRow(rowData) {
-      AXIOS.patch(
-        `http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=true`
-      )
+      AXIOS.patch(`review/update/approved/${rowData.reviewID}?isApproved=true`)
         .then(response => {
           this.errorReview = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked approve on: " + JSON.stringify(rowData));
       this.updateReviews();
-      if(this.errorReview != ''){
-        alert(this.errorReview)
+      if (this.errorReview != "") {
+        alert(this.errorReview);
       }
     },
     declineRow(rowData) {
-      AXIOS.patch(
-        `http://localhost:8080/review/update/approved/${rowData.reviewID}?isApproved=false`
-      )
+      AXIOS.patch(`review/update/approved/${rowData.reviewID}?isApproved=false`)
         .then(response => {
           this.errorReview = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked decline on: " + JSON.stringify(rowData));
       this.updateReviews();
-      if(this.errorReview != ''){
-        alert(this.errorReview)
+      if (this.errorReview != "") {
+        alert(this.errorReview);
       }
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/review/delete/${rowData.reviewID}`)
+      AXIOS.delete(`review/delete/${rowData.reviewID}`)
         .then(response => {
           this.errorReview = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateReviews();
-      if(this.errorReview != ''){
-        alert(this.errorReview)
+      if (this.errorReview != "") {
+        alert(this.errorReview);
       }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.reviews.length < 1) return;
-
       let local = this.reviews;
 
       // sortOrder can be empty, so we have to check for that as well

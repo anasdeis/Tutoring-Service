@@ -1434,6 +1434,18 @@ public class TutoringServiceRestController {
 		service.deleteOffering(offeringID);
 		return offeringDto;
 	}
+	
+	/**
+	 * @return Set review offering for classroom 
+	 * @sample /classroom/review/<roomCode>?offeringID=<offeringID>
+	 */
+	@PatchMapping(value = { "/classroom/review/{roomCode}", "/classroom/review/{roomCode}/" })
+	public ClassroomDto setClassroomReviewSession(@PathVariable("roomCode") String roomCode, @RequestParam("offeringID") String offeringID) {
+		Classroom classroom = (service.setClassroomReviewSession(roomCode, offeringID));
+		ClassroomDto classroomDto = convertToDto(classroom);
+
+		return classroomDto;
+	}
 }
 
 

@@ -121,27 +121,32 @@ export default {
         },
         {
           name: "classroom",
-          title: '<span class="icon orange"><i class="fas fa-chalkboard"></i></span> Classroom',
+          title:
+            '<span class="icon orange"><i class="fas fa-chalkboard"></i></span> Classroom',
           sortField: "classroom"
         },
         {
           name: "classTime",
-          title: '<span class="icon orange"><i class="fas fa-clock"></i></span> Classtime ID',
+          title:
+            '<span class="icon orange"><i class="fas fa-clock"></i></span> Classtime ID',
           sortField: "classTime"
         },
         {
           name: "review",
-          title: '<span class="icon orange"><i class="fas fa-comment"></i></span> Review IDs',
+          title:
+            '<span class="icon orange"><i class="fas fa-comment"></i></span> Review IDs',
           sortField: "review"
         },
         {
           name: "tutor",
-          title: '<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor ID',
+          title:
+            '<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor ID',
           sortField: "tutor"
         },
         {
           name: "students",
-          title: '<span class="icon orange"><i class="fas fa-user-graduate"></i></span> Student IDs',
+          title:
+            '<span class="icon orange"><i class="fas fa-user-graduate"></i></span> Student IDs',
           sortField: "students"
         },
         {
@@ -198,7 +203,7 @@ export default {
           this.offerings = response.data;
         })
         .catch(e => {
-          this.errorOffering= e;
+          this.errorOffering = e;
         });
     },
     deleteRow(rowData) {
@@ -207,19 +212,22 @@ export default {
           this.errorOffering = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorOffering = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateOfferings();
-      if(this.errorOffering != ''){
-        alert(this.errorOffering)
+      if (this.errorOffering != "") {
+        alert(this.errorOffering);
       }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.students.length < 1) return;
-
       let local = this.offerings;
 
       // sortOrder can be empty, so we have to check for that as well
@@ -249,9 +257,9 @@ export default {
       let offering = this.offerings[0];
 
       let data = this.offerings.filter(offering => {
-        return (
-          offering.offeringID.toLowerCase().includes(filterText.toLowerCase())
-        );
+        return offering.offeringID
+          .toLowerCase()
+          .includes(filterText.toLowerCase());
       });
 
       this.$refs.vuetable.setData(data);
@@ -277,8 +285,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder =
-      "Search ID..";
+    document.getElementsByName("search")[0].placeholder = "Search ID..";
   }
 };
 </script>

@@ -116,17 +116,18 @@ export default {
         },
         {
           name: "tutor",
-          title:  `<span class="icon orange"><i class="fa fa-user"></i></span> Tutor ID`,
+          title: `<span class="icon orange"><i class="fa fa-user"></i></span> Tutor ID`,
           sortField: "tutor"
         },
         {
           name: "isAccepted",
-          title: '<i class="fa fa-thumbs-up"></i> Accepted',
+          title:
+            '<span class="icon orange"><i class="fa fa-thumbs-up"></i></span> Accepted',
           sortField: "isAccepted"
         },
         {
           name: "subject",
-          title: `<i class="fas fa-book-open"></i></span> Subjects`,
+          title: `<span class="icon orange"><i class="fas fa-book-open"></i></span> Subjects`,
           sortField: "subject"
         },
         {
@@ -237,19 +238,22 @@ export default {
           this.errorTutorApplication = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorTutorApplication = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateTutorApplications();
-      if(this.errorTutorApplication != ''){
-        alert(this.errorTutorApplication)
+      if (this.errorTutorApplication != "") {
+        alert(this.errorTutorApplication);
       }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.tutorApplications.length < 1) return;
-
       let local = this.tutorApplications;
 
       // sortOrder can be empty, so we have to check for that as well
@@ -307,8 +311,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder =
-      "Search tutor ID..";
+    document.getElementsByName("search")[0].placeholder = "Search tutor ID..";
   }
 };
 </script>
