@@ -1,6 +1,7 @@
+<!--- This component acts as a page to view tutor list and add/remove tutor --->
 <template>
   <div id="tutor" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <b-container fluid>
+    <b-container fluid :style="{color: textColor}">
       <b-col id="tutorList">
         <h6>
           <strong>VIEW TUTORS</strong>
@@ -79,7 +80,7 @@ export default {
     return {
       perPage: 10,
       css: {
-        tableClass: "table table-bordered table-hover",
+        tableClass: `table table-bordered table-hover`,
         ascendingIcon: "fa fa-chevron-up",
         descendingIcon: "fa fa-chevron-down",
         loadingClass: "loading",
@@ -116,12 +117,14 @@ export default {
         },
         {
           name: "email",
-          title: '<i class="fa fa-envelope"></i> Email',
+          title:
+            '<span class="icon orange"><i class="fa fa-envelope"></i></span> Email',
           sortField: "email"
         },
         {
           name: "phoneNumber",
-          title: '<i class="fa fa-phone"></i> Phone',
+          title:
+            '<span class="icon orange"><i class="fa fa-phone"></i></span> Phone',
           sortField: "phoneNumber"
         },
         {
@@ -156,12 +159,13 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg studentField";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg studentField";
+      this.buttonClass = "btn btn-white btn-lg container";
     }*/
   },
   methods: {
@@ -193,14 +197,14 @@ export default {
           alert("PASS")
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
           this.errorTutor = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateTutors();
       if(this.errorTutor != ''){
-        alert("ERROR: " + this.errorTutor)
+        alert(this.errorTutor)
       }
     },
     dataManager(sortOrder, pagination) {
@@ -251,11 +255,11 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     }
   },
@@ -277,6 +281,10 @@ b-container {
 
 .orange {
   color: orange;
+}
+
+.white {
+  color: white;
 }
 
 .pagination {

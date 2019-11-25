@@ -1,6 +1,7 @@
+<!--- This component acts as a page to view subject and add subject from request --->
 <template>
   <div id="subject" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <b-container fluid>
+    <b-container fluid :style="{color: textColor}">
       <b-col id="subjectList">
         <h6>
           <strong>VIEW SUBJECTS</strong>
@@ -58,8 +59,8 @@ Vue.use(VueEvents);
 var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-var backendUrl =
-  "http://" + config.build.backendHost + ":" + config.build.backendPort;
+var backendUrl = "http://localhost:8080/";
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -142,18 +143,18 @@ export default {
   created: function() {
     this.updateSubjects();
 
-    /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg studentField";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
-      this.bgColor = "rgb(250,250,250)";
+      // this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
-      // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg studentField";
-    }*/
+      this.bgColor = "rgb(248, 249, 251)";
+      this.buttonClass = "btn btn-white btn-lg container";
+    }
   },
   methods: {
     renderIcon(classes, options) {
@@ -237,11 +238,11 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     }
   },
@@ -262,6 +263,10 @@ b-container {
 
 .orange {
   color: orange;
+}
+
+.white {
+  color: white;
 }
 
 .pagination {

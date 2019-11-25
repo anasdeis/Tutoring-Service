@@ -1,12 +1,12 @@
 <template>
   <div id="commission" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <span id="title" v-bind:style="{color : textColor}"></span>
-    <div>
+    <div :style="{color : textColor}">
       <span id="title1"></span>
     </div>
 
-    <b-container fluid>
-                  <b-col id="commissionList">
+    <b-container fluid :style="{color : textColor}">
+      <b-col id="commissionList">
         <h6>
           <strong>VIEW COMMISSIONS</strong>
         </h6>
@@ -220,12 +220,13 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg signupField";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg signupField";
+      this.buttonClass = "btn btn-white btn-lg container";
     }
   },
   methods: {
@@ -313,14 +314,13 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     },
-
     createCommission: function(
       percentage,
       commissionID,
