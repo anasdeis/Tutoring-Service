@@ -1,13 +1,14 @@
+<!--- This component acts as a page to view tutor list and add/remove tutor --->
 <template>
   <div id="tutor" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <b-container fluid>
-      <b-col id="tutorList" v-bind:style="{color: textColor}">
+    <b-container fluid :style="{color: textColor}">
+      <b-col id="tutorList">
         <h6>
           <strong>VIEW REGISTERED TUTORS</strong>
         </h6>
 
-        <div id="table-wrapper" class="container" v-bind:style="{color: textColor}">
-          <filter-bar ></filter-bar>
+        <div id="table-wrapper" class="container">
+          <filter-bar></filter-bar>
           <vuetable
             ref="vuetable"
             :fields="fields"
@@ -20,10 +21,9 @@
             :data-manager="dataManager"
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
-            :style="{color: textColor}"
           >
-            <template slot="actions" slot-scope="props" >
-              <div class="table-button-container" >
+            <template slot="actions" slot-scope="props">
+              <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
                   title="Remove a tutor!"
@@ -34,7 +34,7 @@
               </div>
             </template>
           </vuetable>
-          <div v-bind:style="{color: textColor}">
+          <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
 
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
@@ -61,7 +61,7 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -81,7 +81,6 @@ export default {
       perPage: 10,
       css: {
         tableClass: `table table-bordered table-hover`,
-        // tableClass: "table table-bordered table-hover {{textColor}}",
         ascendingIcon: "fa fa-chevron-up",
         descendingIcon: "fa fa-chevron-down",
         loadingClass: "loading",
@@ -113,12 +112,14 @@ export default {
         },
         {
           name: "email",
-          title: '<span class="icon orange"><i class="fa fa-envelope"></i></span> Email',
+          title:
+            '<span class="icon orange"><i class="fa fa-envelope"></i></span> Email',
           sortField: "email"
         },
         {
           name: "phoneNumber",
-          title: '<span class="icon orange"><i class="fa fa-phone"></i></span> Phone',
+          title:
+            '<span class="icon orange"><i class="fa fa-phone"></i></span> Phone',
           sortField: "phoneNumber"
         },
         {
@@ -126,7 +127,7 @@ export default {
           title: "Actions"
         }
       ],
-    //  filterText: "",
+      //  filterText: "",
       tutors: [],
       errorTutor: "",
       response: [],
@@ -137,7 +138,7 @@ export default {
 
   watch: {
     tutors(newVal, oldVal) {
-      this.$refs.vuetable.refresh(); 
+      this.$refs.vuetable.refresh();
     }
   },
 
@@ -156,15 +157,14 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg createManagerField";
+      this.buttonClass = "btn btn-dark btn-lg container";
       this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg createManagerField";
+      this.buttonClass = "btn btn-white btn-lg container";
     }
-   
   },
   methods: {
     renderIcon(classes, options) {
@@ -199,7 +199,7 @@ export default {
           this.errorTutor = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateTutors()
+      this.updateTutors();
     },
     dataManager(sortOrder, pagination) {
       if (this.tutors.length < 1) return;
@@ -247,12 +247,11 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
-
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     }
   },

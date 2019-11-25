@@ -1,12 +1,12 @@
 <template>
   <div id="room" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <b-container fluid v-bind:style="{color: textColor}"> 
-      <b-col id="roomList" v-bind:style="{color: textColor}">
+    <b-container fluid :style="{color: textColor}">
+      <b-col id="roomList">
         <h6>
           <strong>VIEW ROOM SCHEDULE</strong>
         </h6>
 
-        <div id="table-wrapper" class="container" v-bind:style="{color: textColor}">
+        <div id="table-wrapper" class="container">
           <filter-bar></filter-bar>
           <vuetable
             ref="vuetable"
@@ -20,7 +20,6 @@
             :data-manager="dataManager"
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
-            :style="{color: textColor}"
           >
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
@@ -34,15 +33,14 @@
               </div>
             </template>
           </vuetable>
-          <div v-bind:style="{color: textColor}">
+          <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
 
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
           </div>
         </div>
       </b-col>
-    </b-container>
-    <b-container v-bind:style="{color: textColor}">
+
       <b-col id="reviewSession">
         <div class="col-auto my-1">
           <select
@@ -85,7 +83,7 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -162,17 +160,19 @@ export default {
   },
 
   created: function() {
-    this.updateRooms()
-    this.populateOfferingList()
+    this.updateRooms();
+    this.populateOfferingList();
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58.62)";
       this.textColor = "white";
+      this.buttonClass = "btn btn-dark btn-lg container";
       this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
+      this.buttonClass = "btn btn-white btn-lg container";
     }
   },
   methods: {
@@ -228,9 +228,7 @@ export default {
     onFilterSet(filterText) {
       let room = this.rooms[0];
       let data = this.rooms.filter(room => {
-        return (
-          room.roomCode.toLowerCase().includes(filterText.toLowerCase())
-        );
+        return room.roomCode.toLowerCase().includes(filterText.toLowerCase());
       });
       this.$refs.vuetable.setData(data);
     },
@@ -242,27 +240,28 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
-
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     },
     createReviewSession(rowData) {
-      var offeringList = document.getElementById("inlineFormCustomSelect")
-      if((offeringList.selectedIndex > 0) && (offeringList.options[offeringList.selectedIndex].text)){
-        this.offeringID = offeringList.options[offeringList.selectedIndex].text
+      var offeringList = document.getElementById("inlineFormCustomSelect");
+      if (
+        offeringList.selectedIndex > 0 &&
+        offeringList.options[offeringList.selectedIndex].text
+      ) {
+        this.offeringID = offeringList.options[offeringList.selectedIndex].text;
       }
-      if(this.offeringID == ''){
-        alert("ERROR: Enter offering ID to add a review session!")
-        return -1
+      if (this.offeringID == "") {
+        alert("ERROR: Enter offering ID to add a review session!");
+        return -1;
       }
-      if(this.managerID == ''){
-        alert("ERROR: Enter manager ID to add a review session!")
-        return -1
+      if (this.managerID == "") {
+        alert("ERROR: Enter manager ID to add a review session!");
+        return -1;
       }
       AXIOS.post(
         "/classroom/review/create/" +
@@ -272,19 +271,20 @@ export default {
           "&roomCode=" +
           rowData.roomCode +
           "&tutoringSystemID=1"
-      ).then(response => {
-        this.errorRoom = ''
-        this.rooms = response.data;
-      })
-      .catch(e => {
-        var errorMsg = e.message
-        console.log(errorMsg)
-        alert(errorMsg)
-        this.errorRoom = errorMsg;
-      });
-      alert("You clicked add on: " + JSON.stringify(rowData))
-      this.offeringID = ''
-      this.managerID = ''
+      )
+        .then(response => {
+          this.errorRoom = "";
+          this.rooms = response.data;
+        })
+        .catch(e => {
+          var errorMsg = e.message;
+          console.log(errorMsg);
+          alert(errorMsg);
+          this.errorRoom = errorMsg;
+        });
+      alert("You clicked add on: " + JSON.stringify(rowData));
+      this.offeringID = "";
+      this.managerID = "";
     },
     populateOfferingList() {
       AXIOS.get(`http://localhost:8080/offering/list`)

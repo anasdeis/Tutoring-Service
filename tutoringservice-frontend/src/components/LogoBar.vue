@@ -6,7 +6,10 @@
       title="Get back to home page"
       v-bind:style="{color: titleColor}"
       @click="goToHomePage()"
-    >Welcome to our company,<b>Tutor4All</b>. We open from 9-9, 7 days a week.</a>
+    >
+      Welcome to our company,
+      <b>Tutor4All</b>. We open from 9-9, 7 days a week.
+    </a>
     <span style="float:left;">
       <button type="button" v-bind:class="buttonClass" @click="logOut" v-show="isLoggedIn">Log Out</button>
       <button type="button" v-bind:class="buttonClass" @click="toggleDarkMode">{{ buttonText }}</button>
@@ -53,10 +56,10 @@ export default {
   },
   methods: {
     goToHomePage: function() {
-        // Router.push({
-        //   path: "/home",
-        //   name: "home"
-        // });
+      // Router.push({
+      //   path: "/home",
+      //   name: "home"
+      // });
 
       var isLoggedIn = localStorage.getItem("isLoggedIn");
       if (isLoggedIn === "true") {

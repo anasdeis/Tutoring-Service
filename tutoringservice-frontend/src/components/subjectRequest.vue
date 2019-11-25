@@ -1,7 +1,8 @@
+<!--- This component acts as a page to view subject request and add subject from request --->
 <template>
   <div id="subjectRequest" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <b-container fluid>
-      <b-col id="subjectRequestsList">
+    <b-container fluid :style="{color: textColor}">
+      <b-col id="subjectRequestsList" :style="{color: textColor}">
         <h6>
           <strong>VIEW SUBJECT REQUESTS</strong>
         </h6>
@@ -22,10 +23,18 @@
                 />
                 &nbsp;
                 <div class="col-auto my-1">
-                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="inlineFormCustomSelect">
+                  <select
+                    class="custom-select mr-sm-2"
+                    id="inlineFormCustomSelect"
+                    name="inlineFormCustomSelect"
+                  >
                     <option selected>Choose university...</option>
                   </select>
-                  <button class="btn btn-primary" title="Populate list!" @click="populateUniversityList">List</button>
+                  <button
+                    class="btn btn-primary"
+                    title="Populate list!"
+                    @click="populateUniversityList"
+                  >List</button>
                 </div>
               </div>
             </div>
@@ -89,7 +98,7 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 // axios config
 var AXIOS = axios.create({
@@ -154,7 +163,7 @@ export default {
       courseID: "",
       university: "",
       errorSubjectRequest: "",
-      errorUniversity: '',
+      errorUniversity: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -172,18 +181,18 @@ export default {
     this.updateSubjectRequests();
     this.populateUniversityList();
 
-    /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg studentField";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg studentField";
-    }*/
+      this.buttonClass = "btn btn-white btn-lg container";
+    }
   },
   methods: {
     renderIcon(classes, options) {
@@ -196,7 +205,7 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    populateUniversityList(){
+    populateUniversityList() {
       AXIOS.get(`http://localhost:8080/university/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -206,8 +215,10 @@ export default {
           this.errorUniversity = e;
         });
 
-      var inlineFormCustomSelect = document.getElementById("inlineFormCustomSelect");
-      inlineFormCustomSelect.options.length = 1
+      var inlineFormCustomSelect = document.getElementById(
+        "inlineFormCustomSelect"
+      );
+      inlineFormCustomSelect.options.length = 1;
       for (var i = 0; i < this.universities.length; i++) {
         var option = document.createElement("OPTION");
         option.innerHTML = this.universities[i].name;
@@ -228,40 +239,47 @@ export default {
     },
     addRow(rowData) {
       var universityList = document.getElementById("inlineFormCustomSelect");
-      if ((universityList.selectedIndex > 0) && (universityList.options[universityList.selectedIndex].text))  {
-        this.university = universityList.options[universityList.selectedIndex].text
+      if (
+        universityList.selectedIndex > 0 &&
+        universityList.options[universityList.selectedIndex].text
+      ) {
+        this.university =
+          universityList.options[universityList.selectedIndex].text;
       }
 
-      if(this.courseID == ''){
-        alert("ERROR: You must enter a new course ID to the subject you want to add to the system!")
-        return -1
+      if (this.courseID == "") {
+        alert(
+          "ERROR: You must enter a new course ID to the subject you want to add to the system!"
+        );
+        return -1;
       }
 
-      let link = ""
-      if(rowData.subjectType === "University"){
-        if(this.university == ''){
-          alert("ERROR: You must select a university for the the subject you want to add to the system!")
-          return -1
+      let link = "";
+      if (rowData.subjectType === "University") {
+        if (this.university == "") {
+          alert(
+            "ERROR: You must select a university for the the subject you want to add to the system!"
+          );
+          return -1;
         }
-        link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`
-      }
-      else{
-        link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}`
+        link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`;
+      } else {
+        link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}`;
       }
       AXIOS.post(link)
         .then(response => {
           this.errorSubjectRequest = "";
-          this.university = ''
+          this.university = "";
         })
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          alert(errorMsg)
+          alert(errorMsg);
           this.errorSubjectRequest = errorMsg;
         });
-      alert("You clicked add on: "+ JSON.stringify(rowData));
-      this.university = ''
-      this.courseID = ''
+      alert("You clicked add on: " + JSON.stringify(rowData));
+      this.university = "";
+      this.courseID = "";
     },
     deleteRow(rowData) {
       AXIOS.delete(
@@ -273,7 +291,7 @@ export default {
         .catch(e => {
           var errorMsg = e.message;
           console.log(errorMsg);
-          alert(errorMsg)
+          alert(errorMsg);
           this.errorSubjectRequest = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
@@ -325,11 +343,11 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     }
   },
@@ -350,6 +368,10 @@ b-container {
 
 .orange {
   color: orange;
+}
+
+.white {
+  color: white;
 }
 
 .pagination {

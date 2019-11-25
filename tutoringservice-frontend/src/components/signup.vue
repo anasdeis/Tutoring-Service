@@ -7,8 +7,7 @@
     <div>
       <span id="title1"></span>
     </div>
-
-    <b-container fluid v-bind:style="{ color: titleColor}">
+    <b-container fluid :style="{ color: textColor}">
       <form>
         First name:
         <input
@@ -88,14 +87,13 @@
           v-model="pw"
           placeholder="Enter password"
         />
-      </form> -->
+      </form>-->
       <center>
         <button
           type="button"
           id="myButton"
           @click="createManager(first,last,dob,email,phone,managerID,userName,tutoringSystemID)"
           class="btn btn-primary btn-lg createManagerField button"
-          
           v-b-tooltip.hover
           title="Click to create an account!"
         >Create</button>
@@ -108,19 +106,15 @@
 import axios from "axios";
 import Router from "../router";
 import Axios from "axios";
-
 var config = require("../../config");
-
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
 // "http://" + config.build.backendHost + ":" + config.build.backendPort;
-
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
-
 export default {
   data() {
     return {
@@ -266,12 +260,12 @@ export default {
 #send {
   align-content: right;
 }
-#name {
+/* #name {
   text-align: left;
   color: white;
   font-size: 26px;
   padding-left: 15px;
-}
+} */
 #createManager {
   width: 30%;
   max-height: auto;

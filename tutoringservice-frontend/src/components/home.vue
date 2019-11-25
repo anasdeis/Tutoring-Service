@@ -17,7 +17,7 @@
             title="View Rooms"
           >Rooms</button>
         </b-col>
-       <b-col>
+        <b-col>
           <button
             type="button"
             @click="goToSubjectPage()"
@@ -64,7 +64,7 @@
             title="Setup Commission"
           >Create Commission</button>
         </b-col>
-         <b-col>
+        <b-col>
           <button
             type="button"
             @click="goToTutorApplicationPage()"
@@ -82,15 +82,15 @@
             title="View Subject Request"
           >Subject Requests</button>
         </b-col>
-        
+
         <b-col>
-        <button
-          type="button"
-          @click="goToReviewPage()"
-          class="btn btn-primary btn-lg home button"
-          v-b-tooltip.hover
-          title="View Student Review"
-        >Student Reviews</button>
+          <button
+            type="button"
+            @click="goToReviewPage()"
+            class="btn btn-primary btn-lg home button"
+            v-b-tooltip.hover
+            title="View Student Review"
+          >Student Reviews</button>
         </b-col>
 
         <b-col>
@@ -241,7 +241,6 @@ button {
   height: auto;
   margin-bottom: 10px;
   margin-left: auto;
-
 }
 #functionality {
   color: black;

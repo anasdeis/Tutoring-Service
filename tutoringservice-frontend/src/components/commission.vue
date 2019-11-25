@@ -1,11 +1,11 @@
 <template>
   <div id="student" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <span id="title" v-bind:style="{color : textColor}"></span>
-    <div>
+    <div :style="{color : textColor}">
       <span id="title1"></span>
     </div>
 
-    <b-container fluid>
+    <b-container fluid :style="{color : textColor}">
       <center>
         <!-- <b-row id="findTutor">
           <form>
@@ -60,13 +60,17 @@
             v-model="offeringID"
             placeholder="Enter Offering ID"
           />
-        </form> -->
- <div class="col-auto my-1">
-                  <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="inlineFormCustomSelect">
-                    <option selected>Choose Offering...</option>
-                  </select>
-                  <button class="btn btn-primary" title="Populate list!" @click="populateOfferingList">List</button>
-                </div>
+        </form>-->
+        <div class="col-auto my-1">
+          <select
+            class="custom-select mr-sm-2"
+            id="inlineFormCustomSelect"
+            name="inlineFormCustomSelect"
+          >
+            <option selected>Choose Offering...</option>
+          </select>
+          <button class="btn btn-primary" title="Populate list!" @click="populateOfferingList">List</button>
+        </div>
 
         <form>
           Confirm your manager ID:
@@ -118,7 +122,7 @@ export default {
       offeringID: "",
       error: "",
       system: "1",
-      offerings:[]
+      offerings: []
     };
   },
 
@@ -127,12 +131,13 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg signupField";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg signupField";
+      this.buttonClass = "btn btn-white btn-lg container";
     }
   },
   methods: {
@@ -141,14 +146,14 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     },
-    populateOfferingList(){
+    populateOfferingList() {
       AXIOS.get(`http://localhost:8080/offering/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -157,8 +162,10 @@ export default {
         .catch(e => {
           this.errorOffering = e;
         });
-      var inlineFormCustomSelect = document.getElementById("inlineFormCustomSelect");
-      inlineFormCustomSelect.options.length = 1
+      var inlineFormCustomSelect = document.getElementById(
+        "inlineFormCustomSelect"
+      );
+      inlineFormCustomSelect.options.length = 1;
       for (var i = 0; i < this.offerings.length; i++) {
         var option = document.createElement("OPTION");
         option.innerHTML = this.offerings[i].offeringID;

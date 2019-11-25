@@ -1,7 +1,6 @@
 <template>
 <div class="hello">
   <b-container fluid class="home-row">
-
     <b-row>
       <b-col>
         <button
@@ -44,7 +43,9 @@
         <li>Cegep Courses: Math, Physics, Chemistry, English, French, Biolgy, Businese, etc.</li>
         <li>
           University Courses:
-          <a href="https://mcgill.ca/study/2019-2020/courses/search">McGill University</a>,
+          <a
+            href="https://mcgill.ca/study/2019-2020/courses/search"
+          >McGill University</a>,
           <a
             href="https://www.concordia.ca/artsci/academics/undergraduate.html"
           >Concordia University</a>,

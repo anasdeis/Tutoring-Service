@@ -2,7 +2,9 @@
   <div class="filter-bar pull-left">
     <div class="form-inline">
       <div class="form-group">
-        <label><b>Search for:</b>&nbsp;&nbsp;</label>
+        <label>
+          <b>Search for:</b>&nbsp;&nbsp;
+        </label>
 
         <input
           type="text"
@@ -10,12 +12,16 @@
           class="form-control"
           @keyup.enter="doFilter"
           name="search"
-          placeholder=""
+          placeholder
         />
         &nbsp;
         <button class="btn btn-primary" @click="doFilter" title="Filter Table!">Go</button>
         &nbsp;
-        <button class="btn btn-default" @click="resetFilter" title="Reset Table!">Reset</button>
+        <button
+          class="btn btn-default"
+          @click="resetFilter"
+          title="Reset Table!"
+        >Reset</button>
       </div>
     </div>
   </div>
