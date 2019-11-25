@@ -4,7 +4,7 @@
       class="navbar-brand mb-0 h1"
       v-b-tooltip.hover
       title="Get back to home page"
-      v-bind:style="{Color: titleColor}"
+      v-bind:style="{color: titleColor}"
       @click="goToHomePage()"
     >
       Welcome to our company,
@@ -56,10 +56,10 @@ export default {
   },
   methods: {
     goToHomePage: function() {
-        // Router.push({
-        //   path: "/home",
-        //   name: "home"
-        // });
+      // Router.push({
+      //   path: "/home",
+      //   name: "home"
+      // });
 
       var isLoggedIn = localStorage.getItem("isLoggedIn");
       if (isLoggedIn === "true") {
@@ -125,4 +125,3 @@ export default {
 }
 </style>>
 
-</style>

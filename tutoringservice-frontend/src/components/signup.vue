@@ -1,18 +1,17 @@
-<!--- This component acts as a page to signup --->
+<!--- This component acts as a page to createManager --->
 <template>
-  <div id="signup" class="card" v-bind:style="{ backgroundColor : bgColor }">
+  <div id="createManager" class="card" v-bind:style="{ backgroundColor : bgColor }">
     <span id="title" v-bind:style="{color : textColor}">
       <center>Create an account</center>
     </span>
     <div>
       <span id="title1"></span>
     </div>
-
-    <b-container fluid>
+    <b-container fluid :style="{ color: textColor}">
       <form>
         First name:
         <input
-          class="signupField"
+          class="createManagerField"
           type="text"
           id="first"
           v-model="first"
@@ -22,7 +21,7 @@
       <form>
         Last name:
         <input
-          class="signupField"
+          class="createManagerField"
           type="text"
           id="last"
           v-model="last"
@@ -32,7 +31,7 @@
       <form>
         Date of Birth:
         <input
-          class="signupField"
+          class="createManagerField"
           type="date"
           id="dob"
           v-model="dob"
@@ -42,7 +41,7 @@
       <form>
         Email:
         <input
-          class="signupField"
+          class="createManagerField"
           type="text"
           id="email"
           v-model="email"
@@ -52,7 +51,7 @@
       <form>
         Phone number:
         <input
-          class="signupField"
+          class="createManagerField"
           type="text"
           id="phone"
           v-model="phone"
@@ -62,7 +61,7 @@
       <form>
         Manager ID (all numbers):
         <input
-          class="signupField"
+          class="createManagerField"
           type="text"
           id="managerID"
           v-model="managerID"
@@ -72,30 +71,29 @@
       <form>
         Username:
         <input
-          class="signupField"
+          class="createManagerField"
           type="text"
-          id="username"
-          v-model="username"
+          id="userName"
+          v-model="userName"
           placeholder="Enter username"
         />
       </form>
       <!-- <form>
         Password:
         <input
-          class="signupField"
+          class="createManagerField"
           type="password"
           id="password"
           v-model="pw"
           placeholder="Enter password"
         />
-      </form> -->
+      </form>-->
       <center>
         <button
           type="button"
           id="myButton"
-          @click="signup(first,last,dob,email,phone,managerID,login,request,review,commission,classroom,system)"
-          class="btn btn-primary btn-lg signupField button"
-          v-bind:class="buttonClass"
+          @click="createManager(first,last,dob,email,phone,managerID,userName,tutoringSystemID)"
+          class="btn btn-primary btn-lg createManagerField button"
           v-b-tooltip.hover
           title="Click to create an account!"
         >Create</button>
@@ -108,27 +106,15 @@
 import axios from "axios";
 import Router from "../router";
 import Axios from "axios";
-
 var config = require("../../config");
-
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
 // "http://" + config.build.backendHost + ":" + config.build.backendPort;
-
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
-
-// function LoginDto (username, password) {
-//   this.username = username
-//   this.password = password
-// }
-//  var username=document.getElementById("username");
-//       var password=document.getElementById("password");
-//       var login = {"username":"username", "password":"password"};
-
 export default {
   data() {
     return {
@@ -145,14 +131,14 @@ export default {
       email: "",
       phone: "",
       managerID: "",
-      username: "",
-      password: "",
-      login: "",
-      request: null,
-      review: null,
-      commission: null,
-      classroom: null,
-      system: "1"
+      // username: "",
+      // password: "",
+      userName: "",
+      // request: null,
+      // review: null,
+      // commission: null,
+      // classroom: null,
+      tutoringSystemID: "1"
     };
   },
   created: function() {
@@ -160,21 +146,21 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
       this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg signupField";
+      this.buttonClass = "btn btn-dark btn-lg createManagerField";
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
-      this.buttonClass = "btn btn-white btn-lg signupField";
+      this.buttonClass = "btn btn-white btn-lg createManagerField";
     }
   },
   methods: {
     // send get request to fetch manager
-    // getLogin: function(username, password) {
-    //   AXIOS.get('/login/list/'+username)
+    // getuserName: function(username, password) {
+    //   AXIOS.get('/userName/list/'+username)
     //     .then(response => {
-    //       // this.login = response.data;
-    //       var login = ;
+    //       // this.userName = response.data;
+    //       var userName = ;
     //     })
     //     // .catch(e => {
     //     //   console.log(e.message);
@@ -182,23 +168,19 @@ export default {
     //     //     "Account does not exist, please try again";
     //     // });
     // },
-    // myLogin: function (username, password) {
+    // myuserName: function (username, password) {
     //   var username=document.getElementById("username");
     //   var password=document.getElementById("password");
     // },
-    signup: function(
+    createManager: function(
       first,
       last,
       dob,
       email,
       phone,
       managerID,
-      username,
-      request,
-      review,
-      commission,
-      classroom,
-      system
+      userName,
+      tutoringSystemID
     ) {
       AXIOS.post("");
       AXIOS.post(
@@ -214,18 +196,10 @@ export default {
           email +
           "&phone=" +
           phone +
-          "&login=" +
-          username +
-          "&request=" +
-          request +
-          "&review=" +
-          review +
-          "&commission=" +
-          commission +
-          "&classroom=" +
-          classroom +
-          "&system=" +
-          system
+          "&userName=" +
+          userName +
+          "&tutoringSystemID=" +
+          tutoringSystemID
       )
         .then(response => {
           this.manager = response.data;
@@ -244,10 +218,10 @@ export default {
         name: "home"
       });
     },
-    // goToSignupPage: function() {
+    // goTocreateManagerPage: function() {
     //     Router.push({
-    //         path: "/signup",
-    //         name: "signup"
+    //         path: "/createManager",
+    //         name: "createManager"
     //     });
     // },
     setDarkMode: function() {
@@ -255,11 +229,11 @@ export default {
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg createManagerField";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg createManagerField";
       }
     }
   },
@@ -286,13 +260,13 @@ export default {
 #send {
   align-content: right;
 }
-#name {
+/* #name {
   text-align: left;
   color: white;
   font-size: 26px;
   padding-left: 15px;
-}
-#signup {
+} */
+#createManager {
   width: 30%;
   max-height: auto;
   min-width: 550px;
@@ -305,11 +279,7 @@ export default {
 b-container {
   height: 100%;
 }
-/* #myButton{
-    justify-content: center;
-    align-self: center;
-} */
-.signupField {
+.createManagerField {
   width: auto;
   height: auto;
   border-radius: 4px;
@@ -320,7 +290,6 @@ b-container {
 }
 .button {
   color: white;
-  /* align-self: auto; */
 }
 #btn1 {
   align-self: center;

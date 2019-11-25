@@ -1,6 +1,7 @@
+<!--- This component acts as a page to view tutor list and add/remove tutor --->
 <template>
   <div id="tutor" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <b-container fluid>
+    <b-container fluid :style="{color: textColor}">
       <b-col id="tutorList">
         <h6>
           <strong>VIEW REGISTERED TUTORS</strong>
@@ -60,7 +61,7 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -79,7 +80,7 @@ export default {
     return {
       perPage: 10,
       css: {
-        tableClass: "table table-bordered table-hover",
+        tableClass: `table table-bordered table-hover`,
         ascendingIcon: "fa fa-chevron-up",
         descendingIcon: "fa fa-chevron-down",
         loadingClass: "loading",
@@ -88,8 +89,8 @@ export default {
       },
       sortOrder: [
         {
-          field: "tutorID",
-          sortField: "tutorId",
+          field: "personId",
+          sortField: "personId",
           direction: "asc"
         }
       ],
@@ -97,7 +98,7 @@ export default {
         {
           name: "personId",
           title: "Tutor ID",
-          sortField: "tutorId"
+          sortField: "personId"
         },
         {
           name: "firstName",
@@ -111,12 +112,14 @@ export default {
         },
         {
           name: "email",
-          title: '<i class="fa fa-envelope"></i> Email',
+          title:
+            '<span class="icon orange"><i class="fa fa-envelope"></i></span> Email',
           sortField: "email"
         },
         {
           name: "phoneNumber",
-          title: '<i class="fa fa-phone"></i> Phone',
+          title:
+            '<span class="icon orange"><i class="fa fa-phone"></i></span> Phone',
           sortField: "phoneNumber"
         },
         {
@@ -124,7 +127,7 @@ export default {
           title: "Actions"
         }
       ],
-    //  filterText: "",
+      //  filterText: "",
       tutors: [],
       errorTutor: "",
       response: [],
@@ -136,7 +139,6 @@ export default {
   watch: {
     tutors(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-  
     }
   },
 
@@ -150,7 +152,19 @@ export default {
       .catch(e => {
         this.errorTutor = e;
       });
-   
+
+    var darkModeOn = localStorage.getItem("DarkModeOn");
+    if (darkModeOn === "true") {
+      this.bgColor = "rgb(53,58,62)";
+      this.textColor = "white";
+      this.buttonClass = "btn btn-dark btn-lg container";
+      this.css.tableClass = `table table-bordered table-hover white`;
+    } else {
+      this.bgColor = "rgb(250,250,250)";
+      this.textColor = "black";
+      // this.bgColor = "rgb(248, 249, 251)";
+      this.buttonClass = "btn btn-white btn-lg container";
+    }
   },
   methods: {
     renderIcon(classes, options) {
@@ -185,7 +199,7 @@ export default {
           this.errorTutor = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateTutors()
+      this.updateTutors();
     },
     dataManager(sortOrder, pagination) {
       if (this.tutors.length < 1) return;
@@ -216,10 +230,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-    //  this.moreParams = {
-      // 'filter': filterText
-     // };
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
       let tutor = this.tutors[0];
       let data = this.tutors.filter(tutor => {
         return (
@@ -230,20 +240,18 @@ export default {
       this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
-    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
       if (darkModeOn === "true") {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
-        this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg container";
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
-        this.buttonClass = "btn btn-white btn-lg signupField";
+        this.buttonClass = "btn btn-white btn-lg container";
       }
     }
   },
@@ -263,6 +271,10 @@ b-container {
 
 .orange {
   color: orange;
+}
+
+.white {
+  color: white;
 }
 
 .pagination {

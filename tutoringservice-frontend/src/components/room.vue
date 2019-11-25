@@ -7,7 +7,7 @@
     <div>
       <span id="title1"></span>
     </div>
-    
+
     <b-container fluid>
       <b-row>
         <b-col id="room">

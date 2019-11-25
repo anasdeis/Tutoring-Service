@@ -15,6 +15,7 @@ import student from "@/components/student";
 import subjectRequest from "@/components/subjectRequest";
 import subject from "@/components/subject";
 import home1 from "@/components/home1";
+// import offering from "@/components/offering";
 
 Vue.use(Router)
 
@@ -95,5 +96,10 @@ export default new Router({
       name: "home1",
       component: home1
     },
+    // {
+    //   path: "offering",
+    //   name: "offering",
+    //   component: offering
+    // },
   ]
 });
