@@ -1157,7 +1157,7 @@ public class TutoringServiceRestController {
 	 * @sample /login/list
 	 */
 
-	@GetMapping(value = { "/login/list/{username}", "/login/list/{username}/" })
+	@GetMapping(value = { "/login/list", "/login/list/" })
 	public List<LoginDto> getAllLoginSystems() {
 		List<LoginDto> loginsDtos = new ArrayList<>();
 		for (Login login : service.getAllLogins()) {
@@ -1165,14 +1165,6 @@ public class TutoringServiceRestController {
 		}
 		return loginsDtos;
 	}
-	
-//	@GetMapping(value= { "/login/{userName}", "/login/{userName}/"})
-//	public LoginDto getLogin(String userName) {
-//		LoginDto loginDto = new LoginDto();
-//		Login login = service.getLogin(userName);
-//		loginDto = convertToDto(login);
-//		return loginDto;
-//	}
 	
 	/**
 	 * @return a list of all Tutors
@@ -1276,13 +1268,6 @@ public class TutoringServiceRestController {
 		TutorDto tutorDto = convertToDto(service.getTutor(tutorID));
 		service.deleteTutor(tutorID);
 		return tutorDto;
-	}
-	
-	@DeleteMapping(value = {"/tutorApplication/delete/{tutorApplicationID}", "/tutorApplication/delete/{tutorApplicationID}"})
-	public TutorApplicationDto deleteTutorApplication(@PathVariable("tutorApplicationID") Integer tutorApplicationID) {
-		TutorApplicationDto tutorApplicationDto = convertToDto(service.getTutorApplication(tutorApplicationID));
-		service.deleteTutorApplication(tutorApplicationID);
-		return tutorApplicationDto;
 	}
 
 	/**
@@ -1405,5 +1390,18 @@ public class TutoringServiceRestController {
 		service.deleteSubject(courseID);
 		return subjectDto;
 	}
+	
+	/**
+	 * @return Remove subject 
+	 * @sample /commission/delete/<commissionID>
+	 */
+	@DeleteMapping(value = {"/commission/delete/{commissionID}", "/commission/delete/{commissionID}/"})
+	public CommissionDto deleteCommission(@PathVariable("commissionID") Integer commissionID) {
+		CommissionDto commissionDto = convertToDto(service.getCommission(commissionID));
+		service.deleteCommisison(commissionID);
+		return commissionDto;
+	}
 }
+
+
 
