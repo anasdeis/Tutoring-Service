@@ -256,13 +256,15 @@ export default {
           this.error = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg);
           this.error = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateCommissions();
+      if(this.error != ''){
+        alert(this.error)
+      }
     },
     dataManager(sortOrder, pagination) {
       if (this.commissions.length < 1) return;

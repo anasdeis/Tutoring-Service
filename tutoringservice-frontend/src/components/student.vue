@@ -144,7 +144,6 @@ export default {
 
   watch: {
     students(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.students);
       this.$refs.vuetable.refresh();
     }
   },
@@ -193,16 +192,18 @@ export default {
           this.errorStudent = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg);
           this.errorStudent = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateStudents();
+      if(this.errorStudent != ''){
+        alert(this.errorStudent)
+      }
     },
     dataManager(sortOrder, pagination) {
-      if (this.students.length < 1) return;
+      //if (this.students.length < 1) return;
 
       let local = this.students;
 

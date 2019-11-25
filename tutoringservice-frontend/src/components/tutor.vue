@@ -3,7 +3,7 @@
     <b-container fluid>
       <b-col id="tutorList">
         <h6>
-          <strong>VIEW REGISTERED TUTORS</strong>
+          <strong>VIEW TUTORS</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -35,7 +35,6 @@
           </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
-
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
           </div>
         </div>
@@ -60,7 +59,8 @@ var config = require("../../config");
 
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
-  // "http://" + config.build.backendHost + ":" + config.build.backendPort;
+// "http://" + config.build.backendHost + ":" + config.build.backendPort;
+
 // axios config
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -88,16 +88,16 @@ export default {
       },
       sortOrder: [
         {
-          field: "tutorID",
-          sortField: "tutorId",
+          field: "personId",
+          sortField: "personId",
           direction: "asc"
         }
       ],
       fields: [
         {
           name: "personId",
-          title: "Tutor ID",
-          sortField: "tutorId"
+          title: "ID",
+          sortField: "personId"
         },
         {
           name: "firstName",
@@ -110,6 +110,11 @@ export default {
           sortField: "lastName"
         },
         {
+          name: "dateOfBirth",
+          title: '<i class="fa fa-birthday-cake"></i> Birthdate',
+          sortField: "dateOfBirth"
+        },
+        {
           name: "email",
           title: '<i class="fa fa-envelope"></i> Email',
           sortField: "email"
@@ -120,11 +125,15 @@ export default {
           sortField: "phoneNumber"
         },
         {
+          name: "isRegistered",
+          title: "Registered",
+          sortField: "isRegistered"
+        },
+        {
           name: "actions",
           title: "Actions"
         }
       ],
-    //  filterText: "",
       tutors: [],
       errorTutor: "",
       response: [],
@@ -136,21 +145,24 @@ export default {
   watch: {
     tutors(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-  
     }
   },
 
   created: function() {
-    // Initializing tutors from backend
-    AXIOS.get(`http://localhost:8080/tutor/list`)
-      .then(response => {
-        // JSON responses are automatically parsed.
-        this.tutors = response.data;
-      })
-      .catch(e => {
-        this.errorTutor = e;
-      });
-   
+    this.updateTutors();
+    
+    /*
+    var darkModeOn = localStorage.getItem("DarkModeOn");
+    if (darkModeOn === "true") {
+      this.bgColor = "rgb(53,58,62)";
+      this.textColor = "white";
+      this.buttonClass = "btn btn-dark btn-lg studentField";
+    } else {
+      this.bgColor = "rgb(250,250,250)";
+      this.textColor = "black";
+      // this.bgColor = "rgb(248, 249, 251)";
+      this.buttonClass = "btn btn-white btn-lg studentField";
+    }*/
   },
   methods: {
     renderIcon(classes, options) {
@@ -164,7 +176,7 @@ export default {
       this.$refs.vuetable.changePage(page);
     },
     updateTutors() {
-      // Initializing tutors from backend
+      // Initializing students from backend
       AXIOS.get(`http://localhost:8080/tutor/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -178,6 +190,7 @@ export default {
       AXIOS.delete(`http://localhost:8080/tutor/delete/${rowData.personId}`)
         .then(response => {
           this.errorTutor = "";
+          alert("PASS")
         })
         .catch(e => {
           var errorMsg = e.message;
@@ -185,10 +198,13 @@ export default {
           this.errorTutor = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateTutors()
+      this.updateTutors();
+      if(this.errorTutor != ''){
+        alert("ERROR: " + this.errorTutor)
+      }
     },
     dataManager(sortOrder, pagination) {
-      if (this.tutors.length < 1) return;
+      //if (this.tutors.length < 1) return;
 
       let local = this.tutors;
 
@@ -212,27 +228,23 @@ export default {
 
       return {
         pagination: pagination,
-        data: _.slice(local, from, to)
+        data: local.slice(from, to)
       };
     },
     onFilterSet(filterText) {
-    //  this.moreParams = {
-      // 'filter': filterText
-     // };
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
       let tutor = this.tutors[0];
+
       let data = this.tutors.filter(tutor => {
         return (
           tutor.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
           tutor.lastName.toLowerCase().includes(filterText.toLowerCase())
         );
       });
+
       this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
-    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -252,6 +264,8 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
+    document.getElementsByName("search")[0].placeholder =
+      "Search first/last name..";
   }
 };
 </script>
@@ -270,197 +284,7 @@ b-container {
 }
 
 #tutorList {
-  /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
 }
 </style>
-
-
-
-<!--- This component acts as a page for tutor, including add/fire tutor --->
-<!--- <template>
-  <div id="tutor" class="card" v-bind:style="{ backgroundColor : bgColor}">
-    <span id="title" v-bind:style="{color : textColor}"></span>
-    <div>
-      <span id="title1"></span>
-    </div>
-    <b-container fluid>
-      <b-row>
-        <b-col id="tutor">
-          <p>View all the tutors</p>
-          <b-table striped hover :items="items"></b-table>
-        </b-col>
-        <b-col id="detailOfTutor">
-          <form>
-            Enter tutor ID:
-            <input
-              class="tutorField"
-              text="number"
-              id="tutorID"
-              v-model="tutorID"
-              placeholder="Enter tutor ID"
-            />
-          </form>
-          <button
-            type="button"
-            @click="getTutor(tutorID)"
-            class="btn btn-primary btn-lg viewTutor button"
-            v-b-tooltip.hover
-            title="Display selected tutor"
-          >View detail</button>
-          <p>Here is the detail of the tutor you selected</p>
-          <button
-            type="button"
-            @click="deleteTutor(tutorID)"
-            class="btn btn-primary btn-lg viewTutor button"
-            v-b-tooltip.hover
-            title="Remove"
-          >Remove</button>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
-</template>
---->
-
-
-<!---  <script> 
-// import axios from "axios";
-// import Router from "../router";
-
-// var config = require("../../config");
-// var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-// var backendUrl =
-//   "http://" + config.build.backendHost + ":" + config.build.backendPort;
-
-
-// // axios config
-// var AXIOS = axios.create({
-//   baseURL: backendUrl,
-//   headers: { "Access-Control-Allow-Origin": frontendUrl }
-// });
-
-
-// var tutorTable = {
-//   // GET YOUR TABLE FROM THE BACKEND- all tutor applications
-// };
-// var detailOfTutor = {
-//   // GET YOUR SELECTED TUTOR APPLICATION OBJECT IN THE BACKEND AND PUT IT HERE
-// };
-// export default {
-//   data() {
-//     return {
-//       tutor: {
-//         type: Object
-//       },
-//       bgColor: "",
-//       textColor: "",
-//       tutorID: "",
-//       items: [
-//         {
-//           tutorID: 1001,
-//           firstName: "tutor1",
-//           lastName: "Last",
-//           email: "1001@gamil.com"
-//         }
-//       ]
-//     };
-//   },
-//   created: function() {
-//     var darkModeOn = localStorage.getItem("DarkModeOn");
-//     if (darkModeOn === "true") {
-//       this.bgColor = "rgb(53,58,62)";
-//       this.textColor = "white";
-//       this.buttonClass = "btn btn-dark btn-lg signupField";
-//     } else {
-//       this.bgColor = "rgb(250,250,250)";
-//       this.textColor = "black";
-//       // this.bgColor = "rgb(248, 249, 251)";
-//       this.buttonClass = "btn btn-white btn-lg signupField";
-//     }
-//   },
-//   methods: {
-
-
-//     setDarkMode: function() {
-//       var darkModeOn = localStorage.getItem("DarkModeOn");
-//       if (darkModeOn === "true") {
-//         this.bgColor = "rgb(53, 58, 62)";
-//         this.textColor = "white";
-//         this.buttonClass = "btn btn-dark btn-lg signupField";
-//       } else {
-//         this.bgColor = "rgb(250,250,250)";
-//         this.textColor = "black";
-//         this.buttonClass = "btn btn-white btn-lg signupField";
-//       }
-//     },
-//     getTutor: function(tutorID) {
-//       AXIOS.get("/tutor/=" + tutorID).then(response => {
-//         this.getTutor = response.data;
-//       });
-//     },
-//     deleteTutor: function(tutorID) {
-//       AXIOS.delete("/tutor/delete/=" + tutorID);
-//     }
-//   },
-//   mounted() {
-//     // Listens to the setDarkModeState event emitted from the LogoBar component
-//     this.$root.$on("setDarkModeState", this.setDarkMode);
-//   }
-// };
-// </script>
-
-
-
-/*
-<style>
-p {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-}
-#myButton {
-  color: royalblue;
-  border: 0px;
-  border-radius: 4px;
-  padding: 2px;
-  margin: auto;
-  margin-top: 5px;
-}
-b-container {
-  height: auto;
-}
-#tutorTable {
-  margin-left: auto;
-  margin-right: auto;
-}
-table {
-  font-family: "Open Sans", sans-serif;
-  width: 300px;
-  border-collapse: collapse;
-  border: 3px solid #44475c;
-  margin: 5px 5px 0 5px;
-}
-table th {
-  text-transform: uppercase;
-  text-align: left;
-  background: #44475c;
-  color: #fff;
-  padding: 8px;
-  min-width: 10px;
-}
-table td {
-  text-align: left;
-  padding: 8px;
-  border-right: 2px solid #7d82a8;
-}
-table td:last-child {
-  border-right: none;
-}
-table tbody tr:nth-child(2n) td {
-  background: #d4d8f9;
-}
-.tutorField{
-  margin-top: 20px;
-}
-</style>
-*/

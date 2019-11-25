@@ -163,7 +163,6 @@ export default {
 
   watch: {
     subjectRequests(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.subjectRequests);
       this.$refs.vuetable.refresh();
     }
   },
@@ -232,36 +231,30 @@ export default {
         this.university = universityList.options[universityList.selectedIndex].text
       }
 
-      if(this.courseID == ''){
-        alert("ERROR: You must enter a new course ID to the subject you want to add to the system!")
-        return -1
-      }
-
+      /*
       let link = ""
       if(rowData.subjectType === "University"){
-        if(this.university == ''){
-          alert("ERROR: You must select a university for the the subject you want to add to the system!")
-          return -1
-        }
         link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`
       }
       else{
         link = `http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}`
-      }
-      AXIOS.post(link)
+      }*/
+      AXIOS.post(`http://localhost:8080/subject/create/${rowData.name}?courseID=${this.courseID}&description=${rowData.description}&subjectType=${rowData.subjectType}&tutoringSystemID=${rowData.tutoringSystem}&university=${this.university}`)
         .then(response => {
           this.errorSubjectRequest = "";
           this.university = ''
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg)
           this.errorSubjectRequest = errorMsg;
         });
       alert("You clicked add on: "+ JSON.stringify(rowData));
       this.university = ''
       this.courseID = ''
+      if(this.errorSubjectRequest != ''){
+        alert(this.errorSubjectRequest)
+      }
     },
     deleteRow(rowData) {
       AXIOS.delete(
@@ -271,16 +264,18 @@ export default {
           this.errorSubjectRequest = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg)
           this.errorSubjectRequest = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateSubjectRequests();
+      if(this.errorSubjectRequest != ''){
+        alert(this.errorSubjectRequest)
+      }
     },
     dataManager(sortOrder, pagination) {
-      if (this.subjectRequests.length < 1) return;
+      //if (this.subjectRequests.length < 1) return;
 
       let local = this.subjectRequests;
 

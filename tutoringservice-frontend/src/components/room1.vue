@@ -159,6 +159,11 @@ export default {
           sortField: "isBigRoom"
         },
         {
+          name: "offeringIDs",
+          title: "Offerings",
+          sortField: "offeringIDs"
+        },
+        {
           name: "actions",
           title: "Actions"
         }
@@ -179,7 +184,6 @@ export default {
 
   watch: {
     rooms(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.rooms);
       this.$refs.vuetable.refresh();
     }
   },
@@ -231,7 +235,7 @@ export default {
         });
     },
     dataManager(sortOrder, pagination) {
-      if (this.rooms.length < 1) return;
+      //if (this.rooms.length < 1) return;
 
       let local = this.rooms;
 
