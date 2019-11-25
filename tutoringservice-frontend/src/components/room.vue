@@ -7,6 +7,27 @@
         </h6>
 
         <div id="table-wrapper" class="container">
+          <div class="filter-bar pull-right">
+            <div class="form-inline">
+              <label>
+                <b>Book review session:</b>
+              </label>
+              <div class="col-auto my-1">
+                <select
+                  class="custom-select mr-sm-2"
+                  id="inlineFormCustomSelect"
+                  name="inlineFormCustomSelect"
+                >
+                  <option selected>Choose Offering...</option>
+                </select>
+                <button
+                  class="btn btn-primary"
+                  title="Populate list!"
+                  @click="populateOfferingList"
+                >List</button>
+              </div>
+            </div>
+          </div>
           <filter-bar></filter-bar>
           <vuetable
             ref="vuetable"
@@ -38,19 +59,6 @@
 
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
           </div>
-        </div>
-      </b-col>
-
-      <b-col>
-        <div class="col-auto my-1">
-          <select
-            class="custom-select mr-sm-2"
-            id="inlineFormCustomSelect"
-            name="inlineFormCustomSelect"
-          >
-            <option selected>Choose Offering...</option>
-          </select>
-          <button class="btn btn-primary" title="Populate list!" @click="populateOfferingList">List</button>
         </div>
       </b-col>
     </b-container>
