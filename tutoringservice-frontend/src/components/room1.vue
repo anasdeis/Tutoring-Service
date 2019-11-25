@@ -1,15 +1,12 @@
 <template>
   <div id="room" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <span id="title" v-bind:style="{color : textColor}"></span>
-
-    <b-container fluid>
-      <b-col id="roomList">
+    <b-container fluid v-bind:style="{color: textColor}"> 
+      <b-col id="roomList" v-bind:style="{color: textColor}">
         <h6>
           <strong>VIEW ROOM SCHEDULE</strong>
         </h6>
 
-        <div id="table-wrapper" class="container">
-
+        <div id="table-wrapper" class="container" v-bind:style="{color: textColor}">
           <filter-bar></filter-bar>
           <vuetable
             ref="vuetable"
@@ -23,6 +20,7 @@
             :data-manager="dataManager"
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
+            :style="{color: textColor}"
           >
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
@@ -36,7 +34,7 @@
               </div>
             </template>
           </vuetable>
-          <div>
+          <div v-bind:style="{color: textColor}">
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
 
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
@@ -44,29 +42,8 @@
         </div>
       </b-col>
     </b-container>
-    <b-container>
+    <b-container v-bind:style="{color: textColor}">
       <b-col id="reviewSession">
-        <!-- <p>Schedule Group Review with RM11-RM13</p> -->
-        <!-- <form>
-          Enter Room code (RM11-RM13):
-          <input
-            class="reviewField"
-            text="text"
-            id="roomCode"
-            v-model="roomCode"
-            placeholder="Enter Room Code"
-          />
-        </form> -->
-        <!-- <form>
-          Enter Offering ID:
-          <input
-            class="reviewField"
-            text="text"
-            id="offeringID"
-            v-model="offeringID"
-            placeholder="Enter offering ID"
-          />
-        </form>-->
         <div class="col-auto my-1">
           <select
             class="custom-select mr-sm-2"
@@ -185,7 +162,6 @@ export default {
   },
 
   created: function() {
-    // Initializing rooms from backend
     this.updateRooms()
     this.populateOfferingList()
 
@@ -193,22 +169,13 @@ export default {
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58.62)";
       this.textColor = "white";
+      this.css.tableClass = `table table-bordered table-hover white`;
     } else {
       this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
     }
   },
   methods: {
-    setDarkMode: function() {
-      var darkModeOn = localStorage.getItem("DarkModeOn");
-      if (darkModeOn === "true") {
-        this.bgColor = "rgb(53, 58, 62)";
-        this.textColor = "white";
-      } else {
-        this.bgColor = "rgb(250,250,250)";
-        this.textColor = "black";
-      }
-    },
     renderIcon(classes, options) {
       return `<span class="${classes.join(" ")}"></span>`;
     },
@@ -276,6 +243,8 @@ export default {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
         this.buttonClass = "btn btn-dark btn-lg signupField";
+        this.buttonClass = "btn btn-dark btn-lg signupField";
+
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
@@ -354,6 +323,10 @@ b-container {
 
 .orange {
   color: orange;
+}
+
+.white {
+  color: white;
 }
 
 .pagination {

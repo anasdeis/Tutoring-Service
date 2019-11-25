@@ -17,14 +17,14 @@
             title="View Rooms"
           >Rooms</button>
         </b-col>
-        <b-col>
+       <b-col>
           <button
             type="button"
-            @click="goToTutorApplicationPage()"
+            @click="goToSubjectPage()"
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
-            title="View Tutor Application"
-          >View Tutor Application</button>
+            title="View Subjects"
+          >Subjects</button>
         </b-col>
         <b-col>
           <button
@@ -33,7 +33,7 @@
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
             title="View Tutors"
-          >View Tutors</button>
+          >Tutors</button>
         </b-col>
         <b-col>
           <button
@@ -42,9 +42,19 @@
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
             title="View Studnet"
-          >View Student</button>
+          >Students</button>
         </b-col>
-
+        <b-col>
+          <button
+            type="button"
+            @click="goToOfferingPage()"
+            class="btn btn-primary btn-lg home button"
+            v-b-tooltip.hover
+            title="View Offerings"
+          >Offerings</button>
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col>
           <button
             type="button"
@@ -52,7 +62,16 @@
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
             title="Setup Commission"
-          >Setup Commission</button>
+          >Create Commission</button>
+        </b-col>
+         <b-col>
+          <button
+            type="button"
+            @click="goToTutorApplicationPage()"
+            class="btn btn-primary btn-lg home button"
+            v-b-tooltip.hover
+            title="View Tutor Application"
+          >Tutor Applications</button>
         </b-col>
         <b-col>
           <button
@@ -61,24 +80,28 @@
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
             title="View Subject Request"
-          >Subject Request</button>
+          >Subject Requests</button>
         </b-col>
+        
+        <b-col>
+        <button
+          type="button"
+          @click="goToReviewPage()"
+          class="btn btn-primary btn-lg home button"
+          v-b-tooltip.hover
+          title="View Student Review"
+        >Student Reviews</button>
+        </b-col>
+
         <b-col>
           <button
             type="button"
-            @click="goToReviewPage()"
+            @click="goToSignupPage()"
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
-            title="View Student Review"
-          >View Student Reviews</button>
+            title="Create a manager account!"
+          >Create Account</button>
         </b-col>
-        <button
-          type="button"
-          @click="goToSignupPage()"
-          class="btn btn-primary btn-lg home button"
-          v-b-tooltip.hover
-          title="Create a manager account!"
-        >Create Manager Account</button>
       </b-row>
     </b-container>
   </div>
@@ -142,8 +165,8 @@ export default {
     },
     goToRoomPage: function() {
       Router.push({
-        path: "/room",
-        name: "room"
+        path: "/room1",
+        name: "room1"
       });
     },
     goToTutorPage: function() {
@@ -164,6 +187,12 @@ export default {
         name: "student"
       });
     },
+    // goToOfferingPage: function() {
+    //   Router.push({
+    //     path: "offering",
+    //     name: "offering"
+    //   });
+    // },
     goToCommissionPage: function() {
       Router.push({
         path: "/commission",
@@ -174,6 +203,12 @@ export default {
       Router.push({
         path: "/subjectRequest",
         name: "subjectRequest"
+      });
+    },
+    goToSubjectPage: function() {
+      Router.push({
+        path: "/subject",
+        name: "subject"
       });
     },
     goToReviewPage: function() {
@@ -204,10 +239,12 @@ b-container {
 button {
   width: 150px;
   height: auto;
+  margin-bottom: 10px;
+  margin-left: auto;
+
 }
 #functionality {
   color: black;
   font-size: 25px;
-  padding-left: 15px;
 }
 </style>

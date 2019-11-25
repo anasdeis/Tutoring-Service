@@ -1,13 +1,13 @@
 <template>
   <div id="tutor" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid>
-      <b-col id="tutorList">
+      <b-col id="tutorList" v-bind:style="{color: textColor}">
         <h6>
           <strong>VIEW REGISTERED TUTORS</strong>
         </h6>
 
-        <div id="table-wrapper" class="container">
-          <filter-bar></filter-bar>
+        <div id="table-wrapper" class="container" v-bind:style="{color: textColor}">
+          <filter-bar ></filter-bar>
           <vuetable
             ref="vuetable"
             :fields="fields"
@@ -20,9 +20,10 @@
             :data-manager="dataManager"
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
+            :style="{color: textColor}"
           >
-            <template slot="actions" slot-scope="props">
-              <div class="table-button-container">
+            <template slot="actions" slot-scope="props" >
+              <div class="table-button-container" >
                 <button
                   class="btn btn-danger btn-sm"
                   title="Remove a tutor!"
@@ -33,7 +34,7 @@
               </div>
             </template>
           </vuetable>
-          <div>
+          <div v-bind:style="{color: textColor}">
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
 
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
@@ -79,7 +80,8 @@ export default {
     return {
       perPage: 10,
       css: {
-        tableClass: "table table-bordered table-hover",
+        tableClass: `table table-bordered table-hover`,
+        // tableClass: "table table-bordered table-hover {{textColor}}",
         ascendingIcon: "fa fa-chevron-up",
         descendingIcon: "fa fa-chevron-down",
         loadingClass: "loading",
@@ -88,8 +90,8 @@ export default {
       },
       sortOrder: [
         {
-          field: "tutorID",
-          sortField: "tutorId",
+          field: "personId",
+          sortField: "personId",
           direction: "asc"
         }
       ],
@@ -97,7 +99,7 @@ export default {
         {
           name: "personId",
           title: "Tutor ID",
-          sortField: "tutorId"
+          sortField: "personId"
         },
         {
           name: "firstName",
@@ -111,12 +113,12 @@ export default {
         },
         {
           name: "email",
-          title: '<i class="fa fa-envelope"></i> Email',
+          title: '<span class="icon orange"><i class="fa fa-envelope"></i></span> Email',
           sortField: "email"
         },
         {
           name: "phoneNumber",
-          title: '<i class="fa fa-phone"></i> Phone',
+          title: '<span class="icon orange"><i class="fa fa-phone"></i></span> Phone',
           sortField: "phoneNumber"
         },
         {
@@ -135,8 +137,7 @@ export default {
 
   watch: {
     tutors(newVal, oldVal) {
-      this.$refs.vuetable.refresh();
-  
+      this.$refs.vuetable.refresh(); 
     }
   },
 
@@ -150,6 +151,19 @@ export default {
       .catch(e => {
         this.errorTutor = e;
       });
+
+    var darkModeOn = localStorage.getItem("DarkModeOn");
+    if (darkModeOn === "true") {
+      this.bgColor = "rgb(53,58,62)";
+      this.textColor = "white";
+      this.buttonClass = "btn btn-dark btn-lg createManagerField";
+      this.css.tableClass = `table table-bordered table-hover white`;
+    } else {
+      this.bgColor = "rgb(250,250,250)";
+      this.textColor = "black";
+      // this.bgColor = "rgb(248, 249, 251)";
+      this.buttonClass = "btn btn-white btn-lg createManagerField";
+    }
    
   },
   methods: {
@@ -216,10 +230,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-    //  this.moreParams = {
-      // 'filter': filterText
-     // };
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
       let tutor = this.tutors[0];
       let data = this.tutors.filter(tutor => {
         return (
@@ -230,9 +240,7 @@ export default {
       this.$refs.vuetable.setData(data);
     },
     onFilterReset() {
-    //  this.moreParams = {};
       this.$refs.vuetable.refresh();
-     // Vue.nextTick(() => this.$refs.vuetable.refresh());
     },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -240,6 +248,7 @@ export default {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
         this.buttonClass = "btn btn-dark btn-lg signupField";
+
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
@@ -263,6 +272,10 @@ b-container {
 
 .orange {
   color: orange;
+}
+
+.white {
+  color: white;
 }
 
 .pagination {

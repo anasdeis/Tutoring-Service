@@ -5,7 +5,7 @@
     <div>
       <span id="title1"></span>
     </div>
-    <b-container fluid>
+    <b-container fluid v-bind:style="{ color: textColor}">
       <input
         class="loginField"
         type="text"
@@ -35,7 +35,7 @@
         title="Create an account"
       >Sign up</button>
     </b-container>
-    <p>Do not have an account yet? Fill in the information and Sign Up Now!</p>
+    <p v-bind:style="{ color: textColor}">Do not have an account yet? Fill in the information and Sign Up Now!</p>
   </div>
 </template>
 
