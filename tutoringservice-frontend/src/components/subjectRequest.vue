@@ -8,9 +8,9 @@
         </h6>
 
         <div id="table-wrapper" class="container">
-          <div class="filter-bar pull-left">
+          
             <div class="form-inline">
-              <div class="form-group">
+              <div id= "addSubject" class="form-group">
                 <label>
                   <b>Add subject:</b>&nbsp;&nbsp;
                 </label>
@@ -37,7 +37,7 @@
                   >List</button>
                 </div>
               </div>
-            </div>
+       
           </div>
           <filter-bar></filter-bar>
           <vuetable
@@ -368,6 +368,10 @@ b-container {
 }
 
 .pagination {
+  margin-bottom: 10px;
+}
+
+#addSubject{
   margin-bottom: 10px;
 }
 

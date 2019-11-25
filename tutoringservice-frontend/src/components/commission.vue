@@ -1,9 +1,5 @@
 <template>
   <div id="commission" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <span id="title" v-bind:style="{color : textColor}"></span>
-    <div :style="{color : textColor}">
-      <span id="title1"></span>
-    </div>
 
     <b-container fluid :style="{color : textColor}">
       <b-col id="commissionList">
@@ -45,28 +41,41 @@
         </div>
       </b-col>
       <center>
-        <form>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Commission ID:
-          <input
-            class="commissionField"
-            type="number"
-            id="commissionID"
-            v-model="commissionID"
-            placeholder="Enter Commission ID"
-          />
-        </form>
-        <form>
-          Commission percentage:
-          <input
-            class="commissionField"
-            type="number"
-            step="0.01"
-            id="percentage"
-            v-model="percentage"
-            placeholder="Enter percentage"
-          />
-        </form>
-        <form>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label for="name">ID:</label>
+              </td>
+              <td>
+                <input
+                  class="commissionField"
+                  type="number"
+                  id="commissionID"
+                  v-model="commissionID"
+                  placeholder="Enter Commission ID"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="email">Percentage:</label>
+              </td>
+              <td>
+                <input
+                  class="commissionField"
+                  type="number"
+                  step="0.01"
+                  id="percentage"
+                  v-model="percentage"
+                  placeholder="Enter percentage"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <form>
           Confirm your manager ID:
           <input
             class="commissionField"
@@ -75,7 +84,7 @@
             v-model="managerID"
             placeholder="Enter managerID"
           />
-        </form>
+        </form>-->
         <button
           type="button"
           id="myButton"
@@ -164,7 +173,7 @@ export default {
       textColor: "",
       commissionID: "",
       percentage: "",
-      managerID: "",
+      //managerID: "",
       offeringID: "",
       error: "",
       response: [],
@@ -293,9 +302,7 @@ export default {
           commissionID +
           "?percentage=" +
           percentage +
-          "&managerID=" +
-          managerID +
-          "&tutoringSystemID=1"
+          "&managerID=1&tutoringSystemID=1"
       )
         .then(response => {
           this.commissions.push(response.data);
@@ -317,7 +324,7 @@ export default {
       this.updateCommissions();
       this.commissionID = "";
       this.percentage = "";
-      this.managerID = "";
+      //this.managerID = "";
       if (this.error != "") {
         alert(this.error);
       }
@@ -336,6 +343,7 @@ export default {
 #myButton {
   color: white;
   margin-top: 20px;
+  width: 275px;
 }
 
 #b-container {
@@ -344,7 +352,13 @@ export default {
   margin-bottom: auto;
   height: auto;
 }
+
+.pagination {
+  margin-bottom: 10px;
+}
+
 #commissionList {
+  margin-bottom: 20px;
   border-width: 5px;
   border-style: groove;
 }
