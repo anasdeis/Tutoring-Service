@@ -890,6 +890,7 @@ public class TutoringServiceService {
 			throw new IllegalArgumentException(" isApproved cannot be empty!");
 		}
 		tutorApplication.setIsAccepted(isAccepted);
+		tutorApplication.getTutor().setIsRegistered(true);
 		
 		return tutorApplicationRepository.save(tutorApplication);
 	}

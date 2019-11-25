@@ -1,10 +1,9 @@
-<!--- This component acts as a page to view tutor application list and approve/decline tutor application --->
 <template>
-  <div id="tutorApplication" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="availableSession" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid :style="{color: textColor}">
-      <b-col id="tutorApplicationList">
+      <b-col id="availableSessionList">
         <h6>
-          <strong>VIEW TUTOR APPLICATIONS</strong>
+          <strong>VIEW AVAILABLE SESSIONS</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -22,31 +21,6 @@
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
           >
-            <template slot="actions" slot-scope="props">
-              <div class="table-button-container">
-                <button
-                  class="btn btn-success btn-sm"
-                  title="Approve tutor application!"
-                  @click="approveRow(props.rowData)"
-                >
-                  <i class="fa fa-check"></i>
-                </button>
-                <button
-                  class="btn btn-danger btn-sm"
-                  title="Decline tutor application!"
-                  @click="declineRow(props.rowData)"
-                >
-                  <i class="fa fa-ban"></i>
-                </button>
-                <button
-                  class="btn btn-danger btn-sm"
-                  title="Remove tutor application!"
-                  @click="deleteRow(props.rowData)"
-                >
-                  <i class="fa fa-trash"></i>
-                </button>
-              </div>
-            </template>
           </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
@@ -66,7 +40,7 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePaginationDrop
 import VuetablePaginationInfo from "vuetable-2/src/components/VuetablePaginationInfo";
 import _ from "lodash";
 import Vue from "vue";
-import FilterBar from "./FilterBar"; /*let's use ./FilterBar for now, add if necessary*/
+import FilterBar from "./FilterBar";
 import VueEvents from "vue-events";
 Vue.use(VueEvents);
 
@@ -83,12 +57,12 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "tutorApplications",
+  name: "availableSessions",
   components: {
     Vuetable,
     VuetablePagination,
     VuetablePaginationInfo,
-    FilterBar /*needs to change that as well*/
+    FilterBar
   },
   data() {
     return {
@@ -103,39 +77,40 @@ export default {
       },
       sortOrder: [
         {
-          field: "applicationId",
-          sortField: "applicationId",
+          field: "availableSessionID",
+          sortField: "availableSessionID",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "applicationId",
+          name: "availableSessionID",
           title: "ID",
-          sortField: "applicationId"
+          sortField: "availableSessionID"
+        },
+        {
+          name: "day",
+          title: `<span class="icon orange"><i class="fas fa-calendar-day"></i></span> Day`,
+          sortField: "day"
+        },
+        {
+          name: "startTime",
+          title: '<span class="icon orange"><i class="fas fa-hourglass-start"></i></span> Start Time',
+          sortField: "startTime"
+        },
+        {
+          name: "endTime",
+          title: '<span class="icon orange"><i class="fas fa-hourglass-end"></i></span> End Time',
+          sortField: "endTime"
         },
         {
           name: "tutor",
-          title:  `<span class="icon orange"><i class="fa fa-user"></i></span> Tutor ID`,
+          title: `<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor IDs`,
           sortField: "tutor"
         },
-        {
-          name: "isAccepted",
-          title: '<i class="fa fa-thumbs-up"></i> Accepted',
-          sortField: "isAccepted"
-        },
-        {
-          name: "subject",
-          title: `<i class="fas fa-book-open"></i></span> Subjects`,
-          sortField: "subject"
-        },
-        {
-          name: "actions",
-          title: "Actions"
-        }
       ],
-      tutorApplications: [],
-      errorTutorApplication: "",
+      availableSessions: [],
+      errorAvailableSession: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -143,13 +118,13 @@ export default {
   },
 
   watch: {
-    tutorApplications(newVal, oldVal) {
+    availableSessions(newVal, oldVal) {
       this.$refs.vuetable.refresh();
     }
   },
 
   created: function() {
-    this.updateTutorApplications();
+    this.updateAvailableSessions();
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -172,85 +147,24 @@ export default {
       this.$refs.pagination.setPaginationData(paginationData);
       this.$refs.paginationInfo.setPaginationData(paginationData);
     },
-    updateTutorApplications() {
-      AXIOS.get(`tutorApplication/list`)
-        .then(response => {
-          // JSON responses are automatically parsed.
-          this.tutorApplications = response.data;
-        })
-        .catch(e => {
-          this.errorTutorApplication = e;
-        });
-    },
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    approveRow(rowData) {
-      AXIOS.patch(
-        `tutorApplication/update/${rowData.applicationId}?isAccepted=true`
-      )
+    updateAvailableSessions() {
+      // Initializing students from backend
+      AXIOS.get(`availableSession/list`)
         .then(response => {
-          this.errorTutorApplication = "";
+          // JSON responses are automatically parsed.
+          this.availableSessions = response.data;
         })
         .catch(e => {
-          var errorMsg =
-            e.response.status +
-            " " +
-            e.response.data.error +
-            ": " +
-            e.response.data.message;
-          console.log(errorMsg);
-          this.errorTutorApplication = errorMsg;
+          this.errorAvailableSession = e;
         });
-      alert("You clicked approve on: " + JSON.stringify(rowData));
-      this.updateTutorApplications();
-      if (this.errorTutorApplication != "") {
-        alert(this.errorTutorApplication);
-      }
-    },
-    declineRow(rowData) {
-      AXIOS.patch(
-        `tutorApplication/update/${rowData.applicationId}?isAccepted=false`
-      )
-        .then(response => {
-          this.errorTutorApplication = "";
-        })
-        .catch(e => {
-          var errorMsg =
-            e.response.status +
-            " " +
-            e.response.data.error +
-            ": " +
-            e.response.data.message;
-          console.log(errorMsg);
-          this.errorTutorApplication = errorMsg;
-        });
-      alert("You clicked decline on: " + JSON.stringify(rowData));
-      this.updateTutorApplications();
-      if (this.errorTutorApplication != "") {
-        alert(this.errorTutorApplication);
-      }
-    },
-    deleteRow(rowData) {
-      AXIOS.delete(`tutorApplication/delete/${rowData.applicationId}`)
-        .then(response => {
-          this.errorTutorApplication = "";
-        })
-        .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
-          console.log(errorMsg);
-          this.errorTutorApplication = errorMsg;
-        });
-      alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateTutorApplications();
-      if(this.errorTutorApplication != ''){
-        alert(this.errorTutorApplication)
-      }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.tutorApplications.length < 1) return;
+      //if (this.availableSessions.length < 1) return;
 
-      let local = this.tutorApplications;
+      let local = this.availableSessions;
 
       // sortOrder can be empty, so we have to check for that as well
       if (sortOrder.length > 0) {
@@ -276,12 +190,12 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let tutorApplication = this.tutorApplications[0];
+      let availableSession = this.availableSessions[0];
 
-      let data = this.tutorApplications.filter(tutorApplication => {
-        return tutorApplication.tutor
-          .toString()
-          .includes(filterText.toString());
+      let data = this.availableSessions.filter(availableSession => {
+        return (
+          availableSession.day.toString().includes(filterText.toString())
+        );
       });
 
       this.$refs.vuetable.setData(data);
@@ -308,7 +222,7 @@ export default {
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
     document.getElementsByName("search")[0].placeholder =
-      "Search tutor ID..";
+      "Search day..";
   }
 };
 </script>
@@ -330,7 +244,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#tutorApplicationList {
+#availableSessionList {
   border-width: 5px;
   border-style: groove;
 }

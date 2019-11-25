@@ -37,6 +37,13 @@
                 >
                   <i class="fa fa-ban"></i>
                 </button>
+                <button
+                  class="btn btn-danger btn-sm"
+                  title="Remove review!"
+                  @click="deleteRow(props.rowData)"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
               </div>
             </template>
           </vuetable>
@@ -136,7 +143,6 @@ export default {
 
   watch: {
     reviews(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.reviews);
       this.$refs.vuetable.refresh();
     }
   },
@@ -187,13 +193,15 @@ export default {
           this.errorReview = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked approve on: " + JSON.stringify(rowData));
       this.updateReviews();
+      if(this.errorReview != ''){
+        alert(this.errorReview)
+      }
     },
     declineRow(rowData) {
       AXIOS.patch(
@@ -203,16 +211,34 @@ export default {
           this.errorReview = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg);
           this.errorReview = errorMsg;
         });
       alert("You clicked decline on: " + JSON.stringify(rowData));
       this.updateReviews();
+      if(this.errorReview != ''){
+        alert(this.errorReview)
+      }
+    },
+    deleteRow(rowData) {
+      AXIOS.delete(`http://localhost:8080/review/delete/${rowData.reviewID}`)
+        .then(response => {
+          this.errorReview = "";
+        })
+        .catch(e => {
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          console.log(errorMsg);
+          this.errorReview = errorMsg;
+        });
+      alert("You clicked delete on: " + JSON.stringify(rowData));
+      this.updateReviews();
+      if(this.errorReview != ''){
+        alert(this.errorReview)
+      }
     },
     dataManager(sortOrder, pagination) {
-      if (this.reviews.length < 1) return;
+      //if (this.reviews.length < 1) return;
 
       let local = this.reviews;
 

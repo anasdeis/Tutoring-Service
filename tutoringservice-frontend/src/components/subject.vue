@@ -26,7 +26,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
-                  title="Remove a subject!"
+                  title="Remove subject!"
                   @click="deleteRow(props.rowData)"
                 >
                   <i class="fa fa-trash"></i>
@@ -136,7 +136,6 @@ export default {
 
   watch: {
     subjects(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.subjects);
       this.$refs.vuetable.refresh();
     }
   },
@@ -180,22 +179,20 @@ export default {
         });
     },
     deleteRow(rowData) {
-      if (rowData.offering.length > 0) {
-        alert("ERROR: You can't delete a subject that has active offerings");
-        return -1;
-      }
       AXIOS.delete(`http://localhost:8080/subject/delete/${rowData.courseID}`)
         .then(response => {
           this.errorSubject = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg);
           this.errorSubject = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateSubjects();
+      if(this.errorSubject != ''){
+        alert(this.errorSubject)
+      }
     },
     dataManager(sortOrder, pagination) {
       if (this.subjects.length < 1) return;

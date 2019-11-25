@@ -1392,7 +1392,7 @@ public class TutoringServiceRestController {
 	}
 	
 	/**
-	 * @return Remove subject 
+	 * @return Remove commission 
 	 * @sample /commission/delete/<commissionID>
 	 */
 	@DeleteMapping(value = {"/commission/delete/{commissionID}", "/commission/delete/{commissionID}/"})
@@ -1400,6 +1400,39 @@ public class TutoringServiceRestController {
 		CommissionDto commissionDto = convertToDto(service.getCommission(commissionID));
 		service.deleteCommisison(commissionID);
 		return commissionDto;
+	}
+	
+	/**
+	 * @return Remove tutorApplication 
+	 * @sample /tutorApplcation/delete/<applicationId>
+	 */
+	@DeleteMapping(value = {"/tutorApplication/delete/{applicationId}", "/tutorApplication/delete/{applicationId}/"})
+	public TutorApplicationDto deleteTutorApplication(@PathVariable("applicationId") Integer applicationId) {
+		TutorApplicationDto tutorApplicationDto = convertToDto(service.getTutorApplication(applicationId));
+		service.deleteTutorApplication(applicationId);
+		return tutorApplicationDto;
+	}
+	
+	/**
+	 * @return Remove review 
+	 * @sample /tutorApplcation/delete/<applicationId>
+	 */
+	@DeleteMapping(value = {"/review/delete/{reviewID}", "/review/delete/{reviewID}/"})
+	public ReviewDto deleteReview(@PathVariable("reviewID") Integer reviewID) {
+		ReviewDto reviewDto = convertToDto(service.getReview(reviewID));
+		service.deleteReview(reviewID);
+		return reviewDto;
+	}
+	
+	/**
+	 * @return Remove offering 
+	 * @sample /offering/delete/<offeringID>
+	 */
+	@DeleteMapping(value = {"/offering/delete/{offeringID}", "/offering/delete/{offeringID}/"})
+	public OfferingDto deleteOffering(@PathVariable("offeringID") String offeringID) {
+		OfferingDto offeringDto = convertToDto(service.getOffering(offeringID));
+		service.deleteOffering(offeringID);
+		return offeringDto;
 	}
 }
 
