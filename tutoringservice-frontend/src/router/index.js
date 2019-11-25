@@ -16,6 +16,7 @@ import subjectRequest from "@/components/subjectRequest";
 import subject from "@/components/subject";
 import home1 from "@/components/home1";
 import offering from "@/components/offering";
+import availableSession from "@/components/availableSession";
 
 Vue.use(Router)
 
@@ -100,6 +101,11 @@ export default new Router({
     path: "/offering",
     name: "offering",
     component: offering
+    },
+    {
+    path: "/availableSession",
+    name: "availableSession",
+    component: availableSession
     },
   ]
 });

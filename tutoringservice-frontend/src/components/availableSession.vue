@@ -1,9 +1,9 @@
 <template>
-  <div id="offering" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="availableSession" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid :style="{color: textColor}">
-      <b-col id="offeringList">
+      <b-col id="availableSessionList">
         <h6>
-          <strong>VIEW OFFERINGS</strong>
+          <strong>VIEW AVAILABLE SESSIONS</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -21,17 +21,6 @@
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
           >
-            <template slot="actions" slot-scope="props">
-              <div class="table-button-container">
-                <button
-                  class="btn btn-danger btn-sm"
-                  title="Remove offering!"
-                  @click="deleteRow(props.rowData)"
-                >
-                  <i class="fa fa-trash"></i>
-                </button>
-              </div>
-            </template>
           </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
@@ -68,7 +57,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "offerings",
+  name: "availableSessions",
   components: {
     Vuetable,
     VuetablePagination,
@@ -88,69 +77,40 @@ export default {
       },
       sortOrder: [
         {
-          field: "offeringID",
-          sortField: "offeringID",
+          field: "availableSessionID",
+          sortField: "availableSessionID",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "offeringID",
+          name: "availableSessionID",
           title: "ID",
-          sortField: "offeringID"
+          sortField: "availableSessionID"
         },
         {
-          name: "subject",
-          title: `<span class="icon orange"><i class="fas fa-book-open"></i></span> Subject`,
-          sortField: "subject"
+          name: "day",
+          title: `<span class="icon orange"><i class="fas fa-calendar-day"></i></span> Day`,
+          sortField: "day"
         },
         {
-          name: "term",
-          title: `<span class="icon orange"><i class="fas fa-calendar-alt"></i></span> Term`,
-          sortField: "term"
+          name: "startTime",
+          title: '<span class="icon orange"><i class="fas fa-hourglass-start"></i></span> Start Time',
+          sortField: "startTime"
         },
         {
-          name: "pricePerHour",
-          title: `<span class="icon orange"><i class="fas fa-dollar-sign"></i></span> Price/hr`,
-          sortField: "pricePerHour"
-        },
-        {
-          name: "commission",
-          title: `<span class="icon orange"><i class="fas fa-percent"></i></span> Commission ID`,
-          sortField: "commission"
-        },
-        {
-          name: "classroom",
-          title: '<span class="icon orange"><i class="fas fa-chalkboard"></i></span> Classroom',
-          sortField: "classroom"
-        },
-        {
-          name: "classTime",
-          title: '<span class="icon orange"><i class="fas fa-clock"></i></span> Classtime ID',
-          sortField: "classTime"
-        },
-        {
-          name: "review",
-          title: '<span class="icon orange"><i class="fas fa-comment"></i></span> Review IDs',
-          sortField: "review"
+          name: "endTime",
+          title: '<span class="icon orange"><i class="fas fa-hourglass-end"></i></span> End Time',
+          sortField: "endTime"
         },
         {
           name: "tutor",
-          title: '<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor ID',
+          title: `<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor IDs`,
           sortField: "tutor"
         },
-        {
-          name: "students",
-          title: '<span class="icon orange"><i class="fas fa-user-graduate"></i></span> Student IDs',
-          sortField: "students"
-        },
-        {
-          name: "actions",
-          title: "Actions"
-        }
       ],
-      offerings: [],
-      errorOffering: "",
+      availableSessions: [],
+      errorAvailableSession: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -158,13 +118,13 @@ export default {
   },
 
   watch: {
-    offerings(newVal, oldVal) {
+    availableSessions(newVal, oldVal) {
       this.$refs.vuetable.refresh();
     }
   },
 
   created: function() {
-    this.updateOfferings();
+    this.updateAvailableSessions();
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -190,37 +150,21 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    updateOfferings() {
-      // Initializing offerings from backend
-      AXIOS.get(`offering/list`)
+    updateAvailableSessions() {
+      // Initializing students from backend
+      AXIOS.get(`availableSession/list`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.offerings = response.data;
+          this.availableSessions = response.data;
         })
         .catch(e => {
-          this.errorOffering= e;
+          this.errorAvailableSession = e;
         });
-    },
-    deleteRow(rowData) {
-      AXIOS.delete(`offering/delete/${rowData.offeringID}`)
-        .then(response => {
-          this.errorOffering = "";
-        })
-        .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
-          console.log(errorMsg);
-          this.errorOffering = errorMsg;
-        });
-      alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateOfferings();
-      if(this.errorOffering != ''){
-        alert(this.errorOffering)
-      }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.students.length < 1) return;
+      //if (this.availableSessions.length < 1) return;
 
-      let local = this.offerings;
+      let local = this.availableSessions;
 
       // sortOrder can be empty, so we have to check for that as well
       if (sortOrder.length > 0) {
@@ -246,11 +190,11 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let offering = this.offerings[0];
+      let availableSession = this.availableSessions[0];
 
-      let data = this.offerings.filter(offering => {
+      let data = this.availableSessions.filter(availableSession => {
         return (
-          offering.offeringID.toLowerCase().includes(filterText.toLowerCase())
+          availableSession.day.toString().includes(filterText.toString())
         );
       });
 
@@ -278,7 +222,7 @@ export default {
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
     document.getElementsByName("search")[0].placeholder =
-      "Search ID..";
+      "Search day..";
   }
 };
 </script>
@@ -300,7 +244,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#offeringList {
+#availableSessionList {
   border-width: 5px;
   border-style: groove;
 }
