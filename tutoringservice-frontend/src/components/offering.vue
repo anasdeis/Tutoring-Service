@@ -1,10 +1,9 @@
-<!--- This component acts as a page to view subject and add subject from request --->
 <template>
-  <div id="subject" class="card" v-bind:style="{ backgroundColor: bgColor}">
+  <div id="offering" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <b-container fluid :style="{color: textColor}">
-      <b-col id="subjectList">
+      <b-col id="offeringList">
         <h6>
-          <strong>VIEW SUBJECTS</strong>
+          <strong>VIEW OFFERINGS</strong>
         </h6>
 
         <div id="table-wrapper" class="container">
@@ -26,7 +25,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
-                  title="Remove subject!"
+                  title="Remove offering!"
                   @click="deleteRow(props.rowData)"
                 >
                   <i class="fa fa-trash"></i>
@@ -69,7 +68,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "subjects",
+  name: "offerings",
   components: {
     Vuetable,
     VuetablePagination,
@@ -89,45 +88,64 @@ export default {
       },
       sortOrder: [
         {
-          field: "courseID",
-          sortField: "courseID",
+          field: "offeringID",
+          sortField: "offeringID",
           direction: "asc"
         }
       ],
       fields: [
         {
-          name: "courseID",
+          name: "offeringID",
           title: "ID",
-          sortField: "courseID"
+          sortField: "offeringID"
         },
         {
-          name: "name",
-          title: "Name",
-          sortField: "name"
+          name: "term",
+          title: `<span class="icon orange"><i class="fas fa-calendar-alt"></i></span> Term`,
+          sortField: "term"
         },
         {
-          name: "description",
-          title: `<span class="icon orange"><i class="fa fa-file-alt"></i></span> Description`,
-          sortField: "description"
+          name: "pricePerHour",
+          title: `<span class="icon orange"><i class="fas fa-dollar-sign"></i></span> Price/hr`,
+          sortField: "pricePerHour"
         },
         {
-          name: "subjectType",
-          title: '<i class="fas fa-school"></i> School Type',
-          sortField: "subjectType"
+          name: "commission",
+          title: `<span class="icon orange"><i class="fas fa-percent"></i></span> Commission`,
+          sortField: "commission"
         },
         {
-          name: "university",
-          title: '<i class="fas fa-university"></i> University',
-          sortField: "university"
+          name: "classroom",
+          title: '<span class="icon orange"><i class="fas fa-chalkboard"></i></span> Classroom',
+          sortField: "classroom"
+        },
+        {
+          name: "classTime",
+          title: '<span class="icon orange"><i class="fas fa-clock"></i></span> Classtime',
+          sortField: "classTime"
+        },
+        {
+          name: "review",
+          title: '<span class="icon orange"><i class="fas fa-comment"></i></span> Reviews',
+          sortField: "review"
+        },
+        {
+          name: "tutor",
+          title: '<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor',
+          sortField: "tutor"
+        },
+        {
+          name: "students",
+          title: '<span class="icon orange"><i class="fas fa-user-graduate"></i></span> Students',
+          sortField: "students"
         },
         {
           name: "actions",
           title: "Actions"
         }
       ],
-      subjects: [],
-      errorSubject: "",
-      errorUniversity: "",
+      offerings: [],
+      errorOffering: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -135,13 +153,13 @@ export default {
   },
 
   watch: {
-    subjects(newVal, oldVal) {
+    offerings(newVal, oldVal) {
       this.$refs.vuetable.refresh();
     }
   },
 
   created: function() {
-    this.updateSubjects();
+    this.updateOfferings();
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -150,9 +168,9 @@ export default {
       this.buttonClass = "btn btn-dark btn-lg container";
       this.css.tableClass = `table table-bordered table-hover white`;
     } else {
-      // this.bgColor = "rgb(250,250,250)";
+      this.bgColor = "rgb(250,250,250)";
       this.textColor = "black";
-      this.bgColor = "rgb(248, 249, 251)";
+      // this.bgColor = "rgb(248, 249, 251)";
       this.buttonClass = "btn btn-white btn-lg container";
     }
   },
@@ -167,37 +185,37 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    updateSubjects() {
-      // Initializing reviews from backend
-      AXIOS.get(`http://localhost:8080/subject/list`)
+    updateOfferings() {
+      // Initializing offerings from backend
+      AXIOS.get(`offering/list`)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.subjects = response.data;
+          this.offerings = response.data;
         })
         .catch(e => {
-          this.errorSubject = e;
+          this.errorOffering= e;
         });
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/subject/delete/${rowData.courseID}`)
+      AXIOS.delete(`offering/delete/${rowData.offeringID}`)
         .then(response => {
-          this.errorSubject = "";
+          this.errorOffering = "";
         })
         .catch(e => {
           var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          this.errorSubject = errorMsg;
+          this.errorOffering = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
-      this.updateSubjects();
-      if(this.errorSubject != ''){
-        alert(this.errorSubject)
+      this.updateOfferings();
+      if(this.errorOffering != ''){
+        alert(this.errorOffering)
       }
     },
     dataManager(sortOrder, pagination) {
-      if (this.subjects.length < 1) return;
+      //if (this.students.length < 1) return;
 
-      let local = this.subjects;
+      let local = this.offerings;
 
       // sortOrder can be empty, so we have to check for that as well
       if (sortOrder.length > 0) {
@@ -223,9 +241,12 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let subject = this.subjects[0];
-      let data = this.subjects.filter(subject => {
-        return subject.name.toLowerCase().includes(filterText.toLowerCase());
+      let offering = this.offerings[0];
+
+      let data = this.offerings.filter(offering => {
+        return (
+          offering.offeringID.toLowerCase().includes(filterText.toLowerCase())
+        );
       });
 
       this.$refs.vuetable.setData(data);
@@ -251,7 +272,8 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder = "Search name..";
+    document.getElementsByName("search")[0].placeholder =
+      "Search ID..";
   }
 };
 </script>
@@ -273,7 +295,7 @@ b-container {
   margin-bottom: 10px;
 }
 
-#subjectList {
+#offeringList {
   border-width: 5px;
   border-style: groove;
 }

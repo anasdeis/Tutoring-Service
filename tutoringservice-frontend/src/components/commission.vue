@@ -30,7 +30,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
-                  title="Remove a student!"
+                  title="Remove commission!"
                   @click="deleteRow(props.rowData)"
                 >
                   <i class="fa fa-trash"></i>
@@ -326,28 +326,6 @@ export default {
       commissionID,
       managerID,
     ) {
-
-      if(commissionID == ''){
-        alert("ERROR: You must enter a commissionID to setup commission!")
-        return -1
-      } else if (!Number.isInteger(commissionID)){
-        alert("ERROR: You must enter a number for commissionID to setup commission!")
-        return -1
-      }
-
-      if(percentage == ''){
-        alert("ERROR: You must enter a percentage to setup commission!")
-        return -1
-      } 
-
-      if(managerID == ''){
-        alert("ERROR: You must enter a managerID to setup commission!")
-        return -1
-      } else if (!Number.isInteger(managerID)){
-        alert("ERROR: You must enter a number for managerID to setup commission!")
-        return -1
-      }
-
       AXIOS.post(
         "/commission/create/" +
           commissionID +
@@ -362,9 +340,8 @@ export default {
           error = "";
         })
         .catch(e => {
-          var errorMsg = e.message;
+          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
           console.log(errorMsg);
-          alert(errorMsg);
           this.error = errorMsg;
         });
         alert("You clicked setup commission for: " + this.response.data.commissionID);
@@ -372,6 +349,9 @@ export default {
         this.commissionID = ''
         this.percentage = ''
         this.managerID = ''
+        if(this.error != ''){
+          alert(this.error)
+      }
     }
   },
   mounted() {

@@ -1420,8 +1420,19 @@ public class TutoringServiceRestController {
 	@DeleteMapping(value = {"/review/delete/{reviewID}", "/review/delete/{reviewID}/"})
 	public ReviewDto deleteReview(@PathVariable("reviewID") Integer reviewID) {
 		ReviewDto reviewDto = convertToDto(service.getReview(reviewID));
-		service.deleteReview(reviewID);;
+		service.deleteReview(reviewID);
 		return reviewDto;
+	}
+	
+	/**
+	 * @return Remove offering 
+	 * @sample /offering/delete/<offeringID>
+	 */
+	@DeleteMapping(value = {"/offering/delete/{offeringID}", "/offering/delete/{offeringID}/"})
+	public OfferingDto deleteOffering(@PathVariable("offeringID") String offeringID) {
+		OfferingDto offeringDto = convertToDto(service.getOffering(offeringID));
+		service.deleteOffering(offeringID);
+		return offeringDto;
 	}
 }
 

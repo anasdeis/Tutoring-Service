@@ -25,7 +25,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-danger btn-sm"
-                  title="Remove a student!"
+                  title="Remove student!"
                   @click="deleteRow(props.rowData)"
                 >
                   <i class="fa fa-trash"></i>

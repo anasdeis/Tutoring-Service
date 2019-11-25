@@ -25,7 +25,7 @@
               <div class="table-button-container">
                 <button
                   class="btn btn-success btn-sm"
-                  title="Book a review session!"
+                  title="Book review session!"
                   @click="createReviewSession(props.rowData)"
                 >
                   <i class="fa fa-plus"></i>
@@ -120,7 +120,7 @@ export default {
       fields: [
         {
           name: "roomCode",
-          title: "Room ID",
+          title: "Room Code",
           sortField: "roomCode"
         },
         {
@@ -260,7 +260,7 @@ export default {
         this.offeringID = offeringList.options[offeringList.selectedIndex].text;
       }
       if (this.offeringID == "") {
-        alert("ERROR: Enter offering ID to add a review session!");
+        alert("ERROR: Select offering ID to add a review session!");
         return -1;
       }
       if (this.managerID == "") {
@@ -316,6 +316,8 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
+    document.getElementsByName("search")[0].placeholder =
+      "Search room code..";
   }
 };
 </script>
