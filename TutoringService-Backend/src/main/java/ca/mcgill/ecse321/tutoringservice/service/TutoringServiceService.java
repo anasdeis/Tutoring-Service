@@ -728,6 +728,8 @@ public class TutoringServiceService {
 		if (error.length() > 0) {
 			throw new IllegalArgumentException(error);
 		}
+		
+		classroom.setIsBooked(true);
 		Offering offering = offeringRepository.findOfferingByOfferingID(offId);
 		if (offering == null) {
 			offering = new Offering();
@@ -1264,6 +1266,33 @@ public class TutoringServiceService {
 		}
 		classroomRepository.save(thisClass);
 		return thisClass;
+	}
+	
+	@Transactional
+	public Classroom setClassroomReviewSession(String roomCode, String offeringID) {
+		String error = "";
+		if (roomCode == null){
+			error = error + "Classroom roomCode cannot be empty!";
+		}
+		if (offeringID == null || offeringID.trim().length() == 0) {
+			error = error + "offeringID cannot be empty!";
+		}
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		Set <Offering> offerings = new HashSet<Offering>();
+		Offering offering = this.getOffering(offeringID);
+		offerings.add(offering);
+		Classroom classroom = this.getClassroom(roomCode);
+		if(classroom.getIsBigRoom() == true) {
+			offering.setClassroom(classroom);
+			classroom.setIsBooked(true);
+		} else {
+			throw new IllegalArgumentException("Select a big room to schedule review session");
+		}
+		
+		return classroom;
 	}
 
 	@Transactional

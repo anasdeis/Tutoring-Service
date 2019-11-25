@@ -112,12 +112,14 @@ export default {
         },
         {
           name: "subjectType",
-          title: '<i class="fas fa-school"></i> School Type',
+          title:
+            '<span class="icon orange"><i class="fas fa-school"></i></span> School Type',
           sortField: "subjectType"
         },
         {
           name: "university",
-          title: '<i class="fas fa-university"></i> University',
+          title:
+            '<span class="icon orange"><i class="fas fa-university"></i></span> University',
           sortField: "university"
         },
         {
@@ -169,7 +171,7 @@ export default {
     },
     updateSubjects() {
       // Initializing reviews from backend
-      AXIOS.get(`http://localhost:8080/subject/list`)
+      AXIOS.get(`subject/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.subjects = response.data;
@@ -179,24 +181,27 @@ export default {
         });
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/subject/delete/${rowData.courseID}`)
+      AXIOS.delete(`subject/delete/${rowData.courseID}`)
         .then(response => {
           this.errorSubject = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorSubject = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateSubjects();
-      if(this.errorSubject != ''){
-        alert(this.errorSubject)
+      if (this.errorSubject != "") {
+        alert(this.errorSubject);
       }
     },
     dataManager(sortOrder, pagination) {
-      if (this.subjects.length < 1) return;
-
       let local = this.subjects;
 
       // sortOrder can be empty, so we have to check for that as well

@@ -20,8 +20,7 @@
             :data-manager="dataManager"
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
-          >
-          </vuetable>
+          ></vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
@@ -95,19 +94,21 @@ export default {
         },
         {
           name: "startTime",
-          title: '<span class="icon orange"><i class="fas fa-hourglass-start"></i></span> Start Time',
+          title:
+            '<span class="icon orange"><i class="fas fa-hourglass-start"></i></span> Start Time',
           sortField: "startTime"
         },
         {
           name: "endTime",
-          title: '<span class="icon orange"><i class="fas fa-hourglass-end"></i></span> End Time',
+          title:
+            '<span class="icon orange"><i class="fas fa-hourglass-end"></i></span> End Time',
           sortField: "endTime"
         },
         {
           name: "tutor",
           title: `<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor IDs`,
           sortField: "tutor"
-        },
+        }
       ],
       availableSessions: [],
       errorAvailableSession: "",
@@ -151,7 +152,7 @@ export default {
       this.$refs.vuetable.changePage(page);
     },
     updateAvailableSessions() {
-      // Initializing students from backend
+      // Initializing available sessions from backend
       AXIOS.get(`availableSession/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -162,8 +163,6 @@ export default {
         });
     },
     dataManager(sortOrder, pagination) {
-      //if (this.availableSessions.length < 1) return;
-
       let local = this.availableSessions;
 
       // sortOrder can be empty, so we have to check for that as well
@@ -193,9 +192,7 @@ export default {
       let availableSession = this.availableSessions[0];
 
       let data = this.availableSessions.filter(availableSession => {
-        return (
-          availableSession.day.toString().includes(filterText.toString())
-        );
+        return availableSession.day.toString().includes(filterText.toString());
       });
 
       this.$refs.vuetable.setData(data);
@@ -221,8 +218,7 @@ export default {
     this.$root.$on("setDarkModeState", this.setDarkMode);
     this.$events.$on("filter-set", eventData => this.onFilterSet(eventData));
     this.$events.$on("filter-reset", e => this.onFilterReset());
-    document.getElementsByName("search")[0].placeholder =
-      "Search day..";
+    document.getElementsByName("search")[0].placeholder = "Search day..";
   }
 };
 </script>

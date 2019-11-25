@@ -107,12 +107,13 @@ export default {
         },
         {
           name: "lastName",
-          title: "Last Name",
+          title: `<span class="icon orange"><i class="fa fa-user"></i></span> Last Name`,
           sortField: "lastName"
         },
         {
           name: "dateOfBirth",
-          title: '<i class="fa fa-birthday-cake"></i> Birthdate',
+          title:
+            '<span class="icon orange"><i class="fa fa-birthday-cake"></i></span> Birthdate',
           sortField: "dateOfBirth"
         },
         {
@@ -153,7 +154,7 @@ export default {
 
   created: function() {
     this.updateTutors();
-    
+
     /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -181,7 +182,7 @@ export default {
     },
     updateTutors() {
       // Initializing students from backend
-      AXIOS.get(`http://localhost:8080/tutor/list`)
+      AXIOS.get(`tutor/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.tutors = response.data;
@@ -191,25 +192,28 @@ export default {
         });
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/tutor/delete/${rowData.personId}`)
+      AXIOS.delete(`tutor/delete/${rowData.personId}`)
         .then(response => {
           this.errorTutor = "";
-          alert("PASS")
+          alert("PASS");
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorTutor = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateTutors();
-      if(this.errorTutor != ''){
-        alert(this.errorTutor)
+      if (this.errorTutor != "") {
+        alert(this.errorTutor);
       }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.tutors.length < 1) return;
-
       let local = this.tutors;
 
       // sortOrder can be empty, so we have to check for that as well

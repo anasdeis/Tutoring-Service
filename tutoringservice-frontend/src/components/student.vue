@@ -106,27 +106,30 @@ export default {
         },
         {
           name: "lastName",
-          title: "Last Name",
+          title: `<span class="icon orange"><i class="fa fa-user"></i></span> Last Name`,
           sortField: "lastName"
         },
         {
           name: "dateOfBirth",
-          title: '<i class="fa fa-birthday-cake"></i> Birthdate',
+          title:
+            '<span class="icon orange"><i class="fa fa-birthday-cake"></i></span> Birthdate',
           sortField: "dateOfBirth"
         },
         {
           name: "email",
-          title: '<i class="fa fa-envelope"></i> Email',
+          title:
+            '<span class="icon orange"><i class="fa fa-envelope"></i></span> Email',
           sortField: "email"
         },
         {
           name: "phoneNumber",
-          title: '<i class="fa fa-phone"></i> Phone',
+          title:
+            '<span class="icon orange"><i class="fa fa-phone"></i></span> Phone',
           sortField: "phoneNumber"
         },
         {
           name: "numCoursesEnrolled",
-          title: "Courses",
+          title: "No. of Courses",
           sortField: "numCoursesEnrolled"
         },
         {
@@ -177,7 +180,7 @@ export default {
     },
     updateStudents() {
       // Initializing students from backend
-      AXIOS.get(`http://localhost:8080/student/list`)
+      AXIOS.get(`student/list`)
         .then(response => {
           // JSON responses are automatically parsed.
           this.students = response.data;
@@ -187,24 +190,27 @@ export default {
         });
     },
     deleteRow(rowData) {
-      AXIOS.delete(`http://localhost:8080/student/delete/${rowData.personId}`)
+      AXIOS.delete(`student/delete/${rowData.personId}`)
         .then(response => {
           this.errorStudent = "";
         })
         .catch(e => {
-          var errorMsg = e.response.status + " " + e.response.data.error + ": " + e.response.data.message;
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
           console.log(errorMsg);
           this.errorStudent = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateStudents();
-      if(this.errorStudent != ''){
-        alert(this.errorStudent)
+      if (this.errorStudent != "") {
+        alert(this.errorStudent);
       }
     },
     dataManager(sortOrder, pagination) {
-      //if (this.students.length < 1) return;
-
       let local = this.students;
 
       // sortOrder can be empty, so we have to check for that as well
