@@ -25,7 +25,7 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm icon"
                   title="Remove commission!"
                   @click="deleteRow(props.rowData)"
                 >
@@ -123,7 +123,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "commissions",
+  name: "commission",
   components: {
     Vuetable,
     VuetablePagination,
@@ -365,5 +365,9 @@ export default {
 .commissionField {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.icon{
+  width: 30px;
 }
 </style>

@@ -24,7 +24,7 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm icon"
                   title="Remove student!"
                   @click="deleteRow(props.rowData)"
                 >
@@ -68,7 +68,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "students",
+  name: "student",
   components: {
     Vuetable,
     VuetablePagination,
@@ -290,6 +290,10 @@ b-container {
 
 .pagination {
   margin-bottom: 10px;
+}
+
+.icon{
+  width: 30px;
 }
 
 #studentList {

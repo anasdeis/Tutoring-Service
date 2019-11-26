@@ -24,7 +24,7 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm icon"
                   title="Remove offering!"
                   @click="deleteRow(props.rowData)"
                 >
@@ -68,7 +68,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "offerings",
+  name: "offering",
   components: {
     Vuetable,
     VuetablePagination,
@@ -310,5 +310,9 @@ b-container {
 #offeringList {
   border-width: 5px;
   border-style: groove;
+}
+
+.icon{
+  width: 30px;
 }
 </style>

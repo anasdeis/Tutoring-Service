@@ -7,12 +7,12 @@
       v-bind:style="{color: titleColor}"
       @click="goToHomePage()"
     >
-      Welcome to our company,
-      <b>Tutor4All</b>. We open from 9-9, 7 days a week.
+      Hi  <b>{{this.user}}</b>! Welcome to our company,
+      <b>Tutor4All</b>. We are open 9-9, 7 days a week.
     </a>
     <span style="float:left;">
-      <button type="button" v-bind:class="buttonClass" @click="logOut" v-show="isLoggedIn">Log Out</button>
-      <button type="button" v-bind:class="buttonClass" @click="toggleDarkMode">{{ buttonText }}</button>
+      <button type="button"  v-bind:class="buttonClass" @click="logOut" v-show="isLoggedIn">Logout</button>
+      <button type="button"  v-bind:class="buttonClass" @click="toggleDarkMode">{{ buttonText }}</button>
       <button
         type="button"
         @click="goToHomePage()"
@@ -26,14 +26,24 @@
 
 <script>
 import Router from "../router";
+import Vue from "vue";
+import login from "./login";
+import VueEvents from "vue-events";
+Vue.use(VueEvents);
+
 
 export default {
+  name: "LogoBar",
+  components: {
+    login
+    },
   data() {
     return {
       navBar: "",
       buttonClass: "",
       buttonText: "",
       titleColor: "",
+      user: "",
       isLoggedIn: false
     };
   },
@@ -41,28 +51,19 @@ export default {
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.navBar = "navbar navvar-dark bg-dark";
-      this.buttonClass = "btn btn-dark";
+      this.buttonClass = "btn btn-lg btn-dark loginField";
       this.buttonText = "Night";
       this.titleColor = "white";
     } else {
       this.navBar = "navbar navbar-dark bg-light";
-      this.buttonClass = "btn btn-light";
+      this.buttonClass = "btn btn-lg btn-light loginField";
       this.buttonText = "Day";
       this.titleColor = "black";
     }
-    var isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") this.isLoggedIn = true;
-    else this.isLoggedIn = false;
   },
   methods: {
     goToHomePage: function() {
-      // Router.push({
-      //   path: "/home",
-      //   name: "home"
-      // });
-
-      var isLoggedIn = localStorage.getItem("isLoggedIn");
-      if (isLoggedIn === "true") {
+      if (this.isLoggedIn === true) {
         Router.push({
           path: "/home",
           name: "home"
@@ -75,12 +76,13 @@ export default {
       }
     },
     logOut: function() {
-      localStorage.setItem("isLoggedIn", "false");
       this.isLoggedIn = false;
+      this.user = ""
       Router.push({
         path: "/login",
         name: "login"
       });
+      alert("You logged out!")
     },
     toggleDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
@@ -109,12 +111,13 @@ export default {
         this.titleColor = "black";
       }
     },
-    updateLoggedInState: function(state) {
-      this.isLoggedIn = state;
+    updateLoggedInState: function(user) {
+      this.isLoggedIn = true;
+      this.user = user;
     }
   },
   mounted() {
-    this.$loggedInEvent.$on("setLoggedInState", this.updateLoggedInState);
+    this.$events.$on("loggedIn-set", eventData => this.updateLoggedInState(eventData));
   }
 };
 </script>
@@ -122,6 +125,11 @@ export default {
 <style scoped>
 #container {
   margin-bottom: 50px;
+}
+
+.loginField{
+  width: 100px;
+  margin-bottom: 25px !important;
 }
 </style>>
 

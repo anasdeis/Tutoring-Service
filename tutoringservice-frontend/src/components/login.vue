@@ -12,6 +12,7 @@
         id="username"
         v-model="username"
         placeholder="Enter username"
+        @keyup.enter="Login()"
       />
       <input
         class="loginField"
@@ -19,17 +20,18 @@
         id="password"
         v-model="password"
         placeholder="Enter password"
+        @keyup.enter="Login()"
       />
       <button
         type="button"
-        v-on:click="getLogin(username,password);"
+        v-on:click="Login()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Login"
       >Login</button>
       <button
         type="button"
-        v-on:click="createLogin(username,password)"
+        v-on:click="SignUp()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
@@ -65,10 +67,13 @@ export default {
       textColor: "",
       error: "",
       username: "",
-      password: ""
+      password: "",
+      loggedIn: true,
+      login: []
     };
   },
   created: function() {
+    this.updateLogin()
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
@@ -79,30 +84,55 @@ export default {
     }
   },
   methods: {
-    getLogin: function(username, password) {
-      AXIOS.get("/login/list/" + username)
+    updateLogin(){
+      AXIOS.get("login/list/")
         .then(response => {
           this.login = response.data;
-          // if (this.password == password) {
-          this.goToHomePage();
-          localStorage.setItem("isLoggedIn", "true");
-          this.$loggedInEvent.$emit("setLoggedInState", true);
-          // } else {
-          //   document.getElementById("title1").innerText =
-          //     "Password is not correct, please try again";
-          // }
         })
         .catch(e => {
           console.log(e.message);
-          document.getElementById("title1").innerText = "";
         });
     },
-    createLogin: function(username, password) {
-      AXIOS.post("/login/" + username + "?password=" + password).then(
-        response => {
-          this.login = response.data;
+    Login: function() {
+      if(this.username != "" && this.password != "") { 
+        this.updateLogin()
+        var isValid = false
+        for(var i=0; i < this.login.length; i++){
+          if(this.login[i].userName == this.username && this.login[i].password == this.password){
+            isValid = true
+            break;
+          }
         }
-      );
+        if(isValid == false){
+          alert("The username and/or password is incorrect!")
+        } else{
+          this.$events.fire("loggedIn-set", this.username);
+          this.goToHomePage();
+        }
+      }
+      else{
+        alert("ERROR: A username and password must be present to login!")
+      }
+    },
+    SignUp: function() {
+      AXIOS.post("login/" + this.username + "?password=" + this.password).then(
+        response => {
+          this.login.push(response.data);
+          this.error = ""
+        })
+          .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.error = errorMsg;
+        });
+        if (this.error != "") {
+          alert(this.error);
+      }
     },
     goToHomePage: function() {
       Router.push({
