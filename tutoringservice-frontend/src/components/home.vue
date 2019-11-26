@@ -1,7 +1,7 @@
 <!--- this component is the home page --->
 <template>
   <div id="home" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <span style="font-size:35px;" id="title" v-bind:style="{color: textColor}"><strong>Home Page</strong></span>
+    <span class="text-center" style="font-size:35px;" id="title" v-bind:style="{color: textColor}"><strong>Home Page</strong></span>
     <p style="padding:15px;font-size:22px;" v-bind:style="{color: textColor}">Check out the following features!</p>
     <b-container fluid>
       <b-row id="functionality">

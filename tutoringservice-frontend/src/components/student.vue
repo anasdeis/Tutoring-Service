@@ -186,7 +186,8 @@ export default {
           this.students = response.data;
         })
         .catch(e => {
-          this.errorStudent = e;
+          this.errorStudent = e.message;
+          console.log(this.errorStudent)
         });
     },
     deleteRow(rowData) {
@@ -237,8 +238,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let student = this.students[0];
-
       let data = this.students.filter(student => {
         return (
           student.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -279,23 +278,18 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 .icon{
   width: 30px;
 }
-
 #studentList {
   border-width: 5px;
   border-style: groove;

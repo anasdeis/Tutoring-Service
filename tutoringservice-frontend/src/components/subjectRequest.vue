@@ -170,7 +170,6 @@ export default {
       courseID: "",
       university: "",
       errorSubjectRequest: "",
-      errorUniversity: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -240,7 +239,8 @@ export default {
           this.subjectRequests = response.data;
         })
         .catch(e => {
-          this.errorSubjectRequest = e;
+          this.errorSubjectRequest = e.message;
+          console.log(this.errorSubjectRequest)
         });
     },
     addRow(rowData) {
@@ -325,7 +325,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let subjectRequest = this.subjectRequests[0];
       let data = this.subjectRequests.filter(subjectRequest => {
         return subjectRequest.name
           .toLowerCase()
@@ -364,24 +363,19 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #subjectRequestsList {
   border-width: 5px;
   border-style: groove;
 }
-
 .icon {
   width: 30px;
 }

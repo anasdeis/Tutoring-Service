@@ -4,9 +4,6 @@
     <span id="title" v-bind:style="{color : textColor}">
       <center>Create an account</center>
     </span>
-    <div>
-      <span id="title1"></span>
-    </div>
     <b-container fluid :style="{ color: textColor}">
       <form>
         First name:
@@ -29,43 +26,36 @@
         />
       </form>
       <form>
-        Date of Birth:
+        Birthdate:
         <input
           class="createManagerField"
           type="date"
           id="dob"
           v-model="dob"
-          placeholder="YYYY-MM-DD"
+          placeholder="MM-DD-YYYY"
+          style="margin-right:13px;"
         />
       </form>
       <form>
-        Email:
+        <label style="margin-left:77px;">Email:</label>
         <input
           class="createManagerField"
           type="text"
           id="email"
           v-model="email"
           placeholder="Enter email"
+          style="margin-right:45px;"
         />
       </form>
       <form>
-        Phone number:
+        <label style="margin-left:77px;">Phone:</label>
         <input
           class="createManagerField"
           type="text"
           id="phone"
           v-model="phone"
           placeholder="Enter phone number"
-        />
-      </form>
-      <form>
-        Manager ID (all numbers):
-        <input
-          class="createManagerField"
-          type="text"
-          id="managerID"
-          v-model="managerID"
-          placeholder="Enter manager ID"
+          style="margin-right:52px;"
         />
       </form>
       <form>
@@ -76,26 +66,26 @@
           id="userName"
           v-model="userName"
           placeholder="Enter username"
+          style="margin-right:3px;"
         />
       </form>
-      <!-- <form>
+      <form>
         Password:
         <input
           class="createManagerField"
           type="password"
           id="password"
-          v-model="pw"
+          v-model="password"
           placeholder="Enter password"
         />
-      </form>-->
+      </form>
       <center>
         <button
           type="button"
           id="myButton"
-          @click="createManager(first,last,dob,email,phone,managerID,userName,tutoringSystemID)"
+          @click="createManager()"
           class="btn btn-primary btn-lg createManagerField button"
           v-b-tooltip.hover
-          title="Click to create an account!"
         >Create</button>
       </center>
     </b-container>
@@ -105,7 +95,7 @@
 <script>
 import axios from "axios";
 import Router from "../router";
-import Axios from "axios";
+
 var config = require("../../config");
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl = "http://localhost:8080/";
@@ -118,30 +108,26 @@ var AXIOS = axios.create({
 export default {
   data() {
     return {
-      manager: {
-        type: Object
-      },
       bgColor: "",
       textColor: "",
       buttonClass: "",
-      error: "",
+      errorSignup: "",
       first: "",
       last: "",
       dob: "",
       email: "",
       phone: "",
-      managerID: "",
-      // username: "",
-      // password: "",
+      manager: [],
       userName: "",
-      // request: null,
-      // review: null,
-      // commission: null,
-      // classroom: null,
-      tutoringSystemID: "1"
+      password: "",
+      managerID: "",
+      login: [],
+      tutoringSystem: []
     };
   },
   created: function() {
+    this.updateTutoringSystem();
+    this.updateLogin();
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
@@ -155,62 +141,126 @@ export default {
     }
   },
   methods: {
-    // send get request to fetch manager
-    // getuserName: function(username, password) {
-    //   AXIOS.get('/userName/list/'+username)
-    //     .then(response => {
-    //       // this.userName = response.data;
-    //       var userName = ;
-    //     })
-    //     // .catch(e => {
-    //     //   console.log(e.message);
-    //     //   document.getElementById("title1").innerText =
-    //     //     "Account does not exist, please try again";
-    //     // });
-    // },
-    // myuserName: function (username, password) {
-    //   var username=document.getElementById("username");
-    //   var password=document.getElementById("password");
-    // },
-    createManager: function(
-      first,
-      last,
-      dob,
-      email,
-      phone,
-      managerID,
-      userName,
-      tutoringSystemID
-    ) {
-      AXIOS.post("");
-      AXIOS.post(
-        "/manager/create/" +
-          managerID +
-          "?first=" +
-          first +
-          "&last=" +
-          last +
-          "&dob=" +
-          dob +
-          "&email=" +
-          email +
-          "&phone=" +
-          phone +
-          "&userName=" +
-          userName +
-          "&tutoringSystemID=" +
-          tutoringSystemID
-      )
+    updateLogin() {
+      AXIOS.get("login/list/")
         .then(response => {
-          this.manager = response.data;
-          this.goToHomePage();
+          this.login = response.data;
         })
         .catch(e => {
-          console.log(e.message);
-          // this.error = error
-          document.getElementById("title1").innerText =
-            "Please enter missing information!";
+          this.errorSignup = e.message
+          console.log(this.errorSignup);
         });
+    },
+    updateTutoringSystem() {
+      AXIOS.get("tutoringSystem/list/")
+        .then(response => {
+          this.tutoringSystem = response.data;
+        })
+        .catch(e => {
+          this.errorSignup = e.message
+          console.log(this.errorSignup);
+        });
+    },
+    generateManagerID() {
+      if (this.tutoringSystem != "") {
+        this.managerID = 1;
+        for (var i = 0; i < this.tutoringSystem.length; i++) {
+          if (this.tutoringSystem[i].tutoringSystemID == 1) {
+            for (var j = 0; j < this.tutoringSystem[i].person.length; j++) {
+              if (this.tutoringSystem[i].person[j] > this.managerID) {
+                this.managerID = this.tutoringSystem[i].person[j];
+              }
+            }
+          } else {
+            alert("No tutoring system with ID=1 is found!");
+            return -1;
+          }
+        }
+      } else {
+        alert("ERROR: No tutoring system is found!");
+        return -1;
+      }
+      this.managerID += 1;
+    },
+    setLogin() {
+      for (var i = 0; i < this.login.length; i++) {
+        this.login[i];
+      }
+      AXIOS.post("login/" + this.userName + "?password=" + this.password)
+        .then(response => {
+          this.login.push(response.data);
+          this.errorSignup = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorSignup = errorMsg;
+        });
+      alert("Your assigned manager ID: " + this.managerID);
+      if (this.errorSignup != "") {
+        alert("ERROR: " + this.errorSignup);
+        return -1;
+      }
+    },
+    createManager: function() {
+      if (this.generateManagerID() == -1) {
+        return -1;
+      }
+      if (this.setLogin() == -1) {
+        return -1;
+      }
+      AXIOS.post(
+        "/manager/create/" +
+          this.managerID +
+          "?first=" +
+          this.first +
+          "&last=" +
+          this.last +
+          "&dob=" +
+          this.dob +
+          "&email=" +
+          this.email +
+          "&phone=" +
+          this.phone +
+          "&userName=" +
+          this.userName +
+          "&tutoringSystemID=1"
+      )
+        .then(response => {
+          this.manager.push(response.data);
+          this.errorSignup = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorSignup = errorMsg;
+        });
+      this.first = "";
+      this.last = "";
+      this.dob = "";
+      this.email = "";
+      this.phone = "";
+      this.userName = "";
+      this.password = "";
+      alert(
+        "You clicked on create an account! Validating before redirecting.."
+      );
+      if (this.errorSignup != "") {
+        alert("ERROR: " + this.errorSignup);
+        return -1;
+      } else {
+        this.goToHomePage();
+      }
     },
     goToHomePage: function() {
       Router.push({
@@ -218,12 +268,6 @@ export default {
         name: "home"
       });
     },
-    // goTocreateManagerPage: function() {
-    //     Router.push({
-    //         path: "/createManager",
-    //         name: "createManager"
-    //     });
-    // },
     setDarkMode: function() {
       var darkModeOn = localStorage.getItem("DarkModeOn");
       if (darkModeOn === "true") {
@@ -251,20 +295,15 @@ export default {
   font-size: 26px;
   padding-left: 15px;
 }
-#title1 {
-  text-align: left;
-  color: red;
-  font-size: 15px;
-  padding-left: 15px;
-}
+
 #send {
   align-content: right;
 }
 /* #name {
-  text-align: left;
-  color: white;
-  font-size: 26px;
-  padding-left: 15px;
+text-align: left;
+color: white;
+font-size: 26px;
+padding-left: 15px;
 } */
 #createManager {
   width: 30%;
@@ -287,11 +326,15 @@ b-container {
   padding: 2%;
   margin: auto;
   margin-top: 5px;
+  margin-left: 5px;
 }
 .button {
   color: white;
 }
 #btn1 {
   align-self: center;
+}
+#myButton{
+  margin-left: 50px;
 }
 </style>

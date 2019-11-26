@@ -129,7 +129,6 @@ export default {
       ],
       subjects: [],
       errorSubject: "",
-      errorUniversity: "",
       response: [],
       bgColor: "",
       textColor: ""
@@ -177,7 +176,8 @@ export default {
           this.subjects = response.data;
         })
         .catch(e => {
-          this.errorSubject = e;
+          this.errorSubject = e.message;
+          console.log(this.errorSubject)
         });
     },
     deleteRow(rowData) {
@@ -228,7 +228,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let subject = this.subjects[0];
       let data = this.subjects.filter(subject => {
         return subject.name.toLowerCase().includes(filterText.toLowerCase());
       });
@@ -265,24 +264,19 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #subjectList {
   border-width: 5px;
   border-style: groove;
 }
-
 .icon{
   width: 30px;
 }

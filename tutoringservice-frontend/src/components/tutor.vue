@@ -155,7 +155,6 @@ export default {
   created: function() {
     this.updateTutors();
 
-    /*
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
@@ -167,7 +166,7 @@ export default {
       this.textColor = "black";
       // this.bgColor = "rgb(248, 249, 251)";
       this.buttonClass = "btn btn-white btn-lg container";
-    }*/
+    }
   },
   methods: {
     renderIcon(classes, options) {
@@ -195,7 +194,6 @@ export default {
       AXIOS.delete(`tutor/delete/${rowData.personId}`)
         .then(response => {
           this.errorTutor = "";
-          alert("PASS");
         })
         .catch(e => {
           var errorMsg =
@@ -240,8 +238,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let tutor = this.tutors[0];
-
       let data = this.tutors.filter(tutor => {
         return (
           tutor.firstName.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -282,24 +278,19 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #tutorList {
   border-width: 5px;
   border-style: groove;
 }
-
 .icon{
   width: 30px;
 }

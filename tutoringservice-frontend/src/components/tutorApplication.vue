@@ -180,7 +180,8 @@ export default {
           this.tutorApplications = response.data;
         })
         .catch(e => {
-          this.errorTutorApplication = e;
+          this.errorTutorApplication = e.message;
+          console.log(this.errorTutorApplication)
         });
     },
     onChangePage(page) {
@@ -280,8 +281,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let tutorApplication = this.tutorApplications[0];
-
       let data = this.tutorApplications.filter(tutorApplication => {
         return tutorApplication.tutor
           .toString()
@@ -320,24 +319,19 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #tutorApplicationList {
   border-width: 5px;
   border-style: groove;
 }
-
 .icon{
   width: 30px;
 }

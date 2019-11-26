@@ -203,7 +203,8 @@ export default {
           this.offerings = response.data;
         })
         .catch(e => {
-          this.errorOffering = e;
+          this.errorOffering = e.message;
+          console.log(this.errorOffering)
         });
     },
     deleteRow(rowData) {
@@ -254,8 +255,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let offering = this.offerings[0];
-
       let data = this.offerings.filter(offering => {
         return offering.offeringID
           .toLowerCase()
@@ -294,24 +293,19 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #offeringList {
   border-width: 5px;
   border-style: groove;
 }
-
 .icon{
   width: 30px;
 }
