@@ -44,7 +44,7 @@
 <script>
 import LogoBar from "./components/LogoBar.vue";
 export default {
-  name: "app",
+  name: "App",
   components: {
     LogoBar
   },
@@ -76,12 +76,12 @@ var darkModeOn = localStorage.getItem("DarkModeOn");
       if (darkModeOn === "true") this.bgColor = "rgb(88, 96, 102)";
       else this.bgColor = "white";
     }
-    if (!localStorage.getItem("isLoggedIn")) {
-      // Set local storage value if none exists
-      localStorage.setItem("isLoggedIn", "false");
+    if (this.isLoggedIn = false) {
+      Router.push({
+        path: "/login",
+        name: "login"
+      });
     }
-
-    
   },
   methods: {
     setBackgroundColor: function(darkModeOn) {
@@ -108,6 +108,12 @@ var darkModeOn = localStorage.getItem("DarkModeOn");
    mounted() {
     // Listens to the setDarkModeState event emitted from the LogoBar component
     this.$root.$on("setDarkModeState", this.setDarkMode);
+    if (this.isLoggedIn == false) {
+      Router.push({
+        path: "/login",
+        name: "login"
+      });
+    }
   }
 };
 </script>

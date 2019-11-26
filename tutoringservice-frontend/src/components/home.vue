@@ -1,11 +1,8 @@
 <!--- this component is the home page --->
 <template>
-  <div id="home-container" class="card" v-bind:style="{ backgroundColor: bgColor}">
-    <span id="title" v-bind:style="{color: textColor}">Home Page</span>
-    <div>
-      <span id="title1"></span>
-    </div>
-    <p v-bind:style="{color: textColor}">Check out our functionality for you!</p>
+  <div id="home" class="card" v-bind:style="{ backgroundColor: bgColor}">
+    <span style="font-size:35px;" id="title" v-bind:style="{color: textColor}"><strong>Home Page</strong></span>
+    <p style="padding:15px;font-size:22px;" v-bind:style="{color: textColor}">Check out the following features!</p>
     <b-container fluid>
       <b-row id="functionality">
         <b-col>
@@ -124,14 +121,11 @@ var AXIOS = axios.create({
 });
 
 export default {
+  name: "home",
   data() {
     return {
-      home: {
-        type: Object
-      },
       bgColor: "",
       textColor: ""
-      // error: ""
     };
   },
   created: function() {
@@ -165,8 +159,8 @@ export default {
     },
     goToRoomPage: function() {
       Router.push({
-        path: "/room1",
-        name: "room1"
+        path: "/room",
+        name: "room"
       });
     },
     goToTutorPage: function() {
@@ -187,12 +181,12 @@ export default {
         name: "student"
       });
     },
-    // goToOfferingPage: function() {
-    //   Router.push({
-    //     path: "offering",
-    //     name: "offering"
-    //   });
-    // },
+    goToOfferingPage: function() {
+      Router.push({
+        path: "offering",
+        name: "offering"
+      });
+    },
     goToCommissionPage: function() {
       Router.push({
         path: "/commission",

@@ -8,36 +8,42 @@
         </h6>
 
         <div id="table-wrapper" class="container">
-          
-            <div class="form-inline">
-              <div id= "addSubject" class="form-group">
-                <label>
-                  <b>Add subject:</b>&nbsp;&nbsp;
-                </label>
-
-                <input
-                  type="text"
-                  v-model="courseID"
-                  class="form-control"
-                  placeholder="Enter new course ID.."
-                />
-                &nbsp;
-                <div class="col-auto my-1">
-                  <select
-                    class="custom-select mr-sm-2"
-                    id="inlineFormCustomSelect"
-                    name="inlineFormCustomSelect"
-                  >
-                    <option selected>Choose university...</option>
-                  </select>
-                  <button
-                    class="btn btn-primary"
-                    title="Populate list!"
-                    @click="populateUniversityList"
-                  >List</button>
-                </div>
-              </div>
-       
+          <div class="form-inline">
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <label style="padding-bottom:10px;">
+                      <b>Add subject:</b>&nbsp;&nbsp;
+                    </label>
+                  </td>
+                  <input
+                    type="text"
+                    v-model="courseID"
+                    class="form-control"
+                    placeholder="Enter new course ID.."
+                  />
+                  <td>
+                    &nbsp;
+                    <select
+                      class="custom-select"
+                      id="inlineFormCustomSelect"
+                      name="inlineFormCustomSelect"
+                      style="margin-bottom:11px;"
+                    >
+                      <option selected>Choose university...</option>
+                    </select>
+                  </td>&nbsp;
+                  <td>
+                    <button
+                      class="btn btn-primary"
+                      title="Populate list!"
+                      style="width:51px;margin-bottom:10px;"
+                    >List</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <filter-bar></filter-bar>
           <vuetable
@@ -56,14 +62,14 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-success btn-sm"
+                  class="btn btn-success btn-sm icon"
                   title="Add subject!"
                   @click="addRow(props.rowData)"
                 >
                   <i class="fa fa-plus"></i>
                 </button>
                 <button
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm icon"
                   title="Remove subject request!"
                   @click="deleteRow(props.rowData)"
                 >
@@ -107,7 +113,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "subjectRequests",
+  name: "subjectRequest",
   components: {
     Vuetable,
     VuetablePagination,
@@ -371,12 +377,12 @@ b-container {
   margin-bottom: 10px;
 }
 
-#addSubject{
-  margin-bottom: 10px;
-}
-
 #subjectRequestsList {
   border-width: 5px;
   border-style: groove;
+}
+
+.icon {
+  width: 30px;
 }
 </style>

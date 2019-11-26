@@ -24,21 +24,21 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-success btn-sm"
+                  class="btn btn-success btn-sm icon"
                   title="Approve review!"
                   @click="approveRow(props.rowData)"
                 >
                   <i class="fa fa-check"></i>
                 </button>
                 <button
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm icon"
                   title="Decline Review!"
                   @click="declineRow(props.rowData)"
                 >
                   <i class="fa fa-ban"></i>
                 </button>
                 <button
-                  class="btn btn-danger btn-sm"
+                  class="btn btn-danger btn-sm icon"
                   title="Remove review!"
                   @click="deleteRow(props.rowData)"
                 >
@@ -82,7 +82,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "reviews",
+  name: "review",
   components: {
     Vuetable,
     VuetablePagination,
@@ -330,5 +330,9 @@ b-container {
 #reviewList {
   border-width: 5px;
   border-style: groove;
+}
+
+.icon{
+  width: 30px;
 }
 </style>

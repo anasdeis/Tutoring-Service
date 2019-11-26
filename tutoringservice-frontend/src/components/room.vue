@@ -7,27 +7,40 @@
         </h6>
 
         <div id="table-wrapper" class="container">
-          <div class="filter-bar pull-right">
-            <div class="form-inline">
-              <label>
-                <b>Book review session:</b>
-              </label>
-              <div class="col-auto my-1">
-                <select
-                  class="custom-select mr-sm-2"
-                  id="inlineFormCustomSelect"
-                  name="inlineFormCustomSelect"
-                >
-                  <option selected>Choose Offering...</option>
-                </select>
-                <button
-                  class="btn btn-primary"
-                  title="Populate list!"
-                  @click="populateOfferingList"
-                >List</button>
-              </div>
-            </div>
+          <div class="form-inline">
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <label style="margin-bottom:5px;">
+                      <b>Book review session:</b>
+                    </label>
+                  </td>
+
+                  <td>
+                    &nbsp;
+                    <select
+                      class="custom-select mr-sm-2"
+                      id="inlineFormCustomSelect"
+                      name="inlineFormCustomSelect"
+                      style="margin-bottom:10px;"
+                    >
+                      <option selected>Choose Offering...</option>
+                    </select>
+                  </td>
+                  <td>
+                    <button
+                      class="btn btn-primary"
+                      title="Populate list!"
+                      @click="populateOfferingList"
+                      style="width:51px;margin-bottom:10px;"
+                    >List</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+
           <filter-bar></filter-bar>
           <vuetable
             ref="vuetable"
@@ -45,7 +58,7 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
-                  class="btn btn-success btn-sm"
+                  class="btn btn-success btn-sm icon"
                   title="Book review session!"
                   @click="createReviewSession(props.rowData)"
                 >
@@ -90,7 +103,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "rooms",
+  name: "room",
   components: {
     Vuetable,
     VuetablePagination,
@@ -346,5 +359,9 @@ b-container {
 form {
   margin-top: 10px;
   margin-bottom: 10 px;
+}
+
+.icon {
+  width: 30px;
 }
 </style>

@@ -56,7 +56,7 @@ var AXIOS = axios.create({
 });
 
 export default {
-  name: "availableSessions",
+  name: "availableSession",
   components: {
     Vuetable,
     VuetablePagination,

@@ -74,7 +74,7 @@ var backendUrl =
 //     headers: {"Access-Control-Allow-Origin": frontendUrl}
 // });
 export default {
-  name: "hello",
+  name: "Hello",
   data() {
     return {
       msg: "Welcome to Your Vue.js App"
