@@ -23,6 +23,15 @@
             title="View Subjects"
           >Subjects</button>
         </b-col>
+         <b-col>
+          <button
+            type="button"
+            @click="goToOfferingPage()"
+            class="btn btn-primary btn-lg home button"
+            v-b-tooltip.hover
+            title="View Offerings"
+          >Offerings</button>
+        </b-col>
         <b-col>
           <button
             type="button"
@@ -40,15 +49,6 @@
             v-b-tooltip.hover
             title="View Studnet"
           >Students</button>
-        </b-col>
-        <b-col>
-          <button
-            type="button"
-            @click="goToOfferingPage()"
-            class="btn btn-primary btn-lg home button"
-            v-b-tooltip.hover
-            title="View Offerings"
-          >Offerings</button>
         </b-col>
       </b-row>
       <b-row>
@@ -93,11 +93,11 @@
         <b-col>
           <button
             type="button"
-            @click="goToSignupPage()"
+            @click="goToAvailableSessionPage()"
             class="btn btn-primary btn-lg home button"
             v-b-tooltip.hover
-            title="Create a manager account!"
-          >Create Account</button>
+            title="View Available Sessions"
+          >Available Sessions</button>
         </b-col>
       </b-row>
     </b-container>
@@ -211,10 +211,10 @@ export default {
         name: "review"
       });
     },
-    goToSignupPage: function() {
+    goToAvailableSessionPage: function() {
       Router.push({
-        path: "/signup",
-        name: "signup"
+        path: "/availableSession",
+        name: "availableSession"
       });
     }
   },
