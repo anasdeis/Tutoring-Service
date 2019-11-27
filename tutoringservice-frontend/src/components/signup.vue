@@ -182,10 +182,26 @@ export default {
       }
       this.managerID += 1;
     },
-    setLogin() {
-      for (var i = 0; i < this.login.length; i++) {
-        this.login[i];
+    ValidateSignup: function() {
+      if(this.userName != "" && this.password != "" && this.first != "" && this.last != "" && this.dob != "" && this.phone != "" && this.email != "") { 
+        var isValid = true
+        for(var i=0; i < this.login.length; i++){
+          if(this.login[i].userName == this.userName){
+            isValid = false
+            break;
+          }
+        }
+        if(isValid == false){
+          alert("ERROR: The username " +  this.userName + " already exists! Choose another one")
+          return -1
+        } 
       }
+      else{
+        alert("ERROR: All entries must be present to signup!")
+        return -1
+      }
+    },
+    setLogin() {
       AXIOS.post("login/" + this.userName + "?password=" + this.password)
         .then(response => {
           this.login.push(response.data);
@@ -210,6 +226,9 @@ export default {
     createManager: function() {
       if (this.generateManagerID() == -1) {
         return -1;
+      }
+      if(this.ValidateSignup() == -1){
+        return -1
       }
       if (this.setLogin() == -1) {
         return -1;
@@ -295,16 +314,6 @@ export default {
   font-size: 26px;
   padding-left: 15px;
 }
-
-#send {
-  align-content: right;
-}
-/* #name {
-text-align: left;
-color: white;
-font-size: 26px;
-padding-left: 15px;
-} */
 #createManager {
   width: 30%;
   max-height: auto;
@@ -331,10 +340,7 @@ b-container {
 .button {
   color: white;
 }
-#btn1 {
-  align-self: center;
-}
 #myButton{
-  margin-left: 50px;
+  align-self: center;
 }
 </style>

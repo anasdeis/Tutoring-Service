@@ -45,21 +45,7 @@
           <tbody>
             <tr>
               <td>
-                <label for="name">ID:</label>
-              </td>
-              <td>
-                <input
-                  class="commissionField"
-                  type="number"
-                  id="commissionID"
-                  v-model="commissionID"
-                  placeholder="Enter Commission ID"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label for="email">Percentage:</label>
+                <label for="email">Percentage:&nbsp;</label>
               </td>
               <td>
                 <input
@@ -165,7 +151,8 @@ export default {
       offeringID: "",
       errorCommission: "",
       response: [],
-      commissions: []
+      commissions: [],
+      tutoringSystem: []
     };
   },
 
@@ -176,6 +163,7 @@ export default {
   },
   created: function() {
     this.updateCommissions();
+    this.updateTutoringSystem()
 
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
@@ -282,12 +270,44 @@ export default {
         this.buttonClass = "btn btn-white btn-lg container";
       }
     },
-    createCommission: function(percentage, commissionID, managerID) {
+    updateTutoringSystem() {
+      AXIOS.get("tutoringSystem/list/")
+        .then(response => {
+          this.tutoringSystem = response.data;
+        })
+        .catch(e => {
+          this.errorCommission = e.message
+          console.log(this.errorCommission);
+        });
+    },
+    generateCommissionID() {
+      if (this.tutoringSystem != "") {
+        this.commissionID = 1;
+        for (var i = 0; i < this.tutoringSystem.length; i++) {
+          if (this.tutoringSystem[i].tutoringSystemID == 1) {
+            for (var j = 0; j < this.tutoringSystem[i].commission.length; j++) {
+              if (this.tutoringSystem[i].commission[j] > this.commissionID) {
+                this.commissionID = this.tutoringSystem[i].commission[j];
+              }
+            }
+          } else {
+            alert("No tutoring system with ID=1 is found!");
+            return -1;
+          }
+        }
+      } else {
+        alert("ERROR: No tutoring system is found!");
+        return -1;
+      }
+      this.commissionID += 1;
+    },
+    createCommission: function() {
+      this.generateCommissionID()
       AXIOS.post(
         "/commission/create/" +
-          commissionID +
+          this.commissionID +
           "?percentage=" +
-          percentage +
+          this.percentage +
           "&managerID=1&tutoringSystemID=1"
       )
         .then(response => {
@@ -345,7 +365,7 @@ export default {
   border-style: groove;
 }
 .commissionField {
-  margin-top: 5px;
+  margin-top: 0px;
   margin-bottom: 5px;
 }
 .icon{
