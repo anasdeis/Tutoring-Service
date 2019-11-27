@@ -66,11 +66,17 @@ export default {
       username: "",
       password: "",
       loggedIn: true,
-      login: []
+      login: [],
+      manager: [],
+      student: [],
+      tutor: []
     };
   },
   created: function() {
     this.updateLogin()
+    this.updateManager()
+    this.updateStudent()
+    this.updateTutor()
     var darkModeOn = localStorage.getItem("DarkModeOn");
     if (darkModeOn === "true") {
       this.bgColor = "rgb(53,58,62)";
@@ -91,14 +97,57 @@ export default {
           console.log(this.errorLogin);
         });
     },
+    updateManager(){
+      AXIOS.get("manager/list/")
+        .then(response => {
+          this.manager = response.data;
+        })
+        .catch(e => {
+          this.errorLogin = e.message
+          console.log(this.errorLogin);
+        });
+    },
+    updateStudent(){
+      AXIOS.get("student/list/")
+        .then(response => {
+          this.student = response.data;
+        })
+        .catch(e => {
+          this.errorLogin = e.message
+          console.log(this.errorLogin);
+        });
+    },
+    updateTutor(){
+      AXIOS.get("tutor/list/")
+        .then(response => {
+          this.tutor = response.data;
+        })
+        .catch(e => {
+          this.errorLogin = e.message
+          console.log(this.errorLogin);
+        });
+    },
     Login: function() {
       if(this.username != "" && this.password != "") { 
-        this.updateLogin()
         var isValid = false
-        for(var i=0; i < this.login.length; i++){
-          if(this.login[i].userName == this.username && this.login[i].password == this.password){
+        for(var i=0; i < this.manager.length; i++){
+          if(this.manager[i].loginInfo.userName == this.username && this.manager[i].loginInfo.password == this.password){
             isValid = true
             break;
+          } 
+        }
+        if(isValid == false){
+          for(var j=0; j < this.tutor.length; j++){
+            if(this.tutor[j].loginInfo.userName == this.username && this.tutor[j].loginInfo.password == this.password){
+              alert("ERROR: username \"" + this.username + "\" is a tutor account, only a manager account can login!")
+              return -1
+            } 
+          }
+          for(var k=0; k < this.student.length; k++){
+            if(this.student[k].loginInfo.userName == this.username && this.student[k].loginInfo.password == this.password){
+              alert("ERROR: username \"" + this.username + "\" is a student account, only a manager account can login!")
+              return -1
+            } 
           }
         }
         if(isValid == false){

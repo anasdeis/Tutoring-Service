@@ -327,21 +327,16 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #roomList {
-  /*margin-bottom: 20px;*/
   border-width: 5px;
   border-style: groove;
 }
@@ -359,7 +354,6 @@ form {
   margin-top: 10px;
   margin-bottom: 10 px;
 }
-
 .icon {
   width: 30px;
 }
