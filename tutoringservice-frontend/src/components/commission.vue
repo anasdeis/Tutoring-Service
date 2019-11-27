@@ -74,17 +74,6 @@
             </tr>
           </tbody>
         </table>
-
-        <!-- <form>
-          Confirm your manager ID:
-          <input
-            class="commissionField"
-            type="number"
-            id="managerID"
-            v-model="managerID"
-            placeholder="Enter managerID"
-          />
-        </form>-->
         <button
           type="button"
           id="myButton"
@@ -173,9 +162,8 @@ export default {
       textColor: "",
       commissionID: "",
       percentage: "",
-      //managerID: "",
       offeringID: "",
-      error: "",
+      errorCommission: "",
       response: [],
       commissions: []
     };
@@ -183,7 +171,6 @@ export default {
 
   watch: {
     commissions(newVal, oldVal) {
-      this.$refs.vuetable.setData(this.commissions);
       this.$refs.vuetable.refresh();
     }
   },
@@ -222,13 +209,14 @@ export default {
           this.commissions = response.data;
         })
         .catch(e => {
-          this.error = e;
+          this.errorCommission = e.message;
+          console.log(this.errorCommission)
         });
     },
     deleteRow(rowData) {
       AXIOS.delete(`commission/delete/${rowData.commissionID}`)
         .then(response => {
-          this.error = "";
+          this.errorCommission = "";
         })
         .catch(e => {
           var errorMsg =
@@ -238,12 +226,12 @@ export default {
             ": " +
             e.response.data.message;
           console.log(errorMsg);
-          this.error = errorMsg;
+          this.errorCommission = errorMsg;
         });
       alert("You clicked delete on: " + JSON.stringify(rowData));
       this.updateCommissions();
-      if (this.error != "") {
-        alert(this.error);
+      if (this.errorCommission != "") {
+        alert(this.errorCommission);
       }
     },
     dataManager(sortOrder, pagination) {
@@ -273,8 +261,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let student = this.commissions[0];
-
       let data = this.commissions.filter(commission => {
         return commission.percentage.toString().includes(filterText.toString());
       });
@@ -306,7 +292,7 @@ export default {
       )
         .then(response => {
           this.commissions.push(response.data);
-          error = "";
+          this.errorCommission = "";
         })
         .catch(e => {
           var errorMsg =
@@ -316,7 +302,7 @@ export default {
             ": " +
             e.response.data.message;
           console.log(errorMsg);
-          this.error = errorMsg;
+          this.errorCommission = errorMsg;
         });
       alert(
         "You clicked setup commission for: " + this.response.data.commissionID
@@ -324,9 +310,8 @@ export default {
       this.updateCommissions();
       this.commissionID = "";
       this.percentage = "";
-      //this.managerID = "";
-      if (this.error != "") {
-        alert(this.error);
+      if (this.errorCommission != "") {
+        alert(this.errorCommission);
       }
     }
   },
@@ -345,18 +330,15 @@ export default {
   margin-top: 20px;
   width: 275px;
 }
-
 #b-container {
   vertical-align: center;
   margin-top: auto;
   margin-bottom: auto;
   height: auto;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #commissionList {
   margin-bottom: 20px;
   border-width: 5px;
@@ -366,7 +348,6 @@ export default {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
 .icon{
   width: 30px;
 }

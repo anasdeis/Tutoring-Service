@@ -183,7 +183,8 @@ export default {
           this.reviews = response.data;
         })
         .catch(e => {
-          this.errorReview = e;
+          this.errorReview = e.message;
+          console.log(this.errorReview)
         });
     },
     approveRow(rowData) {
@@ -276,8 +277,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let review = this.reviews[0];
-
       let data = this.reviews.filter(review => {
         return review.offering.toLowerCase().includes(filterText.toLowerCase());
       });
@@ -314,24 +313,19 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #reviewList {
   border-width: 5px;
   border-style: groove;
 }
-
 .icon{
   width: 30px;
 }

@@ -155,13 +155,11 @@ export default {
         }
       ],
       rooms: [],
-      errorRoom: "",
       response: [],
       bgColor: "",
       textColor: "",
       offerings: [],
       offeringID: "",
-      errorOffering: "",
       errorRoom: ""
     };
   },
@@ -207,7 +205,8 @@ export default {
           this.rooms = response.data;
         })
         .catch(e => {
-          this.errorRoom = e;
+          this.errorRoom = e.message;
+          console.log(this.errorRoom)
         });
     },
     dataManager(sortOrder, pagination) {
@@ -237,7 +236,6 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let room = this.rooms[0];
       let data = this.rooms.filter(room => {
         return room.roomCode.toLowerCase().includes(filterText.toLowerCase());
       });
@@ -300,7 +298,8 @@ export default {
           this.offerings = response.data;
         })
         .catch(e => {
-          this.errorOffering = e;
+          this.errorRoom = e.message;
+          console.log(this.errorRoom)
         });
       var inlineFormCustomSelect = document.getElementById(
         "inlineFormCustomSelect"

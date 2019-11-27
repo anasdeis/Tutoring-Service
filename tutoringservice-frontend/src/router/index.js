@@ -13,7 +13,6 @@ import review from "@/components/review";
 import student from "@/components/student";
 import subjectRequest from "@/components/subjectRequest";
 import subject from "@/components/subject";
-import home1 from "@/components/home1";
 import offering from "@/components/offering";
 import availableSession from "@/components/availableSession";
 
@@ -85,11 +84,6 @@ export default new Router({
       path: "/subject",
       name: "subject",
       component: subject
-    },
-    {
-      path: "/home1",
-      name: "home1",
-      component: home1
     },
     {
     path: "/offering",

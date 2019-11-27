@@ -2,9 +2,6 @@
 <template>
   <div id="login" class="card" v-bind:style="{ backgroundColor: bgColor}">
     <span id="title" v-bind:style="{ color: textColor}">Manager Login</span>
-    <div>
-      <span id="title1"></span>
-    </div>
     <b-container fluid v-bind:style="{ color: textColor}">
       <input
         class="loginField"
@@ -31,7 +28,7 @@
       >Login</button>
       <button
         type="button"
-        v-on:click="SignUp()"
+        v-on:click="goToSignupPage()"
         class="btn btn-primary btn-lg loginField button"
         v-b-tooltip.hover
         title="Create an account"
@@ -39,7 +36,7 @@
     </b-container>
     <p
       v-bind:style="{ color: textColor}"
-    >Do not have an account yet? Fill in the information and Sign Up Now!</p>
+    >Do not have an account yet? Sign Up Now!</p>
   </div>
 </template>
 
@@ -65,7 +62,7 @@ export default {
     return {
       bgColor: "",
       textColor: "",
-      error: "",
+      errorLogin: "",
       username: "",
       password: "",
       loggedIn: true,
@@ -90,7 +87,8 @@ export default {
           this.login = response.data;
         })
         .catch(e => {
-          console.log(e.message);
+          this.errorLogin = e.message
+          console.log(this.errorLogin);
         });
     },
     Login: function() {
@@ -104,7 +102,7 @@ export default {
           }
         }
         if(isValid == false){
-          alert("The username and/or password is incorrect!")
+          alert("ERROR: The username and/or password is incorrect!")
         } else{
           this.$events.fire("loggedIn-set", this.username);
           this.goToHomePage();
@@ -112,26 +110,6 @@ export default {
       }
       else{
         alert("ERROR: A username and password must be present to login!")
-      }
-    },
-    SignUp: function() {
-      AXIOS.post("login/" + this.username + "?password=" + this.password).then(
-        response => {
-          this.login.push(response.data);
-          this.error = ""
-        })
-          .catch(e => {
-          var errorMsg =
-            e.response.status +
-            " " +
-            e.response.data.error +
-            ": " +
-            e.response.data.message;
-          console.log(errorMsg);
-          this.error = errorMsg;
-        });
-        if (this.error != "") {
-          alert(this.error);
       }
     },
     goToHomePage: function() {

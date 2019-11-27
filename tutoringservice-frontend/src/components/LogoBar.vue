@@ -27,16 +27,11 @@
 <script>
 import Router from "../router";
 import Vue from "vue";
-import login from "./login";
 import VueEvents from "vue-events";
 Vue.use(VueEvents);
 
-
 export default {
   name: "LogoBar",
-  components: {
-    login
-    },
   data() {
     return {
       navBar: "",

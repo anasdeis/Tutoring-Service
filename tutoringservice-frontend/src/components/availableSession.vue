@@ -159,7 +159,8 @@ export default {
           this.availableSessions = response.data;
         })
         .catch(e => {
-          this.errorAvailableSession = e;
+          this.errorAvailableSession = e.message;
+          console.log(this.errorAvailableSession)
         });
     },
     dataManager(sortOrder, pagination) {
@@ -189,9 +190,7 @@ export default {
       };
     },
     onFilterSet(filterText) {
-      let availableSession = this.availableSessions[0];
-
-      let data = this.availableSessions.filter(availableSession => {
+        let data = this.availableSessions.filter(availableSession => {
         return availableSession.day.toString().includes(filterText.toString());
       });
 
@@ -227,19 +226,15 @@ export default {
 b-container {
   height: auto;
 }
-
 .orange {
   color: orange;
 }
-
 .white {
   color: white;
 }
-
 .pagination {
   margin-bottom: 10px;
 }
-
 #availableSessionList {
   border-width: 5px;
   border-style: groove;
