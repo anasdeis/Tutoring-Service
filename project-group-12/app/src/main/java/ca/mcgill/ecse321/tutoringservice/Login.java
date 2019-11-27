@@ -17,7 +17,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     EditText passwordInput;
 
     Button loginButton;
-    Button logoutButton;
+    Button homeButton;
     Button signupButton;
 
     @Override
@@ -25,15 +25,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        userNameInput = (EditText) findViewById(R.id.userNameInput);
-        passwordInput = (EditText) findViewById(R.id.passwordInput);
+        userNameInput = findViewById(R.id.userNameInput);
+        passwordInput = findViewById(R.id.passwordInput);
 
         loginButton = findViewById(R.id.managerLoginButton);
-        logoutButton = findViewById(R.id.homeButton);
+        homeButton = findViewById(R.id.homeButton);
         signupButton = findViewById(R.id.signUpButton);
 
         loginButton.setOnClickListener(this);
-        logoutButton.setOnClickListener(this);
+        homeButton.setOnClickListener(this);
         signupButton.setOnClickListener(this);
 
 

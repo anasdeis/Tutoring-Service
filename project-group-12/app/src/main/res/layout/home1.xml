@@ -13,7 +13,7 @@
         android:textColor="#000000"
         android:textSize="20sp"
 
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:background="@drawable/home1_buttons"
         android:shadowColor="#A8791B"
@@ -33,7 +33,7 @@
         android:textColor="#000000"
         android:textSize="20sp"
 
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:background="@drawable/home1_buttons"
         android:shadowColor="#A8791B"
@@ -73,7 +73,7 @@
         android:textColor="#000000"
         android:textSize="20sp"
 
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:background="@drawable/home1_buttons"
         android:shadowColor="#A8791B"
