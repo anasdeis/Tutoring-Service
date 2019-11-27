@@ -152,7 +152,8 @@ export default {
       errorCommission: "",
       response: [],
       commissions: [],
-      tutoringSystem: []
+      tutoringSystem: [],
+      manager: [],
     };
   },
 
@@ -164,6 +165,7 @@ export default {
   created: function() {
     this.updateCommissions();
     this.updateTutoringSystem()
+    this.updateManager()
     this.setDarkMode()
   },
   methods: {
@@ -176,6 +178,16 @@ export default {
     },
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
+    },
+    updateManager(){
+      AXIOS.get("manager/list/")
+        .then(response => {
+          this.manager = response.data;
+        })
+        .catch(e => {
+          this.errorCommission = e.message
+          console.log(this.errorLogin);
+        });
     },
     updateCommissions() {
       // Initializing commissions from backend
@@ -297,7 +309,9 @@ export default {
           this.commissionID +
           "?percentage=" +
           this.percentage +
-          "&managerID=1&tutoringSystemID=1"
+          "&managerID=" +
+          this.manager[0].personId +
+          "&tutoringSystemID=1"
       )
         .then(response => {
           this.commissions.push(response.data);

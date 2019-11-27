@@ -60,7 +60,7 @@
                 <select class="custom-select" id="student" name="student">
                   <option selected>Choose student...</option>
                 </select>
-                <small id="studentHelp" class="form-text text-muted">Add student to existing offering from plus sign in Actions. (Optional) Select for create offering.</small>
+                <small id="studentHelp" class="form-text text-muted">Add student to existing offering with plus sign in Actions. (Optional) Select for create offering.</small>
               </td>
             </tr>
             <tr>
@@ -351,7 +351,6 @@ export default {
     this.updateCommissions();
     this.updateClassrooms();
     this.updateStudents();
-    this.List();
     this.setDarkMode();
   },
   methods: {

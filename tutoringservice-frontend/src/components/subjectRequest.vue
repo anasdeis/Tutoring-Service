@@ -42,6 +42,25 @@
                       @click="populateUniversityList()"
                     >List</button>
                   </td>
+                  <td>
+                    <label style="padding-bottom:10px;">
+                      <b>&nbsp;&nbsp;Add university:</b>&nbsp;&nbsp;
+                    </label>
+                  </td>
+                  <input
+                    type="text"
+                    v-model="universityName"
+                    class="form-control"
+                    placeholder="Enter university name.."
+                  />
+                                  <td>&nbsp;
+                    <button
+                      class="btn btn-primary"
+                      title="Create university!"
+                      style="width:75px;margin-bottom:10px;"
+                      @click="createUniversity()"
+                    >Create</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -170,6 +189,7 @@ export default {
       universities: [],
       courseID: "",
       university: "",
+      universityName: "",
       errorSubjectRequest: "",
       response: [],
       bgColor: "",
@@ -185,7 +205,7 @@ export default {
 
   created: function() {
     this.updateSubjectRequests();
-    this.populateUniversityList();
+    this.updateUniversity()
     this.setDarkMode()
   },
   methods: {
@@ -199,7 +219,7 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    populateUniversityList() {
+    updateUniversity(){
       AXIOS.get(`university/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -209,6 +229,34 @@ export default {
           this.errorSubjectRequest = e.message;
           console.log(this.errorSubjectRequest)
         });
+    },
+    createUniversity(){
+      AXIOS.post(
+        `university/create/${this.universityName}?tutoringSystemID=1`
+      )
+        .then(response => {
+          this.errorSubjectRequest = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorSubjectRequest = errorMsg;
+        });
+        alert("You clicked on create university!");
+        this.universityName = ""
+        this.updateUniversity()
+        this.populateUniversityList()
+        if (this.errorSubjectRequest != "") {
+          alert(this.errorSubjectRequest);
+      }
+    },
+    populateUniversityList() {
+      this.updateUniversity()
 
       var inlineFormCustomSelect = document.getElementById(
         "inlineFormCustomSelect"

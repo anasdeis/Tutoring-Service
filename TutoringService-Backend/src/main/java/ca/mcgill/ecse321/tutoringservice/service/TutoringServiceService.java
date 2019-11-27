@@ -820,7 +820,7 @@ public class TutoringServiceService {
 			throw new IllegalArgumentException("Offering offeringID" + offeringID +" is invalid!");
 		}
 		Set <Student> studentsEnrolleds = new HashSet<Student>();
-		//studentsEnrolleds = offering.getStudentsEnrolled();
+		studentsEnrolleds = offering.getStudentsEnrolled();
 		studentsEnrolleds.add(student);
 		offering.setStudentsEnrolled(studentsEnrolleds);
 
