@@ -39,6 +39,7 @@
                       class="btn btn-primary"
                       title="Populate list!"
                       style="width:51px;margin-bottom:10px;"
+                      @click="populateUniversityList()"
                     >List</button>
                   </td>
                 </tr>
@@ -205,7 +206,8 @@ export default {
           this.universities = response.data;
         })
         .catch(e => {
-          this.errorUniversity = e;
+          this.errorSubjectRequest = e.message;
+          console.log(this.errorSubjectRequest)
         });
 
       var inlineFormCustomSelect = document.getElementById(
@@ -261,6 +263,7 @@ export default {
       alert("You clicked add on: " + JSON.stringify(rowData));
       this.university = "";
       this.courseID = "";
+      universityList.selectedIndex = 0;
       if (this.errorSubjectRequest != "") {
         alert(this.errorSubjectRequest);
       }

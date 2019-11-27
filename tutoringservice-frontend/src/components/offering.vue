@@ -39,6 +39,165 @@
           </div>
         </div>
       </b-col>
+      <hr />
+      <center>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <label for="offering-title">Offering:&nbsp;</label>
+              </td>
+              <td>
+                <input
+                  class="offeringField form-control"
+                  type="text"
+                  id="offering"
+                  v-model="offeringID"
+                  placeholder="Enter offering ID"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="term-title">Term:&nbsp;</label>
+              </td>
+              <td>
+                <input
+                  class="offeringField form-control"
+                  type="text"
+                  id="term"
+                  v-model="term"
+                  placeholder="Enter term"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="price-title">Price:&nbsp;</label>
+              </td>
+              <td>
+                <input
+                  class="offeringField form-control"
+                  type="number"
+                  id="price"
+                  v-model="price"
+                  placeholder="Enter price per hour"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="students-title">Students IDs:&nbsp;</label>
+              </td>
+              <td>
+                <input
+                  class="offeringField form-control"
+                  type="text"
+                  id="students"
+                  v-model="students"
+                  placeholder="Enter students IDs"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="subject-title">Subject:&nbsp;</label>
+              </td>
+              <td>
+                <select
+                  class="custom-select"
+                  id="subject"
+                  name="subject"
+                  style="margin-bottom:5px;"
+                >
+                  <option selected>Choose subject...</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="tutor-title">Tutor ID:&nbsp;</label>
+              </td>
+              <td>
+                <select class="custom-select" id="tutor" name="tutor" style="margin-bottom:5px;">
+                  <option selected>Choose tutor...</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="commission-title">Commission ID:&nbsp;</label>
+              </td>
+              <td>
+                <select
+                  class="custom-select"
+                  id="commission"
+                  name="commission"
+                  style="margin-bottom:5px;"
+                >
+                  <option selected>Choose commission...</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="classtime-title">Classtime:&nbsp;</label>
+              </td>
+              <td>
+                <select
+                  class="custom-select"
+                  id="classtime"
+                  name="classtime"
+                  style="margin-bottom:5px;"
+                >
+                  <option selected>Choose classtime...</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="classroom-title">Classroom:&nbsp;</label>
+              </td>
+              <td>
+                <select
+                  class="custom-select"
+                  id="classroom"
+                  name="classroom"
+                  style="margin-bottom:5px;"
+                >
+                  <option selected>Choose classrom...</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <button
+                  type="button"
+                  id="myButton"
+                  @click="List()"
+                  class="btn btn-primary btn-lg offeringField button"
+                  :class="buttonClass"
+                  title="Populate lists!"
+                >List</button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <button
+                  type="button"
+                  id="myButton"
+                  @click="createOffering()"
+                  class="btn btn-primary btn-lg offeringField button"
+                  :class="buttonClass"
+                  title="Add offering"
+                >Create offering</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
     </b-container>
   </div>
 </template>
@@ -157,6 +316,15 @@ export default {
       offerings: [],
       errorOffering: "",
       response: [],
+      offeringID: "",
+      term: "",
+      price: "",
+      classtime: [],
+      commission: [],
+      tutor: [],
+      subject: [],
+      classroom: [],
+      students: "",
       bgColor: "",
       textColor: ""
     };
@@ -170,7 +338,12 @@ export default {
 
   created: function() {
     this.updateOfferings();
-    this.setDarkMode()
+    this.updateSubjects();
+    this.updateTutors();
+    this.updateAvailableSessions();
+    this.updateCommissions();
+    this.updateClassrooms();
+    this.setDarkMode();
   },
   methods: {
     renderIcon(classes, options) {
@@ -192,8 +365,228 @@ export default {
         })
         .catch(e => {
           this.errorOffering = e.message;
-          console.log(this.errorOffering)
+          console.log(this.errorOffering);
         });
+    },
+    updateSubjects() {
+      // Initializing offerings from backend
+      AXIOS.get(`subject/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.subject = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e.message;
+          console.log(this.errorOffering);
+        });
+    },
+    updateClassrooms() {
+      // Initializing offerings from backend
+      AXIOS.get(`classroom/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.classroom = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e.message;
+          console.log(this.errorOffering);
+        });
+    },
+    updateTutors() {
+      // Initializing offerings from backend
+      AXIOS.get(`tutor/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.tutor = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e.message;
+          console.log(this.errorOffering);
+        });
+    },
+    updateCommissions() {
+      // Initializing offerings from backend
+      AXIOS.get(`commission/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.commission = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e.message;
+          console.log(this.errorOffering);
+        });
+    },
+    updateAvailableSessions() {
+      // Initializing offerings from backend
+      AXIOS.get(`availableSession/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.classtime = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e.message;
+          console.log(this.errorOffering);
+        });
+    },
+    populateSubjects() {
+      this.updateSubjects();
+
+      var inlineFormCustomSelect = document.getElementById("subject");
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.subject.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.subject[i].courseID;
+        option.value = this.subject[i].courseID;
+        inlineFormCustomSelect.options.add(option);
+      }
+    },
+    populateClassrooms() {
+      this.updateClassrooms();
+
+      var inlineFormCustomSelect = document.getElementById("classroom");
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.classroom.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.classroom[i].roomCode;
+        option.value = this.classroom[i].roomCode;
+        inlineFormCustomSelect.options.add(option);
+      }
+    },
+    populateTutors() {
+      this.updateTutors();
+
+      var inlineFormCustomSelect = document.getElementById("tutor");
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.tutor.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.tutor[i].personId;
+        option.value = this.tutor[i].personId;
+        inlineFormCustomSelect.options.add(option);
+      }
+    },
+    populateCommissions() {
+      this.updateCommissions();
+
+      var inlineFormCustomSelect = document.getElementById("commission");
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.commission.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.commission[i].commissionID;
+        option.value = this.commission[i].commissionID;
+        inlineFormCustomSelect.options.add(option);
+      }
+    },
+    populateClasstimes() {
+      this.updateAvailableSessions();
+
+      var inlineFormCustomSelect = document.getElementById("classtime");
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.classtime.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.classtime[i].availableSessionID;
+        option.value = this.classtime[i].availableSessionID;
+        inlineFormCustomSelect.options.add(option);
+      }
+    },
+    List() {
+      this.populateSubjects();
+      this.populateTutors();
+      this.populateCommissions();
+      this.populateClasstimes();
+      this.populateClassrooms();
+    },
+    createOffering() {
+      if (this.offeringID == "" || this.term == "" || this.price == "") {
+        alert("ERROR: Please fill in all empty fields!");
+        return -1;
+      }
+      var subjectList = document.getElementById("subject");
+      if (
+        subjectList.selectedIndex > 0 &&
+        subjectList.options[subjectList.selectedIndex].text
+      ) {
+        var subject = subjectList.options[subjectList.selectedIndex].text;
+      } else {
+        alert("ERROR: Please select a subject before adding an offering!");
+        return -1;
+      }
+
+      var tutorList = document.getElementById("tutor");
+      if (
+        tutorList.selectedIndex > 0 &&
+        tutorList.options[tutorList.selectedIndex].text
+      ) {
+        var tutor = tutorList.options[tutorList.selectedIndex].text;
+      } else {
+        alert("ERROR: Please select a tutor before adding an offering!");
+        return -1;
+      }
+
+      var commissionList = document.getElementById("commission");
+      if (
+        commissionList.selectedIndex > 0 &&
+        commissionList.options[commissionList.selectedIndex].text
+      ) {
+        var commission =
+          commissionList.options[commissionList.selectedIndex].text;
+      } else {
+        alert("ERROR: Please select a commission before adding an offering!");
+        return -1;
+      }
+
+      var classtimeList = document.getElementById("classtime");
+      if (
+        classtimeList.selectedIndex > 0 &&
+        classtimeList.options[classtimeList.selectedIndex].text
+      ) {
+        var classtime = classtimeList.options[classtimeList.selectedIndex].text;
+      } else {
+        alert("ERROR: Please select a classtime before adding an offering!");
+        return -1;
+      }
+
+      var classroomList = document.getElementById("classroom");
+      if (
+        classroomList.selectedIndex > 0 &&
+        classroomList.options[classroomList.selectedIndex].text
+      ) {
+        var classroom = classroomList.options[classroomList.selectedIndex].text;
+      } else {
+        alert("ERROR: Please select a classroom before adding an offering!");
+        return -1;
+      }
+//alert("offering/create/"+this.offeringID+"?term="+this.term+"&price="+this.price+"&classTimes="+classtime+"&courseID=&tutorID="+tutor+"&commissionID="+commission+"&roomCode="+classroom+"&tutoringSystemID=1&studentIDs="+this.students)
+
+      AXIOS.post(
+        `offering/create/${this.offeringID}?term=${this.term}&price=${this.price}&classTimes=${classtime}&courseID=${subject}&tutorID=${tutor}&commissionID=${commission}&roomCode=${classroom}&tutoringSystemID=1&studentIDs=${this.students}`
+      )
+        .then(response => {
+          this.errorOffering = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorOffering = errorMsg;
+        });
+      alert("You clicked on create offering!");
+      this.offeringID = "";
+      this.term = "";
+      this.price = "";
+      this.students = [];
+      subjectList.selectedIndex = 0
+      tutorList.selectedIndex = 0
+      commissionList.selectedIndex = 0
+      classtimeList.selectedIndex = 0
+      classroomList.selectedIndex = 0
+      this.updateOfferings()
+      if (this.errorOffering != "") {
+        alert(this.errorOffering);
+      }
     },
     deleteRow(rowData) {
       AXIOS.delete(`offering/delete/${rowData.offeringID}`)
@@ -292,10 +685,18 @@ b-container {
   margin-bottom: 10px;
 }
 #offeringList {
+  margin-bottom: 20px;
   border-width: 5px;
   border-style: groove;
 }
-.icon{
+.offeringField {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.icon {
   width: 30px;
+}
+#myButton {
+  width: 200px;
 }
 </style>

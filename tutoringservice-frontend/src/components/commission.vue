@@ -63,7 +63,7 @@
         <button
           type="button"
           id="myButton"
-          @click="createCommission(percentage,commissionID, managerID)"
+          @click="createCommission()"
           class="btn btn-primary btn-lg commissionField button"
           :class="buttonClass"
           title="Setup commission"
