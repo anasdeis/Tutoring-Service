@@ -32,6 +32,8 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     public void openHome1() {
         Intent intent = new Intent(this, Home1.class);
         startActivity(intent);
+        Login login = new Login();
+        login.accounts.add(new Account("Test", "123456"));
         Toast.makeText(this, "Manager Account Created!", Toast.LENGTH_SHORT).show();
     }
 

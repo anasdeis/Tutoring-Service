@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import ca.mcgill.ecse321.tutoringservice.R;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    ArrayList<Account> accounts = new ArrayList<>();
+    public static ArrayList<Account> accounts = new ArrayList<>();
 
     String userName, password;
 
@@ -69,11 +69,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.managerLoginButton:
                 userName = userNameInput.getText().toString();
                 password = passwordInput.getText().toString();
+                boolean hasAccount = false;
                 for(Account account: accounts) {
-                    if(account.getUserName().equals(userName) && account.getPassword().equals(password))
+                    if(account.getUserName().equals(userName) && account.getPassword().equals(password)) {
+                        hasAccount = true;
                         openManagerHome();
+                    }
                 }
-                Toast.makeText(this, "Account No Found!", Toast.LENGTH_SHORT).show();
+                if(!hasAccount)
+                    Toast.makeText(this, "Account No Found!", Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.homeButton:
