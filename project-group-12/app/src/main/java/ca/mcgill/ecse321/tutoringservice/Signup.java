@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class Signup extends AppCompatActivity implements View.OnClickListener {
-    Button homeButton;
-    Button createButton;
+    private Button homeButton;
+    private Button createButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

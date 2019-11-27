@@ -7,10 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import ca.mcgill.ecse321.tutoringservice.R;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
+    ArrayList<Account> accounts = new ArrayList<>();
+
     String userName, password;
 
     EditText userNameInput;
@@ -24,6 +29,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        accounts.add(new Account("CharlesLiu", "CharlesLiu"));
+        accounts.add(new Account("MenglinHe", "MenglinHe"));
+        accounts.add(new Account("AnasDeis", "AnasDeis"));
 
         userNameInput = findViewById(R.id.userNameInput);
         passwordInput = findViewById(R.id.passwordInput);
@@ -60,7 +69,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             case R.id.managerLoginButton:
                 userName = userNameInput.getText().toString();
                 password = passwordInput.getText().toString();
-                openManagerHome();
+                for(Account account: accounts) {
+                    if(account.getUserName().equals(userName) && account.getPassword().equals(password))
+                        openManagerHome();
+                }
+                Toast.makeText(this, "Account No Found!", Toast.LENGTH_SHORT).show();
+
                 break;
             case R.id.homeButton:
                 openHome();
