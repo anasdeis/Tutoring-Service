@@ -1446,6 +1446,30 @@ public class TutoringServiceRestController {
 
 		return classroomDto;
 	}
+	
+	/**
+	 * @return Add student to offering 
+	 * @sample /offering/addstudent/{offeringID}
+	 */
+	@PatchMapping(value = { "/offering/addstudent/{offeringID}", "/offering/addstudent/{offeringID}/" })
+	public OfferingDto setOfferingStudent(@PathVariable("offeringID") String offeringID, @RequestParam("studentID") Integer studentID) {
+		Offering offering = (service.setOfferingStudent(offeringID, studentID));
+		OfferingDto offeringDto = convertToDto(offering);
+
+		return offeringDto;
+	}
+	
+	/**
+	 * @return Add offering to student 
+	 * @sample /student/offering/{studentID}
+	 */
+	@PatchMapping(value = { "/student/offering/{studentID}", "/student/offering/{studentID}/" })
+	public StudentDto setStudentOffering(@PathVariable("studentID") Integer studentID, @RequestParam("offeringID") String offeringID) {
+		Student student = (service.setStudentOffering(studentID, offeringID));
+		StudentDto studentDto = convertToDto(student);
+
+		return studentDto;
+	}
 }
 
 

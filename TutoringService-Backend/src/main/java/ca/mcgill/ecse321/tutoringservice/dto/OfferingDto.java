@@ -29,6 +29,8 @@ public class OfferingDto{
 		this.setCommission(commission);
 		this.setClassroom(classroom);
 		this.setTutoringSystem(tutoringSystem);
+		this.setStudents(studentIDs);
+		this.setReview(reviewIDs);
 	}
 	
 	public void setOfferingID(String value) {
