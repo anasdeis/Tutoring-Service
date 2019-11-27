@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home1">
+
+
+    <Button
+        android:id="@+id/roomButton"
+        android:text="Rooms"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <Button
+        android:id="@+id/viewTutorButton"
+        android:text="View Tutors"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.325" />
+
+    <Button
+        android:id="@+id/viewTutorApplicationButton"
+        android:text="View Tutor Applications"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <Button
+        android:id="@+id/viewStudentsButton"
+        android:text="View Students"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <Button
+        android:id="@+id/setupCommissionButton"
+        android:text="Setup Commissions"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.575" />
+
+    <Button
+        android:id="@+id/subjectRequestButton"
+        android:text="Subject Requests"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7" />
+
+    <Button
+        android:id="@+id/viewStudentReviewButton"
+        android:text="View Studnet Reviews"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.825" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:text="Log Out"
+        android:textColor="#000000"
+        android:textSize="20sp"
+
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/home1_buttons"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
