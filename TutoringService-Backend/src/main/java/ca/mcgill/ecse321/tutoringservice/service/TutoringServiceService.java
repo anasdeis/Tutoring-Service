@@ -645,6 +645,37 @@ public class TutoringServiceService {
 	public List<Student> getAllStudents() {
 		return toList(studentRepository.findAll());
 	}
+	
+	@Transactional
+	public Student setStudentOffering(Integer studentID, String offeringID) {
+		String error = "";
+		if (offeringID == null || offeringID.trim().isEmpty()){
+			throw new IllegalArgumentException("Offering offeringID cannot be empty!");
+		}
+		if (studentID == null || studentID <= 0){
+			throw new IllegalArgumentException("Student studentID cannot be null or <= 0!");
+		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		Student student = this.getStudent(studentID);
+		if(student == null) {
+			throw new IllegalArgumentException("Student studentID " + studentID + " is invalid!");
+		}
+		Offering offering  = this.getOffering(offeringID);
+		if(offering == null) {
+			throw new IllegalArgumentException("Offering offeringID" + offeringID +" is invalid!");
+		}
+		Set <Offering> coursesTakens = new HashSet<Offering>();
+		coursesTakens = student.getCoursesTaken();
+		coursesTakens.add(offering);
+		student.setCoursesTaken(coursesTakens);
+
+		return student;
+	}
 
 	@Transactional
 	public void deleteStudent(Integer studentID) {
@@ -763,6 +794,37 @@ public class TutoringServiceService {
 	@Transactional
 	public List<Offering> getAllOfferings() {
 		return toList(offeringRepository.findAll());
+	}
+	
+	@Transactional
+	public Offering setOfferingStudent(String offeringID, Integer studentID) {
+		String error = "";
+		if (offeringID == null || offeringID.trim().isEmpty()){
+			throw new IllegalArgumentException("Offering offeringID cannot be empty!");
+		}
+		if (studentID == null || studentID <= 0){
+			throw new IllegalArgumentException("Student studentID cannot be null or <= 0!");
+		}
+		
+		error = error.trim();
+		if (error.length() > 0) {
+			throw new IllegalArgumentException(error);
+		}
+		
+		Student student = this.getStudent(studentID);
+		if(student == null) {
+			throw new IllegalArgumentException("Student studentID " + studentID + " is invalid!");
+		}
+		Offering offering  = this.getOffering(offeringID);
+		if(offering == null) {
+			throw new IllegalArgumentException("Offering offeringID" + offeringID +" is invalid!");
+		}
+		Set <Student> studentsEnrolleds = new HashSet<Student>();
+		//studentsEnrolleds = offering.getStudentsEnrolled();
+		studentsEnrolleds.add(student);
+		offering.setStudentsEnrolled(studentsEnrolleds);
+
+		return offering;
 	}
 
 	@Transactional

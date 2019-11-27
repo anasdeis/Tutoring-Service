@@ -24,6 +24,13 @@
             <template slot="actions" slot-scope="props">
               <div class="table-button-container">
                 <button
+                  class="btn btn-success btn-sm icon"
+                  title="Add student!"
+                  @click="addRow(props.rowData)"
+                >
+                  <i class="fa fa-plus"></i>
+                </button>
+                <button
                   class="btn btn-danger btn-sm icon"
                   title="Remove offering!"
                   @click="deleteRow(props.rowData)"
@@ -43,6 +50,19 @@
       <center>
         <table>
           <tbody>
+            <tr>
+              <td>
+                <label style="margin-bottom:25px;" for="students-title">
+                  <b>Add student:</b>&nbsp;
+                </label>
+              </td>
+              <td>
+                <select class="custom-select" id="student" name="student">
+                  <option selected>Choose student...</option>
+                </select>
+                <small id="studentHelp" class="form-text text-muted">Add student to existing offering from plus sign in Actions. (Optional) Select for create offering.</small>
+              </td>
+            </tr>
             <tr>
               <td>
                 <label for="offering-title">Offering:&nbsp;</label>
@@ -82,20 +102,6 @@
                   id="price"
                   v-model="price"
                   placeholder="Enter price per hour"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label for="students-title">Students IDs:&nbsp;</label>
-              </td>
-              <td>
-                <input
-                  class="offeringField form-control"
-                  type="text"
-                  id="students"
-                  v-model="students"
-                  placeholder="Enter students IDs"
                 />
               </td>
             </tr>
@@ -324,6 +330,7 @@ export default {
       tutor: [],
       subject: [],
       classroom: [],
+      student: [],
       students: "",
       bgColor: "",
       textColor: ""
@@ -343,6 +350,8 @@ export default {
     this.updateAvailableSessions();
     this.updateCommissions();
     this.updateClassrooms();
+    this.updateStudents();
+    this.List();
     this.setDarkMode();
   },
   methods: {
@@ -374,6 +383,18 @@ export default {
         .then(response => {
           // JSON responses are automatically parsed.
           this.subject = response.data;
+        })
+        .catch(e => {
+          this.errorOffering = e.message;
+          console.log(this.errorOffering);
+        });
+    },
+    updateStudents() {
+      // Initializing offerings from backend
+      AXIOS.get(`student/list`)
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.student = response.data;
         })
         .catch(e => {
           this.errorOffering = e.message;
@@ -428,6 +449,18 @@ export default {
           console.log(this.errorOffering);
         });
     },
+    populateStudents() {
+      this.updateSubjects();
+
+      var inlineFormCustomSelect = document.getElementById("student");
+      inlineFormCustomSelect.options.length = 1;
+      for (var i = 0; i < this.student.length; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = this.student[i].personId;
+        option.value = this.student[i].personId;
+        inlineFormCustomSelect.options.add(option);
+      }
+    },
     populateSubjects() {
       this.updateSubjects();
 
@@ -476,6 +509,41 @@ export default {
         inlineFormCustomSelect.options.add(option);
       }
     },
+    addRow(rowData) {
+      var studentList = document.getElementById("student");
+      if (
+        studentList.selectedIndex > 0 &&
+        studentList.options[studentList.selectedIndex].text
+      ) {
+        var student = studentList.options[studentList.selectedIndex].text;
+      } else {
+        alert("ERROR: Please select a student before adding an offering!");
+        return -1;
+      }
+
+      AXIOS.patch(
+        `offering/addstudent/${rowData.offeringID}?studentID=${student}`
+      )
+        .then(response => {
+          this.errorOffering = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorOffering = errorMsg;
+        });
+      alert("You clicked add student on: " + JSON.stringify(rowData));
+      studentList.selectedIndex = 0;
+      this.updateOfferings();
+      if (this.errorOffering != "") {
+        alert(this.errorOffering);
+      }
+    },
     populateClasstimes() {
       this.updateAvailableSessions();
 
@@ -494,12 +562,23 @@ export default {
       this.populateCommissions();
       this.populateClasstimes();
       this.populateClassrooms();
+      this.populateStudents();
     },
     createOffering() {
       if (this.offeringID == "" || this.term == "" || this.price == "") {
         alert("ERROR: Please fill in all empty fields!");
         return -1;
       }
+
+      var student = ""
+      var studentList = document.getElementById("student");
+      if (
+        studentList.selectedIndex > 0 &&
+        studentList.options[studentList.selectedIndex].text
+      ) {
+        student = studentList.options[studentList.selectedIndex].text;
+      } 
+
       var subjectList = document.getElementById("subject");
       if (
         subjectList.selectedIndex > 0 &&
@@ -555,10 +634,9 @@ export default {
         alert("ERROR: Please select a classroom before adding an offering!");
         return -1;
       }
-//alert("offering/create/"+this.offeringID+"?term="+this.term+"&price="+this.price+"&classTimes="+classtime+"&courseID=&tutorID="+tutor+"&commissionID="+commission+"&roomCode="+classroom+"&tutoringSystemID=1&studentIDs="+this.students)
 
       AXIOS.post(
-        `offering/create/${this.offeringID}?term=${this.term}&price=${this.price}&classTimes=${classtime}&courseID=${subject}&tutorID=${tutor}&commissionID=${commission}&roomCode=${classroom}&tutoringSystemID=1&studentIDs=${this.students}`
+        `offering/create/${this.offeringID}?term=${this.term}&price=${this.price}&classTimes=${classtime}&courseID=${subject}&tutorID=${tutor}&commissionID=${commission}&roomCode=${classroom}&tutoringSystemID=1&studentIDs=${student}`
       )
         .then(response => {
           this.errorOffering = "";
@@ -578,12 +656,13 @@ export default {
       this.term = "";
       this.price = "";
       this.students = [];
-      subjectList.selectedIndex = 0
-      tutorList.selectedIndex = 0
-      commissionList.selectedIndex = 0
-      classtimeList.selectedIndex = 0
-      classroomList.selectedIndex = 0
-      this.updateOfferings()
+      subjectList.selectedIndex = 0;
+      tutorList.selectedIndex = 0;
+      commissionList.selectedIndex = 0;
+      classtimeList.selectedIndex = 0;
+      classroomList.selectedIndex = 0;
+      studentList.selectedIndex = 0;
+      this.updateOfferings();
       if (this.errorOffering != "") {
         alert(this.errorOffering);
       }

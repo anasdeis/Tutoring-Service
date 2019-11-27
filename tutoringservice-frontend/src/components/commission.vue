@@ -49,7 +49,7 @@
               </td>
               <td>
                 <input
-                  class="commissionField"
+                  class="commissionField form-control"
                   type="number"
                   step="0.01"
                   id="percentage"
