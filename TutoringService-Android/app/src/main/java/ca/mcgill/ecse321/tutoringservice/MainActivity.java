@@ -11,6 +11,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        refreshErrorMessage();
     }
 
     @Override
@@ -52,4 +56,23 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private String error = null;
+    private void refreshErrorMessage() {
+      // set error message
+      TextView tvError = (TextView) findViewById(R.id.error);
+      tvError.setError(error);
+
+      if (error == null || error.length() == 0) {
+        tvError.setVisibility(View.GONE);
+      } else {
+        tvError.setVisibility(View.VISIBLE);
+      }
+    }
+
+  public void login(View view) {
+      error = "";
+      final TextView tv = (TextView) findViewById(R.id.userName);
+
+  }
 }
