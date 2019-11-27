@@ -77,14 +77,7 @@ export default {
     this.updateManager()
     this.updateStudent()
     this.updateTutor()
-    var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn === "true") {
-      this.bgColor = "rgb(53,58,62)";
-      this.textColor = "white";
-    } else {
-      this.bgColor = "rgb(250,250,250)";
-      this.textColor = "black";
-    }
+    this.setDarkMode()
   },
   methods: {
     updateLogin(){

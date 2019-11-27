@@ -121,7 +121,6 @@ export default {
 #container {
   margin-bottom: 50px;
 }
-
 .loginField{
   width: 100px;
   margin-bottom: 25px !important;

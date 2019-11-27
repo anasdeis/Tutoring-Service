@@ -173,18 +173,7 @@ export default {
   created: function() {
     this.updateRooms();
     this.populateOfferingList();
-
-    var darkModeOn = localStorage.getItem("DarkModeOn");
-    if (darkModeOn === "true") {
-      this.bgColor = "rgb(53,58.62)";
-      this.textColor = "white";
-      this.buttonClass = "btn btn-dark btn-lg container";
-      this.css.tableClass = `table table-bordered table-hover white`;
-    } else {
-      this.bgColor = "rgb(250,250,250)";
-      this.textColor = "black";
-      this.buttonClass = "btn btn-white btn-lg container";
-    }
+    this.setDarkMode()
   },
   methods: {
     renderIcon(classes, options) {
@@ -232,7 +221,7 @@ export default {
 
       return {
         pagination: pagination,
-        data: _.slice(local, from, to)
+        data: local.slice(from, to)
       };
     },
     onFilterSet(filterText) {
@@ -250,6 +239,7 @@ export default {
         this.bgColor = "rgb(53, 58, 62)";
         this.textColor = "white";
         this.buttonClass = "btn btn-dark btn-lg container";
+        this.css.tableClass = `table table-bordered table-hover white`;
       } else {
         this.bgColor = "rgb(250,250,250)";
         this.textColor = "black";
