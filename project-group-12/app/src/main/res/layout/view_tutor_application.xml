@@ -5,25 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context=".ViewTutor">
+    tools:context=".ViewTutorApplication">
 
     <TextView
-        android:id="@+id/tutorLogo"
+        android:id="@+id/tutorApplicationLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tutors"
+        android:text="Tutor Applications"
         android:textColor="#000000"
-        android:textSize="70sp"
+        android:textSize="50sp"
         app:fontFamily="cursive"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.125" />
+
+    <Button
+        android:id="@+id/viewTutorApplicationToHome1Button"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:background="#1D6BF2"
+        android:shadowColor="#A8791B"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="10"
+        android:text="Go Back"
+        android:textColor="#ffffff"
+        android:textSize="17.5sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
     <TableLayout
-        android:id="@+id/TutorTable"
+        android:id="@+id/TutorApplicationTable"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
@@ -33,9 +52,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25">
+        app:layout_constraintVertical_bias="0.225">
 
         <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Application ID"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,19 +74,21 @@
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow android:id="@+id/ASDFG">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="1dp"
+                android:layout_marginBottom="1dp"
                 android:layout_weight="1"
+                android:background="#ffffff"
                 android:gravity="center"
-                android:text="Name"
+                android:text="ASDFG"
                 android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow>
+                android:textSize="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -72,6 +102,9 @@
                 android:text="001"
                 android:textColor="#000000"
                 android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow android:id="@+id/QWERT">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,42 +114,9 @@
                 android:layout_weight="1"
                 android:background="#ffffff"
                 android:gravity="center"
-                android:text="Tutor A"
+                android:text="QWERT"
                 android:textColor="#000000"
                 android:textSize="20dp" />
-
-
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="002"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="Tutor B"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-        </TableRow>
-
-        <TableRow>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -130,26 +130,14 @@
                 android:text="003"
                 android:textColor="#000000"
                 android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:background="#ffffff"
-                android:gravity="center"
-                android:text="Tutor C"
-                android:textColor="#000000"
-                android:textSize="20dp" />
         </TableRow>
 
     </TableLayout>
 
     <Button
-        android:id="@+id/showTutorDetailButton"
+        android:id="@+id/showTutorApplicationDetailButton"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:background="#45FFFF"
         android:shadowColor="#A8791B"
@@ -164,11 +152,11 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.535" />
+        app:layout_constraintVertical_bias="0.45" />
 
     <EditText
-        android:id="@+id/tutorIDInput"
-        android:layout_width="wrap_content"
+        android:id="@+id/tutorApplicationIDInput"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
@@ -177,13 +165,13 @@
         app:layout_constraintHorizontal_bias="0.875"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintVertical_bias="0.375" />
 
     <TextView
-        android:id="@+id/inputTutorIDText"
+        android:id="@+id/inputTutorApplicationIDText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Input Tutor ID:"
+        android:text="Input Application ID:"
         android:textColor="#ff0000"
         android:textSize="22.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -191,21 +179,71 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
+        app:layout_constraintVertical_bias="0.375" />
 
     <TableLayout
-        android:id="@+id/TutorInformationTable"
+        android:id="@+id/TutorApplicationInformationTable"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="30dp"
-        android:collapseColumns="2,3,4"
+        android:collapseColumns="2,3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.91">
+        app:layout_constraintVertical_bias="0.8">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Application ID: "
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="3"
+
+                android:gravity="center"
+                android:text=" "
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="3"
+
+                android:gravity="center"
+                android:text="ASDFG"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="3"
+
+                android:gravity="center"
+                android:text="QWERT"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+        </TableRow>
 
         <TableRow>
 
@@ -241,18 +279,6 @@
 
                 android:gravity="center"
                 android:text="001"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="3"
-
-                android:gravity="center"
-                android:text="002"
                 android:textColor="#000000"
                 android:textSize="20dp" />
 
@@ -314,18 +340,6 @@
                 android:layout_marginBottom="1dp"
                 android:layout_weight="3"
                 android:gravity="center"
-                android:text="Tutor B"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="1dp"
-
-                android:layout_marginBottom="1dp"
-                android:layout_weight="3"
-                android:gravity="center"
                 android:text="Tutor C"
                 android:textColor="#000000"
                 android:textSize="20dp" />
@@ -370,22 +384,12 @@
                 android:layout_weight="3"
 
                 android:gravity="center"
-                android:text="tutor.b@mail.mcgill.ca"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-
-                android:gravity="center"
                 android:text="tutor.c@mail.mcgill.ca"
                 android:textColor="#000000"
                 android:textSize="20dp" />
         </TableRow>
 
-        <TableRow>
+        <!--<TableRow>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -393,7 +397,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Subject:"
+                android:text="Phone:"
                 android:textColor="#000000"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -402,7 +406,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-
                 android:gravity="center"
                 android:text=" "
                 android:textColor="#000000"
@@ -412,9 +415,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-
                 android:gravity="center"
-                android:text="ECSE 321"
+                android:text="123456789"
                 android:textColor="#000000"
                 android:textSize="20dp" />
 
@@ -422,23 +424,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-
                 android:gravity="center"
-                android:text="ECSE 223"
+                android:text="123456789"
                 android:textColor="#000000"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/subject003"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+        </TableRow>-->
 
-                android:layout_weight="3"
-                android:gravity="center"
-                android:text="Not Applicable"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-        </TableRow>
+        <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Subject:"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:gravity="center"
+            android:text=" "
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:gravity="center"
+            android:text="ECSE 324"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+
+            android:gravity="center"
+            android:text="ECSE 326"
+            android:textColor="#000000"
+            android:textSize="20dp" />
+    </TableRow>
 
         <TableRow>
 
@@ -482,90 +517,28 @@
                 android:text="2019 Winter"
                 android:textColor="#000000"
                 android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/offering003"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="3"
-                android:gravity="center"
-                android:text="Not Applicable"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Commission:"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-
-                android:gravity="center"
-                android:text=" "
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-
-                android:gravity="center"
-                android:text="20.00"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-
-                android:gravity="center"
-                android:text="25.00"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-
-                android:gravity="center"
-                android:text="Not Applicable"
-                android:textColor="#000000"
-                android:textSize="20dp" />
         </TableRow>
     </TableLayout>
 
     <Button
-        android:id="@+id/viewTutorToHome1Button"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:background="#1D6BF2"
+        android:id="@+id/acceptTutorApplicationButton"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="#00ff00"
         android:shadowColor="#A8791B"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="10"
-        android:text="Go Back"
-        android:textColor="#ffffff"
-        android:textSize="17.5sp"
+        android:text="Accept Tutor Application"
+        android:textAllCaps="false"
+        android:textSize="20dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.95" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

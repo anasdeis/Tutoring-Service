@@ -10,6 +10,7 @@ import android.widget.Button;
 public class Home1 extends AppCompatActivity implements View.OnClickListener {
     private Button toManagerLogin;
     private Button toViewTutor;
+    private Button toViewTutorApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +19,10 @@ public class Home1 extends AppCompatActivity implements View.OnClickListener {
 
         toManagerLogin = findViewById(R.id.logoutButton);
         toViewTutor = findViewById(R.id.viewTutorButton);
+        toViewTutorApplication = findViewById(R.id.viewTutorApplicationButton);
         toManagerLogin.setOnClickListener(this);
         toViewTutor.setOnClickListener(this);
+        toViewTutorApplication.setOnClickListener(this);
     }
 
     public void openManagerLogin() {
@@ -32,6 +35,11 @@ public class Home1 extends AppCompatActivity implements View.OnClickListener {
         startActivity(intent);
     }
 
+    public void openViewTutorApplication() {
+        Intent intent = new Intent(this, ViewTutorApplication.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -40,6 +48,9 @@ public class Home1 extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.viewTutorButton:
                 openViewTutor();
+                break;
+            case R.id.viewTutorApplicationButton:
+                openViewTutorApplication();
                 break;
         }
     }

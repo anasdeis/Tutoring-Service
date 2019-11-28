@@ -77,7 +77,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
                 if(!hasAccount)
-                    Toast.makeText(this, "Account No Found!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Account Not Found!", Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.homeButton:
