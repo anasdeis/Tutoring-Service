@@ -113,6 +113,7 @@ export default {
   },
   mounted() {
     this.$events.$on("loggedIn-set", eventData => this.updateLoggedInState(eventData));
+    
   }
 };
 </script>

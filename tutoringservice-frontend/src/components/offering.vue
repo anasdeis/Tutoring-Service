@@ -60,7 +60,10 @@
                 <select class="custom-select" id="student" name="student">
                   <option selected>Choose student...</option>
                 </select>
-                <small id="studentHelp" class="form-text text-muted">Add student to existing offering with plus sign in Actions. (Optional) Select for create offering.</small>
+                <small id="studentHelp" class="form-text text-muted">
+                  Click
+                  <i class="fa fa-plus"></i> in Actions.
+                </small>
               </td>
             </tr>
             <tr>
@@ -147,7 +150,7 @@
             </tr>
             <tr>
               <td>
-                <label for="classtime-title">Classtime:&nbsp;</label>
+                <label for="classtime-title">Classtime ID:&nbsp;</label>
               </td>
               <td>
                 <select
@@ -197,7 +200,7 @@
                   @click="createOffering()"
                   class="btn btn-primary btn-lg offeringField button"
                   :class="buttonClass"
-                  title="Add offering"
+                  title="Add existing offering"
                 >Create offering</button>
               </td>
             </tr>
@@ -273,11 +276,6 @@ export default {
           name: "term",
           title: `<span class="icon orange"><i class="fas fa-calendar-alt"></i></span> Term`,
           sortField: "term"
-        },
-        {
-          name: "pricePerHour",
-          title: `<span class="icon orange"><i class="fas fa-dollar-sign"></i></span> Price/hr`,
-          sortField: "pricePerHour"
         },
         {
           name: "commission",
@@ -569,15 +567,6 @@ export default {
         return -1;
       }
 
-      var student = ""
-      var studentList = document.getElementById("student");
-      if (
-        studentList.selectedIndex > 0 &&
-        studentList.options[studentList.selectedIndex].text
-      ) {
-        student = studentList.options[studentList.selectedIndex].text;
-      } 
-
       var subjectList = document.getElementById("subject");
       if (
         subjectList.selectedIndex > 0 &&
@@ -635,7 +624,7 @@ export default {
       }
 
       AXIOS.post(
-        `offering/create/${this.offeringID}?term=${this.term}&price=${this.price}&classTimes=${classtime}&courseID=${subject}&tutorID=${tutor}&commissionID=${commission}&roomCode=${classroom}&tutoringSystemID=1&studentIDs=${student}`
+        `offering/create/${this.offeringID}?term=${this.term}&price=${this.price}&classTimes=${classtime}&courseID=${subject}&tutorID=${tutor}&commissionID=${commission}&roomCode=${classroom}&tutoringSystemID=1`
       )
         .then(response => {
           this.errorOffering = "";
@@ -660,7 +649,6 @@ export default {
       commissionList.selectedIndex = 0;
       classtimeList.selectedIndex = 0;
       classroomList.selectedIndex = 0;
-      studentList.selectedIndex = 0;
       this.updateOfferings();
       if (this.errorOffering != "") {
         alert(this.errorOffering);

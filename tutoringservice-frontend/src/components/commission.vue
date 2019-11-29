@@ -283,7 +283,7 @@ export default {
     },
     generateCommissionID() {
       if (this.tutoringSystem != "") {
-        this.commissionID = 1;
+        this.commissionID = 0;
         for (var i = 0; i < this.tutoringSystem.length; i++) {
           if (this.tutoringSystem[i].tutoringSystemID == 1) {
             for (var j = 0; j < this.tutoringSystem[i].commission.length; j++) {

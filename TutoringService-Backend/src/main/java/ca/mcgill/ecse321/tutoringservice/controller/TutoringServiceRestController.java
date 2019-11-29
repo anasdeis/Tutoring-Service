@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -881,7 +882,7 @@ public class TutoringServiceRestController {
 	 * @param tutoringSystemID
 	 * @param offeringIDs (optional)
 	 * @param requestIDs (optional)
- 	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dob=<dob>&email=<email>&phone=<phone>&numCoursesEnrolled=<numCoursesEnrolled>&tutoringSystemID=<tutoringSystemID>[&offeringIDs=<offeringIDs..>&requestIDs=<requestIDs..>]
+ 	 * @sample  /student/create/{personId}?firstName=<firstName>&lastName=<lastName>&dob=<dob>&email=<email>&phone=<phone>&tutoringSystemID=<tutoringSystemID>[&offeringIDs=<offeringIDs..>&requestIDs=<requestIDs..>]
 	 */
 	@PostMapping(value = {"/student/create/{studentID}", "/student/create/{studentID}/"})
 	public StudentDto createStudent(@PathVariable("studentID") Integer studentID,
@@ -890,12 +891,12 @@ public class TutoringServiceRestController {
 			@RequestParam("dob") Date dob,
 			@RequestParam("email") String email,
 			@RequestParam("phone") Integer phone,
-			@RequestParam("numCoursesEnrolled") Integer numCoursesEnrolled,
 			@RequestParam("userName") String userName,
 			@RequestParam("tutoringSystemID") Integer tutoringSystemID,
 			@RequestParam(name = "offeringIDs", required = false) Set<String> offeringIDs,
 			@RequestParam(name = "requestIDs", required = false) Set<Integer> requestIDs) throws IllegalArgumentException {
 
+		Integer numCoursesEnrolled = 0;
 		Set<SubjectRequest> requests = null;
 		if(requestIDs != null){
 			requests = new HashSet<SubjectRequest>();
@@ -912,6 +913,7 @@ public class TutoringServiceRestController {
 				Offering offering = service.getOffering(offeringID);
 				offerings.add(offering);
 			}
+			numCoursesEnrolled = offerings.size();
 		}
 		
 		Login login = service.getLogin(userName);
@@ -1252,7 +1254,7 @@ public class TutoringServiceRestController {
 	}
 	
 	@GetMapping(value = { "/tutorApplication/{tutorApplicationID}", "/tutorApplication/{tutorApplicationID}/" })
-	public TutorApplicationDto getTutorApplication(Integer tutorApplicationID) {
+	public TutorApplicationDto getTutorApplication(@PathVariable("tutorApplicationID") Integer tutorApplicationID) {
 		TutorApplicationDto tutorApplicationDto = new TutorApplicationDto();
 		TutorApplication tutorApplication = service.getTutorApplication(tutorApplicationID);
 		tutorApplicationDto = convertToDto(tutorApplication);
@@ -1469,6 +1471,28 @@ public class TutoringServiceRestController {
 		StudentDto studentDto = convertToDto(student);
 
 		return studentDto;
+	}
+	
+	/**
+	 * @return Remove available session
+	 * @sample /availableSession/delete/{availableSessionID}
+	 */
+	@DeleteMapping(value = { "/availableSession/delete/{availableSessionID}", "/availableSession/delete/{availableSessionID}/" })
+	public AvailableSessionDto deleteAvailableSession(@PathVariable("availableSessionID") Integer availableSessionID) {
+		AvailableSessionDto availableSessionDto = convertToDto(service.getAvailableSession(availableSessionID));
+		service.deleteAvailableSession(availableSessionID);
+		return availableSessionDto;
+	}
+	
+	/**
+	 * @return Remove available session
+	 * @sample /availableSession/delete/{availableSessionID}
+	 */
+	@DeleteMapping(value = { "/classroom/delete/{roomCode}", "/classroom/delete/{roomCode}/" })
+	public ClassroomDto deleteClassroom(@PathVariable("roomCode") String roomCode) {
+		ClassroomDto classroomDto = convertToDto(service.getClassroom(roomCode));
+		service.deleteClassroom(roomCode);
+		return classroomDto;
 	}
 }
 
