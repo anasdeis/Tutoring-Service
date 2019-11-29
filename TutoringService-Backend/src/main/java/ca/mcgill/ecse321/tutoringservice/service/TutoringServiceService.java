@@ -716,9 +716,9 @@ public class TutoringServiceService {
 			error = error + "Tutor needs to be selected for Offering!";
 		} else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
 			error = error + "Tutor does not exist!";
-		}/*else if(tutor.getIsRegistered() == false) {
+		}else if(tutor.getIsRegistered() == false) {
 			error = error + "Tutor is not registered!";
-		}*/
+		}
 		if (commission == null) {
 			error = error + "Commission needs to be selected for Offering!";
 		} else if (!commissionRepository.existsByCommissionID(commission.getCommissionID())) {
@@ -767,14 +767,18 @@ public class TutoringServiceService {
 		classroom.setIsBooked(true);
 		Offering offering = offeringRepository.findOfferingByOfferingID(offId);
 		/*boolean IsSubjectValidForTutor = false;
+		if (!(tutor.getTutorApplication() == null || tutor.getTutorApplication().isEmpty())){
 			for(TutorApplication tutorApplication: tutor.getTutorApplication()) {
 				if(tutorApplication.getIsAccepted() == true) {
-				for(Subject sub: tutorApplication.getSubject()) {
-					if(subject.getCourseID().equals(sub.getCourseID())) {
-						IsSubjectValidForTutor = true;
-						break;
+					if (!(tutorApplication.getSubject() == null || tutorApplication.getSubject().isEmpty())){
+						for(Subject sub: tutorApplication.getSubject()) {
+							if(subject.getCourseID().equals(sub.getCourseID())) {
+								IsSubjectValidForTutor = true;
+								break;
+							}
+						}
 					}
-				}
+			    }
 			}
 		}
 		if(IsSubjectValidForTutor == false) {
@@ -796,8 +800,10 @@ public class TutoringServiceService {
 			offering.setReview(reviews);
 			offering.setTutoringSystem(tutoringSystem);
 			
-			for(Student student: students) {
-				student.setNumCoursesEnrolled(student.getNumCoursesEnrolled() + 1);
+			if(!(students == null || students.isEmpty())) {
+				for(Student student: students) {
+					student.setNumCoursesEnrolled(student.getNumCoursesEnrolled() + 1);
+				}
 			}
 			
 			offeringRepository.save(offering);
@@ -1157,10 +1163,13 @@ public class TutoringServiceService {
 			tutorapplication.setTutoringSystem(tutoringSystem);
 			tutorApplicationRepository.save(tutorapplication);
 			Set <TutorApplication> currTutorApplications = new HashSet<TutorApplication>();
-			for(Subject subject: subjects) {
-				currTutorApplications = subject.getTutorRole();
-				currTutorApplications.add(tutorapplication);
-				subject.setTutorRole(currTutorApplications);
+			
+			if(!(subjects == null || subjects.isEmpty())) {
+				for(Subject subject: subjects) {
+					currTutorApplications = subject.getTutorRole();
+					currTutorApplications.add(tutorapplication);
+					subject.setTutorRole(currTutorApplications);
+				}
 			}
 		}
 		return tutorapplication;
