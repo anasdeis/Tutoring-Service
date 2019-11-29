@@ -153,7 +153,7 @@ export default {
     },
     generateManagerID() {
       if (this.tutoringSystem != "") {
-        this.managerID = 1;
+        this.managerID = 0;
         for (var i = 0; i < this.tutoringSystem.length; i++) {
           if (this.tutoringSystem[i].tutoringSystemID == 1) {
             for (var j = 0; j < this.tutoringSystem[i].person.length; j++) {
@@ -268,6 +268,7 @@ export default {
         alert("ERROR: " + this.errorSignup);
         return -1;
       } else {
+        this.$events.fire("loggedIn-set", this.userName);
         this.goToHomePage();
       }
     },

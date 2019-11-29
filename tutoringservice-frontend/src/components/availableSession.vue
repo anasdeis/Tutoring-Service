@@ -20,7 +20,19 @@
             :data-manager="dataManager"
             :render-icon="renderIcon"
             @vuetable:pagination-data="onPaginationData"
-          ></vuetable>
+          >
+            <template slot="actions" slot-scope="props">
+              <div class="table-button-container">
+                <button
+                  class="btn btn-danger btn-sm icon"
+                  title="Remove available session!"
+                  @click="deleteRow(props.rowData)"
+                >
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </template>
+          </vuetable>
           <div>
             <vuetable-pagination-info ref="paginationInfo" info-class="pull-left"></vuetable-pagination-info>
             <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
@@ -108,6 +120,10 @@ export default {
           name: "tutor",
           title: `<span class="icon orange"><i class="fas fa-chalkboard-teacher"></i></span> Tutor IDs`,
           sortField: "tutor"
+        },
+        {
+          name: "actions",
+          title: "Actions"
         }
       ],
       availableSessions: [],
@@ -126,7 +142,7 @@ export default {
 
   created: function() {
     this.updateAvailableSessions();
-    this.setDarkMode()
+    this.setDarkMode();
   },
   methods: {
     renderIcon(classes, options) {
@@ -148,8 +164,29 @@ export default {
         })
         .catch(e => {
           this.errorAvailableSession = e.message;
-          console.log(this.errorAvailableSession)
+          console.log(this.errorAvailableSession);
         });
+    },
+    deleteRow(rowData) {
+      AXIOS.delete(`availableSession/delete/${rowData.availableSessionID}`)
+        .then(response => {
+          this.errorAvailableSession = "";
+        })
+        .catch(e => {
+          var errorMsg =
+            e.response.status +
+            " " +
+            e.response.data.error +
+            ": " +
+            e.response.data.message;
+          console.log(errorMsg);
+          this.errorAvailableSession = errorMsg;
+        });
+      alert("You clicked delete on: " + JSON.stringify(rowData));
+      this.updateAvailableSessions();
+      if (this.errorAvailableSession != "") {
+        alert(this.errorAvailableSession);
+      }
     },
     dataManager(sortOrder, pagination) {
       let local = this.availableSessions;
@@ -178,7 +215,7 @@ export default {
       };
     },
     onFilterSet(filterText) {
-        let data = this.availableSessions.filter(availableSession => {
+      let data = this.availableSessions.filter(availableSession => {
         return availableSession.day.toString().includes(filterText.toString());
       });
 
@@ -223,6 +260,9 @@ b-container {
 }
 .pagination {
   margin-bottom: 10px;
+}
+.icon {
+  width: 30px;
 }
 #availableSessionList {
   border-width: 5px;

@@ -14,6 +14,34 @@
                 <tr>
                   <td>
                     <label style="padding-bottom:10px;">
+                      <b>Add university:</b>&nbsp;&nbsp;
+                    </label>
+                  </td>
+                  <input
+                    type="text"
+                    v-model="universityName"
+                    class="form-control"
+                    placeholder="Enter university name.."
+                  />
+                  <td>
+                    &nbsp;
+                    <button
+                      class="btn btn-primary"
+                      title="Create university!"
+                      style="width:75px;"
+                      @click="createUniversity()"
+                    >Create</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="form-inline">
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <label style="padding-bottom:10px;">
                       <b>Add subject:</b>&nbsp;&nbsp;
                     </label>
                   </td>
@@ -22,7 +50,12 @@
                     v-model="courseID"
                     class="form-control"
                     placeholder="Enter new course ID.."
+                    style="margin-top:20px;"
                   />
+                  <small style="margin-bottom:10px;" id="subjectHelp" class="form-text text-muted">
+                    Click
+                    <i class="fa fa-plus"></i> in Actions.
+                  </small>
                   <td>
                     &nbsp;
                     <select
@@ -41,25 +74,6 @@
                       style="width:51px;margin-bottom:10px;"
                       @click="populateUniversityList()"
                     >List</button>
-                  </td>
-                  <td>
-                    <label style="padding-bottom:10px;">
-                      <b>&nbsp;&nbsp;Add university:</b>&nbsp;&nbsp;
-                    </label>
-                  </td>
-                  <input
-                    type="text"
-                    v-model="universityName"
-                    class="form-control"
-                    placeholder="Enter university name.."
-                  />
-                                  <td>&nbsp;
-                    <button
-                      class="btn btn-primary"
-                      title="Create university!"
-                      style="width:75px;margin-bottom:10px;"
-                      @click="createUniversity()"
-                    >Create</button>
                   </td>
                 </tr>
               </tbody>
@@ -205,8 +219,8 @@ export default {
 
   created: function() {
     this.updateSubjectRequests();
-    this.updateUniversity()
-    this.setDarkMode()
+    this.updateUniversity();
+    this.setDarkMode();
   },
   methods: {
     renderIcon(classes, options) {
@@ -219,7 +233,7 @@ export default {
     onChangePage(page) {
       this.$refs.vuetable.changePage(page);
     },
-    updateUniversity(){
+    updateUniversity() {
       AXIOS.get(`university/list`)
         .then(response => {
           // JSON responses are automatically parsed.
@@ -227,13 +241,11 @@ export default {
         })
         .catch(e => {
           this.errorSubjectRequest = e.message;
-          console.log(this.errorSubjectRequest)
+          console.log(this.errorSubjectRequest);
         });
     },
-    createUniversity(){
-      AXIOS.post(
-        `university/create/${this.universityName}?tutoringSystemID=1`
-      )
+    createUniversity() {
+      AXIOS.post(`university/create/${this.universityName}?tutoringSystemID=1`)
         .then(response => {
           this.errorSubjectRequest = "";
         })
@@ -247,16 +259,16 @@ export default {
           console.log(errorMsg);
           this.errorSubjectRequest = errorMsg;
         });
-        alert("You clicked on create university!");
-        this.universityName = ""
-        this.updateUniversity()
-        this.populateUniversityList()
-        if (this.errorSubjectRequest != "") {
-          alert(this.errorSubjectRequest);
+      alert("You clicked on create university!");
+      this.universityName = "";
+      this.updateUniversity();
+      this.populateUniversityList();
+      if (this.errorSubjectRequest != "") {
+        alert(this.errorSubjectRequest);
       }
     },
     populateUniversityList() {
-      this.updateUniversity()
+      this.updateUniversity();
 
       var inlineFormCustomSelect = document.getElementById(
         "inlineFormCustomSelect"
@@ -278,7 +290,7 @@ export default {
         })
         .catch(e => {
           this.errorSubjectRequest = e.message;
-          console.log(this.errorSubjectRequest)
+          console.log(this.errorSubjectRequest);
         });
     },
     addRow(rowData) {

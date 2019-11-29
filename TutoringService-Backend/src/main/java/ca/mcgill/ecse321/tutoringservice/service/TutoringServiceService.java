@@ -682,6 +682,8 @@ public class TutoringServiceService {
 		if (studentID == null){
 			throw new IllegalArgumentException("Student studentID cannot be empty!");
 		}
+		Set <Offering> coursesTaken = new HashSet<Offering>();
+		this.getStudent(studentID).setCoursesTaken(coursesTaken);
 		studentRepository.deleteStudentByPersonId(studentID);
 	}
 
@@ -714,6 +716,8 @@ public class TutoringServiceService {
 			error = error + "Tutor needs to be selected for Offering!";
 		} else if (!tutorRepository.existsByPersonId(tutor.getPersonId())) {
 			error = error + "Tutor does not exist!";
+		}else if(tutor.getIsRegistered() == false) {
+			error = error + "Tutor is not registered!";
 		}
 		if (commission == null) {
 			error = error + "Commission needs to be selected for Offering!";
@@ -762,6 +766,24 @@ public class TutoringServiceService {
 		
 		classroom.setIsBooked(true);
 		Offering offering = offeringRepository.findOfferingByOfferingID(offId);
+		/*boolean IsSubjectValidForTutor = false;
+		if (!(tutor.getTutorApplication() == null || tutor.getTutorApplication().isEmpty())){
+			for(TutorApplication tutorApplication: tutor.getTutorApplication()) {
+				if(tutorApplication.getIsAccepted() == true) {
+					if (!(tutorApplication.getSubject() == null || tutorApplication.getSubject().isEmpty())){
+						for(Subject sub: tutorApplication.getSubject()) {
+							if(subject.getCourseID().equals(sub.getCourseID())) {
+								IsSubjectValidForTutor = true;
+								break;
+							}
+						}
+					}
+			    }
+			}
+		}
+		if(IsSubjectValidForTutor == false) {
+			throw new IllegalArgumentException("Tutor selected with ID=" + tutor.getPersonId() + " for offering does not teach specified subject: " + subject.getCourseID() + " !");
+		}*/
 		if (offering == null) {
 			offering = new Offering();
 			offering.setOfferingID(offId);
@@ -777,8 +799,15 @@ public class TutoringServiceService {
 			offering.setStudentsEnrolled(students);
 			offering.setReview(reviews);
 			offering.setTutoringSystem(tutoringSystem);
+			
+			if(!(students == null || students.isEmpty())) {
+				for(Student student: students) {
+					student.setNumCoursesEnrolled(student.getNumCoursesEnrolled() + 1);
+				}
+			}
+			
 			offeringRepository.save(offering);
-		}
+		} 
 		return offering;
 	}
 
@@ -823,6 +852,7 @@ public class TutoringServiceService {
 		studentsEnrolleds = offering.getStudentsEnrolled();
 		studentsEnrolleds.add(student);
 		offering.setStudentsEnrolled(studentsEnrolleds);
+		student.setNumCoursesEnrolled(student.getCoursesTaken().size() + 1);
 
 		return offering;
 	}
@@ -832,6 +862,16 @@ public class TutoringServiceService {
 		if (offeringID == null){
 			throw new IllegalArgumentException("Offering offeringID cannot be empty!");
 		}
+		Offering offering = this.getOffering(offeringID);
+		
+		for (Review review : offering.getReview()) {
+			this.deleteReview(review.getReviewID());
+		}
+		
+		for (Student student : offering.getStudentsEnrolled()) {
+			student.setNumCoursesEnrolled(student.getCoursesTaken().size());
+		}
+		
 		offeringRepository.deleteOfferingByOfferingID(offeringID);
 	}
 
@@ -1119,8 +1159,18 @@ public class TutoringServiceService {
 			tutorapplication.setApplicationId(applicationId);
 			tutorapplication.setTutor(tutor);
 			tutorapplication.setIsAccepted(isAccepted);
+			tutorapplication.setSubject(subjects);
 			tutorapplication.setTutoringSystem(tutoringSystem);
 			tutorApplicationRepository.save(tutorapplication);
+			Set <TutorApplication> currTutorApplications = new HashSet<TutorApplication>();
+			
+			if(!(subjects == null || subjects.isEmpty())) {
+				for(Subject subject: subjects) {
+					currTutorApplications = subject.getTutorRole();
+					currTutorApplications.add(tutorapplication);
+					subject.setTutorRole(currTutorApplications);
+				}
+			}
 		}
 		return tutorapplication;
 	}	

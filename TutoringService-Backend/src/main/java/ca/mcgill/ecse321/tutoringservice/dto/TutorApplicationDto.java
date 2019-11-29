@@ -17,8 +17,8 @@ public TutorApplicationDto(Integer applicationId, Boolean isAccepted,  Integer t
 	this.setApplicationId(applicationId);
 	this.setIsAccepted(isAccepted);
 	this.setTutor(tutor);
-	this.setTutoringSystem(tutoringSystem);
 	this.setSubject(courseIDs);
+	this.setTutoringSystem(tutoringSystem);
 }
 	
 	public void setApplicationId(Integer value) {
