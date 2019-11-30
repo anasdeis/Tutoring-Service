@@ -1,0 +1,1 @@
+web: java -jar TutoringService-Backend/build/libs/TutoringService-Backend-0.0.1-SNAPSHOT.jar

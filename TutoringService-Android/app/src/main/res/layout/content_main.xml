@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/content_main"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:paddingBottom="16dp"
-  android:paddingLeft="16dp"
-  android:paddingRight="16dp"
-  android:paddingTop="16dp"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
   tools:context=".MainActivity"
   tools:showIn="@layout/activity_main">
 
-  <LinearLayout
+<!--  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="580dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <TextView
       android:id="@+id/error"
@@ -26,7 +25,7 @@
       android:textColor="@color/colorAccent"
       android:visibility="gone" />
 
-    <!--
+    &lt;!&ndash;
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -179,7 +178,7 @@
             android:onClick="addEvent"
             android:text="@string/newevent_button" />
     </LinearLayout>
-    -->
+    &ndash;&gt;
 
     <ImageView
       android:id="@+id/imageView6"
@@ -187,25 +186,161 @@
       android:layout_height="250dp"
       app:srcCompat="@drawable/logo" />
 
-    <Button
-      android:id="@+id/managerLoginBtn"
-      android:layout_width="match_parent"
-      android:layout_height="70dp"
-      android:onClick="openManager"
-      android:text="Manager" />
+&lt;!&ndash;    <Button&ndash;&gt;
+&lt;!&ndash;      android:id="@+id/managerLoginBtn"&ndash;&gt;
+&lt;!&ndash;      android:layout_width="match_parent"&ndash;&gt;
+&lt;!&ndash;      android:layout_height="70dp"&ndash;&gt;
+&lt;!&ndash;      android:onClick="openManager"&ndash;&gt;
+&lt;!&ndash;      android:text="Manager" />&ndash;&gt;
+
+&lt;!&ndash;    <Button&ndash;&gt;
+&lt;!&ndash;      android:id="@+id/tutorLoginBtn"&ndash;&gt;
+&lt;!&ndash;      android:layout_width="match_parent"&ndash;&gt;
+&lt;!&ndash;      android:layout_height="70dp"&ndash;&gt;
+&lt;!&ndash;      android:text="Tutor" />&ndash;&gt;
+
+&lt;!&ndash;    <Button&ndash;&gt;
+&lt;!&ndash;      android:id="@+id/studentLoginBtn"&ndash;&gt;
+&lt;!&ndash;      android:layout_width="match_parent"&ndash;&gt;
+&lt;!&ndash;      android:layout_height="70dp"&ndash;&gt;
+&lt;!&ndash;      android:text="Student" />&ndash;&gt;
 
     <Button
-      android:id="@+id/tutorLoginBtn"
-      android:layout_width="match_parent"
+      android:id="@+id/managerButton"
+      android:layout_width="150dp"
       android:layout_height="70dp"
-      android:text="Tutor" />
+      android:background="@drawable/home_manager"
+      android:shadowColor="#A8791B"
+      android:shadowDx="0"
+      android:shadowDy="0"
+      android:shadowRadius="10"
+      android:text="Manager"
+      android:textColor="#FFFFFF"
+      android:textSize="20sp"
+       />
 
     <Button
-      android:id="@+id/studentLoginBtn"
-      android:layout_width="match_parent"
+      android:id="@+id/studentButton"
+      android:layout_width="150dp"
       android:layout_height="70dp"
-      android:text="Student" />
+      android:background="@drawable/home_student"
+      android:shadowColor="#A8791B"
+      android:shadowDx="0"
+      android:shadowDy="0"
+      android:shadowRadius="10"
+      android:text="Student"
+      android:textColor="#FFFFFF"
+      android:textSize="20sp"
+       />
 
-  </LinearLayout>
+    <Button
+      android:id="@+id/tutorButton"
+      android:layout_width="150dp"
+      android:layout_height="70dp"
+      android:background="@drawable/home_tutor"
+      android:shadowColor="#A8791B"
+      android:shadowDx="0"
+      android:shadowDy="0"
+      android:shadowRadius="10"
+      android:text="Tutor"
+      android:textColor="#FFFFFF"
+      android:textSize="20sp"
 
-</RelativeLayout>
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.8"/>
+
+
+
+  </LinearLayout>-->
+
+  <TextView
+    android:id="@+id/error"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text=""
+    android:textColor="@color/colorAccent"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
+
+  <Button
+    android:id="@+id/managerButton"
+    android:layout_width="150dp"
+    android:layout_height="70dp"
+    android:background="@drawable/home_manager"
+    android:shadowColor="#A8791B"
+    android:shadowDx="0"
+    android:shadowDy="0"
+    android:shadowRadius="10"
+    android:text="Manager"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.5" />
+
+  <Button
+    android:id="@+id/studentButton"
+    android:layout_width="150dp"
+    android:layout_height="70dp"
+    android:background="@drawable/home_student"
+    android:shadowColor="#A8791B"
+    android:shadowDx="0"
+    android:shadowDy="0"
+    android:shadowRadius="10"
+    android:text="Student"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.65" />
+
+  <Button
+    android:id="@+id/tutorButton"
+    android:layout_width="150dp"
+    android:layout_height="70dp"
+    android:background="@drawable/home_tutor"
+    android:shadowColor="#A8791B"
+    android:shadowDx="0"
+    android:shadowDy="0"
+    android:shadowRadius="10"
+    android:text="Tutor"
+    android:textColor="#FFFFFF"
+    android:textSize="20sp"
+
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.8" />
+
+  <ImageView
+    android:id="@+id/logoImage"
+    android:layout_width="302dp"
+    android:layout_height="250dp"
+    android:layout_marginEnd="52dp"
+    android:layout_marginRight="52dp"
+    android:layout_marginBottom="384dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.947"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.494"
+    app:srcCompat="@drawable/logo" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

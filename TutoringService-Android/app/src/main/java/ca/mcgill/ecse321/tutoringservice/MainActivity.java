@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.tutoringservice;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,12 +12,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button toManagerLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +26,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+      toManagerLogin = findViewById(R.id.managerButton);
+      toManagerLogin.setOnClickListener(this);
         refreshErrorMessage();
     }
 
@@ -76,8 +80,23 @@ public class MainActivity extends AppCompatActivity {
 //      final TextView tv = (TextView) findViewById(R.id.userName);
 //    }
 
-  public void openManager(View view) {
-    error = "";
-    final TextView tv = (TextView) findViewById(R.id.userName);
+  public void openManagerLogin() {
+    Intent intent = new Intent(this, login.class);
+    startActivity(intent);
   }
+
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.managerButton:
+        openManagerLogin();
+        break;
+//      case R.id.tutorButton:
+//        Toast.makeText(this, "Tutor Feature Not Applicable!", Toast.LENGTH_SHORT).show();
+//        break;
+//      case R.id.studentButton:
+//        Toast.makeText(this, "Student Feature Not Applicable!", Toast.LENGTH_SHORT).show();
+//        break;
+    }
   }
+}

@@ -1,0 +1,28 @@
+matrix:
+  include:
+  - language: java
+    script:
+    - "./gradlew build"
+  - language: node_js
+    node_js:
+    - 10.15
+    before_install:
+    - cd tutoringservice-frontend
+    install:
+    - npm install
+    script:
+    - npm run build
+  - stage: deploy to backend app
+    script: skip
+    deploy:
+      provider: heroku
+      api_key: af394372-fe4b-4a2c-a1fc-d74d710d3d31
+      app: tutoringservice-backend-123
+  - stage: deploy to frontend app
+    script: skip
+    deploy:
+      provider: heroku
+      api_key: af394372-fe4b-4a2c-a1fc-d74d710d3d31
+      app: tutoringservice-frontend-123
+dd:
+  secure: LRq6rnJYq5/jYZ1n5b3YZTBho3KsOs38Q0k4PpUyqLmT0ICh/FiFB8zkQJJGA9v/WndUHY/V5pUUoQUb8b0sRofvaEvsfcMEKTmz5FnJCSppOZITe+MhhVtJY280Co9BcNNfSGQuRsiBguUXIaVHFWahNTXrjrUNeGXSGcIW2ROM6aWObdmj8XbInIdGv4SswSHPIT6P8hvL7cqdEukwrkSuqsrvEy78HKz+2uaJqBjexgjZz9Xnwq1ybHia+8ZkkL1wXz3Z1LSxhQy12o4Vn+2yJ/7B0RI8evmWHH67wNCQ5TgTNXCMJMSCFXU6TmYHEH2fHpJ0pKYcfgfdGkJRmJCxuEfLiUqSHR2yBl1PiIFzpHoWB6yXT7Nhv6RU2SmZyDTDZiRCu+TWzCGyRd161a6zGnh0hJBfFw1FBM8DA+/6HBpiEK7CnTWwqgKuOe8HWjA7wkq3BFvCLvUPuSAw9dah8FnX2k+91ggfvO4xrZUjIHmg61AMZhov7/M07Myi5HOKuEb8bzODe5WqK1zTbuVjfZCbz1PLUF2prQT6XvGjWKa+3sCokEJ1srR85/CegpBIBqk3Me7bQCd9BfBMw+OhON32VyBRLENAuR7E04M67odcGk0+hw35AEqc/4LvdoeqJmNG3AE7PQW/cp503OXsI0AqRbH/w/uujmt0osY=
