@@ -12,6 +12,13 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,6 +30,32 @@ public class login extends AppCompatActivity implements View.OnClickListener {
   private Button loginButton;
   private Button homeButton;
   private Button signupButton;
+
+
+  public void addLogin(View v) {
+    error = "";
+    final TextView tv = (TextView) findViewById(R.id.userNameInput);
+    final TextView tv1 = (TextView) findViewById(R.id.passwordInput);
+    HttpUtils.post("login/" + tv.getText().toString() + "?password=" + tv1.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+        refreshErrorMessage();
+        tv.setText("");
+        tv1.setText("");
+      }
+      @Override
+      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        try {
+          error += errorResponse.get("message").toString();
+        } catch (JSONException e) {
+          error += e.getMessage();
+        }
+        refreshErrorMessage();
+      }
+    });
+  }
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -55,9 +88,12 @@ public class login extends AppCompatActivity implements View.OnClickListener {
   }
 
   public void openManagerHome() {
+
     Intent intent = new Intent(this, Menu.class);
     startActivity(intent);
   }
+
+
 
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
@@ -73,8 +109,9 @@ public class login extends AppCompatActivity implements View.OnClickListener {
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.managerLoginButton:
-        userName = userNameInput.getText().toString();
-        password = passwordInput.getText().toString();
+     //   userName = userNameInput.getText().toString();
+      //  password = passwordInput.getText().toString();
+        addLogin(v);
         openManagerHome();
         break;
       case R.id.homeButton:
