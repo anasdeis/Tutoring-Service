@@ -70,9 +70,14 @@ public class MainActivity extends AppCompatActivity {
       }
     }
 
-  public void login(View view) {
-      error = "";
-      final TextView tv = (TextView) findViewById(R.id.userName);
+    // login feature backend call
+//    public void login(View view) {
+//      error = "";
+//      final TextView tv = (TextView) findViewById(R.id.userName);
+//    }
 
+  public void openManager(View view) {
+    error = "";
+    final TextView tv = (TextView) findViewById(R.id.userName);
   }
-}
+  }
