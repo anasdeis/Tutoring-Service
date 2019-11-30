@@ -30,7 +30,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
   private Button loginButton;
   private Button homeButton;
   private Button signupButton;
-
+private String error;
 
   public void addLogin(View v) {
     error = "";
@@ -39,7 +39,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     HttpUtils.post("login/" + tv.getText().toString() + "?password=" + tv1.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-        refreshErrorMessage();
+//        refreshErrorMessage();
         tv.setText("");
         tv1.setText("");
       }
@@ -50,7 +50,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         } catch (JSONException e) {
           error += e.getMessage();
         }
-        refreshErrorMessage();
+        //refreshErrorMessage();
       }
     });
   }
@@ -71,21 +71,21 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     loginButton.setOnClickListener(this);
     homeButton.setOnClickListener(this);
     signupButton.setOnClickListener(this);
-    refreshErrorMessage();
+//    refreshErrorMessage();
   }
 
-  private String error = null;
-  private void refreshErrorMessage() {
-    // set error message
-    TextView tvError = (TextView) findViewById(R.id.error);
-    tvError.setError(error);
-
-    if (error == null || error.length() == 0) {
-      tvError.setVisibility(View.GONE);
-    } else {
-      tvError.setVisibility(View.VISIBLE);
-    }
-  }
+//  private String error = null;
+//  private void refreshErrorMessage() {
+//    // set error message
+//    TextView tvError = (TextView) findViewById(R.id.error);
+//    tvError.setError(error);
+//
+//    if (error == null || error.length() == 0) {
+//      tvError.setVisibility(View.GONE);
+//    } else {
+//      tvError.setVisibility(View.VISIBLE);
+//    }
+//  }
 
   public void openManagerHome() {
 
