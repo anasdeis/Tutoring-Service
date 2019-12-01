@@ -1180,7 +1180,7 @@ public class TutoringServiceRestController {
 			Login login= service.getLogin(userName);
 			String databasepassword = login.getPassword();
 			
-			if (databasepassword != password) {
+			if (!(databasepassword.equals(password))) {
 				error += "Login does not exist!";
 			}
 			error = error.trim();
