@@ -61,6 +61,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 //        refreshErrorMessage();
         tv.setText("");
         tv1.setText("");
+
       }
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -74,6 +75,35 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     });
   }
 
+  public void login(View v) {
+    error = "";
+    final TextView tv = (TextView) findViewById(R.id.userNameInput);
+    final String username = tv.getText().toString();
+    final  TextView tv1 = (TextView) findViewById(R.id.passwordInput);
+    final String password = tv1.getText().toString();
+
+    RequestParams rp = new RequestParams();
+    rp.add("password", password);
+
+    HttpUtils.get("login/check/" + username, rp, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//        refreshErrorMessage();
+        tv.setText("");
+        tv1.setText("");
+        openManagerHome();
+      }
+      @Override
+      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        try {
+          error += errorResponse.get("message").toString();
+        } catch (JSONException e) {
+          error += e.getMessage();
+        }
+        //refreshErrorMessage();
+      }
+    });
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +160,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
       case R.id.managerLoginButton:
      //   userName = userNameInput.getText().toString();
       //  password = passwordInput.getText().toString();
-        //addLogin(v);
+        login(v);
       //  openManagerHome();
         break;
       case R.id.homeButton:
