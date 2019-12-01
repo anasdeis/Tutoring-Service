@@ -30,13 +30,21 @@ public class login extends AppCompatActivity implements View.OnClickListener {
   private Button loginButton;
   private Button homeButton;
   private Button signupButton;
-private String error;
+
+
+  private String error = null;
 
   public void addLogin(View v) {
     error = "";
-    final TextView tv = (TextView) findViewById(R.id.userNameInput);
-    final TextView tv1 = (TextView) findViewById(R.id.passwordInput);
-    HttpUtils.post("login/" + tv.getText().toString() + "?password=" + tv1.getText().toString(), new RequestParams(), new JsonHttpResponseHandler() {
+     final TextView tv = (TextView) findViewById(R.id.userNameInput);
+     final String username = tv.getText().toString();
+      final  TextView tv1 = (TextView) findViewById(R.id.passwordInput);
+     final String password = tv1.getText().toString();
+
+     RequestParams rp = new RequestParams();
+      rp.add("password", password);
+
+    HttpUtils.post("login/" + username, rp, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 //        refreshErrorMessage();
@@ -112,7 +120,7 @@ private String error;
      //   userName = userNameInput.getText().toString();
       //  password = passwordInput.getText().toString();
         addLogin(v);
-        openManagerHome();
+      //  openManagerHome();
         break;
       case R.id.homeButton:
         openHome();
