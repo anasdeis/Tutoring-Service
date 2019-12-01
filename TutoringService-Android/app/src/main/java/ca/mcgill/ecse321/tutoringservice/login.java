@@ -22,7 +22,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
 
-  private String userName, password;
 
   private EditText userNameInput;
   private EditText passwordInput;
