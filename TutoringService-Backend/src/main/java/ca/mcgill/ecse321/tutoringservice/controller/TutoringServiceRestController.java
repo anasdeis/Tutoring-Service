@@ -1159,7 +1159,7 @@ public class TutoringServiceRestController {
 	 * @sample /login/list
 	 */
 
-	@GetMapping(value = { "/login32/list", "/login32/list/" })
+	@GetMapping(value = { "/login/list", "/login/list/" })
 	public List<LoginDto> getAllLoginSystems() {
 		List<LoginDto> loginsDtos = new ArrayList<>();
 		for (Login login : service.getAllLogins()) {
@@ -1180,7 +1180,7 @@ public class TutoringServiceRestController {
 			Login login= service.getLogin(userName);
 			String databasepassword = login.getPassword();
 			
-			if (databasepassword != password) {
+			if (!(databasepassword.equals(password))) {
 				error += "Login does not exist!";
 			}
 			error = error.trim();
