@@ -130,17 +130,17 @@
 
   <Button
     android:id="@+id/viewStudentReviewButton"
-    android:text="View Studnet Reviews"
-    android:textColor="#000000"
-    android:textSize="20sp"
-
     android:layout_width="300dp"
     android:layout_height="50dp"
     android:background="@drawable/home1_buttons"
+
     android:shadowColor="#A8791B"
     android:shadowDx="0"
     android:shadowDy="0"
     android:shadowRadius="10"
+    android:text="View Student Reviews"
+    android:textColor="#000000"
+    android:textSize="20sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.5"

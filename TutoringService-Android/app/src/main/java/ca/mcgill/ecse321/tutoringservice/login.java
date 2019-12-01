@@ -161,13 +161,12 @@ public class login extends AppCompatActivity implements View.OnClickListener {
      //   userName = userNameInput.getText().toString();
       //  password = passwordInput.getText().toString();
         login(v);
-      //  openManagerHome();
         break;
       case R.id.homeButton:
         openHome();
         break;
       case R.id.signUpButton:
-        addLogin(v);
+        addLogin(v); //login object created
         openSignup();
         break;
     }

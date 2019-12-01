@@ -31,6 +31,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
   private EditText managerId;
   private EditText userName;
   private Button createButton;
+  private Button homeButton;
 
   private String error = null;
 
@@ -126,10 +127,18 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
 
     createButton = findViewById(R.id.createButton);
     createButton.setOnClickListener(this);
+
+    homeButton = findViewById(R.id.homeButton);
+    homeButton.setOnClickListener(this);
   }
 
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
+    startActivity(intent);
+  }
+
+  public void openManagerLogin() {
+    Intent intent = new Intent(this, login.class);
     startActivity(intent);
   }
 
@@ -138,10 +147,10 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     switch (v.getId()) {
       case R.id.createButton:
         createManager(v);
-      //  openHome();
+        openManagerLogin();
         break;
       case R.id.homeButton:
-        //openHome();
+        openHome();
         break;
 
     }
