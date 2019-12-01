@@ -1159,7 +1159,7 @@ public class TutoringServiceRestController {
 	 * @sample /login/list
 	 */
 
-	@GetMapping(value = { "/login/list", "/login/list/" })
+	@GetMapping(value = { "/login12/list", "/login12/list/" })
 	public List<LoginDto> getAllLoginSystems() {
 		List<LoginDto> loginsDtos = new ArrayList<>();
 		for (Login login : service.getAllLogins()) {
