@@ -1169,6 +1169,30 @@ public class TutoringServiceRestController {
 	}
 	
 	/**
+	 * @return login if it exists
+	 * @sample /login/check/omar?password=123
+	 */
+		@GetMapping(value = { "/login/check/{userName}", "/login/{userName}/" })
+		public LoginDto getLogin(@PathVariable("userName") String userName,
+				@RequestParam("password") String password) throws IllegalArgumentException{
+			String error = "";
+			LoginDto loginDto = new LoginDto();
+			Login login= service.getLogin(userName);
+			String databasepassword = login.getPassword();
+			
+			if (databasepassword != password) {
+				error += "Login does not exist!";
+			}
+			error = error.trim();
+			if (error.length() > 0) {
+				throw new IllegalArgumentException(error);
+			}
+			
+			loginDto = convertToDto(login);
+			return loginDto;
+		}
+	
+	/**
 	 * @return a list of all Tutors
 	 * @sample /tutor/list/
 	 */
