@@ -34,6 +34,18 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
   private String error = null;
 
+  private void refreshErrorMessage() {
+    // set the error message
+    TextView tvError = (TextView) findViewById(R.id.error);
+    tvError.setText(error);
+
+    if (error == null || error.length() == 0) {
+      tvError.setVisibility(View.GONE);
+    } else {
+      tvError.setVisibility(View.VISIBLE);
+    }
+  }
+
   public void addLogin(View v) {
     error = "";
      final TextView tv = (TextView) findViewById(R.id.userNameInput);
@@ -119,13 +131,14 @@ public class login extends AppCompatActivity implements View.OnClickListener {
       case R.id.managerLoginButton:
      //   userName = userNameInput.getText().toString();
       //  password = passwordInput.getText().toString();
-        addLogin(v);
+        //addLogin(v);
       //  openManagerHome();
         break;
       case R.id.homeButton:
         openHome();
         break;
       case R.id.signUpButton:
+        addLogin(v);
         openSignup();
         break;
     }
