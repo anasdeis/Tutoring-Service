@@ -11,7 +11,8 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".viewTutors"></activity>
+    <activity android:name=".viewStudents"></activity>
+    <activity android:name=".viewTutors" />
     <activity
       android:name=".Signup"
       android:label="@string/title_activity_signup"

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".viewStudents">
+
+
+  <Button
+    android:id="@+id/homeButton"
+    android:layout_width="100dp"
+    android:layout_height="50dp"
+    android:background="@drawable/login_home"
+    android:shadowColor="#A8791B"
+    android:shadowDx="0"
+    android:shadowDy="0"
+    android:shadowRadius="10"
+    android:text="Home"
+    android:textColor="#ffffff"
+    android:textSize="20sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.1"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.025" />
+
+  <Spinner
+    android:id="@+id/spinner3"
+    android:layout_width="409dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:forceDarkAllowed="false"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+  <TextView
+    android:id="@+id/textView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="149dp"
+    android:layout_marginTop="85dp"
+    android:layout_marginEnd="133dp"
+    android:layout_marginBottom="23dp"
+    android:text="View Students"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@+id/spinner3"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0" />
+
+  <EditText
+    android:id="@+id/studentId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="34dp"
+    android:layout_marginTop="459dp"
+    android:layout_marginEnd="34dp"
+    android:layout_marginBottom="130dp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:textIsSelectable="false"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/removeButton"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+
+  <Button
+    android:id="@+id/removeButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="34dp"
+    android:layout_marginTop="458dp"
+    android:layout_marginEnd="42dp"
+    android:layout_marginBottom="130dp"
+    android:text="REMOVE"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/studentId"
+    app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+</androidx.constraintlayout.widget.ConstraintLayout>

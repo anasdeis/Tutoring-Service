@@ -15,6 +15,7 @@ import android.widget.Button;
 public class Menu extends AppCompatActivity implements View.OnClickListener {
   private Button viewTutorButton;
   private Button logoutButton;
+  private Button viewStudentButton;
 
 
   @Override
@@ -26,12 +27,20 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
     viewTutorButton = findViewById(R.id.viewTutorButton);
     viewTutorButton.setOnClickListener(this);
 
+    viewStudentButton = findViewById(R.id.viewStudentsButton);
+    viewStudentButton.setOnClickListener(this);
+
     logoutButton = findViewById(R.id.logoutButton);
     logoutButton.setOnClickListener(this);
   }
 
   public void openViewTutor() {
     Intent intent = new Intent(this, viewTutors.class);
+    startActivity(intent);
+  }
+
+  public void openViewStudent() {
+    Intent intent = new Intent(this, viewStudents.class);
     startActivity(intent);
   }
 
@@ -48,6 +57,9 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
         break;
       case R.id.logoutButton:
         openManagerLogin();
+        break;
+      case R.id.viewStudentsButton:
+        openViewStudent();
         break;
 
     }
