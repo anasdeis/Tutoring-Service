@@ -16,6 +16,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
   private Button viewTutorButton;
   private Button logoutButton;
   private Button viewStudentButton;
+  private Button viewTutorApplicationButton;
 
 
   @Override
@@ -32,6 +33,9 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
 
     logoutButton = findViewById(R.id.logoutButton);
     logoutButton.setOnClickListener(this);
+
+    viewTutorApplicationButton = findViewById(R.id.viewTutorApplicationButton);
+    viewTutorApplicationButton.setOnClickListener(this);
   }
 
   public void openViewTutor() {
@@ -41,6 +45,11 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
 
   public void openViewStudent() {
     Intent intent = new Intent(this, viewStudents.class);
+    startActivity(intent);
+  }
+
+  public void openViewTutorApplication() {
+    Intent intent = new Intent(this, viewTutorApplication.class);
     startActivity(intent);
   }
 
@@ -60,6 +69,9 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
         break;
       case R.id.viewStudentsButton:
         openViewStudent();
+        break;
+      case R.id.viewTutorApplicationButton:
+        openViewTutorApplication();
         break;
 
     }

@@ -23,14 +23,19 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class viewStudents extends AppCompatActivity implements View.OnClickListener {
+public class viewTutorApplication extends AppCompatActivity implements View.OnClickListener {
 
+//  @Override
+//  protected void onCreate(Bundle savedInstanceState) {
+//    super.onCreate(savedInstanceState);
+//    setContentView(R.layout.activity_view_tutor_application);
+//  }
 private String error = null;
 
   private Button homeButton;
-  private Button removeButton;
+  private Button declineButton;
 
-  private EditText studentId;
+  private EditText tutorApplicationId;
 
   private void refreshErrorMessage() {
     // set the error message
@@ -44,31 +49,31 @@ private String error = null;
     }
   }
 
-  private List<String> studentNames = new ArrayList<>();
-  private ArrayAdapter<String> studentAdapter;
+  private List<String> tutorApplicationNames = new ArrayList<>();
+  private ArrayAdapter<String> tutorApplicationAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_view_students);
-    Spinner studentSpinner = (Spinner) findViewById(R.id.spinner3);
+    setContentView(R.layout.activity_view_tutor_application);
+    Spinner tutorApplicationSpinner = (Spinner) findViewById(R.id.spinner4);
 
-    studentAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, studentNames);
-    studentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    studentSpinner.setAdapter(studentAdapter);
+    tutorApplicationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tutorApplicationNames);
+    tutorApplicationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    tutorApplicationSpinner.setAdapter(tutorApplicationAdapter);
 
     refreshLists(this.getCurrentFocus());
 
 
-    studentId = findViewById(R.id.studentId);
+    tutorApplicationId = findViewById(R.id.tutorApplicationId);
 
     homeButton = findViewById(R.id.homeButton);
     homeButton.setOnClickListener(this);
-    removeButton = findViewById(R.id.removeButton);
-    removeButton.setOnClickListener(this);
+    declineButton = findViewById(R.id.declineButton);
+    declineButton.setOnClickListener(this);
   }
   public void refreshLists(View view) {
-    refreshList(studentAdapter ,studentNames, "student/list");
+    refreshList(tutorApplicationAdapter ,tutorApplicationNames, "tutorApplication/list");
 
   }
 
@@ -78,13 +83,13 @@ private String error = null;
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         names.clear();
-        names.add("FULLNAME , STUDENT ID , numCoursesEnrolled");
+        names.add("APPLICATION ID , TUTOR ID , isACCEPTED?");
         for( int i = 0; i < response.length(); i++){
           try {
-            names.add(response.getJSONObject(i).getString("firstName")
-              + " " + response.getJSONObject(i).getString("lastName")
-              + " , " + response.getJSONObject(i).getString("personId")
-              + " , " + response.getJSONObject(i).getString("numCoursesEnrolled"));
+            names.add(response.getJSONObject(i).getString("applicationId")
+              + " , " + response.getJSONObject(i).getString("tutor")
+              + " , " + response.getJSONObject(i).getString("isAccepted"));
+
           } catch (Exception e) {
             error += e.getMessage();
           }
@@ -105,13 +110,13 @@ private String error = null;
     });
   }
 
-  public void removeStudent(View v) {
+  public void declineTutorApplication(View v) {
     error = "";
-    final TextView tv = (TextView) studentId;
-    String studentId = tv.getText().toString();
+    final TextView tv = (TextView) tutorApplicationId;
+    String tutorApplicationId = tv.getText().toString();
 
 
-    HttpUtils.delete("student/delete/" + studentId, new RequestParams(), new JsonHttpResponseHandler() {
+    HttpUtils.delete("tutorApplication/delete/" + tutorApplicationId, new RequestParams(), new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 //        refreshErrorMessage();
@@ -143,10 +148,13 @@ private String error = null;
       case R.id.homeButton:
         openHome();
         break;
-      case R.id.removeButton:
-        removeStudent(v);
+      case R.id.declineButton:
+        declineTutorApplication(v);
         refreshLists(this.getCurrentFocus());
         break;
     }
   }
+
+
+
 }
