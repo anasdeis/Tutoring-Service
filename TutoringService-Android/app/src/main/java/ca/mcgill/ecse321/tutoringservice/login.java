@@ -45,35 +45,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     }
   }
 
-  public void addLogin(View v) {
-    error = "";
-     final TextView tv = (TextView) findViewById(R.id.userNameInput);
-     final String username = tv.getText().toString();
-      final  TextView tv1 = (TextView) findViewById(R.id.passwordInput);
-     final String password = tv1.getText().toString();
-
-     RequestParams rp = new RequestParams();
-      rp.add("password", password);
-
-    HttpUtils.post("login/" + username, rp, new JsonHttpResponseHandler() {
-      @Override
-      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//        refreshErrorMessage();
-        tv.setText("");
-        tv1.setText("");
-
-      }
-      @Override
-      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-        try {
-          error += errorResponse.get("message").toString();
-        } catch (JSONException e) {
-          error += e.getMessage();
-        }
-        //refreshErrorMessage();
-      }
-    });
-  }
 
   public void login(View v) {
     error = "";
@@ -166,7 +137,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         openHome();
         break;
       case R.id.signUpButton:
-        addLogin(v); //login object created
+        //addLogin(v); //login object created
         openSignup();
         break;
     }

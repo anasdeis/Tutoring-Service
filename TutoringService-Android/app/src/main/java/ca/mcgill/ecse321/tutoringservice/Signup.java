@@ -30,6 +30,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
   private EditText phoneNum;
   private EditText managerId;
   private EditText userName;
+  private EditText passWord;
   private Button createButton;
   private Button homeButton;
 
@@ -46,6 +47,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
       tvError.setVisibility(View.VISIBLE);
     }
   }
+
 
   public void createManager(View v) {
     error = "";
@@ -77,6 +79,9 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     final TextView tv6 = (TextView) userName;
      String userName = tv6.getText().toString();
 
+//    final TextView tv7 = (TextView) passWord;
+//    String passWord = tv7.getText().toString();
+
 
     RequestParams rp = new RequestParams();
     rp.add("first", firstName);
@@ -107,8 +112,55 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
         //refreshErrorMessage();
       }
     });
+    HttpUtils.post("manager/create/" + managerId, rp, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//        refreshErrorMessage();
+//        tv.setText("");
+//        tv1.setText("");
+      }
+      @Override
+      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        try {
+          error += errorResponse.get("message").toString();
+        } catch (JSONException e) {
+          error += e.getMessage();
+        }
+        //refreshErrorMessage();
+      }
+    });
   }
 
+
+  public void addLogin(View v) {
+    error = "";
+    final TextView tv8 = (TextView) userName;
+     String userName = tv8.getText().toString();
+    final  TextView tv9 = (TextView) passWord;
+     String password = tv9.getText().toString();
+
+    RequestParams rp = new RequestParams();
+    rp.add("password", password);
+
+    HttpUtils.post("login/" + userName, rp, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//        refreshErrorMessage();
+   //     tv.setText("");
+    //    tv1.setText("");
+
+      }
+      @Override
+      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        try {
+          error += errorResponse.get("message").toString();
+        } catch (JSONException e) {
+          error += e.getMessage();
+        }
+        //refreshErrorMessage();
+      }
+    });
+  }
 
 
 
@@ -124,6 +176,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     phoneNum = findViewById(R.id.phoneNum);
     managerId = findViewById(R.id.managerId);
     userName = findViewById(R.id.userName);
+    passWord = findViewById(R.id.passWord);
 
     createButton = findViewById(R.id.createButton);
     createButton.setOnClickListener(this);
@@ -146,6 +199,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.createButton:
+        addLogin(v);
         createManager(v);
         openManagerLogin();
         break;

@@ -210,5 +210,28 @@
     app:layout_constraintTop_toBottomOf="@+id/managerId"
     app:layout_constraintVertical_bias="0.0" />
 
+  <TextView
+    android:id="@+id/textView2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="30dp"
+    android:text="Password:"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+  <EditText
+    android:id="@+id/passWord"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="9dp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/textView2"
+    app:layout_constraintTop_toBottomOf="@+id/userName" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
