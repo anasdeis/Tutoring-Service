@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,6 +28,9 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
   private String error = null;
 
   private Button homeButton;
+  private Button fireButton;
+
+  private EditText tutorId;
 
   private void refreshErrorMessage() {
     // set the error message
@@ -55,8 +59,13 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
 
     refreshLists(this.getCurrentFocus());
 
+
+    tutorId = findViewById(R.id.tutorId);
+
     homeButton = findViewById(R.id.homeButton);
     homeButton.setOnClickListener(this);
+    fireButton = findViewById(R.id.fireButton);
+    fireButton.setOnClickListener(this);
   }
   public void refreshLists(View view) {
     refreshList(tutorAdapter ,tutorNames, "tutor/list");
@@ -97,6 +106,33 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
     });
   }
 
+  public void fireTutor(View v) {
+    error = "";
+    final TextView tv = (TextView) tutorId;
+    String tutorId = tv.getText().toString();
+
+   // RequestParams rp = new RequestParams();
+  //  rp.add("personId", tutorId);
+
+    HttpUtils.delete("tutor/delete/" + tutorId, new RequestParams(), new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//        refreshErrorMessage();
+        tv.setText("");
+      }
+
+      @Override
+      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        try {
+          error += errorResponse.get("message").toString();
+        } catch (JSONException e) {
+          error += e.getMessage();
+        }
+        //refreshErrorMessage();
+      }
+    });
+  }
+
 
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
@@ -110,7 +146,10 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
       case R.id.homeButton:
         openHome();
         break;
-
+      case R.id.fireButton:
+       fireTutor(v);
+        refreshLists(this.getCurrentFocus());
+        break;
     }
   }
 }
