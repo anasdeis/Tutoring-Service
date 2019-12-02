@@ -34,7 +34,7 @@ private String error = null;
 
   private Button homeButton;
   private Button declineButton;
-
+  private Button acceptButton;
   private EditText tutorApplicationId;
 
   private void refreshErrorMessage() {
@@ -71,6 +71,9 @@ private String error = null;
     homeButton.setOnClickListener(this);
     declineButton = findViewById(R.id.declineButton);
     declineButton.setOnClickListener(this);
+
+    acceptButton = findViewById(R.id.acceptButton);
+    acceptButton.setOnClickListener(this);
   }
   public void refreshLists(View view) {
     refreshList(tutorApplicationAdapter ,tutorApplicationNames, "tutorApplication/list");
@@ -106,6 +109,33 @@ private String error = null;
           error += e.getMessage();
         }
         //  refreshErrorMessage();
+      }
+    });
+  }
+
+  public void acceptTutorApplication(View v) {
+    error = "";
+    final TextView tv = (TextView) tutorApplicationId;
+    String tutorApplicationId = tv.getText().toString();
+
+    RequestParams rp = new RequestParams();
+    rp.add("isAccepted", "true");
+
+    HttpUtils.patch("tutorApplication/update/" + tutorApplicationId, rp, new JsonHttpResponseHandler() {
+      @Override
+      public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//        refreshErrorMessage();
+        tv.setText("");
+      }
+
+      @Override
+      public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        try {
+          error += errorResponse.get("message").toString();
+        } catch (JSONException e) {
+          error += e.getMessage();
+        }
+        //refreshErrorMessage();
       }
     });
   }
@@ -152,6 +182,11 @@ private String error = null;
         declineTutorApplication(v);
         refreshLists(this.getCurrentFocus());
         break;
+      case R.id.acceptButton:
+        acceptTutorApplication(v);
+        refreshLists(this.getCurrentFocus());
+        break;
+
     }
   }
 
