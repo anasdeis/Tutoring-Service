@@ -69,14 +69,14 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         names.clear();
-        names.add("Please select...");
-        names.add("NAME                 TUTOR ID                 PHONE NUMBER");
+        names.add("FULLNAME , TUTOR ID , isREGISTERED?");
+//        names.add("NAME                       TUTOR ID                       isRegistered?");
         for( int i = 0; i < response.length(); i++){
           try {
             names.add(response.getJSONObject(i).getString("firstName")
               + " " + response.getJSONObject(i).getString("lastName")
-              + "               " + response.getJSONObject(i).getString("personId")
-              + "                         " + response.getJSONObject(i).getString("phoneNumber"));
+              + " , " + response.getJSONObject(i).getString("personId")
+              + " , " + response.getJSONObject(i).getString("isRegistered"));
           } catch (Exception e) {
             error += e.getMessage();
           }
