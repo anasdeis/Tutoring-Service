@@ -23,7 +23,12 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class viewTutors extends AppCompatActivity implements View.OnClickListener  {
+/**
+ * this class contain the functionalities on a the view tutor page, including the button to jump to Manager Home
+ * and fire a tutor
+ * By clicking fire, the tutor with the specific ID will be removed from the database
+ */
+public class viewTutors extends AppCompatActivity implements View.OnClickListener {
 
   private String error = null;
 
@@ -32,6 +37,10 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
 
   private EditText tutorId;
 
+  /**
+   * this method is used for refresh the error message with error handling
+   * but never been used
+   */
   private void refreshErrorMessage() {
     // set the error message
     TextView tvError = (TextView) findViewById(R.id.error);
@@ -45,8 +54,13 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
   }
 
   private List<String> tutorNames = new ArrayList<>();
-  private ArrayAdapter<String>  tutorAdapter;
+  private ArrayAdapter<String> tutorAdapter;
 
+  /**
+   * onCreate method which is called automatically when create view tutor activity
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -67,11 +81,23 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
     fireButton = findViewById(R.id.fireButton);
     fireButton.setOnClickListener(this);
   }
-  public void refreshLists(View view) {
-    refreshList(tutorAdapter ,tutorNames, "tutor/list");
 
+  /**
+   * this method refresh the displayed list in our android app design
+   *
+   * @param view
+   */
+  public void refreshLists(View view) {
+    refreshList(tutorAdapter, tutorNames, "tutor/list");
   }
 
+  /**
+   * this method will refresh the list of tutors which are stored in the database
+   *
+   * @param adapter
+   * @param names
+   * @param restFunctionName
+   */
   private void refreshList(final ArrayAdapter<String> adapter, final List<String> names, final String restFunctionName) {
     HttpUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -79,8 +105,7 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         names.clear();
         names.add("FULLNAME , TUTOR ID , isREGISTERED?");
-//        names.add("NAME                       TUTOR ID                       isRegistered?");
-        for( int i = 0; i < response.length(); i++){
+        for (int i = 0; i < response.length(); i++) {
           try {
             names.add(response.getJSONObject(i).getString("firstName")
               + " " + response.getJSONObject(i).getString("lastName")
@@ -89,7 +114,7 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
           } catch (Exception e) {
             error += e.getMessage();
           }
-         // refreshErrorMessage();
+          // refreshErrorMessage();
         }
         adapter.notifyDataSetChanged();
       }
@@ -101,19 +126,25 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
         } catch (JSONException e) {
           error += e.getMessage();
         }
-      //  refreshErrorMessage();
+        //  refreshErrorMessage();
       }
     });
   }
 
+  /**
+   * this method communicate with the backend, it takes in an argument of tutor id which will be used to find the
+   * tutor with this ID and then fire the tutor, the tutor will be removed from the database
+   *
+   * @param v
+   */
   public void fireTutor(View v) {
     error = "";
     final TextView tv = (TextView) tutorId;
     String tutorId = tv.getText().toString();
 
-   // RequestParams rp = new RequestParams();
-  //  rp.add("personId", tutorId);
-
+    /**
+     * takes in tutorID to find and then delete the tutor
+     */
     HttpUtils.delete("tutor/delete/" + tutorId, new RequestParams(), new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -133,13 +164,21 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
     });
   }
 
-
+  /**
+   * This method is used for the jump between different pages, which means different
+   * activities in android
+   */
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
     startActivity(intent);
   }
 
-
+  /**
+   * this method is an override method with onClick, will check different cases and then preform
+   * different operations
+   *
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
@@ -147,7 +186,7 @@ public class viewTutors extends AppCompatActivity implements View.OnClickListene
         openHome();
         break;
       case R.id.fireButton:
-       fireTutor(v);
+        fireTutor(v);
         refreshLists(this.getCurrentFocus());
         break;
     }

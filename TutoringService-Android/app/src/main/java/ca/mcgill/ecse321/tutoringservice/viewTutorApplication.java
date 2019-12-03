@@ -23,20 +23,24 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * this class contain the functionalities on a the view tutor application page, including the button to jump to Manager Home
+ * and accept/decline a tutor application
+ * By clicking accept/decline, the tutor application with the specific ID will be updated
+ */
 public class viewTutorApplication extends AppCompatActivity implements View.OnClickListener {
 
-//  @Override
-//  protected void onCreate(Bundle savedInstanceState) {
-//    super.onCreate(savedInstanceState);
-//    setContentView(R.layout.activity_view_tutor_application);
-//  }
-private String error = null;
+  private String error = null;
 
   private Button homeButton;
   private Button declineButton;
   private Button acceptButton;
   private EditText tutorApplicationId;
 
+  /**
+   * this method is used for refresh the error message with error handling
+   * but never been used
+   */
   private void refreshErrorMessage() {
     // set the error message
     TextView tvError = (TextView) findViewById(R.id.error);
@@ -52,6 +56,11 @@ private String error = null;
   private List<String> tutorApplicationNames = new ArrayList<>();
   private ArrayAdapter<String> tutorApplicationAdapter;
 
+  /**
+   * onCreate method which is called automatically when create view tutor application activity
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -75,11 +84,23 @@ private String error = null;
     acceptButton = findViewById(R.id.acceptButton);
     acceptButton.setOnClickListener(this);
   }
-  public void refreshLists(View view) {
-    refreshList(tutorApplicationAdapter ,tutorApplicationNames, "tutorApplication/list");
 
+  /**
+   * this method refresh the displayed list in our android app design
+   *
+   * @param view
+   */
+  public void refreshLists(View view) {
+    refreshList(tutorApplicationAdapter, tutorApplicationNames, "tutorApplication/list");
   }
 
+  /**
+   * this method will refresh the list of tutor applications which are stored in the database
+   *
+   * @param adapter
+   * @param names
+   * @param restFunctionName
+   */
   private void refreshList(final ArrayAdapter<String> adapter, final List<String> names, final String restFunctionName) {
     HttpUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -87,7 +108,7 @@ private String error = null;
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         names.clear();
         names.add("APPLICATION ID , TUTOR ID , isACCEPTED?");
-        for( int i = 0; i < response.length(); i++){
+        for (int i = 0; i < response.length(); i++) {
           try {
             names.add(response.getJSONObject(i).getString("applicationId")
               + " , " + response.getJSONObject(i).getString("tutor")
@@ -113,6 +134,12 @@ private String error = null;
     });
   }
 
+  /**
+   * this method communicate with the backend, it takes in an argument of tutor application id which will be used to find the
+   * tutor application with this ID and then accept this application
+   *
+   * @param v
+   */
   public void acceptTutorApplication(View v) {
     error = "";
     final TextView tv = (TextView) tutorApplicationId;
@@ -121,6 +148,9 @@ private String error = null;
     RequestParams rp = new RequestParams();
     rp.add("isAccepted", "true");
 
+    /**
+     * take in tutorApplicationID as parameter, then find the related ID and accept
+     */
     HttpUtils.patch("tutorApplication/update/" + tutorApplicationId, rp, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -140,6 +170,12 @@ private String error = null;
     });
   }
 
+  /**
+   * this method communicate with the backend, it takes in an argument of tutor application id which will be used to find the
+   * tutor application with this ID and then decline this application
+   *
+   * @param v
+   */
   public void declineTutorApplication(View v) {
     error = "";
     final TextView tv = (TextView) tutorApplicationId;
@@ -165,13 +201,21 @@ private String error = null;
     });
   }
 
-
+  /**
+   * This method is used for the jump between different pages, which means different
+   * activities in android
+   */
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
     startActivity(intent);
   }
 
-
+  /**
+   * this method is an override method with onClick, will check different cases and then preform
+   * different operations
+   *
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
@@ -189,7 +233,4 @@ private String error = null;
 
     }
   }
-
-
-
 }

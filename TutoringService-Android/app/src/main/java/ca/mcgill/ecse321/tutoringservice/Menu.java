@@ -12,13 +12,21 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * this class contain the functionalities on a the home (menu) page, including the button to jump to View Tutor page,
+ * View Student page and View Tutor Application Page
+ */
 public class Menu extends AppCompatActivity implements View.OnClickListener {
   private Button viewTutorButton;
   private Button logoutButton;
   private Button viewStudentButton;
   private Button viewTutorApplicationButton;
 
-
+  /**
+   * onCreate method which is called automatically when create menu activity
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -38,6 +46,10 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
     viewTutorApplicationButton.setOnClickListener(this);
   }
 
+  /**
+   * The following four methods are used for the jump between different pages, which means different
+   * activities in android
+   */
   public void openViewTutor() {
     Intent intent = new Intent(this, viewTutors.class);
     startActivity(intent);
@@ -58,6 +70,11 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
     startActivity(intent);
   }
 
+  /**
+   * this method contains the page jump, will open another activity upon clicking
+   *
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
@@ -76,5 +93,4 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
 
     }
   }
-
 }

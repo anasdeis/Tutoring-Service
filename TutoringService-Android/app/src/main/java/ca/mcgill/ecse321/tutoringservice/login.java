@@ -20,6 +20,10 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * this class contain the functionalities on a the login page, including the button to jump to Manager Home,
+ * Signup page and Regular Home Page, and the backend call to login to our database
+ */
 public class login extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -33,6 +37,10 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
   private String error = null;
 
+  /**
+   * this method is used for refresh the error message with error handling
+   * but never been used
+   */
   private void refreshErrorMessage() {
     // set the error message
     TextView tvError = (TextView) findViewById(R.id.error);
@@ -45,12 +53,16 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     }
   }
 
-
+  /**
+   * this method is the implementation of the login function with our backend business method call
+   *
+   * @param v
+   */
   public void login(View v) {
     error = "";
     final TextView tv = (TextView) findViewById(R.id.userNameInput);
     final String username = tv.getText().toString();
-    final  TextView tv1 = (TextView) findViewById(R.id.passwordInput);
+    final TextView tv1 = (TextView) findViewById(R.id.passwordInput);
     final String password = tv1.getText().toString();
 
     RequestParams rp = new RequestParams();
@@ -64,6 +76,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
         tv1.setText("");
         openManagerHome();
       }
+
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
         try {
@@ -76,6 +89,11 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     });
   }
 
+  /**
+   * onCreate method which is called automatically when create login activity
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -94,26 +112,15 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 //    refreshErrorMessage();
   }
 
-//  private String error = null;
-//  private void refreshErrorMessage() {
-//    // set error message
-//    TextView tvError = (TextView) findViewById(R.id.error);
-//    tvError.setError(error);
-//
-//    if (error == null || error.length() == 0) {
-//      tvError.setVisibility(View.GONE);
-//    } else {
-//      tvError.setVisibility(View.VISIBLE);
-//    }
-//  }
-
+  /**
+   * The following three methods are used for the jump between different pages, which means different
+   * activities in android
+   */
   public void openManagerHome() {
 
     Intent intent = new Intent(this, Menu.class);
     startActivity(intent);
   }
-
-
 
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
@@ -125,19 +132,22 @@ public class login extends AppCompatActivity implements View.OnClickListener {
     startActivity(intent);
   }
 
+  /**
+   * this method is an override method with onClick, will check different cases and then preform
+   * different operations
+   *
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.managerLoginButton:
-     //   userName = userNameInput.getText().toString();
-      //  password = passwordInput.getText().toString();
         login(v);
         break;
       case R.id.homeButton:
         openHome();
         break;
       case R.id.signUpButton:
-        //addLogin(v); //login object created
         openSignup();
         break;
     }

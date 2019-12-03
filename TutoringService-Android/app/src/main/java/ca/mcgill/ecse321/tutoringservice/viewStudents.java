@@ -23,15 +23,24 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * this class contain the functionalities on a the view student page, including the button to jump to Manager Home
+ * and remove a student from our database
+ * By clicking remove, the student with the specific ID will be removed from the database
+ */
 public class viewStudents extends AppCompatActivity implements View.OnClickListener {
 
-private String error = null;
+  private String error = null;
 
   private Button homeButton;
   private Button removeButton;
 
   private EditText studentId;
 
+  /**
+   * this method is used for refresh the error message with error handling
+   * but never been used
+   */
   private void refreshErrorMessage() {
     // set the error message
     TextView tvError = (TextView) findViewById(R.id.error);
@@ -47,6 +56,11 @@ private String error = null;
   private List<String> studentNames = new ArrayList<>();
   private ArrayAdapter<String> studentAdapter;
 
+  /**
+   * onCreate method which is called automatically when create view student activity
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -59,7 +73,6 @@ private String error = null;
 
     refreshLists(this.getCurrentFocus());
 
-
     studentId = findViewById(R.id.studentId);
 
     homeButton = findViewById(R.id.homeButton);
@@ -67,11 +80,23 @@ private String error = null;
     removeButton = findViewById(R.id.removeButton);
     removeButton.setOnClickListener(this);
   }
-  public void refreshLists(View view) {
-    refreshList(studentAdapter ,studentNames, "student/list");
 
+  /**
+   * this method refresh the displayed list in our android app design
+   *
+   * @param view
+   */
+  public void refreshLists(View view) {
+    refreshList(studentAdapter, studentNames, "student/list");
   }
 
+  /**
+   * this method will refresh the list of students which are stored in the database
+   *
+   * @param adapter
+   * @param names
+   * @param restFunctionName
+   */
   private void refreshList(final ArrayAdapter<String> adapter, final List<String> names, final String restFunctionName) {
     HttpUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -79,7 +104,7 @@ private String error = null;
       public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         names.clear();
         names.add("FULLNAME , STUDENT ID , numCoursesEnrolled");
-        for( int i = 0; i < response.length(); i++){
+        for (int i = 0; i < response.length(); i++) {
           try {
             names.add(response.getJSONObject(i).getString("firstName")
               + " " + response.getJSONObject(i).getString("lastName")
@@ -105,12 +130,20 @@ private String error = null;
     });
   }
 
+  /**
+   * this method communicate with the backend, it takes in an argument of student id which will be used to find the student
+   * and then delete from the database
+   *
+   * @param v
+   */
   public void removeStudent(View v) {
     error = "";
     final TextView tv = (TextView) studentId;
     String studentId = tv.getText().toString();
 
-
+    /**
+     * takes in a student id to find and delete student
+     */
     HttpUtils.delete("student/delete/" + studentId, new RequestParams(), new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -130,13 +163,21 @@ private String error = null;
     });
   }
 
-
+  /**
+   * The following method is used for the jump between different pages, which means different
+   * activities in android
+   */
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
     startActivity(intent);
   }
 
-
+  /**
+   * this method is an override method with onClick, will check different cases and then preform
+   * different operations
+   *
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {

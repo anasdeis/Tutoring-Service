@@ -21,6 +21,12 @@ import java.text.NumberFormat;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * this class contain the functionalities on a the signup page, including the button to jump to Manager Home
+ * and the backend call to signup to our database
+ * By clicking signup, a manager account with login info will be created and will automatically bring you to
+ * our manager home page where you can see all the features
+ */
 public class Signup extends AppCompatActivity implements View.OnClickListener {
 
   private EditText firstName;
@@ -36,6 +42,10 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
 
   private String error = null;
 
+  /**
+   * this method is used for refresh the error message with error handling
+   * but never been used
+   */
   private void refreshErrorMessage() {
     // set the error message
     TextView tvError = (TextView) findViewById(R.id.error);
@@ -48,14 +58,18 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     }
   }
 
-
+  /**
+   * this method is the implementation of the signup function, which is createManager with our backend business method call
+   *
+   * @param v
+   */
   public void createManager(View v) {
     error = "";
     final TextView tv = (TextView) firstName;
-     String firstName = tv.getText().toString();
+    String firstName = tv.getText().toString();
 
     final TextView tv1 = (TextView) lastName;
-     String lastName = tv1.getText().toString();
+    String lastName = tv1.getText().toString();
 
     final TextView tv2 = (TextView) dob;
     String dob = tv2.getText().toString();
@@ -65,23 +79,19 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     int day = Integer.parseInt(comps[0]);
 
     final TextView tv3 = (TextView) email;
-     String email = tv3.getText().toString();
+    String email = tv3.getText().toString();
 
     final TextView tv4 = (TextView) phoneNum;
-     Integer phoneNum = Integer.parseInt(tv4.getText().toString());
+    Integer phoneNum = Integer.parseInt(tv4.getText().toString());
 
     final TextView tv5 = (TextView) managerId;
     // final Integer managerId = Integer.parseInt(tv5.getText().toString());
-     String managerId = tv5.getText().toString();
+    String managerId = tv5.getText().toString();
 
     final Integer TutoringSystemId = 1;
 
     final TextView tv6 = (TextView) userName;
-     String userName = tv6.getText().toString();
-
-//    final TextView tv7 = (TextView) passWord;
-//    String passWord = tv7.getText().toString();
-
+    String userName = tv6.getText().toString();
 
     RequestParams rp = new RequestParams();
     rp.add("first", firstName);
@@ -95,6 +105,9 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     rp.add("userName", userName);
     rp.add("tutoringSystemID", String.valueOf(TutoringSystemId));
 
+    /**
+     * takes in user input to create a manager account and POST to database
+     */
     HttpUtils.post("manager/create/" + managerId, rp, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -102,6 +115,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
 //        tv.setText("");
 //        tv1.setText("");
       }
+
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
         try {
@@ -119,6 +133,7 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
 //        tv.setText("");
 //        tv1.setText("");
       }
+
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
         try {
@@ -131,13 +146,17 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     });
   }
 
-
+  /**
+   * This method will take the user input for login and password to create an login object in our database
+   *
+   * @param v
+   */
   public void addLogin(View v) {
     error = "";
     final TextView tv8 = (TextView) userName;
-     String userName = tv8.getText().toString();
-    final  TextView tv9 = (TextView) passWord;
-     String password = tv9.getText().toString();
+    String userName = tv8.getText().toString();
+    final TextView tv9 = (TextView) passWord;
+    String password = tv9.getText().toString();
 
     RequestParams rp = new RequestParams();
     rp.add("password", password);
@@ -146,10 +165,11 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
       @Override
       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 //        refreshErrorMessage();
-   //     tv.setText("");
-    //    tv1.setText("");
+        //     tv.setText("");
+        //    tv1.setText("");
 
       }
+
       @Override
       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
         try {
@@ -163,7 +183,11 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
   }
 
 
-
+  /**
+   * onCreate method which is called automatically when create menu activity
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -185,6 +209,10 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     homeButton.setOnClickListener(this);
   }
 
+  /**
+   * The following two methods are used for the jump between different pages, which means different
+   * activities in android
+   */
   public void openHome() {
     Intent intent = new Intent(this, MainActivity.class);
     startActivity(intent);
@@ -195,6 +223,11 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
     startActivity(intent);
   }
 
+  /**
+   * this method contains the page jump, will open another activity upon clicking
+   *
+   * @param v
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
